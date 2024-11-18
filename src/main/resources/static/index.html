@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+
+<body>
+    <!-- User Registration Form -->
+    <form id="userForm">
+        <label>
+            이메일: <input type="email" name="email" id="email" required>
+        </label><br>
+        <label>
+            비밀번호: <input type="password" name="password" id="password" required>
+        </label><br>
+        <label>
+            이름: <input type="text" name="name" id="name" required>
+        </label><br>
+        <label>
+            닉네임: <input type="text" name="nickName" id="nickName" required>
+        </label><br>
+        <label>
+            전화번호: <input type="tel" name="phoneNumber" id="phoneNumber" required>
+        </label><br>
+        <button type="submit" id="btn">제출</button>
+    </form>
+
+    <!-- Project Form -->
+    <form id="projectForm" action="#" method="POST">
+        <div>
+            <label for="title">프로젝트 제목</label>
+            <input type="text" id="title" name="title" required />
+        </div>
+        <div>
+            <label for="shortDescription">프로젝트 짧은 설명</label>
+            <input type="text" id="shortDescription" name="shortDescription" required />
+        </div>
+        <div>
+            <label for="projectCategory">프로젝트 카테고리</label>
+            <select id="projectCategory" name="projectCategory" required>
+                <option value="ACCESSORY">ACCESSORY</option>
+                <option value="BOOK">BOOK</option>
+                <option value="CLOTHES">CLOTHES</option>
+                <option value="COSMETICS">COSMETICS</option>
+                <option value="ETC">ETC</option>
+                <option value="FOOD">FOOD</option>
+                <option value="HOMEDECO">HOMEDECO</option>
+                <option value="PET">PET</option>
+                <option value="TRAVEL">TRAVEL</option>
+            </select>
+        </div>
+        <div>
+            <label for="description">프로젝트 상세 설명</label>
+            <textarea id="description" name="description" rows="5" required></textarea>
+        </div>
+        <div>
+            <label for="totalAmount">목표 금액</label>
+            <input type="number" id="totalAmount" name="totalAmount" min="1" required />
+        </div>
+        <div>
+            <label for="projectStartDate">프로젝트 시작 날짜</label>
+            <input type="datetime-local" id="projectStartDate" name="projectStartDate" required />
+        </div>
+        <div>
+            <label for="projectEndDate">프로젝트 종료 날짜</label>
+            <input type="datetime-local" id="projectEndDate" name="projectEndDate" required />
+        </div>
+        <div>
+            <button type="submit">프로젝트 제출</button>
+        </div>
+    </form>
+
+    <!-- 로그인 폼 -->
+    <form id="loginForm" action="#" method="POST">
+        <div>
+            <input type="text" name="email2" id="email2" placeholder="이메일" required>
+            <input type="password" name="password2" id="password2" placeholder="비밀번호" required>
+            <button type="submit">로그인</button>
+        </div>
+    </form>
+
+
+    <!-- 사용자 닉네임으로 찾기 폼 -->
+    <form id="findform">
+        <label>
+            닉네임: <input type="text" name="nickName2" id="nickName2" required>
+        </label>
+        <button type="submit" id="btn2">정보얻기</button>
+    </form>
+
+    <script>
+        document.querySelector("#userForm").addEventListener("submit", async (e) => {
+            e.preventDefault(); // 기본 폼 제출 동작 방지
+
+            const userData = {
+                email: document.querySelector("#email").value,
+                password: document.querySelector("#password").value,
+                name: document.querySelector("#name").value,
+                nickName: document.querySelector("#nickName").value,
+                phoneNumber: document.querySelector("#phoneNumber").value
+            };
+
+            console.log("Sending User Data:", userData);  // 디버깅용
+
+            try {
+                const response = await fetch("/user", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert("회원 등록 성공: " + JSON.stringify(result));
+                } else {
+                    const error = await response.text();
+                    alert("회원 등록 실패: " + error);
+                }
+            } catch (error) {
+                console.error("오류 발생:", error);
+                alert("서버 요청 중 오류가 발생했습니다.");
+            }
+        });
+
+        document.querySelector("#projectForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(document.querySelector("#projectForm"));
+            const data = {
+                title: formData.get("title"),
+                shortDescription: formData.get("shortDescription"),
+                projectCategory: formData.get("projectCategory"),
+                description: formData.get("description"),
+                totalAmount: +formData.get("totalAmount"),
+                projectStartDate: formData.get("projectStartDate"),
+                projectEndDate: formData.get("projectEndDate")
+            };
+            console.log("Sending Project Data:", data);  // 디버깅용
+
+            try {
+                const response = await fetch("/project", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("프로젝트가 성공적으로 제출되었습니다.");
+                    document.querySelector("#projectForm").reset();
+                } else {
+                    const errorText = await response.text();
+                    alert("프로젝트 제출에 실패했습니다: " + errorText);
+                }
+            } catch (error) {
+                console.error("서버 요청 중 오류 발생:", error);
+                alert("서버 요청 중 오류가 발생했습니다.");
+            }
+        });
+
+
+        document.querySelector("#loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();  // 기본 폼 제출 동작을 막고, JavaScript로 처리하도록 설정
+
+            const data = {
+                email: document.querySelector("#email2").value,
+                password: document.querySelector("#password2").value
+            };
+
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // 로그인 성공 시 리디렉션 처리
+                    window.location.href = "/";  // 홈 페이지로 리디렉션
+                } else {
+                    alert("로그인 실패!");
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+        document.querySelector("#findform").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nickName = document.querySelector("#nickName2").value; // 닉네임 값을 가져옴
+            try {
+                // 닉네임으로 사용자 정보 요청
+                const response = await fetch(`/user?nickname=${nickName}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    // 사용자 정보를 성공적으로 찾았을 경우 처리
+                    const data = await response.json(); // JSON 데이터 파싱
+                    console.log("찾은 사용자:", data); // 사용자 정보 출력
+                    // 여기서 사용자 정보를 화면에 표시하거나 추가적인 로직을 처리할 수 있음
+                    alert(`사용자 정보: ${JSON.stringify(data)}`); // 예시로 알림 창에 출력
+                } else {
+                    // 응답 실패 처리
+                    alert("사용자를 찾을 수 없습니다.");
+                }
+            } catch (error) {
+                console.error("오류 발생:", error);
+                alert("사용자를 찾는 중 오류가 발생했습니다.");
+            }
+        });
+    </script>
+</body>
+
+</html>
