@@ -24,7 +24,7 @@ font-family:  var(--eng-font);
 font-size: 16px;
 font-style: normal;
 font-weight: 500;
-line-height: 50px;
+line-height: 40px;
 letter-spacing: 1.92px;
     grid-area:subtitle;
 
