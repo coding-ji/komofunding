@@ -12,6 +12,7 @@ const SearchIcon = styled(FontAwesomeIcon)`
     font-size: 20px;
     color: #aaa;
     cursor: pointer; /* 클릭 가능 표시 */
+
 `;
 
 
@@ -26,12 +27,14 @@ const StyledInput = styled.input`
   padding: 10px;
   padding-right: 40px; /* 오른쪽 여백을 줘서 돋보기 아이콘이 겹치지 않도록 설정 */
   border: 1px solid var(--main-color);
-  border-radius: 15px;
+  border-radius: 2px;
   width: 100%;
   box-sizing: border-box; /* padding을 포함해 전체 너비 계산 */
   text-overflow: ellipsis; /* 텍스트가 넘치면 '...'으로 표시 */
   overflow: hidden; /* 넘치는 텍스트를 숨기기 */
   white-space: nowrap; /* 텍스트가 한 줄로 계속 나오도록 설정 */
+
+
 `;
 
 
@@ -46,3 +49,34 @@ function SearchInput({onClick,onChange,value,placeholder}) {
 }
 
 export default SearchInput;
+
+
+//-------------------------------------------------------
+//아래와 같이 인풋... 음...
+
+
+// function App() {
+
+//   const [searchValue, setSearchValue] = useState("");
+
+//   const handleInputChange = (event) => {
+//     setSearchValue(event.target.value);
+//   };
+
+//   const handleSearchClick = () => {
+//     alert(`검색 내용: ${searchValue}`);
+//   };
+
+//   return (
+//     <>
+//        <SearchInput
+//         onClick={handleSearchClick}
+//         onChange={handleInputChange}
+//         value={searchValue}
+//         placeholder="검색어를 입력하세요"
+//       />
+//     </>
+//   )
+// }
+
+// export default App
