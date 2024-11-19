@@ -1,14 +1,14 @@
-
-import SearchInput from './components/SearchInput/SearchInput';
-import SelectProjectBtn from './components/SelectProjectBtn';
-
-
+import './App.css'
+import Img from './components/Img'
+import Label from './components/Label'
+import Progress from './components/Progress'
 
 function App() {
   return (
     <>
-       <SearchInput></SearchInput>
-       <SelectProjectBtn></SelectProjectBtn>
+      <Label text="popular" color='var(--navy-color) '/>
+      <Img></Img>
+      <Progress value={10} max={100} color='var(--navy-color)'></Progress>
     </>
   )
 }
