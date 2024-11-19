@@ -1,11 +1,17 @@
 /* 기본 사용하는 컬러 */
 :root {
-  --main-color: #323232;
-  --header-color: #282828;
-  --smalltext-graycolor: #686868;
-  --darkgreen-color: #436446;
-  --darkblue-color: #256E91;
-  --line-color: #E4E4E4;
+	--main-color: #323232;
+	--header-color: #282828;
+	--Titletext-blackcolor: #000000;
+	--smalltext-graycolor: #686868;
+	--darkgreen-color: #436446;
+	--darkblue-color: #256E91;
+	--navy-color: rgba(50, 72, 132, 1);
+	--line-color: #E4E4E4;
+	--eng-font: "Roboto Slab", serif;
+	--kr-font: sans-serif;
+	--text-align : center;
+  --user-mainHome :  #282828;
   
 }
 
