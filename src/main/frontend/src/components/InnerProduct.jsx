@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Img from "./Img";
 import Label from "./Label";
 import Progress from "./Progress";
+import '../index.css'; 
 
 const StyledProduct = styled.div`
 display : flex;
