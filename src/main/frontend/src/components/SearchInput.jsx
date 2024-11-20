@@ -13,8 +13,7 @@ const SearchIcon = styled(FontAwesomeIcon)`
     color: #fff;
     cursor: pointer; /* 클릭 가능 표시 */
 
-    &:hover {
-    transform: translateY(-50%) scale(1.1); /* 살짝 커지기 */
+    
 
 `;
 
