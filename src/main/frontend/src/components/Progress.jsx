@@ -8,7 +8,7 @@ const ProgressWrapper = styled.div`
 `;
 
 const ProgressBar = styled(motion.div)`  /* motion.div로 변경 */
-  background-color: ${(props) => props.color || "var(--navy-color)"}; /* 진행 색상 */
+  background-color: ${(props) => props.color}; /* 진행 색상 */
   height: 20px;
 `;
 
@@ -19,7 +19,7 @@ function Progress({ color, value, max }) {
         color={color}
         initial={{ width: 0 }}   
         animate={{ width: (value / max) * 100 + "%" }} /* width를 value에 맞게 변경 */
-        transition={{ duration: .5 }} 
+        transition={{ duration: .7 }} 
       />
     </ProgressWrapper>
   );
