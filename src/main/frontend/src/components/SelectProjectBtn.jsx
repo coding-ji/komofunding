@@ -35,7 +35,7 @@ border-radius: 2px;
 padding : 10px 34px;
 background: #323232;
     grid-area: button;
-    
+    cursor: pointer;
 
 `
 
@@ -88,6 +88,7 @@ padding : 30px 27px 30px 27px;
 
     &:hover ${BtnBox} {
 background: rgba(255, 255, 255, 0.95);
+    courser : pointer;
     }   
     &:hover ${BtnText} {
 color: var(--user-mainHome, #282828);
@@ -115,6 +116,8 @@ function SelectProjectBtn() {
             </BtnBox>
         </SelectDiv>
     );
+
+    
 }
 
 export default SelectProjectBtn;
