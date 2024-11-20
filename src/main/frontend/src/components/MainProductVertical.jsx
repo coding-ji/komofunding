@@ -9,8 +9,6 @@ const StyledDiv = styled(motion.div)`
   justify-content: center;
   align-items:center;
   padding : 32px 16px;
-  
-
 `;
 
 function MainProductVertical() {
@@ -20,7 +18,8 @@ function MainProductVertical() {
         whileInView={{ opacity: 1, rotateX: 0 }} // 카드 정상 위치
         whileHover={{scale: 1.02,  boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)'}}
         transition={{ duration: 0.7 }}
-        style={{perspective: '1200px'}}
+        style={{ transformOrigin: 'center' }} 
+        // style={{ perspective: '1200px' }}
         >
             <InnerProduct />
         </StyledDiv>
