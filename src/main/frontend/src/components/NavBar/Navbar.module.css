@@ -6,6 +6,8 @@
   align-items: center;
   padding: 10px 10px;
   position: relative;
+  width: 1100px; /* 너비 1100px로 설정 */
+  margin: 0 auto; /* 수평 중앙 정렬 */
 }
 
 .navbar {
@@ -14,6 +16,8 @@
   font-family: Arial, sans-serif;
   font-size: 16px;
   font-weight: bold;
+  width: 100%; /* navbar가 100% 크기를 차지하도록 설정 */
+  justify-content: space-around; /* navbar 항목들을 중앙 정렬 */
 }
 
 .navbaritems {
@@ -21,11 +25,9 @@
   transition: color 0.3s;
 }
 
-
 .navbaritems:hover {
   color: #256E91;
 }
-
 
 .active {
   color: #256E91;
@@ -39,12 +41,14 @@
   transition: left 0.3s ease, width 0.3s ease;
 }
 
-
 .content {
   text-align: center;
   margin-top: 20px;
   font-family: Arial, sans-serif;
   color: #333;
+  width: 100%; /* content가 100% 크기를 차지하도록 설정 */
+  max-width: 1100px; /* max-width를 1100px로 설정하여 내용이 더 커지지 않도록 제한 */
+  margin: 0 auto; /* 수평 중앙 정렬 */
 }
 
 .content h2 {
