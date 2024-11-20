@@ -8,8 +8,8 @@ display : flex;
 justify-content : center;
 align-items : center;
 flex-direction : column;
-width: 293px;
-height: 358px;
+width: var(--main-innerproduct-width);
+height: var(--main-innerproduct-height);
 `
 
 
