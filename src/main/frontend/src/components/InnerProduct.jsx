@@ -24,3 +24,5 @@ function InnerProduct() {
 }
 
 export default InnerProduct;
+
+// 메인페이지 product
