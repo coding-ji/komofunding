@@ -88,7 +88,7 @@ padding : 30px 27px 30px 27px;
 
     &:hover ${BtnBox} {
 background: rgba(255, 255, 255, 0.95);
-    courser : pointer;
+
     }   
     &:hover ${BtnText} {
 color: var(--user-mainHome, #282828);
