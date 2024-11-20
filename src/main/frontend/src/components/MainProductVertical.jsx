@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import '../index.css'; 
 
 const StyledDiv = styled(motion.div)`
-  width: var(--main-product-width);
-  height: var(--main-product-heigth);
   background-color: var(--main-product-color);
   display: flex;
   justify-content: center;
