@@ -21,9 +21,9 @@ const Alert = () => {
         {isAlertOpen && (
           <motion.div
             className="alert"
-            initial={{ opacity: 0, scale: 0.8 }}  
+            initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}    
-            exit={{ opacity: 0, scale: 0.8 }}    
+            exit={{ opacity: 0, scale: 0.7 }}
             transition={{ duration: 0.3 }}        
           >
             <div className="alert-header">
