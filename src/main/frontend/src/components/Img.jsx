@@ -5,8 +5,8 @@ const StyledImg = styled.div`
   background-image: url(${(props) => props.src || "https://via.placeholder.com/293x358"});
   background-size: cover;
   background-position: center;
-  width: var(--main-product-width);
-  height: 358px;
+  width: var(--main-img-width);
+  height: var(--main-img-height);
 `;
 
 function Img({ src }) {
