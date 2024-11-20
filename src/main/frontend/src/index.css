@@ -11,8 +11,10 @@
 	--eng-font: "Roboto Slab", serif;
 	--kr-font: sans-serif;
 	--text-align : center;
-  --user-mainHome :  #282828;
-  
+	--main-product-color : rgba(84, 84, 84, 1);
+	--main-product-width: 293px;
+    --user-mainHome :  #282828;
+
 }
 
 /* default CSS */
