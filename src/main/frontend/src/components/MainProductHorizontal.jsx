@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import '../index.css';
 
 const StyledDivHorizontal = styled(motion.div)`
-  width: 326px;
-  height: 485px;
+  width: var(--main-product-width);
+  height: var(--main-product-height);
   background-color: var(--main-product-color);
   display: flex;
   justify-content: center;
