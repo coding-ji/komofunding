@@ -12,8 +12,14 @@
 	--kr-font: sans-serif;
 	--text-align : center;
 	--main-product-color : rgba(84, 84, 84, 1);
-	--main-product-width: 293px;
+	--main-img-width: 293px;
+	--main-img-height: 358px;
     --user-mainHome :  #282828;
+	--main-innerproduct-width: 294px;
+	--main-innerproduct-heigth: 415px;
+	--main-product-width: 326px;
+	--main-product-height: 485px;
+	
 
 }
 

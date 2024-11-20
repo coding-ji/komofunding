@@ -1,10 +1,12 @@
 import './App.css'
-import MainProduct from './components/MainProduct'
+import MainProductHorizontal from './components/MainProductHorizontal'
+import MainProductVertical from './components/MainProductVertical'
 
 function App() {
   return (
     <>
-  <MainProduct></MainProduct>
+    <MainProductVertical></MainProductVertical>
+    <MainProductHorizontal></MainProductHorizontal>
     </>
   )
 }

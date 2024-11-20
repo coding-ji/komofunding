@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const ProgressWrapper = styled.div`
   width: 100%;
@@ -6,17 +7,20 @@ const ProgressWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ProgressBar = styled.div`
-  width: ${(props) => (props.value / props.max) * 100}%;
-  background-color: ${(props) => props.color || "var(--navy-color)"}; /* 진행 색상 */
+const ProgressBar = styled(motion.div)`  /* motion.div로 변경 */
+  background-color: ${(props) => props.color}; /* 진행 색상 */
   height: 20px;
-//   transition: width 0.3s ease; /* 부드러운 애니메이션 */
 `;
 
 function Progress({ color, value, max }) {
   return (
     <ProgressWrapper>
-      <ProgressBar color={color} value={value} max={max} />
+      <ProgressBar
+        color={color}
+        initial={{ width: 0 }}   
+        animate={{ width: (value / max) * 100 + "%" }} /* width를 value에 맞게 변경 */
+        transition={{ duration: .7 }} 
+      />
     </ProgressWrapper>
   );
 }
