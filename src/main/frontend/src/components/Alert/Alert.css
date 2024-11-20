@@ -1,0 +1,77 @@
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+
+
+
+
+.alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  width: 440px;
+  border-radius: 8px;
+  overflow: hidden; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+
+.alert-header {
+  background-color: #282828; 
+  color: white;
+  height: 25px; 
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+
+.alert-body {
+  width: 100%;
+  padding: 16px;
+  font-size: 15px;
+  text-align: center;
+}
+
+
+.alert-footer {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+  width: 100%;
+}
+
+.confirm-btn, .cancel-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirm-btn {
+  background-color: #256E91;
+  color: white;
+  border: none;
+}
+
+.cancel-btn {
+  background-color: white;
+  color: #256E91;
+  border: 1px solid #256E91;
+}
+
+.confirm-btn:hover, .cancel-btn:hover {
+  opacity: 0.9;
+}
