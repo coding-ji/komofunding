@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import '../index.css';
 
 // 스타일드 컴포넌트 정의
 const ProjectTitle = styled.p`
