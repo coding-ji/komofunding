@@ -1,33 +1,20 @@
 .container {
-    padding: 9px 28px 9px 28px;
+    padding: 9px 28px 25px 28px;
     background-color: #282828;
-    width: 1100px;
     color: #ffffff;
     font-family: "Noto Sans KR", sans-serif;
-    max-width: 1100px;
-    width: 100%;
-    white-space: nowrap;
-}
-
-.wrapper1 {
-    height: 166px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.wrapper2 {
-    height: 64px;
-    text-align: center;
-    
+    display: grid;
+    grid-template:
+        'menu1 ... menu2 ... text' 1fr
+        'logo logo logo logo logo' 40px
+        'copy copy copy copy copy' 13px / 80px 1fr 120px 1fr 8fr;
+    gap: 11px;
 }
 
 .menu1 {
+    grid-area: menu1;
     display: flex;
     flex-direction: column;
-    width: 80px;
-    height: 166px;
     white-space: nowrap;
 }
 
@@ -36,54 +23,56 @@
     flex-direction: column;
     width: 120px;
     white-space: nowrap;
+    grid-area: menu2;
 }
 
 .text {
     font-size: 13px;
-    width: 668px;
     display: flex;
     flex-direction: column;
     gap: 11px;
     line-height: 20px;
-    margin: 0;
+    grid-area: text;
+    white-space: pre-wrap; 
 }
 
 .logo {
     display: flex;
-    height: 43px;
     flex-direction: row;
     font-size: 13px;
     justify-content: space-between;
+    gap: 40px;
+    grid-area: logo;
 }
 
 
 .logohead {
-    width: 343px;
     text-align: center;
     font-size: 36px;
     line-height: 54px;
     font-weight: bold;
-    
+    white-space: nowrap; 
 }
 
 .logocopylight {
         text-align: center;
         font-size: 11px;
+        grid-area: copy;
 }
 
 .logohr1 {
         margin-top: 27px;
         margin-left: 0px;
         height: 1px;
-        width: 298px;
+        width: 30%;
         background-color: #ffffff;
 }
 
 .logohr2 {
     margin-top: 27px;
-    margin-right: 10px;
+    margin-right: 0px;
     height: 1px;
-    width: 298px;
+    width: 30%;
     background-color: #ffffff;
 }
 
@@ -100,4 +89,15 @@
 .linkcss:hover {
     text-decoration: underline;
     font-weight: bold;
+}
+
+@media(max-width: 500px) {
+    .container {
+        grid-template:
+            'menu1 ... menu2' 1fr
+            'text text text'
+            'logo logo logo' 40px
+            'copy copy copy' 13px / 80px 1fr 120px; 
+        justify-content: space-between
+    }
 }
