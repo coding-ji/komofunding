@@ -18,7 +18,7 @@ const MoreDiv = styled(motion.div)`
   padding: 24px 25px;
   border-radius: 2px;
   border: 2px solid #000;
-    cursor: pointer;
+  cursor: pointer;
   background: ${({ isHovered }) => (isHovered ? "var(--user-mainHome)" : "#FFF")}; /* 상태에 따라 배경색 변경 */
 
   /* Flexbox를 이용해 텍스트를 중앙 정렬 */
