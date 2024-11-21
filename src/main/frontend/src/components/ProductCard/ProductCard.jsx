@@ -5,7 +5,7 @@ import ProductDescription from "./ProductDescription";
 
 const CardContainer = styled.div`
   display: grid; /* 그리드 레이아웃 설정 */
-  grid-template-rows: 5fr 0.5fr 1fr; /* 비율: 이미지 3, 제목 1, 설명 1 */
+  grid-template-rows: 4fr 0.5fr 1fr; /* 비율: 이미지 3, 제목 1, 설명 1 */
   grid-template-areas:
     "image"
     "title"
