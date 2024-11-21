@@ -6,11 +6,11 @@ import {motion} from 'framer-motion'
 const MenuItem = styled(motion.a)`
     text-decoration: none;
     color: #fff;
-    font-size: 20px;
+    font-size: 1.2rem;
 
     line-height: normal;
     font-family : var(--eng-bold);
-    letter-spacing : 0
+    // letter-spacing : 0
 
   }
 `;

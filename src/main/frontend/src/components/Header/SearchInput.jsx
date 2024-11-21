@@ -55,8 +55,8 @@ function SearchInput({onClick,onChange,value,placeholder}) {
       value={value} 
       placeholder={placeholder}
       maxLength={30} // 최대길이
-      initial={{ width: "150px" }} // 초기 width
-        whileFocus={{ width: "200px" }} // 포커스 시 width 변경
+      initial={{ width: "6rem" }} // 초기 width
+        whileFocus={{ width: "8rem" }} // 포커스 시 width 변경
         transition={{ duration: 0.3 }} // 애니메이션 속도
     
       />

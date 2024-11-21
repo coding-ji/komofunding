@@ -1,60 +1,149 @@
 
 .headerContainer {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    padding: 15px 20px;
-    height: 81px;
-    background-color: var(--header-color);
-    color: #fff;
-    width: 100%;
-  }
+  display: flex;
+  /* flex-wrap: nowrap; */
+  align-items: center;
+  padding: 15px 20px;
+  background-color: var(--header-color);
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  min-width : 400px
+}
+/* 전체적으로 그리드 잡을때 height 100%?? */
+
+.logoAndMenu {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem; /* 로고와 메뉴 사이 간격 */
+  flex-shrink: 0; /* 로고와 메뉴 크기 고정 */
+  cursor: pointer;
+      height: 100%;
+}
+ 
+.logoImage {
+  width: 100%;
+  height: 100%;
+  background-image: url('./Logo.svg'); /* SVG 파일 경로 */
+  background-size: cover; /* 크기 조정 */
+  background-repeat: no-repeat; /* 반복 방지 */
+  background-position: center; /* 이미지 중앙 정렬 */
+}
+
+.menuList {
+  display: flex;
+  gap: 1rem;
+
+}
+
+.searchAndButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1;
+}
+
+.button {
+  font-family: var(--eng-font);
+  color: #fff;
+  cursor: pointer;
+  width: 70px;
+  margin: 1rem;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  width: max-content;
   
+}
+
+
+@media (max-width: 920px) {
+
+
+  .searchAndButtons {
+    flex-direction: column; /* 검색창과 버튼을 세로로 배치 */
+    justify-content: center; /* 전체 중앙 정렬 */
+    align-items: center;
+    width: 100%;
+    gap: 0rem; /* 검색창과 버튼 간 간격 */
+  }
+
+  .searchInput {
+    width: 100%; /* 검색창 너비를 화면에 맞게 설정 */
+    max-width: 300px; /* 검색창 최대 너비 */
+    margin-bottom: 1rem; /* 버튼과의 간격 */
+  }
+
+  .buttonContainer {
+    display: flex; /* 버튼을 가로로 나란히 배치 */
+    flex-direction: row;
+    gap: 0rem; /* 버튼 간 간격 */
+    justify-content: center;
+    width: 100%; /* 버튼 컨테이너 너비를 검색창에 맞춤 */
+  }
+
+  .button {
+    flex: 1; /* 버튼의 크기를 균등하게 설정 */
+
+    min-width: 70px;
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+}
+
+@media (max-width: 700px) {
+  .headerContainer {
+    display: flex;
+    flex-direction: column; /* 전체를 세로로 정렬 */
+    gap: 1rem;
+    padding: 10px 15px;
+  }
+
   .logoAndMenu {
     display: flex;
-    align-items: center;
-    gap: 20px; /* 로고와 메뉴 사이 간격 */
-    flex-shrink: 0; /* 로고와 메뉴 크기 고정 */
-    cursor: pointer;
-        height: 100%;
+    flex-direction: column; /* 로고와 메뉴를 세로로 배치 */
+    align-items: center; /* 중앙 정렬 */
+    gap: 0rem;
   }
-  
-  .logoImage {
-    width: 154px;
-    height: 81px;
-    background-image: url('./Logo.svg'); /* SVG 파일 경로 */
-    background-size: cover; /* 크기 조정 */
-    background-repeat: no-repeat; /* 반복 방지 */
-    background-position: center; /* 이미지 중앙 정렬 */
-  }
-  
+
   .menuList {
     display: flex;
-    gap: 41px;
-
+    gap: 0.8rem; /* 메뉴 간 간격 */
+    justify-content: center;
+    flex-wrap: nowrap; /* 메뉴가 좁아질 경우 줄바꿈 허용 */
   }
-  
+
   .searchAndButtons {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row; /* 검색창과 버튼을 가로로 배치 */
     align-items: center;
-    gap: 10px;
-    flex-grow: 1;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0.2rem; /* 검색창과 버튼 간 간격 */
+   
   }
-  
+
+  .searchInput {
+    flex: 2; /* 검색창의 비율을 더 크게 설정 */
+    width: 100%; /* 최대 너비 제한 */
+    
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row; /* 버튼들을 가로로 배치 */
+    flex: 1; /* 버튼들이 검색창과 비율을 맞춤 */
+    gap: 0rem; /* 버튼 간 간격 */
+  }
+
   .button {
-    font-family: var(--eng-font);
-    color: #fff;
-    cursor: pointer;
-    width: 70px;
-    padding: 5px 0px;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    background: none;
-    border: none;
+    flex: 1; /* 버튼들이 동일한 비율로 크기를 차지 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+   
   }
-  
+}
