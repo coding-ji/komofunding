@@ -1,0 +1,100 @@
+/* 전체 컨테이너 */
+.container {
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 270px; /* 제목을 270px 아래로 내려서 중앙에 위치시킴 */
+  justify-content: flex-start; /* 세로로 중앙 정렬 */
+}
+
+/* 공지사항 제목 */
+.title {
+  color: #000;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 20px; /* 30.769% */
+  letter-spacing: 0.325px;
+  margin-bottom: 60px; /* 제목과 네비게이션 바 사이의 간격을 60px로 증가 */
+}
+
+/* 네비게이션 바 */
+.navbarline {
+  border-bottom: 1px solid #000;
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.navbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 10px 0;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #282828;
+  text-align: center;
+}
+
+.navbaritems {
+  cursor: pointer;
+  position: relative;
+  padding: 5px 10px;
+  text-decoration: none; /* 기본 링크 밑줄 제거 */
+  color: #282828; /* 기본 링크 색상 */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbaritems:hover {
+  color: #256e91; /* 호버 시 색상 변경 */
+  transform: scale(1.05); /* 호버 시 살짝 확대 */
+}
+
+.navbaritems:active {
+  color: #1d4e6d; /* 클릭 시 색상 변경 */
+}
+
+/* 활성화된 링크 색상 */
+.active {
+  color: #256e91; /* 활성화된 링크 색상 */
+}
+
+/* 언더라인 */
+.underline {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  background-color: #256e91;
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+/* 카테고리 내용 */
+.content {
+  text-align: center;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  width: 100%;
+}
+
+.content h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.content p {
+  font-size: 18px;
+}
