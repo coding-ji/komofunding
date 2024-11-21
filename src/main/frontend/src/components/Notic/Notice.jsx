@@ -11,32 +11,14 @@ const categories = [
   { name: '자주 묻는 질문', content: '자주 묻는 질문 페이지' },
 ];
 
-// 각 카테고리에 대한 공지사항 예시 데이터
-const notificationsData = {
-  전체: [
-    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 1" },
-    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 2" },
-  ],
-  공지: [
-    { category: "공지", date_author: "2024-11-19 | 관리자", title: "공지사항 1" },
-    { category: "공지", date_author: "2024-11-18 | 관리자", title: "공지사항 2" },
-  ],
-  이벤트: [
-    { category: "이벤트", date_author: "2024-11-17 | 관리자", title: "이벤트 1" },
-    { category: "이벤트", date_author: "2024-11-16 | 관리자", title: "이벤트 2" },
-  ],
-  "자주 묻는 질문": [
-    { category: "자주 묻는 질문", date_author: "2024-11-15 | 관리자", title: "질문 1" },
-    { category: "자주 묻는 질문", date_author: "2024-11-14 | 관리자", title: "질문 2" },
-  ],
-};
+
 
 const CategoryContent = ({ categoryName }) => (
   <div className={styles.content}>
     <h2>{categoryName}</h2>
     {/* 각 카테고리에 맞는 Notification 컴포넌트들 렌더링 */}
-    {notificationsData[categoryName].map((item, index) => (
-      <Notification key={index} props={item} />
+    {[categoryName].map((item, index) => (
+      <content key={index} props={item} />
     ))}
   </div>
 );
