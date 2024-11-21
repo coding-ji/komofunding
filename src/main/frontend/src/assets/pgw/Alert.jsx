@@ -9,11 +9,6 @@ const Alert = ({ message, confirmText, cancelText, onConfirm, onCancel }) => {
     setIsAlertOpen(true);
   };
 
-  const closeAlert = () => {
-    setIsAlertOpen(false);
-    if (onCancel) onCancel();
-  };
-
   const handleConfirm = () => {
     if (onConfirm) onConfirm();
     closeAlert();
