@@ -1,0 +1,132 @@
+/* 전체 페이지 컨테이너 */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+/* 컨테이너 */
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  width: 100%;
+  padding-top: 120px; /* 제목을 중앙에 위치시키기 위해 적당히 수정 */
+  padding-left: 20px;
+  padding-right: 20px;
+  justify-items: center;
+  max-width: 1200px; /* 최대 폭 설정 */
+  margin: 0 auto;
+}
+
+/* 공지사항 제목 */
+.title {
+  color: #000;
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0.325px;
+  margin-bottom: 20px;
+}
+
+/* 네비게이션 바 */
+.navbarline {
+  border-bottom: 1px solid #000;
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.navbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #282828;
+  text-align: center;
+}
+
+.navbaritems {
+  cursor: pointer;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #282828;
+  transition: color 0.3s ease, transform 0.3s ease;
+  border-radius: 8px; /* 부드러운 모서리 */
+}
+
+.navbaritems:hover {
+  color: #256e91;
+  transform: scale(1.1);
+}
+
+.navbaritems:active {
+  color: #1d4e6d;
+}
+
+/* 활성화된 링크 색상 */
+.active {
+  color: #256e91;
+}
+
+/* 언더라인 */
+.underline {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  background-color: #256e91;
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+/* 카테고리 내용 */
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  justify-items: center;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.content h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.content p {
+  font-size: 18px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 공지사항 리스트 */
+.notification {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.notification:hover {
+  transform: translateY(-5px);
+}
+
+.notification-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #256e91;
+}
+
+.notification-details {
+  font-size: 16px;
+  color: #888;
+}
