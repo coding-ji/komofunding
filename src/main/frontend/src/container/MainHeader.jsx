@@ -12,11 +12,11 @@ const MainHeader = () => {
         <motion.div
           whileHover={{ scale: 1.05 }} // 애니메이션은 motion에서 관리
         >
-          <div className={styles.logoImage} alt="로고이미지" 
-          style={{
-            width: "154px", // 원하는 크기
-            height: "81px",
-          }} />
+          <div className={styles.logoImage} alt="로고이미지"
+            style={{
+              width: "154px", // 원하는 크기
+              height: "81px",
+            }} />
         </motion.div>
         <div className={styles.menuList}>
           <HeaderMenu name="HOME" href="#home" />
@@ -29,12 +29,12 @@ const MainHeader = () => {
       {/* 검색 및 버튼 */}
       <motion.div className={styles.searchAndButtons}>
 
-          {/* 검색창 */}
-        <SearchInput 
-        // onClick
-        // onChange
-        // value
-        placeholder={"안뇽"}
+        {/* 검색창 */}
+        <SearchInput
+          // onClick
+          // onChange
+          // value
+          placeholder={"안뇽"}
         />
 
         {/*로그인 / 로그아웃 버튼 */}
