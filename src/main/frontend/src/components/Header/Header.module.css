@@ -1,0 +1,60 @@
+
+.headerContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 15px 20px;
+    height: 81px;
+    background-color: var(--header-color);
+    color: #fff;
+    width: 100%;
+  }
+  
+  .logoAndMenu {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 로고와 메뉴 사이 간격 */
+    flex-shrink: 0; /* 로고와 메뉴 크기 고정 */
+    cursor: pointer;
+        height: 100%;
+  }
+  
+  .logoImage {
+    width: 154px;
+    height: 81px;
+    background-image: url('./Logo.svg'); /* SVG 파일 경로 */
+    background-size: cover; /* 크기 조정 */
+    background-repeat: no-repeat; /* 반복 방지 */
+    background-position: center; /* 이미지 중앙 정렬 */
+  }
+  
+  .menuList {
+    display: flex;
+    gap: 41px;
+
+  }
+  
+  .searchAndButtons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+  }
+  
+  .button {
+    font-family: var(--eng-font);
+    color: #fff;
+    cursor: pointer;
+    width: 70px;
+    padding: 5px 0px;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    background: none;
+    border: none;
+  }
+  
