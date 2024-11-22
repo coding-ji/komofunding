@@ -11,8 +11,8 @@ import Privacypolicy from './PageInPage/Privacypolicy';
 import Charge from './PageInPage/Charge';
 import Question from './PageInPage/Question';
 import Footer from './Footer';
-// import HeaderMenu from './HeaderMenu'; // HeaderMenu 컴포넌트 추가
 import MainHeader from './MainHeader';
+
 
 const categories = [
   { name: '전체', content: '전체 페이지' },
@@ -161,7 +161,7 @@ export default NoticePage;
 //헤더는 위치 잘찾아서 임포트 시키면 작동합니다.
 //리스트를 추가하거나 애니메이션을 바꾸려면 Notification에서 수정 바랍니다..
 //  const notificationsData = {전체: [{ category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 1" }
-// 안쪽의 위치와 정보를 수정하려면 위의 이 로직을 찾아서 바꾸시길 바랍니다.
+// 안쪽의 위치와 정보를 수정하려면 위의 이 로직을 찾아서 바꾸시길 바랍니다
 
 
 // page에 들어갈 router 문구
