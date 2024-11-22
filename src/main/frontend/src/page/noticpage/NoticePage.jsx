@@ -13,7 +13,6 @@ import Question from './PageInPage/Question';
 import Footer from './Footer';
 import MainHeader from './MainHeader';
 
-
 const categories = [
   { name: '전체', content: '전체 페이지' },
   { name: '공지', content: '공지' },
@@ -25,52 +24,70 @@ const notificationsData = {
   전체: [
     { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 1" },
     { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 2" },
-    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 1" },
-    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 2" },
-    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 1" },
-    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 2" },
-    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 1" },
-    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 2" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 3" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 4" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 5" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 6" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 7" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 8" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 9" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 10" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 11" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 12" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 13" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 14" },
+    { category: "전체", date_author: "2024-11-21 | 관리자", title: "전체 공지사항 15" },
+    { category: "전체", date_author: "2024-11-20 | 관리자", title: "전체 공지사항 16" },
+
   ],
   공지: [
     { category: "공지", date_author: "2024-11-19 | 관리자", title: "공지사항 1" },
     { category: "공지", date_author: "2024-11-18 | 관리자", title: "공지사항 2" },
-    { category: "공지", date_author: "2024-11-19 | 관리자", title: "공지사항 1" },
-    { category: "공지", date_author: "2024-11-18 | 관리자", title: "공지사항 2" },
-    { category: "공지", date_author: "2024-11-19 | 관리자", title: "공지사항 1" },
-    { category: "공지", date_author: "2024-11-18 | 관리자", title: "공지사항 2" },
-
+    { category: "공지", date_author: "2024-11-19 | 관리자", title: "공지사항 3" },
+    { category: "공지", date_author: "2024-11-18 | 관리자", title: "공지사항 4" },
+    { category: "공지", date_author: "2024-11-19 | 관리자", title: "공지사항 5" },
+    { category: "공지", date_author: "2024-11-18 | 관리자", title: "공지사항 6" },
   ],
   이벤트: [
     { category: "이벤트", date_author: "2024-11-17 | 관리자", title: "이벤트 1" },
     { category: "이벤트", date_author: "2024-11-16 | 관리자", title: "이벤트 2" },
-    { category: "이벤트", date_author: "2024-11-17 | 관리자", title: "이벤트 1" },
-    { category: "이벤트", date_author: "2024-11-16 | 관리자", title: "이벤트 2" },
-    { category: "이벤트", date_author: "2024-11-17 | 관리자", title: "이벤트 1" },
-    { category: "이벤트", date_author: "2024-11-16 | 관리자", title: "이벤트 2" },
+    { category: "이벤트", date_author: "2024-11-17 | 관리자", title: "이벤트 3" },
+    { category: "이벤트", date_author: "2024-11-16 | 관리자", title: "이벤트 4" },
+    { category: "이벤트", date_author: "2024-11-17 | 관리자", title: "이벤트 5" },
+    { category: "이벤트", date_author: "2024-11-16 | 관리자", title: "이벤트 6" },
   ],
   "자주 묻는 질문": [
     { category: "자주 묻는 질문", date_author: "2024-11-15 | 관리자", title: "질문 1" },
     { category: "자주 묻는 질문", date_author: "2024-11-14 | 관리자", title: "질문 2" },
-    { category: "자주 묻는 질문", date_author: "2024-11-15 | 관리자", title: "질문 1" },
-    { category: "자주 묻는 질문", date_author: "2024-11-14 | 관리자", title: "질문 2" },
-    { category: "자주 묻는 질문", date_author: "2024-11-15 | 관리자", title: "질문 1" },
-    { category: "자주 묻는 질문", date_author: "2024-11-14 | 관리자", title: "질문 2" },
+    { category: "자주 묻는 질문", date_author: "2024-11-15 | 관리자", title: "질문 3" },
+    { category: "자주 묻는 질문", date_author: "2024-11-14 | 관리자", title: "질문 4" },
+    { category: "자주 묻는 질문", date_author: "2024-11-15 | 관리자", title: "질문 5" },
+    { category: "자주 묻는 질문", date_author: "2024-11-14 | 관리자", title: "질문 6" },
   ],
 };
 
-const CategoryContent = ({ categoryName }) => (
-  <div className={styles.content}>
-    <h2>{categoryName}</h2>
-    {notificationsData[categoryName].map((item, index) => (
-      <Notification key={index} props={item} />
-    ))}
-  </div>
-);
+
+const CategoryContent = ({ categoryName, currentPage, itemsPerPage }) => {
+  // 현재 페이지에 맞는 공지사항 데이터 계산
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentNotifications = notificationsData[categoryName].slice(startIndex, endIndex);
+
+  return (
+    <div className={styles.content}>
+      <h2>{categoryName}</h2>
+      {currentNotifications.map((item, index) => (
+        <Notification key={index} props={item} />
+      ))}
+    </div>
+  );
+};
 
 const NoticePage = () => {
   const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const itemsPerPage = 5; // 페이지당 표시할 항목 수
   const itemRefs = useRef([]);
 
   const updateUnderlinePosition = () => {
@@ -98,9 +115,17 @@ const NoticePage = () => {
     };
   }, [activeCategory]);
 
+  // 페이지 변경 핸들러
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // 총 페이지 수 계산
+  const totalPages = Math.ceil(notificationsData[activeCategory.name].length / itemsPerPage);
+
   return (
     <div className={styles.pageContainer}>
-     <MainHeader />
+      <MainHeader />
 
       <motion.div className={styles.title} initial="hidden" animate="visible" variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.8, ease: 'easeOut' }}>
         <h1>공지사항</h1>
@@ -116,6 +141,7 @@ const NoticePage = () => {
               onClick={() => {
                 setActiveCategory(category);
                 handleCategoryClick(index);
+                setCurrentPage(1); // 카테고리 변경 시 첫 페이지로 리셋
               }}
               ref={(el) => (itemRefs.current[index] = el)}
             >
@@ -136,19 +162,26 @@ const NoticePage = () => {
         </AnimatePresence>
       </div>
 
-      <Routes>
-        <Route path="/" element={<Navigate to="/전체" />} />
-        {categories.map((category) => (
-          <Route key={category.name} path={`/${category.name}`} element={<CategoryContent categoryName={category.name} />} />
+      {/* 카테고리별 내용 및 페이지네이션 */}
+      <CategoryContent
+        categoryName={activeCategory.name}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+      />
+
+      {/* 페이지네이션 버튼 */}
+      <div className={styles.pagination}>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            className={currentPage === index + 1 ? styles.activePage : ''}
+          >
+            {index + 1}
+          </button>
         ))}
-        <Route path="/note" element={<Note />} />
-        <Route path="/question" element={<Question />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/donate" element={<Donate />} />
-        <Route path="/useterms" element={<Userterms />} />
-        <Route path="/privacypolicy" element={<Privacypolicy />} />
-        <Route path="/charge" element={<Charge />} />
-      </Routes>
+      </div>
+
       <Footer />
     </div>
   );

@@ -23,6 +23,7 @@
 
 /* 공지사항 제목 */
 .title {
+  padding: 40px;
   color: #000;
   text-align: center;
   font-size: 48px;
@@ -105,4 +106,32 @@
   font-size: 18px;
   color: #666;
   line-height: 1.6;
+}
+/* 페이지네이션 버튼 */
+.pagination {
+  display: flex;
+  justify-content: center;
+
+  padding: 40px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  margin: 0 5px;
+  border: 1px solid #256e91;
+  background-color: transparent;
+  color: #256e91;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #256e91;
+  color: white;
+}
+
+.pagination .activePage {
+  background-color: #256e91;
+  color: white;
 }
