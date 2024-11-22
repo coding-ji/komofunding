@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import React from "react";
-// import { useNavigate } from "react-router-dom";
+
 
 // 동적 배경 이미지 설정
 const StyledImg = styled(motion.div)`
@@ -69,15 +69,12 @@ const ImgBox = styled(motion.div)`
   height: ${(props) => (props.height ? props.height : "100%")};
 `;
 
-function ProductImg({ src, width, height, productId}) {
-  // const navigate = useNavigate(); // React Router의 useNavigate 사용
+function ProductImg({ src, width, height}) {
 
-  // const handleClick = () => {
-  //   navigate(`/product/${productId}`); 
-  // };
   
-
+  console.log(src);
   return (
+
     <ImgBox width={width} height={height}>
       <StyledImg src={src}>
         <Overlay
@@ -88,8 +85,6 @@ function ProductImg({ src, width, height, productId}) {
           <FavoriteIcon
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            // onClick={handleClick} 
-            // SVG 클릭 시 상세 페이지로 이동
           >
             <path d="M12 21.35C10.6 20.03 5 15.1 3.5 12.5 2.04 10 2.04 7.7 3.8 6.2 5.2 4.9 7.2 5 8.6 6.2L12 9.5l3.4-3.3c1.4-1.3 3.4-1.3 5 0 1.8 1.5 1.8 3.8 0.2 6.3-1.5 2.6-7.1 7.5-8.6 8.7z" />
           </FavoriteIcon>

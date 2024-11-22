@@ -16,6 +16,8 @@ const StyledTitle = styled.div`
     return "var(--Titletext-blackcolor)";
   }};
 
+  font-family : var(--eng-font);
+
 `;
 
 function ProductTitle({ title, fontFamily }) {  

@@ -6,7 +6,8 @@ import '../index.css';
 // 스타일드 컴포넌트 정의
 const MoreText = styled(motion.p)`
   font-family: var(--eng-font);
-  font-size: 75px;
+  // font-size: 75px;
+  font-size: 4rem;
   font-style: normal;
   font-weight: 700;
   letter-spacing: 1.92px;
@@ -14,8 +15,7 @@ const MoreText = styled(motion.p)`
 `;
 
 const MoreDiv = styled(motion.div)`
-  letter-spacing: 9.6px;
-  padding: 24px 25px;
+  padding: 24px 15px;
   border-radius: 2px;
   border: 2px solid #000;
   cursor: pointer;
