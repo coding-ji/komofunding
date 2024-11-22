@@ -3,7 +3,7 @@ import Img from "./Img";
 import Label from "./Label";
 import Progress from "./Progress";
 import '../index.css'; 
-import ProductImg from "./ProductCard/ProductImg";
+import ProductImg from "./ProductCard1/ProductImg";
 
 const StyledProduct = styled.div`
 display : flex;
