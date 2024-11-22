@@ -34,6 +34,7 @@ const StyledProductTitle = styled(ProductTitle)`
   font-weight: bold;
    width: 100%; /* 부모 컨테이너에 맞게 너비 설정 */
   padding: 0 10px; 
+   font-family: ${(props) => props.fontFamily || 'var(--Titletext-blackcolor)'};
 `;
 
 // 설명 영역
@@ -47,11 +48,11 @@ const StyledProductDescription = styled(ProductDescription)`
   color: #666;
 `;
 
-function ProductCard({ src, title, description }) {
+function ProductCard({ src, title, description, fontFamily }) {
   return (
     <CardContainer>
       <StyledProductImg src={src} />
-      <StyledProductTitle title={title} />
+      <StyledProductTitle title={title} fontFamily={fontFamily} />
       <StyledProductDescription description={description} />
     </CardContainer>
   );

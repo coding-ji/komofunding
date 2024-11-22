@@ -3,6 +3,7 @@ import Img from "./Img";
 import Label from "./Label";
 import Progress from "./Progress";
 import '../index.css'; 
+import ProductImg from "./ProductCard/ProductImg";
 
 const StyledProduct = styled.div`
 display : flex;
@@ -18,7 +19,8 @@ function InnerProduct() {
     return (
         <StyledProduct>
             <Label text="popular" color='var(--navy-color)' />
-            <Img src={"https://via.placeholder.com/450x450"}></Img>
+            {/* <Img src={"https://via.placeholder.com/450x450"}></Img> */}
+            <ProductImg src={"https://via.placeholder.com/450x450"}></ProductImg>
             <Progress value={30} max={100} color='var(--navy-color)'></Progress>
         </StyledProduct>
     )

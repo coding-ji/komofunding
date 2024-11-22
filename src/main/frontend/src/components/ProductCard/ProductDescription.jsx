@@ -3,7 +3,7 @@ import '../../index.css';
 
 
 const StyledDescription = styled.div`
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: var(--smalltext-graycolor);
   text-align: left;
   line-height: nomal;
