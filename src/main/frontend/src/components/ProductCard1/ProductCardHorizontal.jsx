@@ -2,8 +2,9 @@ import styled from "styled-components";
 import ProductImg from "./ProductImg";
 import ProductTitle from "./ProductTitle";
 import ProductDescription from "./ProductDescription";
+import {motion} from 'framer-motion'
 
-const CardContainer = styled.div`
+const CardContainer = styled(motion.div)`
   display: grid; /* 그리드 레이아웃 설정 */
   grid-template-rows: 4fr 0.5fr 1fr; /* 비율: 이미지 3, 제목 1, 설명 1 */
   grid-template-areas:
@@ -48,9 +49,16 @@ const StyledProductDescription = styled(ProductDescription)`
   color: #666;
 `;
 
-function ProductCard({ src, title, description, fontFamily }) {
+function ProductCardHorizontal({ src, title, description, fontFamily }) {
   return (
-    <CardContainer>
+    <CardContainer
+    initial={{ opacity: 0, rotateY: -90 }} // 초기 상태: 카드 옆으로 눕힘
+    whileInView={{ opacity: 1, rotateY: 0 }} // 카드 정상 위치
+    whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
+    transition={{ duration: .7 }}
+    style={{ transformOrigin: 'center' }}
+    
+    >
       <StyledProductImg src={src} />
       <StyledProductTitle title={title} fontFamily={fontFamily} />
       <StyledProductDescription description={description} />
@@ -58,7 +66,7 @@ function ProductCard({ src, title, description, fontFamily }) {
   );
 }
 
-export default ProductCard;
+export default ProductCardHorizontal;
 
 
 {/* <ProductCard 
