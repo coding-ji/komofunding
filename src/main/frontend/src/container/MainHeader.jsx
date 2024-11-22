@@ -14,7 +14,7 @@ const MainHeader = () => {
             className={styles.logoImage}
             alt="로고이미지"
             style={{
-              width: "130px", // 원하는 크기
+              width: "120px", // 원하는 크기
               height: "50px",
             }}
           />
