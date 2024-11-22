@@ -14,8 +14,8 @@ const MainHeader = () => {
             className={styles.logoImage}
             alt="로고이미지"
             style={{
-              width: "154px", // 원하는 크기
-              height: "81px",
+              width: "130px", // 원하는 크기
+              height: "50px",
             }}
           />
         </motion.div>
