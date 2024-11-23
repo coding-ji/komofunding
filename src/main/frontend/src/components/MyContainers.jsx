@@ -48,7 +48,7 @@ function MyContainers() {
       animate="animate"
     >
       <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
+        <MyContainer title="Product" description="얄루얄루" text="DELETE" />
       </motion.div>
       <motion.div variants={itemVariants}>
         <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />

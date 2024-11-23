@@ -7,6 +7,7 @@ const StyledTitle = styled.div`
   margin: 4px 0;
   padding: 0 8px; /* 양쪽 여백 */
   text-align: left;  
+  font-family: ${(props) => props.fontFamily};
   color: ${(props) => {
     if (props.fontFamily === "var(--eng-font)") {
       return "var(--Titletext-blackcolor)";
@@ -14,9 +15,9 @@ const StyledTitle = styled.div`
       return "var(--darkgreen-color)";
     }
     return "var(--Titletext-blackcolor)";
+
   }};
 
-  font-family : var(--eng-font);
 
 `;
 

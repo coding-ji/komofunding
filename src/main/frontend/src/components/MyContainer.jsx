@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import '../index.css';
-import ProductImg from "./ProductCard/ProductImg";
-import ProductTitle from "./ProductCard/ProductTitle";
-import ProductDescription from "./ProductCard/ProductDescription";
+import ProductImg from "./ProductCard1/ProductImg";
+import ProductTitle from "./ProductCard1/ProductTitle";
+import ProductDescription from "./ProductCard1/ProductDescription";
 import MyBtn from "./MyBtn";
 
 const Styleddiv = styled(motion.div)`
@@ -21,7 +21,7 @@ function MyContainer({title, description, text}) {
         transition={{ type: "spring", stiffness: 100, transition: .1 }} 
         >
             <motion.div>
-                <ProductImg />
+                <ProductImg></ProductImg>
             </motion.div>
             <motion.div>
                 <ProductTitle title={title} fontFamily="var(--kr-font)" />
