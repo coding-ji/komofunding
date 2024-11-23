@@ -14,17 +14,10 @@ import java.util.Random;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String uid;  //자동 생성되는 유저고유ID
+    private String userId;  //자동 생성되는 유저고유ID
 
     @Column(nullable = false, unique = true)
-    private Long userNumber; // 유저번호
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "varchar(255) default 'DONOR'")
-    private UserStatus activatedStatus;  // 유저의 활동(후원자, 제작자대기, 제작자), 탈퇴, 정지상태
-
-    @Column(length = 200)
-    private String deactivationReason; // 유저 탈퇴 혹은 정지 사유
+    private Long userNumber; //자동 생성되는 유저번호
 
     @Column(nullable = false, unique = true, length = 100)
     private String email; // 유저 이메일 및 유저 로그인시 아이디
@@ -41,8 +34,20 @@ public class User {
     @Column(nullable = false, unique = true, length = 20)
     private String phoneNumber; // 유저 핸드폰번호
 
+    @Column(length = 255)
+    private String profileImageUrl; // 프로필 이미지 URL
+
     @Column(length = 80)
     private String shortDescription; //유저 짧은 소개글
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(255) default 'DONOR'")
+    private UserStatus activatedStatus;  // 유저의 활동(후원자, 제작자대기, 제작자), 탈퇴, 정지상태
+
+    @Column(length = 200)
+    private String deactivationReason; // 유저 탈퇴 혹은 정지 사유
+
+    private LocalDateTime deactivationDate; // 탈퇴 날짜
 
     @Column(length = 50)
     private String bankName; //은행명
@@ -55,6 +60,8 @@ public class User {
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime joinDate;  //가입날짜
+
+    private LocalDateTime lastLoginTime; // 최종 로그인 시간
 
     @Column(length = 100)
     private String corporationName; //사업자명
