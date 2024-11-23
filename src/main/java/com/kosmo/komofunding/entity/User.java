@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 @Entity
-@Table(name="USER")
+@Table(name = "USER")  // 명시적으로 테이블 이름을 USER로 지정
 @Data
 public class User {
     @Id
