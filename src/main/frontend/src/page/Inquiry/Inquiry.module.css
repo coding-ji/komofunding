@@ -1,0 +1,77 @@
+/* Inquiry.module.css */
+
+/* 전체 레이아웃 */
+.mainGrid {
+  display: grid;
+  grid-template: 
+  '... topSection ...' 0.1fr
+  '... middleSection ...' 1fr
+  '... bottomSection ...' 1fr / 0.5fr 700px 0.5fr
+  ; /* 상단, 중단, 하단 */
+  row-gap: 20px; /* 섹션 간 간격 */
+  width: 100vw;
+  padding: 20px;
+  margin: 0 auto; /* 가운데 정렬 */
+  overflow-y: scroll;
+}
+
+.topSection{
+
+  grid-area: topSection;
+}
+
+.middleSection{
+  grid-area: middleSection;
+  width: 100%; /* 부모 요소가 화면 전체를 차지하도록 설정 */
+}
+
+.bottomSection{
+  grid-area: bottomSection;
+
+}
+
+/* 제목 스타일 */
+.subtitle {
+    color: var(--user-btn, #256E91);
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 20px;
+  }
+  
+  /* 버튼 그룹 */
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .input {
+    height: 60px;
+    border: 2px solid #c9c9c9;
+    background-color: white;
+  }
+  
+  /* 반응형 처리 */
+  @media (max-width: 768px) {
+    .subtitle {
+      font-size: 25px; /* 제목 크기 축소 */
+      text-align: center;
+    }
+  
+    .buttons {
+      flex-direction: column; /* 버튼을 세로 정렬 */
+      gap: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .subtitle {
+      font-size: 20px; /* 더 작은 화면에서 제목 크기 */
+    }
+  }
+  
