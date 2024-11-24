@@ -28,7 +28,7 @@ function MyBtn({ text }) {
   return (
     <StyledBtn
       whileHover={{
-        backgroundColor: "white",  // 호버 시 배경색을 흰색으로 변경
+        backgroundColor: "rgb(255, 255, 255)",  // 호버 시 배경색을 흰색으로 변경
         color: "var(--darkblue-color)",  // 호버 시 글자색을 다크블루로 변경
         border: "2px solid var(--darkblue-color)", // 호버 시 보더라인 색을 다크블루로 변경
       }}
