@@ -18,6 +18,8 @@ const CardContainer = styled(motion.div)`
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height :500px;
+  
 
 `;
 
@@ -45,30 +47,32 @@ const StyledProductTitle = styled(ProductTitle)`
 const StyledProductDescription = styled(ProductDescription)`
   grid-area: description; /* 그리드 영역 이름과 연결 */
   padding: 0 10px; /* 양옆 여백 추가 */
-    text-align: center;
-  
-
+  text-align: center;
   font-size: 0.9rem;
   color: #666;
+    /* 추가된 속성 */
+  overflow: hidden;         /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis;  /* 넘친 텍스트를 ...으로 표시 */
+
 `;
 
 function ProductCard({ src, title, description, fontFamily }) {
 
   const animations = [
     {
-      initial: { opacity: 0, y: '-50%' },
+      initial: { opacity: 0, y: -100 },
       whileInView: { opacity: 1, y: 0 },
     },
     {
-      initial: { opacity: 0, x:' 50%' },
+      initial: { opacity: 0, x:100 },
       whileInView: { opacity: 1, x: 0 },
     },
     {
-      initial: { opacity: 0, y: '50%' },
+      initial: { opacity: 0, y: -100 },
       whileInView: { opacity: 1, y: 0 },
     },
     {
-      initial: { opacity: 0, x:' -50%' },
+      initial: { opacity: 0, x: 100 },
       whileInView: { opacity: 1, x: 0 },
     },
   ];
@@ -78,8 +82,9 @@ function ProductCard({ src, title, description, fontFamily }) {
     <CardContainer
     {...randomAnimation}
     whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
-    transition={{ duration: 0.7 }}
+    transition={{ duration: 0.5 }}
     style={{ transformOrigin: 'center' }}
+
   >
       <StyledProductImg src={src} />
       <StyledProductTitle title={title} fontFamily={fontFamily} />

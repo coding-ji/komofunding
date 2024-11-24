@@ -1,70 +1,70 @@
 {
-  "topSection": {
-    "largeTop": {
+  "products": [
+    {
       "src": "/src/components/ProductCard1/images.jpg",
       "title": "LIGHT PAD DRAWING BOARD",
       "description": "A2 LED 라이트 패드 드로잉 보드, 아크릴 초박형 휴대용 LED 라이트 박스, 3단계 조절 가능 밝기, 듀얼 라이트 스트립, USB 전원, 눈 보호 균일 조명, 그리드 없음, 스케치, 애니메이션, 다이아몬드 페인팅, 트레이싱, 다기능 아트 크래프트 라이트 테이블용 4개 클립 포함",
       "url": "/product/large-top"
     },
-    "largeBottomLeft": {
-      "src": "/src/components/ProductCard1/images.jpg",
-      "title": "Large Bottom Left",
-      "description": "Description for Bottom Left",
-      "url": "/product/large-bottom-left"
-      
-    },
-    "largeBottomRight": {
-      "src": "/src/components/ProductCard1/images.jpg",
-      "title": "Large Bottom Right",
-      "description": "Description for Bottom Right",
-      "url": "/product/large-bottom-right"
-    },
-    "largeBottomTop": {
-      "src": "/src/components/ProductCard1/images.jpg",
-      "title": "Large Bottom Top",
-      "description": "Description for Bottom Top",
-      "url": "/product/large-bottom-top"
-    },
-    "rightGrid": [
-      {
-        "src": "/src/components/ProductCard1/images.jpg",
-        "title": "DRAWING BOOK",
-        "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
-        "url": "/product/small-item-1"
-      },
-      {
-        "src": "/src/components/ProductCard1/images.jpg",
-        "title": "PURE BOX",
-        "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
-        "url": "/product/small-item-2"
-      }
-    ]
-  },
-  "middleSection": {
-    "src": "/src/components/ProductCard1/images.jpg",
-    "title": "Middle Full-Width Item",
-    "description": "Middle section description",
-    "url": "/product/middle-full-width"
-  },
-  "bottomSection": [
     {
-      "src": "/src/components/ProductCard1/images.jpg",
+      "src": "/src/components/ProductCard1/1.jpg",
+      "title": "DRAWING BOOK",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-1"
+    },
+    {
+      "src": "/src/components/ProductCard1/2.jpg",
+      "title": "PURE BOX",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-2"
+    },
+    {
+      "src": "/src/components/ProductCard1/3.jpg",
       "title": "HEART COOKIE",
       "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
       "url": "/product/small-item-4"
     },
     {
-      "src": "/src/components/ProductCard1/images.jpg",
+      "src": "/src/components/ProductCard1/4.jpg",
       "title": "SEA TABLE",
       "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
       "url": "/product/small-item-5"
     },
     {
-      "src": "/src/components/ProductCard1/images.jpg",
+      "src": "/src/components/ProductCard1/5.jpg",
+      "title": "DRAWING BOOK",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-1"
+    },
+    {
+      "src": "/src/components/ProductCard1/6.jpg",
       "title": "PURE BOX",
       "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
-      "url": "/product/small-item-6"
-   
+      "url": "/product/small-item-2"
+    },
+    {
+      "src": "/src/components/ProductCard1/7.jpg",
+      "title": "HEART COOKIE",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-4"
+    },
+    {
+      "src": "/src/components/ProductCard1/8.jpg",
+      "title": "SEA TABLE",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-5"
+    },
+    {
+      "src": "/src/components/ProductCard1/9.jpg",
+      "title": "Large Bottom Left",
+      "description": "Description for Bottom Left",
+      "url": "/product/large-bottom-left"
+    },
+    {
+      "src": "/src/components/ProductCard1/10.jpg",
+      "title": "Large Bottom Right",
+      "description": "Description for Bottom Right",
+      "url": "/product/large-bottom-right"
     }
   ]
 }
