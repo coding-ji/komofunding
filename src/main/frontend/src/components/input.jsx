@@ -4,10 +4,10 @@ import styled from 'styled-components';
 // Input 사용하는 곳에서 유효성 검사 시행시에 true/false로 보내기
 
 const StyledInput = styled.input`
-    border-radius: 10px;
-    border: 1px solid var(--line-color);
-    padding: 10px;
+    padding: 10px 0 ;
     margin-top: 5px;
+width: ${(props) => props.width || '100%'}; /* props로 width를 받을 수 있도록 설정 */
+
       font-size: ${(props) => {
     switch (props.size) {
       case 'small':
@@ -22,7 +22,7 @@ const StyledInput = styled.input`
   }}
     `;
 
-function Input({ type, placeholder, onChange, value, gridArea, size}) {
+function Input({ type, placeholder, onChange, value, gridArea, size, width}) {
   return (
       <StyledInput
         type={type}
@@ -31,6 +31,7 @@ function Input({ type, placeholder, onChange, value, gridArea, size}) {
         value={value}
         size={size}
         style={{ gridArea: gridArea }}
+        width={width} // width를 props로 전달
       />
   );
 }
