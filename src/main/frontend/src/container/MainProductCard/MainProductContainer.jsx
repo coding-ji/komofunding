@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./MainProductContainer.module.css";
-import ProductCardImage from "../components/ProductCard1/ProductCardImage";
-import ProductCard from "../components/ProductCard1/ProductCard";
-import ProductMoreBtn from "../components/ProductMoreBtn";
+import ProductCardImage from "../../components/ProductCard1/ProductCardImage";
+import ProductCard from "../../components/ProductCard1/ProductCard";
+import ProductMoreBtn from "../../components/ProductMoreBtn";
 import cardsData from './ProductData.json';
 import { useState } from "react";
-import '../index.css';
+import '../../index.css';
 
 function MainProductContainer() {
   // 데이터 섞기
