@@ -7,7 +7,7 @@ const StyledDescription = styled.div`
   color: var(--smalltext-graycolor);
   text-align: left;
   line-height: nomal;
-  padding: 0 8px; /* 양쪽 여백 */
+  padding: 0 3px; /* 양쪽 여백 */
   font-family : var(--kr-noto);
   font-weight : 500;
 
