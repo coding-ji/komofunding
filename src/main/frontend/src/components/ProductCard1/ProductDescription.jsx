@@ -12,8 +12,11 @@ const StyledDescription = styled.div`
   font-weight : 500;
 
     /* 추가된 속성 */
-  overflow: hidden;         /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis;  /* 넘친 텍스트를 ...으로 표시 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘친 텍스트는 ... 처리 */
+  max-height: 3em; /* 설명 텍스트의 최대 높이 제한 */
+  line-height: 1.5; /* 텍스트 줄 간격 */
+
 
 `;
 

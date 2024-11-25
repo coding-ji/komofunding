@@ -14,11 +14,11 @@ const CardContainer = styled(motion.div)`
     "title"
     "description"; /* 각 영역 이름 설정 */
   width: 100%; /* 부모 컨테이너 크기에 맞게 자동으로 설정 */
-  height: 100%; /* 부모 컨테이너 크기에 맞게 자동으로 설정 */
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-height :500px;
+    overflow: hidden;  
   
 
 `;
