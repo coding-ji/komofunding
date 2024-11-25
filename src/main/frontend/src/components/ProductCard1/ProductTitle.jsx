@@ -2,7 +2,7 @@ import styled from "styled-components";
 import '../../index.css';
 
 const StyledTitle = styled.div`
-  font-size: 2.2rem;
+ font-size: ${(props) => props.size || '2.2rem'}; /* 기본값 2.2rem 설정 */
   font-weight : bold;
   margin: 4px 0;
   padding: 0 8px; /* 양쪽 여백 */
@@ -21,8 +21,8 @@ const StyledTitle = styled.div`
 
 `;
 
-function ProductTitle({ title, fontFamily }) {  
-  return <StyledTitle fontFamily={fontFamily}>{title}</StyledTitle>;
+function ProductTitle({ title, fontFamily,size }) {  
+  return <StyledTitle fontFamily={fontFamily} size={size}>{title}</StyledTitle>;
 }
 
 export default ProductTitle;
