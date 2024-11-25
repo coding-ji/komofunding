@@ -64,8 +64,8 @@
   }
 
   .input {
-    height: 50px;
-    font-size: 14px; /* 인풋 글자 크기 축소 */
+    height: 40px;
+    font-size: 12px; /* 인풋 글자 크기 축소 */
     padding: 8px;
   }
 
