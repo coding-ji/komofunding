@@ -1,0 +1,609 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+
+''------------------------------------------- 공통 클래스
+'enum ProjectCategory {
+'    + CLOTHES
+'    + PET
+'    + ACCESSORY
+'    + COSMETICS
+'    + HOMEDECO
+'    + TRAVEL
+'    + FOOD
+'    + BOOK
+'    + ETC
+'}
+''
+enum NoticeCategory{
+    + NOTICE
+    + EVENT
+}
+'
+'enum QnaCategory{
+'    + COMMENT
+'    + QUESTION
+'    }
+
+''------------------------------------------- 공통 클래스
+'
+'class CommentDTO {
+'    - @JsonIgnore UUID userId
+'    - String userNickname
+'    - String content
+'    - LocalDateTime writtenDate
+'    - @JsonIgnore LocalDateTime updatedDate
+'}
+
+'
+'class ItemDTO {
+'    - @JsonIgnore UUID itemId
+'    - String itemName
+'    - Integer itemPrice
+'    - Integer itemAmount
+'    + getter/setter()
+'}
+
+
+''-----------------------------------------------------------------------------------유저
+'package "유저"{
+'entity User {
+'    - UUID id
+'    - Integer number
+'    - String activatedStatus
+'    - String email
+'    - String name
+'    - String nickName
+'    - String password
+'    - String phoneNumber
+'    - String shortDescription
+'    - String bankName
+'    - Integer accountNumber
+'    - String accountHolder
+'    - LocalDateTime joinDate
+'    - Integer BSN
+'    - String corporationTel
+'    - String corporationName
+'    - List<String> projectIdList
+'    - String deactivationReason
+'    + getter/setter()
+'}
+'
+'interface UserRepository {
+'    +findUsersByJoinDateBetween(LocalDateTime startDate, LocalDateTime endDate)
+'    +findUserByActivatedStatusAndUserNickName(String activatedStatus, String nickName)
+'    +findUserByActivatedStatusAndNumber(String activatedStatus, Integer number)
+'}
+'
+'class UserService {
+'    - UserRepository userRepository
+'    + addUser(UserInDTO): void
+'    + updateUser(UserInDTO): void
+'    + deleteUser(UserInDTO): void
+'    + getAllUsers(): List<UserOutDTO>
+'    + getUserByUserId(UUID userId): UserOutDTO
+'    + getUserByUserNumber(int userNumber): UserOutDTO
+'    + getUserByNickName(String nickName): UserOutDTO
+'    + getUsersByActivatedStatus(String activatedStatus): List<UserOutDTO>
+'    + getUserByPhoneNumber(String phoneNumber): UserOutDTO
+'    + getUserByEmail(String email): UserOutDTO
+'    + getUsersByJoinDateBetween(LocalDateTime startDate, LocalDateTime endDate): List<UserOutDTO>
+'    + getUserByActivatedStatusAndUserNickName(String activatedStatus, String nickName) : UserOutDTO
+'    + getUserByActivatedStatusAndNumber(String activatedStatus, Integer number) : UserOutDTO
+'}
+'class UserInDTO {
+'    - UUID userId
+'    - Integer userNumber
+'    - String activatedStatus
+'    - String email
+'    - String name
+'    - String nickName
+'    - String password
+'    - String phoneNumber
+'    - String shortDescription
+'    - String bankName
+'    - Integer accountNumber
+'    - String accountHolder
+'    - LocalDateTime joinDate
+'    - Integer BSN
+'    - String corporationTel
+'    - String corporationName
+'    - List<String-> projectIdList
+'    - String deactivationReason
+'    + getter/setter()
+'}
+'
+'class UserOutDTO {
+'    - Integer userNumber
+'    - String activatedStatus
+'    - String email
+'    - String name
+'    - String nickName
+'    - String phoneNumber
+'    - String shortDescription
+'    - String bankName
+'    - Integer accountNumber
+'    - String accountHolder
+'    - LocalDateTime joinDate
+'    - Integer BSN
+'    - String corporationTel
+'    - String corporationName
+'    - List<ProjectDTO> projects
+'    - String deactivationReason
+'    + getter/setter()
+'}
+'
+'class UserConverter{
+'        - objectMapper: ObjectMapper
+'        + convertToDatabaseColumn(User) : String
+'        + convertToEntityAttribute(String s) : User
+'        + convertToDatabaseColumnforProjectId(List<String projectId>): String
+'        + convertToEntityAttributeforProjectId(String s): List<ProjectDTO>
+'}
+'
+'class UserController{
+'}
+'}
+'
+'UserRepository --> User
+'UserRepository <-- UserService
+'UserInDTO <.. UserService
+'UserOutDTO <.. UserService
+'UserService <.. UserController
+'UserConverter <-- User
+''
+''
+''-----------------------------------------------------------------------------------프로젝트
+'package "프로젝트"{
+'entity Project {
+'    - UUID id
+'    - String creatorNickname
+'    - Integer number
+'    - String title
+'    - String shortDescription
+'    - ProjectCategory projectCategory
+'    - String description
+'    - List<ItemDTO> items
+'    - Integer currentAmount
+'    - Integer totalAmount
+'    - LocalDateTime projectStartDate
+'    - LocalDateTime projectEndDate
+'    - LocalDateTime writtenDate
+'    - LocalDateTime updatedDate
+'    - LocalDateTime approvalDate
+'    - LocalDateTime rejectionDate
+'    - boolean isHidden
+'    - String statusChangeReason
+'    - List<String> QnaIdList
+'    + getter/setter()
+'}
+'
+'interface ProjectRepository {
+'    + findProjectsByWrittenDateBetween(LocalDateTime startDate, LocalDateTime endDate)
+'    + findProjectsByDateLessThan(LocalDateTime date) : List<Project>
+'    + findProjectsByDateGreaterThan(LocalDateTime date) : List<Project>
+'    + findProjectByProjectCategoryAndTitle(ProjectCategory category, String title) : Project
+'    + findProjectByProjectCategoryAndNumber(ProjectCategory category, Integer number) : Project
+'
+'}
+'
+'class ProjectInDTO {
+'    - UUID creatorId
+'    - Integer projectNumber
+'    - String title
+'    - ProjectCategory ProjectCategory
+'    - String shortDescription
+'    - String description
+'    - List<ItemDTO> items
+'    - Integer currentAmount
+'    - Integer totalAmount
+'    - LocalDateTime projectStartDate
+'    - LocalDateTime projectEndDate
+'    - String statusChangeReason
+'    - List<String> QnaIdList // 댓글 그룹 ID 목록
+'    + getter/setter()
+'}
+'
+'class ProjectOutDTO {
+'    - Integer projectNumber
+'    - String title
+'    - ProjectCategory ProjectCategory
+'    - String shortDescription
+'    - String description
+'    - List<ItemDTO> items
+'    - Integer currentAmount
+'    - Integer totalAmount
+'    - LocalDateTime projectStartDate
+'    - LocalDateTime projectEndDate
+'    - LocalDateTime writtenDate
+'    - String statusChangeReason
+'    - List<QnaDTO> Qnas
+'    + getter/setter()
+'}
+'
+'class ProjectService {
+'    - ProjectRepository projectRepository
+'    - UserRepository userRepository
+'    + addProject(ProjectDTO): void
+'    + updateProject(ProjectDTO): void
+'    + deleteProject(ProjectDTO): void
+'    + getAllProjects(): List<ProjectDTO>
+'    + getProjectsByProjectId(UUID projectId): List<ProjectDTO>
+'    + getProjectByProjectNumber(int projectNumber): ProjectDTO
+'    + getProjectByWrittenDateBetween(LocalDateTime startDate, LocalDateTime endDate): ProjectDTO
+'    + getProjectsByProjectCategory(ProjectCategory category): List<ProjectDTO>
+'    + getProjectByTitle(String title): ProjectDTO
+'    + getProjectsByIsHidden(boolean isHidden): List<ProjectDTO>
+'    + getProjectsByDateLessThan(LocalDateTime date): List<ProjectDTO>
+'    + getProjectsByDateGreaterThan(LocalDateTime date): List<ProjectDTO>
+'    + getProjectByProjectCategoryAndTitle(ProjectCategory category, String title) : ProjectDTO
+'    + getProjectByProjectCategoryAndNumber(ProjectCategory category, Integer number): ProjectDTO
+'    + getProjectByProjectCategoryAndUserNumber(ProjectCategory category, Integer userNumber) : ProjectDTO
+'    + getProjectByProjectCategoryAndUserNickName(ProjectCategory category, Integer userNickName) : ProjectDTO
+'}
+'
+'
+'class ProjectConverter {
+'        - objectMapper: ObjectMapper
+'        + convertToEntityAttribute(ProjectDTO)) : String
+'        + convertToDatabaseColumn (String s) : ProjectDTO
+'        + convertToEntityAttributeForItems(List<ItemDTO>) : String
+'        + convertToDatabaseColumnForItems (String s) : List<ItemDTO>
+'        + convertToEntityAttributeForComments(String QnaIdList) : String
+'        + convertToDatabaseColumnForComments(String s) : List<CommentDTO>
+'}
+'class ProjectController{
+'}
+'}
+'
+'ProjectRepository --> Project
+'ProjectRepository <-- ProjectService
+'ProjectService <.. ProjectController
+'ProjectService <.. ProjectOutDTO
+'ProjectService <.. ProjectInDTO
+'ProjectConverter <- ProjectOutDTO
+'ProjectConverter <- ItemDTO
+'ProjectConverter <- CommentDTO
+'Project <- ProjectCategory
+'
+'--------------------------------------------- 문의내용 (프로젝트 내 문의 댓글 & 관리자에게 문의)
+'package "질의응답"{
+'entity Qna {
+'    - UUID id
+''   프로젝트 내 문의댓글(COMMENT), 관리자에게 문의(QUESTION)
+'    - QnaCategory qnaCategory
+''    Title은 Null일 수 있다.
+'    - String title
+'    - CommentDTO questionComment
+'    - CommentDTO answerComment
+'    + getter/setter()
+'}
+'
+'interface QnaRepository{
+'    + findByAnswerCommentIsNull : List<Qna>
+'    + findByAnswerCommentIsNotNull : List<Qna>
+'}
+'
+'class QnaDTO {
+'    - @JsonIgnore UUID qnaId
+'    - QnaCategory QnaCategory
+'    - String title
+'    - CommentDTO questionComment
+'    - CommentDTO answerComment
+'}
+'
+'class QnaService {
+'    - QnaRepository qnaRepository
+'    + addQna(QnaDTO): void
+'    + deleteQna(QnaDTO): void
+'    + updateQna(QnaDTO): void
+'    + getAllQnas(): List<QnaDTO>
+'    + getQnasByQnaId(UUID qnaId): List<QnaDTO>
+'    + getQnasByUserId(UUID qnaId): List<QnaDTO>
+'    + getQnasByUserNickname(String userNickname) : List<QnaDTO>
+'    + getQnaBytitle(String title) : QnaDTO
+'    + getQnaByWrittenDate(LocalDateTime writtenDate) : QnaDTO
+'    + getQnasByAnswerCommentIsNull(CommentDTO answerComment) : List<QnaDTO>
+'    + getQnasByAnswerCommentIsNotNull(CommentDTO answerComment) : List<QnaDTO>
+'
+'}
+'
+'class QnaConverter {
+'    - ObjectMapper objectMapper
+'    + convertToDatabaseColumn(CommentDTO): String
+'    + convertToEntityAttributes(String s): CommentDTO
+'}
+'
+'class QnaController{}
+'
+'}
+'
+'QnaRepository --> Qna
+'QnaRepository <-- QnaService
+'QnaDTO <.. QnaService
+'QnaDTO <.. QnaService
+'QnaService <.. QnaController
+'QnaConverter <- QnaDTO
+'QnaConverter <- CommentDTO
+'Qna <- QnaCategory
+
+''-----------------------------------------------------------------------------------결제(후원자)
+'package "결제"{
+'entity Payment{
+'    - UUID paymentId
+'    - UUID userId
+'    - UUID projectId
+'    - List<ItemDTO> items
+'    - BigDecimal paidAmount
+'    - String currency
+'    - LocalDateTime paymentDate
+'    - String paymentMethod
+'    - String paymentStatus
+'    - String failureReason
+'    - String senderName
+'    - String shippingName
+'    - String shippingPhone
+'    - String shippingAddress
+'    - String refundBankName
+'    - String refundAccountHolder
+'    - String refundAccountNumber
+'    - boolean refunded
+'    + getter/setter()
+'}
+'
+'interface PaymentRepository
+'
+'class PaymentInDTO {
+'    - UUID paymentId
+'    - UUID userId
+'    - UUID projectId
+'    - List<ItemDTO> items
+'    - BigDecimal paidAmount
+'    - String currency
+'    - LocalDateTime paymentDate
+'    - String paymentMethod
+'    - String paymentStatus
+'    - String failureReason
+'    - String senderName
+'    - String shippingName
+'    - String shippingPhone
+'    - String shippingAddress
+'    - String refundBankName
+'    - String refundAccountHolder
+'    - String refundAccountNumber
+'    - boolean refunded
+'}
+'
+'class PaymentOutDTO{
+'    - String userName
+'    - String userNickName
+'    - String phoneNumber
+'    - Integer userNumber
+'    - List<ItemDTO> items
+'    - BigDecimal paidAmount
+'    - String currency
+'    - LocalDateTime paymentDate
+'    - String senderName
+'    - String shippingName
+'    - String shippingPhone
+'    - String shippingAddress
+'    - String refundBankName
+'    - String refundAccountHolder
+'    - String refundAccountNumber
+'    - boolean refunded
+'}
+'
+'class PaymentService{
+'    - PaymentRepository PaymentRepository
+'    + addPayment(PaymentDTO): void
+'    + deletePayment(PaymentDTO): void
+'    + updatePayment(PaymentDTO): void
+'    + getAllPayments(): List<PaymentDTO>
+'    + getPaymentBy(boolean refunded) : List<PaymentDTO>
+'    + getPaymentsBy(UUID projectId) : List<PaymentDTO>
+'}
+'class PaymentConverter{
+'    - ObjectMapper objectMapper
+'    + convertToDatabaseColumnforPayment(PaymentDTO)): String
+'    + convertToEntityAttributesforPayment(String s): PaymentDTO
+'    + convertToDatabaseColumnforItems(List<ItemDTO>): String
+'    + convertToEntityAttributesforItems(String s): List<ItemDTO>
+'}
+'class PaymentController{
+'}
+'}
+'
+'PaymentRepository --> Payment
+'PaymentRepository <-- PaymentService
+'PaymentService <.. PaymentController
+'PaymentService <.. PaymentOutDTO
+'PaymentService <.. PaymentInDTO
+'PaymentConverter <- PaymentOutDTO
+'PaymentConverter <- ItemDTO
+
+''-----------------------------------------------------------------------------------신청서
+'
+'package "신청서"{
+'
+'entity Application {
+'    - UUID id
+'    - UUID userId
+'    - String image
+'    - LocalDateTime date
+'    - LocalDateTime approvalDate
+'    - LocalDateTime rejectDate
+'    + getter/setter()
+'}
+'
+'interface ApplicationRepository {
+'    + findByApplicationDateBetween(LocalDateTime startDate, LocalDateTime endDate)
+'}
+'
+'class ApplicationDTO {
+'    - @JsonIgnore UUID applicationId
+'    - @JsonIgnore UUID userId
+'    - String image
+'    - LocalDateTime date
+'    - LocalDateTime approvalDate
+'    - LocalDateTime rejectDate
+'}
+'
+'class ApplicationService {
+'    - ApplicationRepository applicationRepository
+'    + addApplication(ApplicationDTO): void
+'    + deleteApplication(ApplicationDTO): void
+'    + getAllApplications(): List<ApplicationDTO>
+'    + getApplicationByUserNumber(int userNumber): List<ApplicationDTO>
+'    + getApplicationsByApplicationDateBetween(LocalDateTime startDate, LocalDateTime endDate): List<ApplicationDTO>
+'}
+'
+'class ApplicationConverter{
+'    - ObjectMapper objectMapper
+'    + convertToDatabaseColumn(ApplicationDTO)): String
+'    + convertToEntityAttributes(String s): ApplicationDTO
+'}
+'
+'class ApplicationController
+'}
+'
+'ApplicationRepository --> Application
+'ApplicationRepository <--ApplicationService
+'ApplicationService <.. ApplicationController
+'ApplicationService <.. ApplicationDTO
+'ApplicationConverter <- ApplicationDTO
+
+'
+''-----------------------------------------------------------------------------------관리자
+'package "관리자"{
+'entity Admin {
+'    - UUID id
+'    - Integer number
+'    - String nickName
+'    - String email
+'    - String password
+'    - LocalDateTime joinDate
+'    - List<String> noticeIdList
+'    + getter/setter()
+'}
+'
+'interface AdminRepository
+'
+'class AdminDTO {
+'    - @JsonIgnore UUID id
+'    - Integer number
+'    - String nickName
+'    - String email
+'    - @JsonIgnore String password
+'    - @JsonIgnore LocalDateTime joinDate
+'    - List<String> noticeIdList
+'}
+'
+'class AdminService {
+'    - AdminRepository adminRepository
+'    + addAdmin(AdminDTO): void
+'    + updateAdmin(AdminDTO): void
+'    + deleteAdmin(AdminDTO): void
+'}
+'
+'class AdminConverter{
+'    - ObjectMapper objectMapper
+'    + convertToDatabaseColumn(AdminDTO)): String
+'    + convertToEntityAttributes(String s): AdminDTO
+'}
+'
+'class AdminController{}
+'}
+'
+'AdminRepository --> Admin
+'AdminRepository <--AdminService
+'AdminService <.. AdminController
+'AdminService <.. AdminDTO
+'AdminConverter <- AdminDTO
+
+''------------------------------------------------------------------------------공지사항&이벤트
+package "공지사항/이벤트"{
+class Notice{
+- UUID id
+- Integer noticeNumber
+- NoticeCategory noticeCategory
+- String title
+- String content
+- String author
+- LocalDateTime writtenDate
+- LocalDateTime updatedDate
+- LocalDateTime endDate
+- boolean isHidden
++ getter/setter()
+}
+
+
+interface NoticeRepository{
++ findByEndDateLessThan(LocalDateTime date)
++ findByEndDateGreaterThan(LocalDateTime date)
++ findByEndDateBetween(LocalDateTime startDate, LocalDateTime endDate)
+}
+
+class NoticeDTO{
+- @JsonIgnore UUID noticeId
+- Integer noticeNumber
+- NoticeCategory noticeCategory
+- String title
+- String content
+- String author
+- LocalDateTime writtenDate
+- @JsonIgnore LocalDateTime updatedDate
+- LocalDateTime endDate
+- boolean isHidden
+}
+
+class NoticeService{
+- NoticeRepository noticeRepository
++ addNotice(NoticeDTO) : void
++ updateNotice(NoticeDTO) : void
++ deleteNotice(NoticeDTO) : void
++ getAllNotices() : List<NoticeDTO>
++ getNoticeByNoticeId(UUID noticeId) : NoticeDTO
++ getNoticeByNoticeNumber(Integer noticeNumber) : NoticeDTO
++ getNoticeByTitle(String title) : NoticeDTO
++ getNoticesByNoticeCategory(NoticeCategory category) : List<NoticeDTO>
++ getNoticesByIsHidden(boolean isHidden) : List<NoticeDTO>
++ getNoticesByEndDateLessThan(LocalDateTime date) : List<NoticeDTO>
++ getNoticesByEndDateGreaterThan(LocalDateTime date) : List<NoticeDTO>
++ getNoticesByEndDateBetween(LocalDateTime startDate, LocalDateTime endDate) : List<NoticeDTO>
+}
+
+class NoticeConverter{
+    - ObjectMapper objectMapper
+    + convertToDatabaseColumn(NoticeDTO)): String
+    + convertToEntityAttributes(String s): NoticeDTO
+}
+
+class NoticeController{}
+}
+
+NoticeRepository --> Notice
+NoticeRepository <--NoticeService
+NoticeService <.. NoticeController
+NoticeService <.. NoticeDTO
+NoticeConverter <- NoticeDTO
+Notice <- NoticeCategory
+
+''-----------------------------------------------------------------------------------이메일
+'package "이메일"{
+'class EmailRequestDTO{
+'    -String email
+'    -String title
+'    -String content
+'}
+'
+'class MailService{
+'    JavaMailSender javaMailSender
+'    + createVerificationCode() : void
+'    + sendVerificationCodeMail(EmailRequestDTO) : void
+'    + sendMail(EmailRequestDTO) : void
+'}
+'
+'EmailRequestDTO - MailService
+'}
+
+@enduml
