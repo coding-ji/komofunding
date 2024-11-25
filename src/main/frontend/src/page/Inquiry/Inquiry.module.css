@@ -50,34 +50,28 @@
 }
 
 /* 반응형 처리 */
-
-
 @media (max-width: 1000px) {
   .mainGrid {
-    grid-template:
+    grid-template: 
       "topSection" auto
       "middleSection" 1fr / 1fr;
-    padding: 10px;
+    padding: 15px;
   }
 
   .subtitle {
-    font-size: 20px; /* 더 작은 화면에서 제목 크기 */
+    font-size: 25px; /* 제목 크기 축소 */
+    text-align: center;
   }
 
   .input {
-    height: 45px;
-    font-size: 12px; /* 인풋 글자 크기 축소 */
-    padding: 5px;
+    height: 50px;
+    font-size: 14px; /* 인풋 글자 크기 축소 */
+    padding: 8px;
   }
 
   .button-container {
-    grid-template-columns: 1fr 1fr; /* 버튼이 동일한 비율로 조정 */
-    gap: 5px; /* 버튼 간격 축소 */
-  }
-
-  .button-container > * {
-    width: 100%; /* 버튼을 너비 100%로 조정 */
-    font-size: 0.9rem;
-    padding: 5px;
+    grid-template-columns: 1fr 1fr; /* 버튼 크기를 줄이고 비율을 동일하게 */
+    justify-content: space-between; /* 버튼 간격 조정 */
   }
 }
+
