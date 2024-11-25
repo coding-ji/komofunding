@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class CommentDTO {
-    private String userNickname;
+    private String userId;
     private String content;
     private LocalDateTime writtenDate;
     private LocalDateTime updatedDate;

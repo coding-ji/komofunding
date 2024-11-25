@@ -26,8 +26,8 @@ public class Project {
     @Column(name = "project_id", nullable = false, updatable = false, length = 36)
     private String projectId; // 프로젝트 UID
 
-    @Column(name = "creator_nickname", nullable = false, length = 50)
-    private String creatorNickname; // 프로젝트 작성자 닉네임
+    @Column(name = "user_id", nullable = false)
+    private String userId; // 프로젝트 작성자아이디
 
     @Column(name = "project_num", nullable = false, unique = true)
     private Long projectNum; // 프로젝트 번호 (자동 생성, 6자리)
@@ -38,8 +38,11 @@ public class Project {
     @Column(name = "short_description", nullable = false, length = 150)
     private String shortDescription; // 프로젝트 짧은 소개
 
-    @Convert(converter = ItemListConverter.class)
     @Lob
+    @Column(name= "description", columnDefinition = "longtext")
+    private String description; // 프로젝트 긴 소개
+
+    @Convert(converter = ItemListConverter.class)
     @Column(name = "items")
     private List<ItemDTO> items; // 프로젝트 아이템들
 
