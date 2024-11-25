@@ -1,27 +1,20 @@
 import Input from "../../components/input";
-import MyBtn from "../../components/MyBtn";
-import RichTextEditor from "../../components/RichTextEditor";
 import TitleText from "../../components/TitleText";
 import { useState } from "react";
 import styles from "./Inquiry.module.css";
+import Editor from "../../components/EditorItem/EditorItem";
+import MainHeader from '../../container/MainHeader'
+import Footer from '../../components/Footer/Footer'
 
 function Inquiry() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
-    const handleConfirm = () => {
-        console.log('문의 제목:', title);
-        console.log('문의 내용:', content);
-        alert('문의가 등록되었습니다!');
-    };
 
-    const handleCancel = () => {
-        setTitle('');
-        setContent('');
-        alert('문의가 취소되었습니다.');
-    };
 
     return (
+        <>
+        <MainHeader/>
         <div className={styles.mainGrid}>
             {/* 상단 섹션 */}
             <div className={styles.topSection}>
@@ -39,19 +32,13 @@ function Inquiry() {
                     onChange={(e) => setTitle(e.target.value)}
                 />
                 <p className={styles.subtitle}>글 내용</p>
-                <RichTextEditor
-                    onChange={(value) => setContent(value)}
-                />
-            </div>
-
-            {/* 하단 섹션 */}
-            <div className={styles.bottomSection}>
-                <div className={styles.buttons}>
-                    <MyBtn text="확인" onClick={handleConfirm} />
-                    <MyBtn text="취소" onClick={handleCancel} />
-                </div>
+                      <Editor content={content} setContent={setContent} />
+              
             </div>
         </div>
+
+        <Footer/>
+        </>
     );
 }
 
