@@ -9,6 +9,7 @@
         'logo logo logo logo logo' 40px
         'copy copy copy copy copy' 13px / 80px 1fr 120px 1fr 8fr;
     gap: 11px;
+    width: 100vw;
 }
 
 .menu1 {
