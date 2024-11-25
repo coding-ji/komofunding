@@ -18,10 +18,6 @@ const StyledBtn = styled(motion.button)`
   border: 2px solid var(--darkblue-color); /* 기본 보더라인 설정 */
   border-radius : 2px;
   
-
-
-  /* 호버 시 전환될 스타일 */
-  transition: all 0.2s ease; /* 부드러운 전환 효과 */
 `;
 
 function MyBtn({ text,onClick,style }) {

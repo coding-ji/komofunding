@@ -7,16 +7,19 @@ import MyContainer from "./MyContainer";
 const StyledContainers = styled(motion.div)`
 
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 25px; /* 요소 간 간격 */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px; /* 요소 간 간격 */
   margin: 0 auto; /* 컨테이너 가운데 정렬 */
+  max-width: 100%; /* 부모의 여백을 고려하여 최대 너비를 100%로 설정 */
+  box-sizing: border-box; /* padding을 포함한 크기를 계산하도록 */
+
 
   @media (max-width: 920px) {
-    grid-template-columns: repeat(2, auto); /* 열 개수 자동 조정 */
+    grid-template-columns: repeat(2, 1fr); /* 열 개수 자동 조정 */
   }
 
   @media (max-width: 700px) {
-    grid-template-columns: repeat(1, auto); /* 1열 유지 */
+    grid-template-columns: repeat(1, 1fr); /* 1열 유지 */
     padding: 0 10px; /* 여백 최소화 */
   }
 `;
@@ -48,10 +51,10 @@ function MyContainers() {
       animate="animate"
     >
       <motion.div variants={itemVariants}>
-        <MyContainer title="Product" description="얄루얄루" text="DELETE" />
+        <MyContainer title="안뇽" description="얄루얄루" text="DELETE" />
       </motion.div>
       <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
+        <MyContainer title="방가방가 햄토리" description="얄루얄루" text="DELETE" />
       </motion.div>
       <motion.div variants={itemVariants}>
         <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
