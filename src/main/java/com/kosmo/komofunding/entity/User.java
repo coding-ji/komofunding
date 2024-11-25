@@ -3,7 +3,8 @@ package com.kosmo.komofunding.entity;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +19,8 @@ import java.util.Random;
                 @Index(name = "idx_nick_name", columnList = "nick_name"),
                 @Index(name = "idx_phone_number", columnList = "phone_number"),
                 @Index(name = "idx_activated_status", columnList = "activated_status")})
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
