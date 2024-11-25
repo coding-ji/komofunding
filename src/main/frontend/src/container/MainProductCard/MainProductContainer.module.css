@@ -4,7 +4,7 @@
   grid-template: 
   '... topSection ...' 2fr
   '... middleSection ...' 1fr
-  '... bottomSection ...' 1fr / 0.5fr 700px 0.5fr
+  '... bottomSection ...' 1fr / 0.5fr 1000px 0.5fr
   ; /* 상단, 중단, 하단 */
   row-gap: 20px; /* 섹션 간 간격 */
   width: 100vw;
