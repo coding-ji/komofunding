@@ -24,7 +24,7 @@ const StyledBtn = styled(motion.button)`
   transition: all 0.2s ease; /* 부드러운 전환 효과 */
 `;
 
-function MyBtn({ text }) {
+function MyBtn({ text,onClick,style }) {
   return (
     <StyledBtn
       whileHover={{
@@ -32,6 +32,8 @@ function MyBtn({ text }) {
         color: "var(--darkblue-color)",  // 호버 시 글자색을 다크블루로 변경
         border: "2px solid var(--darkblue-color)", // 호버 시 보더라인 색을 다크블루로 변경
       }}
+      onClick={onClick}
+      style={style}
     >
       {text}
     </StyledBtn>
