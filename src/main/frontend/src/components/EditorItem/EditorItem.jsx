@@ -4,6 +4,7 @@ import 'quill/dist/quill.snow.css'; // Quill 스타일을 임포트
 import axios from 'axios'; // axios 임포트
 import './EditorItem.css'; // CSS를 임포트
 import MyBtn from '../MyBtn';
+import PopupInquiry from '../../page/Inquiry/PopupInquiry';
 
 
 
@@ -12,6 +13,7 @@ const Editor = () => {
   const quillRef = useRef(null); // Quill 인스턴스를 useRef로 관리
   const [isQuillReady, setIsQuillReady] = useState(false); // Quill 초기화 완료 여부
   const [editorContent, setEditorContent] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 상태 관리
 
   // 툴바 옵션 세팅
   const toolbarOptions = useMemo(() => [
@@ -110,6 +112,8 @@ const Editor = () => {
       console.log(JSON.stringify(deltaContent)); // delta 형식의 데이터 출력
       // 서버로 데이터 전송 로직을 추가할 수 있습니다.
     }
+    setIsPopupOpen(true);
+
   };
 
   // 취소 버튼 클릭 시 처리할 함수
@@ -117,6 +121,10 @@ const Editor = () => {
     // 에디터 내용을 초기화하는 로직
     setEditorContent("");  // 내용 초기화
     console.log("내용이 취소되었습니다.");
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false); // 팝업 닫기
   };
 
   return (
@@ -128,8 +136,20 @@ const Editor = () => {
       <MyBtn text="취소" onClick={handleCancel} 
         style={{ width: "150px", height: "40px", fontSize: "1rem", padding : "5px" }}/>
       </div>
-
+      {isPopupOpen && (
+        <PopupInquiry
+        message={
+          <>
+            문의 글이 등록되었습니다.<br />
+            답변은 나의 문의 내역에서 확인하세요.
+          </>
+        }
+        onClose={handlePopupClose}
+      />
+      )}
     </div>
+
+
   );
 };
 
