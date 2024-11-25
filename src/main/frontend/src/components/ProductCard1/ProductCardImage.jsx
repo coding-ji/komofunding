@@ -30,7 +30,7 @@ const StyledProductImg = styled(ProductImg)`
 `;
 
 
-function ProductCardImage({ src }) {
+function ProductCardImage({ src,animation }) {
 
   const animations = [
     {
@@ -51,14 +51,16 @@ function ProductCardImage({ src }) {
     },
   ];
 
-  const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-
+ 
+  const appliedAnimation =
+  animation || animations[Math.floor(Math.random() * animations.length)];
   return (
     <CardContainer
-    {...randomAnimation}
+    {...appliedAnimation}
 
     whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
     transition={{ duration: 0.5 }}
+    
     
     >
       <StyledProductImg src={src} />
