@@ -38,12 +38,11 @@ public class Project {
     @Column(name = "short_description", nullable = false, length = 150)
     private String shortDescription; // 프로젝트 짧은 소개
 
-    @Lob
     @Column(name= "description", columnDefinition = "longtext")
     private String description; // 프로젝트 긴 소개
 
     @Convert(converter = ItemListConverter.class)
-    @Column(name = "items")
+    @Column(name = "items", columnDefinition = "longtext")
     private List<ItemDTO> items; // 프로젝트 아이템들
 
     @Column(name = "current_amount", nullable = false)
