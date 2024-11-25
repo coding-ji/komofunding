@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // Input 사용하는 곳에서 유효성 검사 시행시에 true/false로 보내기
 
 const StyledInput = styled.input`
-    padding: 10px 0 ;
+    padding: 10px 10px ;
     margin-top: 5px;
 width: ${(props) => props.width || '100%'}; /* props로 width를 받을 수 있도록 설정 */
 
