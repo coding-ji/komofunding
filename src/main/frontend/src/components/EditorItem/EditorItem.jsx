@@ -3,6 +3,9 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; // Quill 스타일을 임포트
 import axios from 'axios'; // axios 임포트
 import './EditorItem.css'; // CSS를 임포트
+import MyBtn from '../MyBtn';
+
+
 
 const Editor = () => {
   const editorRef = useRef(null); // Quill을 사용할 DOM 참조
@@ -78,6 +81,7 @@ const Editor = () => {
   useEffect(() => {
     if (editorRef.current && !isQuillReady) {
       // Quill 초기화
+      console.log("editorRef가 초기화 되지 않았습니다")
       const quillInstance = new Quill(editorRef.current, {
         theme: 'snow',
         modules: modules,
@@ -116,12 +120,15 @@ const Editor = () => {
   };
 
   return (
-    <div>
+    <div className='main-div'>
       <div ref={editorRef}></div>
-      <div className='button-container'>
-        <button onClick={handleSave}>등록</button>
-        <button onClick={handleCancel}>취소</button>
+      <div className="button-container">
+      <MyBtn text="확인" onClick={handleSave} 
+        style={{ width: "150px", height: "40px", fontSize: "1rem", padding : "5px" }} />
+      <MyBtn text="취소" onClick={handleCancel} 
+        style={{ width: "150px", height: "40px", fontSize: "1rem", padding : "5px" }}/>
       </div>
+
     </div>
   );
 };

@@ -1,3 +1,7 @@
+main-div{
+  width: 100vw;
+}
+
 /* 사이즈 툴바에서 각 크기 항목의 텍스트 변경 */
 /* Huge 항목의 이름 */
 .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
@@ -66,21 +70,13 @@
 
 /* 버튼 컨테이너: 버튼들을 오른쪽 정렬 */
 .button-container {
-  display: flex;
-  justify-content: flex-end; /* 버튼들을 오른쪽 끝으로 정렬 */
-  width: 100%; /* 버튼들이 부모 요소의 전체 너비를 차지하도록 */
+  display: grid;
+  grid-template-columns: auto auto; /* 두 버튼이 나란히 위치 */
+  justify-content: end; /* 버튼을 오른쪽 끝으로 정렬 */
+  align-items: center; /* 버튼을 수직 가운데 정렬 */
+  gap: 10px; /* 버튼 간 간격 */
+  margin-top: 10px; /* 버튼과 위 요소 간의 간격 */
 }
 
-/* 버튼들 디자인 */
-.button-container>button{
-  padding: 5px 20px;
-  margin: 10px;
-  border-radius: 5px;
-  border: 1px solid #CCCCCC;
-}
 
-/* 버튼 호버 시에 색깔 변화 */
-.button-container>button:hover{
-  background-color: #dddddd;
-  color: #272727;
-}
+
