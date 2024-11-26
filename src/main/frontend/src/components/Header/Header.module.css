@@ -2,41 +2,40 @@
   display: grid;
   grid-template-areas: 
     "logo menus search button";
-  grid-template-columns: auto 1fr auto auto; /* 각 영역의 비율 설정 */
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   padding: 15px 20px;
   background-color: var(--header-color);
   color: #fff;
-  width: 100%;
+  width: 100%; /* 100vw 대신 100% 사용 */
   min-width: 400px;
+  box-sizing: border-box; /* padding 포함 */
+  overflow: hidden; /* 콘텐츠가 넘칠 경우 숨기기 */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
 .logoAndMenu {
-  grid-area: logo; /* 로고를 logo 영역에 배치 */
+  grid-area: logo;
   display: flex;
   align-items: center;
-  gap: 0.2rem; /* 로고와 메뉴 사이 간격 */
+  gap: 1rem;
   cursor: pointer;
   height: 100%;
 }
 
-.logoImage {
-  width: 60px; /* 로고 크기 설정 */
-  height: 60px;
-  background-image: url('./Logo.svg'); /* SVG 파일 경로 확인 */
-  background-size: contain; /* 크기 조정 */
-  background-repeat: no-repeat; /* 반복 방지 */
-  background-position: center; /* 이미지 중앙 정렬 */
-}
-
 .menuList {
-  grid-area: menus; /* 메뉴를 menus 영역에 배치 */
+  grid-area: menus;
   display: flex;
   gap: 1.5rem;
 }
 
 .searchAndButtons {
-  grid-area: search; /* 검색창을 search 영역에 배치 */
+  grid-area: search;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -44,7 +43,7 @@
 }
 
 .buttonContainer {
-  grid-area: button; /* 버튼을 button 영역에 배치 */
+  grid-area: button;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -62,27 +61,35 @@
   border: none;
 }
 
+.logoImage {
+  width: 120px;
+  height: 50px;
+  background-image: url('./Logo.svg'); /* 로고 이미지 경로 */
+  background-size: contain; /* 크기를 컨테이너에 맞게 조정 */
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  background-position: center; /* 이미지 중앙 정렬 */
+}
+
+
 @media (max-width: 920px) {
   .headerContainer {
     grid-template-areas: 
       "logo logo logo logo"
       "menus menus menus menus"
-      "search search search button"; /* 검색창과 버튼을 나란히 */
-    grid-template-columns: 1fr; /* 한 줄에 전체 차지 */
+      "search search search button";
+    grid-template-columns: 1fr;
     gap: 0.5rem;
-    
   }
 
   .logoAndMenu {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    
   }
 
   .searchAndButtons {
     justify-content: center;
-    flex-wrap: wrap; /* 검색창과 버튼이 좁아지면 줄바꿈 허용 */
+    flex-wrap: wrap;
     gap: 1rem;
   }
 }

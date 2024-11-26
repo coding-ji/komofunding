@@ -1,0 +1,70 @@
+{
+  "products": [
+    {
+      "src": "/src/components/ProductCard1/a.png",
+      "title": "LIGHT PAD DRAWING BOARD",
+      "description": "A2 LED 라이트 패드 드로잉 보드, 아크릴 초박형 휴대용 LED 라이트 박스, 3단계 조절 가능 밝기, 듀얼 라이트 스트립, USB 전원, 눈 보호 균일 조명, 그리드 없음, 스케치, 애니메이션, 다이아몬드 페인팅, 트레이싱, 다기능 아트 크래프트 라이트 테이블용 4개 클립 포함",
+      "url": "/product/large-top"
+    },
+    {
+      "src": "/src/components/ProductCard1/1.png",
+      "title": "DRAWING BOOK",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-1"
+    },
+    {
+      "src": "/src/components/ProductCard1/2.png",
+      "title": "PURE BOX",
+      "description": "10리터 용량의 멀티 기능 에어프라이어는 가정 요리를 간편하게 만들어주는 필수 아이템입니다. 공기 순환 기술을 활용해 기름 없이도 바삭하고 맛있는 튀김 요리를 완성할 수 있으며, 굽기, 찌기, 데우기 등 다양한 조리 모드를 제공합니다. 디지털 터치스크린으로 온도와 시간을 쉽게 설정할 수 있으며, 자동 꺼짐 기능이 포함되어 안전하게 사용할 수 있습니다. 부속품은 모두 분리 세척이 가능하며, 내구성이 뛰어난 스테인리스 스틸로 제작되었습니다.",
+      "url": "/product/small-item-2"
+    },
+    {
+      "src": "/src/components/ProductCard1/3.png",
+      "title": "HEART COOKIE",
+      "description": "100% 순수 캐시미어 소재로 제작된 이 스웨터는 부드러움과 따뜻함의 완벽한 조화를 이룹니다. 세련된 라운드 넥 디자인과 립 디테일은 어떠한 스타일에도 자연스럽게 어울리며, 오랜 시간 착용해도 형태 변형이 없습니다. 최소한의 화학 처리를 거친 친환경 공정으로 제작되어 피부에 민감한 분들도 안심하고 착용할 수 있습니다. 다양한 색상 옵션으로 개성과 취향을 표현할 수 있으며, 비즈니스와 캐주얼 스타일 모두에 적합한 멀티 아이템입니다.",
+      "url": "/product/small-item-4"
+    },
+    {
+      "src": "/src/components/ProductCard1/4.png",
+      "title": "SEA TABLE",
+      "description": "저자극성 멀티 액션 나이트 크림은 피부 재생과 보습을 동시에 제공하는 올인원 솔루션입니다. 고농축 히알루론산과 펩타이드 성분이 함유되어 피부 깊숙이 수분을 공급하며, 밤사이 활성 비타민 C가 피부 톤을 고르게 만들어 줍니다. 알로에 베라와 카모마일 추출물이 진정 효과를 제공하며, 민감성 피부에도 적합합니다. 끈적임 없이 빠르게 흡수되는 텍스처로 매일 밤 사용하기에 이상적이며, 사용 후 즉각적으로 부드럽고 탄력 있는 피부를 경험할 수 있습니다.",
+      "url": "/product/small-item-5"
+    },
+    {
+      "src": "/src/components/ProductCard1/5.png",
+      "title": "DRAWING BOOK",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-1"
+    },
+    {
+      "src": "/src/components/ProductCard1/6.png",
+      "title": "PURE BOX",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-2"
+    },
+    {
+      "src": "/src/components/ProductCard1/7.png",
+      "title": "HEART COOKIE",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-4"
+    },
+    {
+      "src": "/src/components/ProductCard1/8.png",
+      "title": "SEA TABLE",
+      "description": "로지포지 CD 플레이어 스타일링 카드 앨범: 수집품을 위한 축제 4그리드 포토 앨범 - 14세 이상 권장",
+      "url": "/product/small-item-5"
+    },
+    {
+      "src": "/src/components/ProductCard1/9.png",
+      "title": "Large Bottom Left",
+      "description": "Description for Bottom Left",
+      "url": "/product/large-bottom-left"
+    },
+    {
+      "src": "/src/components/ProductCard1/1.png",
+      "title": "Large Bottom Right",
+      "description": "Description for Bottom Right",
+      "url": "/product/large-bottom-right"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+/* 전체 레이아웃 */
+.mainGrid {
+  display: grid;
+  grid-template:
+    "... topSection ..." 0.1fr
+    "... middleSection ..." 1fr / 0.5fr 1000px 0.5fr;
+  row-gap: 2rem;
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+
+}
+
+.topSection {
+  grid-area: topSection;
+}
+
+.middleSection {
+  grid-area: middleSection;
+  width: 100%;
+}
+
+/* 제목 스타일 */
+.subtitle {
+  color: var(--user-btn, #256e91);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 35px;
+  font-weight: 700;
+  margin: 40px 0 10px 0;
+}
+
+/* 입력창 스타일 */
+.input {
+  height: 60px;
+  border: 2px solid #c9c9c9;
+  background-color: white;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%; /* 반응형에서 너비 조정 가능 */
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+  display: grid;
+  grid-template-columns: auto auto; /* 두 버튼을 나란히 배치 */
+  justify-content: end; /* 오른쪽 정렬 */
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* 반응형 처리 */
+@media (max-width: 1000px) {
+  .mainGrid {
+    grid-template: 
+      "topSection" auto
+      "middleSection" 1fr / 1fr;
+    padding: 15px;
+  }
+
+  .subtitle {
+    font-size: 25px; /* 제목 크기 축소 */
+    text-align: center;
+  }
+
+  .input {
+    height: 40px;
+    font-size: 12px; /* 인풋 글자 크기 축소 */
+    padding: 8px;
+  }
+
+  .button-container {
+    grid-template-columns: 1fr 1fr; /* 버튼 크기를 줄이고 비율을 동일하게 */
+    justify-content: space-between; /* 버튼 간격 조정 */
+  }
+}
+

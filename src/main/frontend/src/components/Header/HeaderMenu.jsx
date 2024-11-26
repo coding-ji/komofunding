@@ -8,9 +8,7 @@ const MenuItem = styled(motion.a)`
     color: #fff;
     font-size: 1.2rem;
 
-    line-height: normal;
     font-family : var(--eng-bold);
-    // letter-spacing : 0
 
   }
 `;

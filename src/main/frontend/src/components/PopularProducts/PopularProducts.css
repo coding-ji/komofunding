@@ -1,0 +1,74 @@
+/* 컨테이너 스타일 */
+.popular-products-container {
+    width: 100%; /* 슬라이드 전체 너비 */
+    max-width: 1000px;
+    margin: 10px auto ;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    overflow: hidden; /* 넘치는 내용 숨기기 */
+    background-color: #fff; /* 배경색 */
+    padding: 20px;
+    border-top: 2px solid black;
+  }
+  
+  /* 슬라이드 스타일 */
+  .slide {
+    display: grid;
+    grid-template:
+    'product-image product-description'/ 2fr 1fr;
+    text-align: center;
+    animation: fade-in 1s ease-in-out; /* 페이드 인 애니메이션 */
+    height: 300px;
+    margin-top: 5px;
+  }
+  
+  .product-image {
+    max-width: 100%;
+    height: 100px;
+    border-radius: 8px;
+    margin-bottom: 15px; /* 이미지와 설명 간 간격 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    grid-area: product-image;
+  }
+  
+  .product-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #555; /* 텍스트 색상 */
+    padding: 0 10px; /* 좌우 여백 */
+    grid-area:product-description ;
+    text-align: left;
+  }
+  .product-description::first-letter {
+    font-size: 3rem; /* 첫 글자 크기 */
+    font-weight: bold;
+    color: #256e91; /* 강조 색상 */
+    float: left; /* 첫 글자가 왼쪽으로 정렬되도록 */
+    margin-right: 8px; /* 본문과 간격 추가 */
+    line-height: 1; /* 첫 글자 자체의 줄 간격 조정 */
+  }
+  /* 애니메이션 효과 */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* 반응형 처리 */
+  @media (max-width: 1000px) {
+    .popular-products-container {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .product-description {
+      font-size: 0.9rem;
+    }
+  }
+  

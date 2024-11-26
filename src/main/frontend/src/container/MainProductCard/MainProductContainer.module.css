@@ -1,0 +1,185 @@
+/* 전체 레이아웃 */
+.mainGrid {
+  display: grid;
+  grid-template: 
+  '... topSection ...' 2fr
+  '... middleSection ...' 1fr
+  '... bottomSection ...' 1fr / 0.5fr 1000px 0.5fr
+  ; /* 상단, 중단, 하단 */
+  row-gap: 20px; /* 섹션 간 간격 */
+  width: 100vw;
+  padding: 20px;
+  margin: 0 auto; /* 가운데 정렬 */
+  overflow-y: scroll;
+}
+
+/* 상단 섹션 */
+.topSection {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 왼쪽 큰 아이템과 오른쪽 그리드 */
+  gap: 10px;
+  grid-area: topSection ;
+  width: 100%;
+  height: 100%;
+}
+
+/* largeItem */
+.largeItem {
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* 상단(큰 콘텐츠) + 하단(작은 콘텐츠들) */
+  gap: 10px;
+  background-color: #f4f4f4;
+  width: 100%;
+  height: 100%;
+}
+
+.largeTop {
+  background-color: #ddd;
+  height: 200px; /* 상단 큰 콘텐츠 고정 높이 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.largeBottom {
+  display: grid;
+  grid-template:
+  'largeBottomLeft largeBottomRight' 1fr / 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.largeBottomLeft,
+.largeBottomRight,
+.largeBottomTop {
+  background-color: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 오른쪽 그리드 */
+.rightGrid {
+  display: grid;
+  grid-template-rows: 1fr 1fr 0.1fr; /* 3개의 작은 아이템 세로 정렬 */
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.smallItem {
+  background-color: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 중단 섹션 */
+.middleSection {
+  display: grid;
+  grid-template-columns: 1fr; /* 단일 열 */
+  background-color: #ddd;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  grid-area: middleSection;
+}
+
+/* 하단 섹션 */
+.bottomSection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 열 */
+  gap: 10px;
+  grid-area: bottomSection ;
+  width: 100%;
+  height: 100%;
+}
+
+.fullWidthItem {
+  background-color: #ddd;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* 미디어 쿼리 */
+
+/* 작은 화면 (모바일) */
+@media (max-width: 768px) {
+  .mainGrid {
+      grid-template: 
+      'topSection' auto
+      'middleSection' auto
+      'bottomSection' auto / 1fr;
+      padding: 10px;
+  }
+
+  .topSection {
+      grid-template-columns: 1fr; /* 단일 열 */
+  }
+
+  .largeItem {
+      grid-template-rows: auto; /* 자동 높이 */
+  }
+
+  .largeBottom {
+      grid-template: 
+      'largeBottomLeft' 
+      'largeBottomRight' 
+      'largeBottomTop'; /* 세로 정렬 */
+      gap: 5px;
+  }
+
+  .rightGrid {
+      grid-template-rows: auto; /* 자동 크기 */
+      grid-template-columns: 1fr; /* 단일 열 */
+  }
+
+  .bottomSection {
+      grid-template-columns: 1fr; /* 단일 열 */
+  }
+}
+
+/* 중간 화면 (태블릿) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .mainGrid {
+      grid-template: 
+      'topSection' auto
+      'middleSection' auto
+      'bottomSection' auto / 1fr;
+      padding: 20px;
+  }
+
+  .topSection {
+      grid-template-columns: 2fr 1fr; /* 왼쪽 큰 아이템과 오른쪽 그리드 */
+  }
+
+  .bottomSection {
+      grid-template-columns: repeat(2, 1fr); /* 두 열 */
+  }
+}
+
+/* 큰 화면 (데스크톱) */
+@media (min-width: 1025px) {
+  .mainGrid {
+      grid-template: 
+      '... topSection ...' 2fr
+      '... middleSection ...' 1fr
+      '... bottomSection ...' 1fr / 0.5fr 700px 0.5fr;
+      padding: 20px;
+  }
+
+  .bottomSection {
+      grid-template-columns: repeat(3, 1fr); /* 세 열 */
+  }
+}

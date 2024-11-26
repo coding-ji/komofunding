@@ -1,9 +1,9 @@
 package com.kosmo.komofunding.repository;
 
-import com.kosmo.komofunding.entity.User;
+import com.kosmo.komofunding.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface ProjectRepository extends JpaRepository<Project, String> {
 }
