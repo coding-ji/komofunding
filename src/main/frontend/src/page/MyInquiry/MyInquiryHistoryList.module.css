@@ -1,0 +1,31 @@
+
+  .mainDiv{
+    display: grid;
+    grid-template-columns: 1fr 1000px 1fr; /* 좌우 여백과 중앙 콘텐츠 */
+    grid-template-rows: auto; /* 콘텐츠 높이는 자동 */
+    justify-items: center; /* 콘텐츠를 중앙 정렬 */
+    padding: 20px 0; /* 상하 패딩 추가 */
+
+  }
+
+  .title {
+    font-family: var(--kr-noto);
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .inquiryDiv {
+    border: 1px solid #e4e4e4;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    width: 100%; /* 부모 크기 따라감 */
+    max-width: 942px; /* 최대 너비 지정 */
+    height: auto; /* 높이는 콘텐츠에 맞춤 */
+    padding: 15px 20px; /* 패딩 조정 */
+    gap: 10px; /* 요소 간격 */
+    flex-shrink: 0;
+    box-sizing: border-box; /* 패딩 포함한 크기 */
+  }

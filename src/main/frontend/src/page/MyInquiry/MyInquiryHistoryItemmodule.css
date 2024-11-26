@@ -1,0 +1,28 @@
+.inquiryItem {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 15px;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.content {
+  color: #555;
+  font-size: 14px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #888;
+}
+
+.status {
+  color: #256e91;
+  font-weight: bold;
+}
