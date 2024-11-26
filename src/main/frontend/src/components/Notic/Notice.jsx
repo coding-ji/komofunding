@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import Notification from './Notification';  // Notification 컴포넌트 불러오기
+// import Notification from './Notification';  // Notification 컴포넌트 불러오기
 import styles from './Notice.module.css';
 
 const categories = [
@@ -20,7 +20,7 @@ const CategoryContent = ({ categoryName }) => (
     {[categoryName].map((item, index) => (
       <content key={index} props={item} />
     ))}
-  </div>
+  </div> 
 );
 
 const Notice = () => {
