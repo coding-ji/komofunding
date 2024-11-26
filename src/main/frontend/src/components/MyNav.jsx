@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import "../index.css";
 import NavFont from "./NavFont";
-import HoverRectangle from "./HoverRectangle"; 
+import HoverRectangle from "./HoverRectangle";  // HoverRectangle 컴포넌트 import
 
 const StyledNav = styled(motion.div)`
   display: flex;
@@ -29,12 +29,18 @@ const navVariants = {
 };
 
 function MyNav() {
-  const [hoveredIndex, setHoveredIndex] = useState(null); 
+  const [hoveredIndex, setHoveredIndex] = useState(null);  // hover 상태를 관리합니다
+  const [clickedIndex, setClickedIndex] = useState(null);  // 클릭된 항목을 관리합니다
   const navItems = [
     { label: "진행 예정 프로젝트", path: "/upcoming" },
     { label: "진행 중 프로젝트", path: "/ongoing" },
     { label: "진행 마감 프로젝트", path: "/completed" },
   ];
+
+  const handleItemClick = (index) => {
+    // 클릭된 항목의 index를 setClickedIndex에 저장
+    setClickedIndex(index);
+  };
 
   return (
     <StyledNav
@@ -50,9 +56,10 @@ function MyNav() {
           animate="visible"
           onMouseEnter={() => setHoveredIndex(index)}  // 마우스 들어갈 때 상태 업데이트
           onMouseLeave={() => setHoveredIndex(null)}  // 마우스 나갈 때 상태 초기화
+          onClick={() => handleItemClick(index)}  // 클릭 시 상태 업데이트
         >
           <NavFont nav={item.label} to={item.path} />
-          <HoverRectangle isHovered={hoveredIndex === index} /> 
+          <HoverRectangle isHovered={hoveredIndex === index || clickedIndex === index} />  {/* 호버나 클릭 상태일 때만 Rectangle 표시 */}
         </NavItem>
       ))}
     </StyledNav>

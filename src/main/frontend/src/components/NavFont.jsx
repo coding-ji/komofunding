@@ -12,6 +12,7 @@ const StyledLink = styled(motion(Link))`
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   min-width: 8.4rem;
+  text-align: center;
 `;
 
 const NavFont = ({ nav, to = "/" }) => {
