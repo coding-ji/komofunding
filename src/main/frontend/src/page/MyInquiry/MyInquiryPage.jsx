@@ -37,8 +37,11 @@ const MyInquiryPage = () => {
         <Btn
           text="문의하기"
           onClick={() => navigate("/new-inquiry")} // 버튼 클릭 시 라우터 이동
-          width = "100px"
-          height ="20px"
+          width = "250px"
+          height ="50px"
+          fontSize="1.5rem"
+          padding="10px"
+          fontFamily="var(--kr-font)"
         />
         
       </ButtonDiv>
