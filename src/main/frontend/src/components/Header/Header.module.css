@@ -23,7 +23,7 @@ body {
   grid-area: logo;
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 1rem;
   cursor: pointer;
   height: 100%;
 }

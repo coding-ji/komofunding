@@ -8,7 +8,7 @@ const StyledContainers = styled(motion.div)`
 
   display: grid;
   grid-template-columns: repeat(3, auto);
-  gap: 25px; /* 요소 간 간격 */
+  gap: 30px; /* 요소 간 간격 */
   margin: 0 auto; /* 컨테이너 가운데 정렬 */
 
   @media (max-width: 920px) {
@@ -28,7 +28,7 @@ const containerVariants = {
   animate: {
     opacity: 1,
     transition: {
-      delayChildren: 0.2, // 자식 요소가 등장하기 전 대기 시간
+      delayChildren: 0.5, // 자식 요소가 등장하기 전 대기 시간
       staggerChildren: 0.2, // 자식 요소들 간의 등장 간격 
     },
   },

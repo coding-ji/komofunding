@@ -13,7 +13,7 @@
 .navbar {
   display: flex;
   gap: 20px;
-  font-family: Arial, sans-serif;
+  font-family: var(--eng-font);
   font-size: 16px;
   font-weight: bold;
   width: 100%; /* navbar가 100% 크기를 차지하도록 설정 */

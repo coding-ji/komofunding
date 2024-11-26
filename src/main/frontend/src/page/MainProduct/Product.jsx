@@ -19,7 +19,7 @@ function Product(){
 }
 
 
-export default Product
+export default Product;
 
 // import { BrowserRouter } from 'react-router-dom' ;
 // 이거 임포트 해줘야함
