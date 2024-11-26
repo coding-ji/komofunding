@@ -15,7 +15,8 @@ import java.util.Random;
 @Table(name = "PROJECT",
         indexes = {
                 @Index(name = "idx_project_num", columnList = "project_num"),
-                @Index(name = "idx_creator_nickname", columnList = "creator_nickname")
+                @Index(name ="idx_user_id", columnList = "user_id"),
+                @Index(name="idx_written_date", columnList = "written_date")
         })
 @Getter
 @Setter
@@ -70,7 +71,7 @@ public class Project {
     private LocalDateTime rejectionDate; // 프로젝트 거부날짜
 
     @Column(name = "is_hidden", nullable = false)
-    private boolean isHidden; // 숨김 여부
+    private Boolean isHidden; // 숨김 여부
 
     @Column(name = "status_change_reason")
     private String statusChangeReason; // 거부 / 숨김인 이유
