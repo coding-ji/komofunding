@@ -15,7 +15,8 @@ import java.util.Random;
 @Table(name = "PROJECT",
         indexes = {
                 @Index(name = "idx_project_num", columnList = "project_num"),
-                @Index(name =" idx_user_id", columnList = "user_id")
+                @Index(name ="idx_user_id", columnList = "user_id"),
+                @Index(name="idx_written_date", columnList = "written_date")
         })
 @Getter
 @Setter
