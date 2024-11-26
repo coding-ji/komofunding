@@ -1,15 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import inquiriesData from "./inquiriesData.json"; // JSON 데이터 가져오기
 
-// 스타일 정의
 const InquiryListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 100px;
+  margin-top: 3rem;
+
+  
+  @media (max-width: 768px) {
+     margin-top: 2rem;
+  }
+
+  @media (max-width: 480px) {
+  margin-top: 1rem;
+  }
 `;
 
 const InquiryItem = styled.div`
@@ -46,17 +53,16 @@ const InquiryTitle = styled.h2`
   margin: 10px 0 5px 0;
 `;
 
-// `InquiryList` 컴포넌트
-const InquiryList = () => {
+const InquiryList = ({ inquiries }) => {
   const navigate = useNavigate();
 
   const handleItemClick = (link) => {
-    navigate(link); // 라우터로 이동
+    navigate(link); // 라우터 이동
   };
 
   return (
     <InquiryListContainer>
-      {inquiriesData.map((inquiry) => (
+      {inquiries.map((inquiry) => (
         <InquiryItem
           key={inquiry.id}
           onClick={() => handleItemClick(inquiry.link)}

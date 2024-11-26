@@ -1,59 +1,402 @@
 [
-    {
-      "id": 1,
-      "status": "답변완료",
-      "replyDate": "2024-11-20",
-      "author": "관리자",
-      "title": "[프로젝트] 언제부터 후원이 시작되나요?",
-      "link": "/inquiry/1"
-    },
-    {
-      "id": 2,
-      "status": "답변대기",
-      "replyDate": "답변 준비 중",
-      "author": "관리자",
-      "title": "중요 공지사항에 대해서 확인해주세요.",
-      "link": "/inquiry/2"
-    },
-    {
-      "id": 3,
-      "status": "답변완료",
-      "replyDate": "2024-11-19",
-      "author": "관리자",
-      "title": "문의사항 확인 부탁드립니다.",
-      "link": "/inquiry/3"
-    },
-    {
-        "id": 4,
-        "status": "답변완료",
-        "replyDate": "2024-11-19",
-        "author": "관리자",
-        "title": "문의사항 확인 부탁드립니다.",
-        "link": "/inquiry/3"
-      },
-      {
-        "id": 5,
-        "status": "답변완료",
-        "replyDate": "2024-11-19",
-        "author": "관리자",
-        "title": "문의사항 확인 부탁드립니다.",
-        "link": "/inquiry/3"
-      },
-      {
-        "id": 6,
-        "status": "답변완료",
-        "replyDate": "2024-11-19",
-        "author": "관리자",
-        "title": "문의사항 확인 부탁드립니다.",
-        "link": "/inquiry/3"
-      },
-      {
-        "id": 7,
-        "status": "답변완료",
-        "replyDate": "2024-11-19",
-        "author": "관리자",
-        "title": "문의사항 확인 부탁드립니다.",
-        "link": "/inquiry/3"
-      }
-  ]
-  
+  {
+    "id": 1,
+    "status": "답변완료",
+    "replyDate": "2024-11-20",
+    "author": "관리자",
+    "title": "[프로젝트] 언제부터 후원이 시작되나요?",
+    "link": "/inquiry/1"
+  },
+  {
+    "id": 2,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "중요 공지사항에 대해서 확인해주세요.",
+    "link": "/inquiry/2"
+  },
+  {
+    "id": 3,
+    "status": "답변완료",
+    "replyDate": "2024-11-19",
+    "author": "관리자",
+    "title": "문의사항 확인 부탁드립니다.",
+    "link": "/inquiry/3"
+  },
+  {
+    "id": 4,
+    "status": "답변완료",
+    "replyDate": "2024-11-18",
+    "author": "관리자",
+    "title": "문의 관련 추가 정보를 요청드립니다.",
+    "link": "/inquiry/4"
+  },
+  {
+    "id": 5,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "후원 프로젝트 일정 문의드립니다.",
+    "link": "/inquiry/5"
+  },
+  {
+    "id": 6,
+    "status": "답변완료",
+    "replyDate": "2024-11-17",
+    "author": "관리자",
+    "title": "문의 내용 검토 결과를 알려드립니다.",
+    "link": "/inquiry/6"
+  },
+  {
+    "id": 7,
+    "status": "답변완료",
+    "replyDate": "2024-11-16",
+    "author": "관리자",
+    "title": "중요 공지 확인 후 연락 부탁드립니다.",
+    "link": "/inquiry/7"
+  },
+  {
+    "id": 8,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "프로젝트에 대한 추가 질문이 있습니다.",
+    "link": "/inquiry/8"
+  },
+  {
+    "id": 9,
+    "status": "답변완료",
+    "replyDate": "2024-11-15",
+    "author": "관리자",
+    "title": "문의 결과를 확인해주세요.",
+    "link": "/inquiry/9"
+  },
+  {
+    "id": 10,
+    "status": "답변완료",
+    "replyDate": "2024-11-14",
+    "author": "관리자",
+    "title": "문의 내역에 대해 안내드립니다.",
+    "link": "/inquiry/10"
+  },
+  {
+    "id": 11,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의사항 검토 중입니다.",
+    "link": "/inquiry/11"
+  },
+  {
+    "id": 12,
+    "status": "답변완료",
+    "replyDate": "2024-11-13",
+    "author": "관리자",
+    "title": "문의 답변을 확인해주세요.",
+    "link": "/inquiry/12"
+  },
+  {
+    "id": 13,
+    "status": "답변완료",
+    "replyDate": "2024-11-12",
+    "author": "관리자",
+    "title": "프로젝트 관련 문의 사항 안내드립니다.",
+    "link": "/inquiry/13"
+  },
+  {
+    "id": 14,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "추가적인 문의 내용이 필요합니다.",
+    "link": "/inquiry/14"
+  },
+  {
+    "id": 15,
+    "status": "답변완료",
+    "replyDate": "2024-11-11",
+    "author": "관리자",
+    "title": "문의 결과를 확인해주세요.",
+    "link": "/inquiry/15"
+  },
+  {
+    "id": 16,
+    "status": "답변완료",
+    "replyDate": "2024-11-10",
+    "author": "관리자",
+    "title": "중요 문의 결과를 안내드립니다.",
+    "link": "/inquiry/16"
+  },
+  {
+    "id": 17,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의 사항 추가 확인 중입니다.",
+    "link": "/inquiry/17"
+  },
+  {
+    "id": 18,
+    "status": "답변완료",
+    "replyDate": "2024-11-09",
+    "author": "관리자",
+    "title": "문의 결과를 확인해주세요.",
+    "link": "/inquiry/18"
+  },
+  {
+    "id": 19,
+    "status": "답변완료",
+    "replyDate": "2024-11-08",
+    "author": "관리자",
+    "title": "문의 답변을 확인해주세요.",
+    "link": "/inquiry/19"
+  },
+  {
+    "id": 20,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "추가 문의 내용 확인 중입니다.",
+    "link": "/inquiry/20"
+  },
+  {
+    "id": 21,
+    "status": "답변완료",
+    "replyDate": "2024-11-08",
+    "author": "관리자",
+    "title": "[프로젝트] 후원 일정이 궁금합니다.",
+    "link": "/inquiry/21"
+  },
+  {
+    "id": 22,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의사항에 대한 자세한 설명 요청드립니다.",
+    "link": "/inquiry/22"
+  },
+  {
+    "id": 23,
+    "status": "답변완료",
+    "replyDate": "2024-11-07",
+    "author": "관리자",
+    "title": "문의 관련 진행 상황 안내드립니다.",
+    "link": "/inquiry/23"
+  },
+  {
+    "id": 24,
+    "status": "답변완료",
+    "replyDate": "2024-11-06",
+    "author": "관리자",
+    "title": "중요 공지 확인 부탁드립니다.",
+    "link": "/inquiry/24"
+  },
+  {
+    "id": 25,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "추가 정보를 요청드립니다.",
+    "link": "/inquiry/25"
+  },
+  {
+    "id": 26,
+    "status": "답변완료",
+    "replyDate": "2024-11-05",
+    "author": "관리자",
+    "title": "문의 진행 결과를 알려드립니다.",
+    "link": "/inquiry/26"
+  },
+  {
+    "id": 27,
+    "status": "답변완료",
+    "replyDate": "2024-11-04",
+    "author": "관리자",
+    "title": "중요 문의사항 안내드립니다.",
+    "link": "/inquiry/27"
+  },
+  {
+    "id": 28,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "프로젝트 일정 관련 추가 문의드립니다.",
+    "link": "/inquiry/28"
+  },
+  {
+    "id": 29,
+    "status": "답변완료",
+    "replyDate": "2024-11-03",
+    "author": "관리자",
+    "title": "문의 결과 안내드립니다.",
+    "link": "/inquiry/29"
+  },
+  {
+    "id": 30,
+    "status": "답변완료",
+    "replyDate": "2024-11-02",
+    "author": "관리자",
+    "title": "중요 문의사항 확인 부탁드립니다.",
+    "link": "/inquiry/30"
+  },
+  {
+    "id": 31,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의 진행 상황 확인 중입니다.",
+    "link": "/inquiry/31"
+  },
+  {
+    "id": 32,
+    "status": "답변완료",
+    "replyDate": "2024-11-01",
+    "author": "관리자",
+    "title": "문의 진행 결과를 안내드립니다.",
+    "link": "/inquiry/32"
+  },
+  {
+    "id": 33,
+    "status": "답변완료",
+    "replyDate": "2024-10-31",
+    "author": "관리자",
+    "title": "중요 공지 확인 후 문의 바랍니다.",
+    "link": "/inquiry/33"
+  },
+  {
+    "id": 34,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "추가 문의 사항을 검토 중입니다.",
+    "link": "/inquiry/34"
+  },
+  {
+    "id": 35,
+    "status": "답변완료",
+    "replyDate": "2024-10-30",
+    "author": "관리자",
+    "title": "문의 진행 결과를 알려드립니다.",
+    "link": "/inquiry/35"
+  },
+  {
+    "id": 36,
+    "status": "답변완료",
+    "replyDate": "2024-10-29",
+    "author": "관리자",
+    "title": "중요 문의사항에 대해 안내드립니다.",
+    "link": "/inquiry/36"
+  },
+  {
+    "id": 37,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의사항 추가 확인 요청드립니다.",
+    "link": "/inquiry/37"
+  },
+  {
+    "id": 38,
+    "status": "답변완료",
+    "replyDate": "2024-10-28",
+    "author": "관리자",
+    "title": "문의 결과를 확인해주세요.",
+    "link": "/inquiry/38"
+  },
+  {
+    "id": 39,
+    "status": "답변완료",
+    "replyDate": "2024-10-27",
+    "author": "관리자",
+    "title": "중요 문의 결과 안내드립니다.",
+    "link": "/inquiry/39"
+  },
+  {
+    "id": 40,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "추가 정보 요청드립니다.",
+    "link": "/inquiry/40"
+  },
+  {
+    "id": 41,
+    "status": "답변완료",
+    "replyDate": "2024-10-26",
+    "author": "관리자",
+    "title": "문의 관련 진행 상황 안내드립니다.",
+    "link": "/inquiry/41"
+  },
+  {
+    "id": 42,
+    "status": "답변완료",
+    "replyDate": "2024-10-25",
+    "author": "관리자",
+    "title": "문의 결과를 확인해주세요.",
+    "link": "/inquiry/42"
+  },
+  {
+    "id": 43,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의사항 검토 중입니다.",
+    "link": "/inquiry/43"
+  },
+  {
+    "id": 44,
+    "status": "답변완료",
+    "replyDate": "2024-10-24",
+    "author": "관리자",
+    "title": "문의 관련 결과를 안내드립니다.",
+    "link": "/inquiry/44"
+  },
+  {
+    "id": 45,
+    "status": "답변완료",
+    "replyDate": "2024-10-23",
+    "author": "관리자",
+    "title": "중요 문의 결과를 확인해주세요.",
+    "link": "/inquiry/45"
+  },
+  {
+    "id": 46,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "추가 문의 사항 확인 중입니다.",
+    "link": "/inquiry/46"
+  },
+  {
+    "id": 47,
+    "status": "답변완료",
+    "replyDate": "2024-10-22",
+    "author": "관리자",
+    "title": "문의 진행 상황을 알려드립니다.",
+    "link": "/inquiry/47"
+  },
+  {
+    "id": 48,
+    "status": "답변완료",
+    "replyDate": "2024-10-21",
+    "author": "관리자",
+    "title": "중요 공지 확인 후 연락 부탁드립니다.",
+    "link": "/inquiry/48"
+  },
+  {
+    "id": 49,
+    "status": "답변대기",
+    "replyDate": "답변 준비 중",
+    "author": "관리자",
+    "title": "문의 사항 추가 검토 중입니다.",
+    "link": "/inquiry/49"
+  },
+  {
+    "id": 50,
+    "status": "답변완료",
+    "replyDate": "2024-10-20",
+    "author": "관리자",
+    "title": "문의 진행 결과를 안내드립니다.",
+    "link": "/inquiry/50"
+  }
+]
