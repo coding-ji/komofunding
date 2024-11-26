@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Announcement.module.css'; // CSS Modules로 가져오기
-import MainHeader from '../MainHeader';
-import Footer from '../Footer';
+import MainHeader from '../container/MainHeader';
+import Footer from '../components/Footer/Footer'
 import { motion } from 'framer-motion';
 
 const Announcement = () => {
