@@ -10,7 +10,7 @@ const StyledNav = styled(motion.div)`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 117px;
+  gap: 7.3rem;
   height: 50px;
   justify-content: center;
 `;
@@ -24,7 +24,7 @@ const NavItem = styled(motion.div)`
 `;
 
 const navVariants = {
-  hidden: { opacity: 0, y: -50 },
+  hidden: { opacity: 0, y: -10 },
   visible: { opacity: 1, y: 0 },
 };
 
