@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import "../index.css";
 import NavFont from "./NavFont";
-import HoverRectangle from "./HoverRectangle";  // HoverRectangle 컴포넌트 import
+import HoverRectangle from "./HoverRectangle"; 
 
 const StyledNav = styled(motion.div)`
   display: flex;
@@ -29,7 +29,7 @@ const navVariants = {
 };
 
 function MyNav() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);  // hover 상태를 관리합니다
+  const [hoveredIndex, setHoveredIndex] = useState(null); 
   const navItems = [
     { label: "진행 예정 프로젝트", path: "/upcoming" },
     { label: "진행 중 프로젝트", path: "/ongoing" },
@@ -52,7 +52,7 @@ function MyNav() {
           onMouseLeave={() => setHoveredIndex(null)}  // 마우스 나갈 때 상태 초기화
         >
           <NavFont nav={item.label} to={item.path} />
-          <HoverRectangle isHovered={hoveredIndex === index} />  {/* HoverRectangle 컴포넌트로 상태 전달 */}
+          <HoverRectangle isHovered={hoveredIndex === index} /> 
         </NavItem>
       ))}
     </StyledNav>
