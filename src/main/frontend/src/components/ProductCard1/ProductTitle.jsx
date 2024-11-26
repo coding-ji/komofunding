@@ -7,7 +7,7 @@ const StyledTitle = styled(motion.div)`
   font-weight : bold;
   margin: 4px 0;
   padding: 0 3px; /* 양쪽 여백 */
-  // text-align: center;  
+  text-align: ${(props)=>props.textAlign || "left"};  
   font-family: ${(props) => props.fontFamily};
   color: ${(props) => {
     if (props.fontFamily === "var(--eng-font)") {
@@ -22,10 +22,11 @@ const StyledTitle = styled(motion.div)`
 
 `;
 
-function ProductTitle({ title, fontFamily,size,animation }) {  
+function ProductTitle({ title, fontFamily,size,animation,textAlign }) {  
   return <StyledTitle 
   fontFamily={fontFamily} 
   size={size}
+  textAlign={textAlign}
   {...animation}
   >
     {title}
