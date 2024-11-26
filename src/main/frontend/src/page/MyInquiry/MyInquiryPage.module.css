@@ -1,0 +1,73 @@
+
+/* 전체 페이지 컨테이너 */
+pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* 문의 리스트 */
+  inquiryList {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 100px;
+  }
+  
+  /* 개별 문의 항목 */
+  inquiryItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #e4e4e4;
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  inquiryItem:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 문의 항목 헤더 */
+  inquiryHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* 상태 스타일 */
+  status {
+    font-weight: bold;
+  }
+  
+  status.completed {
+    color: #28a745; /* 초록색 */
+  }
+  
+  status.pending {
+    color: #dc3545; /* 빨간색 */
+  }
+  
+  /* 문의 제목 */
+  inquiryTitle {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0 5px 0;
+  }
+  
+  /* 버튼 컨테이너 */
+  buttonDiv {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
