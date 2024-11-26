@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/api/users")
 public class UserController {
@@ -22,9 +24,11 @@ public class UserController {
         return ResponseEntity.ok(savedUser);
     }
 
+
     // 기본 테스트용 엔드포인트
-    @GetMapping("/test")
-    public String testEndpoint() {
-        return "User Controller is working!";
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> findByUserId(@PathVariable("userId") String userId){
+        Optional<User> user = userService.getUserById(userId);
+        return user.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 }

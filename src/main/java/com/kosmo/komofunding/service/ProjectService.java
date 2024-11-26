@@ -11,7 +11,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
 
     // 프로젝트 저장
     public Project saveProject(Project project) {
