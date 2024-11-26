@@ -6,18 +6,26 @@
   align-items: center;
   padding: 10px 10px;
   position: relative;
-  width: 1100px; /* 너비 1100px로 설정 */
-  margin: 0 auto; /* 수평 중앙 정렬 */
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  transition: all 0.3s ease-in-out; /* 화면 크기 변경 시 부드럽게 */
 }
 
 .navbar {
   display: flex;
   gap: 20px;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
   font-weight: bold;
-  width: 100%; /* navbar가 100% 크기를 차지하도록 설정 */
-  justify-content: space-around; /* navbar 항목들을 중앙 정렬 */
+  width: 100%;
+  justify-content: space-around;
+  color: #282828;
+  text-align: center;
+  font-family: "EngFont", sans-serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  flex-wrap: wrap;
 }
 
 .navbaritems {
@@ -44,11 +52,11 @@
 .content {
   text-align: center;
   margin-top: 20px;
-  font-family: Arial, sans-serif;
+  font-family: "EngFont", sans-serif;
   color: #333;
-  width: 100%; /* content가 100% 크기를 차지하도록 설정 */
-  max-width: 1100px; /* max-width를 1100px로 설정하여 내용이 더 커지지 않도록 제한 */
-  margin: 0 auto; /* 수평 중앙 정렬 */
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .content h2 {
@@ -59,4 +67,38 @@
 
 .content p {
   font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .navbarline {
+    padding: 5px 10px;
+  }
+
+  .content h2 {
+    font-size: 20px;
+  }
+
+  .content p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    font-size: 12px;
+    gap: 5px;
+  }
+
+  .content h2 {
+    font-size: 18px;
+  }
+
+  .content p {
+    font-size: 14px;
+  }
 }
