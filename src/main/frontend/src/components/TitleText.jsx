@@ -19,6 +19,14 @@ const StyledTitleText = styled(motion.p)`
   font-weight: 700;
   letter-spacing: 0.32px;
   margin: 0;
+
+    @media (max-width: 768px) {
+    font-size: 48px; /* 태블릿 및 작은 화면용 */
+  }
+
+  @media (max-width: 480px) {
+    font-size: 36px; /* 모바일 화면용 */
+  }
 `;
 
 // 컴포넌트 정의
