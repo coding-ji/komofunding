@@ -6,6 +6,7 @@ import Editor from "../../components/EditorItem/EditorItem";
 import MainHeader from '../../container/MainHeader'
 import Footer from '../../components/Footer/Footer'
 
+// 문의하기 글쓰기
 function Inquiry() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
