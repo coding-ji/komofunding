@@ -3,8 +3,9 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; // Quill 스타일을 임포트
 import axios from 'axios'; // axios 임포트
 import './EditorItem.css'; // CSS를 임포트
-import MyBtn from '../MyBtn';
-import PopupInquiry from '../../page/Inquiry/PopupInquiry';
+ import {Btn,WhiteBtn} from '../MyBtn';
+import PopupInquiry from '../../page/writeQnA/PopupInquiry';
+import { useNavigate } from 'react-router-dom'; // 수정: useNavigate 임포트 추가
 
 
 
@@ -14,6 +15,7 @@ const Editor = () => {
   const [isQuillReady, setIsQuillReady] = useState(false); // Quill 초기화 완료 여부
   const [editorContent, setEditorContent] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 상태 관리
+  const navigate = useNavigate(); // 수정: useNavigate 훅 사용
 
   // 툴바 옵션 세팅
   const toolbarOptions = useMemo(() => [
@@ -118,6 +120,8 @@ const Editor = () => {
 
   // 취소 버튼 클릭 시 처리할 함수
   const handleCancel = () => {
+    navigate('/myqna'); // 수정: 목록으로 이동
+
     // 에디터 내용을 초기화하는 로직
     setEditorContent("");  // 내용 초기화
     console.log("내용이 취소되었습니다.");
@@ -131,10 +135,13 @@ const Editor = () => {
     <div className='main-div'>
       <div ref={editorRef}></div>
       <div className="button-container">
-      <MyBtn text="확인" onClick={handleSave} 
-        style={{ width: "150px", height: "40px", fontSize: "1rem", padding : "5px" }} />
-      <MyBtn text="취소" onClick={handleCancel} 
-        style={{ width: "150px", height: "40px", fontSize: "1rem", padding : "5px" }}/>
+      <Btn text="확인" onClick={handleSave} 
+        width="100px" height="s0px" padding="5px 5px" fontSize="1.2rem"
+      />
+      <WhiteBtn text="취소" onClick={handleCancel} 
+      
+         width="100px" height="40px" padding="5px 5px" fontSize="1.2rem"
+        />
       </div>
       {isPopupOpen && (
         <PopupInquiry
@@ -144,7 +151,8 @@ const Editor = () => {
             답변은 나의 문의 내역에서 확인하세요.
           </>
         }
-        onClose={handlePopupClose}
+        onClose={handlePopupClose} // 팝업 닫기 함수
+        navigateTo="/my-inquiries" // 이동할 경로
       />
       )}
     </div>

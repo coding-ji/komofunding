@@ -37,7 +37,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (currentPage < totalPages) onPageChange(currentPage + 1);
   };
 
-  // 페이지 버튼을 최대 5개만 표시하도록 계산
   const startPage = Math.max(currentPage - 2, 1);
   const endPage = Math.min(startPage + 4, totalPages);
   const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
