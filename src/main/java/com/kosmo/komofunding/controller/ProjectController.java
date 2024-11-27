@@ -2,6 +2,7 @@ package com.kosmo.komofunding.controller;
 
 import com.kosmo.komofunding.entity.Project;
 import com.kosmo.komofunding.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,10 @@ import java.util.Optional;
 
 @Controller
 public class ProjectController {
-    private final ProjectService projectService;
 
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
+    @Autowired
+    private ProjectService projectService;
+
 
     // 프로젝트 생성 및 저장
     @PostMapping("/api/projects")
