@@ -61,6 +61,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         {">"}
       </PageButton>
     </PaginationContainer>
+  
   );
 };
 
