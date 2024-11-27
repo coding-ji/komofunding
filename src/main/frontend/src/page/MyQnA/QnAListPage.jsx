@@ -42,6 +42,7 @@ const QnAListPage = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentInquiries = inquiries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+  
   return (
     <PageContainer>
     <QnAList inquiries={currentInquiries} onInquiryClick={handleInquiryClick} />

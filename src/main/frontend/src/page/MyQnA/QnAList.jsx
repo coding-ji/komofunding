@@ -46,6 +46,7 @@ const Title = styled.div`
   margin-bottom: 5px;
 `;
 
+
 const QnAList = ({ inquiries, onInquiryClick }) => {
   return (
     <InquiryListContainer>
