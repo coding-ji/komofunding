@@ -89,3 +89,4 @@ const MyQnA = () => {
   };
 
 export default MyQnA;
+ 
