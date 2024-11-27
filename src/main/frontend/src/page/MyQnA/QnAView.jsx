@@ -42,24 +42,26 @@ const QnAContainer = styled.div`
 const Question = styled.div`
   margin-bottom: 1rem;
   padding: 15px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #fbfbfb;
+
   border-radius: 5px;
     word-wrap: break-word; /* 길이가 긴 단어를 줄 바꿈 */
   word-break: break-word; /* 단어를 강제로 줄 바꿈 */
   white-space: pre-wrap; /* 공백도 유지하며 줄 바꿈 */
+  min-height : 150px;
 
 `;
 
 const Answer = styled.div`
   margin-bottom: 1rem;
   padding: 15px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #fbfbfb;
+
   border-radius: 5px;
     word-wrap: break-word; /* 길이가 긴 단어를 줄 바꿈 */
   word-break: break-word; /* 단어를 강제로 줄 바꿈 */
   white-space: pre-wrap; /* 공백도 유지하며 줄 바꿈 */
+   min-height : 300px;
 
 `;
 const ButtonContainer = styled.div`
@@ -67,7 +69,12 @@ const ButtonContainer = styled.div`
   justify-content: center; /* 가로 중앙 정렬 */
   margin-top: 2rem; /* 위 여백 */
 `;
-
+const LineDiv = styled.div`
+ width: 100%; /* 전체 너비로 설정 */
+  height: 2px; /* 구분선 높이 */
+  background-color: #e4e4e4; /* 구분선 색상 */
+  margin: 1rem 0; /* 위아래 여백 */
+`
 
 const QnAView = () => {
   const { id } = useParams();
@@ -87,6 +94,7 @@ const QnAView = () => {
         <Question>
           <strong>Q:</strong> {inquiry.content || "문의 내용이 없습니다."}
         </Question>
+        <LineDiv/>
         <Answer>
           <strong>A:</strong> {inquiry.answer || "답변이 아직 없습니다."}
         </Answer>

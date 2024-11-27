@@ -22,7 +22,7 @@ const MainDiv = styled.div`
   width : 100%;
   flex-direction: column;
   min-height: 100vh; /* 화면 전체 높이 */
-  background-color: #f9f9f9; /* 배경색 */
+
   grid-area : main;
     /* 반응형 설정 */
   @media (max-width: 768px) {
@@ -41,7 +41,7 @@ const PageContainer = styled.div`
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
 `;
 
-const PaddingDiv = styled.div`
+const LineDiv = styled.div`
  width: 100%; /* 전체 너비로 설정 */
   height: 2px; /* 구분선 높이 */
   background-color: #e4e4e4; /* 구분선 색상 */
@@ -80,7 +80,7 @@ const MyQnA = () => {
       <MainDiv>
       <PageContainer>
         <TitleText title="나의 문의 내역" />
-        <PaddingDiv/>
+        <LineDiv/>
         <Outlet context={inquiries} /> {/* Outlet에 데이터를 전달 */}
       </PageContainer>
       </MainDiv>
