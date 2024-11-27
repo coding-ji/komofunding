@@ -3,7 +3,7 @@ import { createBrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import Main from "./page/Main/Main";
 import MainProductContainer from './container/MainProductCard/MainProductContainer'
 import { RouterProvider } from 'react-router-dom';
-
+import Product from './page/MainProduct/Product'
 import QnAView from './page/MyQnA/QnAView';
 import QnAListPage from './page/MyQnA/QnAListPage';
 import MyQnA from './page/MyQnA/MyQnA';
@@ -12,7 +12,7 @@ import WriteQnA from './page/writeQnA/WriteQnA';
 const router = createBrowserRouter([
   {path: "/", element: <Main/>, 
     children: [
-      {path: "/", element: <MainProductContainer/>},
+      {path: "/", element: <Product/>},
       {path: "/write-qna", element: <WriteQnA/>},
       {
         path: "/myqna",
