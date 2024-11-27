@@ -76,6 +76,7 @@ const LineDiv = styled.div`
   margin: 1rem 0; /* 위아래 여백 */
 `
 
+
 const QnAView = () => {
   const { id } = useParams();
   const inquiries = useOutletContext(); // MyInquiry에서 전달된 데이터
