@@ -26,7 +26,7 @@ public class Application {
     @Column(name = "application_img", nullable = false)
     private String applicationImg; // 신청 사진
 
-    @Column(name = "application_date", nullable = false)
+    @Column(name = "application_date", nullable = false, updatable = false)
     private LocalDateTime applicationDate; // 신청 날짜
 
     @Column(name = "approval_date")

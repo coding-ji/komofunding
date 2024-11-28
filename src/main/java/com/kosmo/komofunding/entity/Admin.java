@@ -16,13 +16,13 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "admin_id", nullable = false, updatable = false)
-    private String adminId; //관리자 ID
+    private String adminId; //관리자 UID
 
     @Column(name = "admin_nickname")
     private String adminNickname; //관리자 별명
 
     @Column(name = "admin_email", nullable = false, updatable = false)
-    private String adminEmail; // 관리자 이메일
+    private String adminEmail; // 관리자 이메일 (로그인 시에 사용)
 
     @Column(name = "admin_pw", nullable = false)
     private String adminPw; //관리자 비밀번호
