@@ -44,8 +44,9 @@ public class Project {
     @Column(name = "short_description", nullable = false, length = 150)
     private String shortDescription; // 프로젝트 짧은 소개
 
-    @Column(name= "description", columnDefinition = "longtext")
-    private String description; // 프로젝트 긴 소개
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "description", nullable = false, updatable = false, length = 36)
+    private String description; // 프로젝트 긴 소개가 담겨있는 html 파일명
 
     @Convert(converter = ItemListConverter.class)
     @Column(name = "items", columnDefinition = "longtext")
