@@ -1,6 +1,7 @@
 package com.kosmo.komofunding.entity;
 
 import com.kosmo.komofunding.common.dto.ItemDTO;
+import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ItemListConverter;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
@@ -35,6 +36,10 @@ public class Project {
 
     @Column(name = "title", nullable = false, length = 100)
     private String title; // 프로젝트 제목
+
+    @Column(name="project_category")
+    @Enumerated(EnumType.STRING)
+    private ProjectCategory projectCategory;
 
     @Column(name = "short_description", nullable = false, length = 150)
     private String shortDescription; // 프로젝트 짧은 소개
