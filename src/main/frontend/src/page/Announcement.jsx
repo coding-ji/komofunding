@@ -1,12 +1,11 @@
 import React from 'react';
 import styles from './Announcement.module.css'; // CSS Modules로 가져오기
-import MainHeader from '../container/MainHeader';
-import Footer from '../components/Footer/Footer'
 import { motion } from 'framer-motion';
+
 
 const Announcement = () => {
   return (<>
-   <MainHeader />
+  
     <div className={styles.announcementPage}>
 
 
@@ -44,7 +43,7 @@ const Announcement = () => {
       <div className={styles.buttonWrapper}>
           <button className={styles.backButton}>목록</button>
         </div>
-      <Footer />
+
     </div>
     </>
   );

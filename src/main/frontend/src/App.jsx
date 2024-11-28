@@ -9,6 +9,7 @@ import QnAListPage from './page/MyQnA/QnAListPage';
 import MyQnA from './page/MyQnA/MyQnA';
 import WriteQnA from './page/writeQnA/WriteQnA';
 
+
 const router = createBrowserRouter([
   {path: "/", element: <Main/>, 
     children: [
@@ -28,10 +29,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-
-    <RouterProvider router={router}/>
-    {/* <MyInquiryPage/> */}
    
+    {/* <RouterProvider router={router}/> */}
+    {/* <MyInquiryPage/> */}
+    
+  
 
       
     </>
