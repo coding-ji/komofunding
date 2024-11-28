@@ -15,7 +15,7 @@ const StyledLink = styled(motion(Link))`
   text-align: center;
 `;
 
-const NavFont = ({ nav, to = "/" }) => {
+const NavFont = ({ nav, to }) => {
   return (
     <StyledLink
       to={to}

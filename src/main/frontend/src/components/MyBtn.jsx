@@ -12,7 +12,7 @@ const Button = styled(motion.button)`
   padding: ${(props) => props.padding || "10px 112px" };
   font-weight: bold; 
   letter-spacing: 0.1rem;
-  font-family: ${(props) => props.fontFamily|| "var(--kr-font)"};
+  font-family: ${(props) => props.fontFamily || "var(--kr-font)"};
   margin: 4px 0;
   font-size:  ${(props) => props.fontSize || "2rem"};
   border: 2px solid ${(props) => props.borderColor}; 
@@ -37,9 +37,9 @@ const hoverEffects = {
   }
 
 }
-// 딜리드 사이즈 2rem
+
 // 일반 확인, 마이페이지 수정 삭제 환불, 임시 저장 홈으로, 후원하기 등 일반 통합 버튼
-export const Btn = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
   <Button
     bgColor="var(--darkblue-color)"
     borderColor="var(--darkblue-color)"
@@ -56,7 +56,7 @@ export const Btn = ({text, width, height, onClick,fontSize,padding,fontFamily}) 
 );
 
 // 일반 취소, 링크 버튼
-export const WhiteBtn = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const WhiteBtn = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
   <Button
     bgColor="white"
     borderColor="var(--darkblue-color)"
@@ -75,7 +75,7 @@ export const WhiteBtn = ({text, width, height, onClick,fontSize,padding,fontFami
   );
 
 // 모달창 확인 버튼
-export const CheckBtn = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const CheckBtn = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
   <Button
     bgColor="var(--darkblue-color)"
     textColor= "#ffffff"
@@ -92,7 +92,7 @@ export const CheckBtn = ({text, width, height, onClick,fontSize,padding,fontFami
 );
 
 // 모달창 취소 버튼
-export const CancelBtn = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const CancelBtn = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
   <Button
     bgColor="white"
     borderColor="var(--darkblue-color)"
@@ -111,7 +111,7 @@ export const CancelBtn = ({text, width, height, onClick,fontSize,padding,fontFam
 
 
 // 상품 페이지 수정 / 문의하기 => 블랙
-export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const ProductBtn1 = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
   <Button
   bgColor="black"
   borderColor="white"
@@ -130,7 +130,7 @@ export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontF
 );
 
 // 상품 페이지 삭제 / 답변 달기 버튼 => 화이트
-export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const ProductBtn2 = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
   <Button
   bgColor="white"
   borderColor="black"
@@ -149,6 +149,3 @@ export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontF
 );
 
 
-
-
-// 수현이 바꿀거 -> 버튼 색상 변경 스위치 케이스

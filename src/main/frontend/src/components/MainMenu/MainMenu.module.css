@@ -1,0 +1,21 @@
+.mainMenu{
+    background-color: #232323;
+    width: 1440px;
+    height: 1024px;
+    position: relative;
+    overflow: hidden;
+}
+
+.menus {
+    background-color: white;
+    height: 746px;
+    width: 1440px;
+    left: 0;
+    position: fixed;
+    top: 120px;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+
+}

@@ -1,0 +1,15 @@
+/* 기본 .contentContainer 스타일 */
+.contentContainer {
+    margin: 1.875rem 10vw; /* 10vw는 화면 너비의 10% */
+}
+
+/* 화면 너비가 920px 이하일 때 .contentContainer 스타일 수정 */
+@media (max-width: 920px) {
+    .contentContainer {
+        margin: 1.875rem 10vw; /* 920px 이하에서도 화면 너비에 비례하여 줄어들게 설정 */
+    }
+}
+
+.header {
+    margin: 30px 0px;
+}
