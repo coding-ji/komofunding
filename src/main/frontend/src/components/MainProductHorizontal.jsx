@@ -8,19 +8,44 @@ const StyledDivHorizontal = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 32px;
+  padding: 13px 8px;
   perspective: 1200px;
   transform-style: preserve-3d;
+  height : 485px;
+  width : 100%
+
+
 `;
 
 function MainProductHorizontal() {
+    
+  const animations = [
+    {
+      initial: { opacity: 0,  rotateX: -90  },
+      whileInView: { opacity: 1, rotateX: 0},
+    },
+    {
+      initial: { opacity: 0, rotateX: 90 },
+      whileInView: { opacity: 1, rotateX: 0 },
+    },
+    {
+      initial: { opacity: 0, rotateY: -90 },
+      whileInView: { opacity: 1, rotateY: 0 },
+    },
+    {
+      initial: { opacity: 0, rotateY: 90 },
+      whileInView: { opacity: 1, rotateY: 0 },
+    },
+  ];
+
+  const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
     return (
         <StyledDivHorizontal
-            initial={{ opacity: 0, rotateY: -90 }} // 초기 상태: 카드 옆으로 눕힘
-            whileInView={{ opacity: 1, rotateY: 0 }} // 카드 정상 위치
-            whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
-            transition={{ duration: .7 }}
-            style={{ transformOrigin: 'center' }}
+        {...randomAnimation}
+    whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
+    transition={{ duration: 0.5 }}
+    style={{ transformOrigin: 'center' }}
+
         // style={{ perspective: '1200px' }}
         >
             <InnerProduct />

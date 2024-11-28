@@ -7,6 +7,7 @@ const StyledImg = styled(motion.div)`
   background-size: cover;
   background-position: center;
   width: 100%;
+  min-height : 100px;
   height: 100%;
   position: relative;
   overflow: hidden; 

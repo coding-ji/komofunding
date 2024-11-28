@@ -58,7 +58,7 @@ const SelectDiv = styled(motion.div)`
   transition: background-color 0.4s cubic-bezier(0.66, 0.19, 0.76, 1.13);
 `;
 
-function SelectProjectBtn() {
+function SelectProjectBtn({title}) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -68,7 +68,7 @@ function SelectProjectBtn() {
       isHovered={isHovered}
 
     >
-      <ProjectTitle isHovered={isHovered}>PROJECT SELECT</ProjectTitle>
+      <ProjectTitle isHovered={isHovered}>{title}</ProjectTitle>
       <ProjectAdd isHovered={isHovered}>프로젝트 등록</ProjectAdd>
       <BtnBox isHovered={isHovered}
             whileTap={{scale : 1.02,  transition :{duration:0.1}}}

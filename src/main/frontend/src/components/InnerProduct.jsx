@@ -19,8 +19,8 @@ function InnerProduct() {
     return (
         <StyledProduct>
             <Label text="popular" color='var(--navy-color)' />
-            {/* <Img src={"https://via.placeholder.com/450x450"}></Img> */}
-            <ProductImg src={"https://via.placeholder.com/450x450"}></ProductImg>
+            <Img src={"https://via.placeholder.com/450x450"}></Img>
+            {/* <ProductImg src={"https://via.placeholder.com/450x450"}></ProductImg> */}
             <Progress value={30} max={100} color='var(--navy-color)'></Progress>
         </StyledProduct>
     )

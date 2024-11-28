@@ -4,13 +4,14 @@ function Label({text, color}) {
     const StyledDiv = styled.div`
         background: ${color};
         color: ${color? "white": "black"};
-        padding: 1px 11px;
-        width: 105px;
-        height: 26.6px;
+        padding: 2px 1px;
+        width: 30%;
+        height: 20PX;
         text-align: center;
         letter-spacing: 0.60px;
         margin-bottom : 5px;
         border-radius : 5px;
+        font-size : 10px;
 
     `;
 
