@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const StyledInput = styled.input`
     padding: 10px 10px ;
-    margin-top: 5px;
+    margin: ${(props) => props.margin || "5px 0 0 0"};
 width: ${(props) => props.width || '97%'}; /* props로 width를 받을 수 있도록 설정 */
 
       font-size: ${(props) => {
@@ -22,7 +22,7 @@ width: ${(props) => props.width || '97%'}; /* props로 width를 받을 수 있�
   }}
     `;
 
-function Input({ type, placeholder, onChange, value, gridArea, size, width}) {
+function Input({ type, placeholder, onChange,margin, value, gridArea, size, width}) {
   return (
       <StyledInput
         type={type}
@@ -30,6 +30,7 @@ function Input({ type, placeholder, onChange, value, gridArea, size, width}) {
         onChange={onChange}
         value={value}
         size={size}
+        margin={margin}
         style={{ gridArea: gridArea }}
         width={width} // width를 props로 전달
       />

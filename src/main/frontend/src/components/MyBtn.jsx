@@ -27,6 +27,7 @@ const hoverEffects = {
     backgroundColor: "white",  
     color: "var(--darkblue-color)", 
     borderColor: "var(--darkblue-color)",
+    borderRadius: "7px",
   },
 
   Cancel : {

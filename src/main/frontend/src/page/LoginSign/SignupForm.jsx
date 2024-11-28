@@ -1,13 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Alert from "../../assets/pgw/Alert";
+import Alert from "../../components/Alert/Alert";
+import MainHeader from "../../container/MainHeader";
+import MyNav from "../../components/MyNav";
 
 
 
 const SignupForm = () => {
   return (
     <div style={styles.pageContainer}>
-
+   <MyNav />
       <motion.div
         style={styles.container}
         initial={{ opacity: 0, y: 50 }}
@@ -250,6 +252,7 @@ const styles = {
     borderRadius: "4px",
     cursor: "pointer",
   },
+ 
   submitButton: {
     gridColumn: "2 / span 1", // 버튼 전체 폭 차지
     textAlign: "center",
