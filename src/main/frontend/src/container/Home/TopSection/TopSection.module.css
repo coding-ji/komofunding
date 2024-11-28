@@ -1,0 +1,164 @@
+/* TopSection.module.css */
+
+@keyframes scrollAnimation {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .gridWrapper {
+
+    display: grid;
+    grid-template-areas:
+      "top top top"
+      "title title title"
+      "circle circle circle"
+      ". cards ."
+      "cloud cloud cloud";
+    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 20px;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+     overflow: hidden; 
+
+
+  }
+  
+  @media (max-width: 768px) {
+    .gridWrapper {
+      gap: 10px;
+    }
+  }
+  
+  .topGroup {
+    display: flex;
+    grid-area: top;
+    width: 100%;
+    justify-content: space-between; /* 요소 간 공간 배분 */
+    align-items: center; /* 세로 중앙 정렬 */
+    position: relative; /* 자식 요소의 absolute 기준 */
+    padding: 10px 10px; /* 상하 좌우 여백 추가 */
+    z-index: 1; /* Menu가 다른 요소 위에 배치되도록 설정 */
+  }
+  
+  @media (max-width: 768px) {
+    .topGroup {
+      flex-direction: column; /* 작은 화면에서 수직 배치 */
+      align-items: flex-start; /* 수평 정렬을 좌측으로 변경 */
+    }
+  }
+  
+  .komoFunding {
+    position: relative;
+    left: 0;
+    top: 0;
+    font-size: 64px;
+    color: #fff;
+    font-family: var(--kr-noto);
+    font-style: normal;
+    font-weight: 900;
+    line-height: 70px; /* 109.375% */
+    letter-spacing: 1.92px;
+  }
+  
+  .menu {
+    position: relative;
+    right: 0;
+    top: 0;
+    color: #fff;
+    text-align: center;
+    font-family: var(--eng-font);
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    z-index: 2;
+  }
+  
+  .menu::before {
+    content: "";
+    position: absolute;
+    left: -10px; /* 글자와 바 간격 조정 */
+    top: 50%; /* 텍스트 높이에 맞게 중앙 정렬 */
+    transform: translateY(-50%);
+    width: 7px; /* 바의 너비 */
+    height: 60%; /* 바의 높이 조정 */
+    background-color: #ffa449; /* 바 색상 */
+  }
+  
+  .title {
+    position: relative;
+    top: 45rem;
+    grid-area: title;
+    font-size: 9rem;
+    font-weight: bold;
+    white-space: nowrap;
+    animation: scrollAnimation 10s linear infinite;
+    color: #fff;
+    text-align: center;
+    font-family: var(--eng-font);
+  }
+  
+  @media (max-width: 1200px) {
+    .title {
+      font-size: 8rem;
+    }
+  }
+  
+  @media (max-width: 800px) {
+    .title {
+      font-size: 7rem;
+    }
+  }
+  
+  .overlayCircle {
+    grid-area: circle;
+    position: relative;
+    top: 20rem;
+    right: -50%;
+    justify-self: center;
+    align-self: center;
+    width: 70vw;
+    height: 70vw;
+    background-color: #fff;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  
+  .cardsContainer {
+    grid-area: cards;
+    display: grid;
+    grid-template-columns: repeat(3, 326px); /* 기본 3열 */
+    gap: 2rem;
+    justify-content: center;
+    z-index: 1;
+    margin-bottom: 10rem;
+  }
+  
+  @media (max-width: 1200px) {
+    .cardsContainer {
+      grid-template-columns: repeat(2, 326px); /* 중간 화면 크기: 2열 */
+    }
+  }
+  
+  @media (max-width: 800px) {
+    .cardsContainer {
+      grid-template-columns: 326px; /* 작은 화면 크기: 1열 */
+    }
+  }
+  
+  .cardGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    width: 100%;
+  }
+  
