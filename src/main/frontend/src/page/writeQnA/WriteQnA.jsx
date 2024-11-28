@@ -1,12 +1,12 @@
 import Input from "../../components/input";
 import TitleText from "../../components/TitleText";
 import { useState } from "react";
-import styles from "./Inquiry.module.css";
+import styles from "./WriteQnA.module.css";
 import Editor from "../../components/EditorItem/EditorItem";
-import MainHeader from '../../container/MainHeader'
-import Footer from '../../components/Footer/Footer'
+// import Footer from '../../components/Footer/Footer'
 
-function Inquiry() {
+// 문의하기 글쓰기
+function WriteQnA() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
@@ -14,7 +14,7 @@ function Inquiry() {
 
     return (
         <>
-        <MainHeader/>
+
         <div className={styles.mainGrid}>
             {/* 상단 섹션 */}
             <div className={styles.topSection}>
@@ -37,9 +37,9 @@ function Inquiry() {
             </div>
         </div>
 
-        <Footer/>
+        {/* <Footer/> */}
         </>
     );
 }
 
-export default Inquiry;
+export default WriteQnA;

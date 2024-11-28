@@ -5,7 +5,6 @@ import MyContainer from "./MyContainer";
 
 // 그리드 레이아웃을 위한 스타일링
 const StyledContainers = styled(motion.div)`
-
   display: grid;
   grid-template-columns: repeat(3, auto);
   gap: 30px; /* 요소 간 간격 */
@@ -21,15 +20,14 @@ const StyledContainers = styled(motion.div)`
   }
 `;
 
-
 // 그리드의 부모 컨테이너 애니메이션 설정
 const containerVariants = {
   initial: { opacity: 0 },
   animate: {
     opacity: 1,
     transition: {
-      delayChildren: 0.5, // 자식 요소가 등장하기 전 대기 시간
-      staggerChildren: 0.2, // 자식 요소들 간의 등장 간격 
+      delayChildren: 0.3, // 자식 요소가 등장하기 전 대기 시간
+      staggerChildren: 0.2, // 자식 요소들 간의 등장 간격
     },
   },
 };
@@ -40,40 +38,35 @@ const itemVariants = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
+// 샘플 데이터 배열
+const products = [
+  { title: "Product", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+];
+
 function MyContainers() {
   return (
     <StyledContainers
-      variants={containerVariants}  // 부모 요소에 애니메이션 variants 추가
+      variants={containerVariants} // 부모 요소에 애니메이션 variants 추가
       initial="initial"
       animate="animate"
     >
-      <motion.div variants={itemVariants}>
-        <MyContainer title="Product" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <MyContainer title="포실포실하덕" description="얄루얄루" text="DELETE" />
-      </motion.div>
+      {products.map((product, index) => (
+        <motion.div key={index} variants={itemVariants}>
+          <MyContainer 
+            title={product.title} 
+            description={product.description} 
+            text={product.text} 
+          />
+        </motion.div>
+      ))}
     </StyledContainers>
   );
 }

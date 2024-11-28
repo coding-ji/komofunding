@@ -54,6 +54,7 @@ function ProductCardImage({ src,animation }) {
  
   const appliedAnimation =
   animation || animations[Math.floor(Math.random() * animations.length)];
+  
   return (
     <CardContainer
     {...appliedAnimation}

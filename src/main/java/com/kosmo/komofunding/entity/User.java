@@ -70,7 +70,7 @@ public class User {
     @Column(name = "account_holder", length = 50)
     private String accountHolder; //예금주
 
-    @Column(name = "join_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "join_date", nullable = false)
     private LocalDateTime joinDate;  //가입날짜
 
     @Column(name = "last_login_time")
@@ -90,7 +90,7 @@ public class User {
     private List<String> projectIds; // 프로젝트 ID들 저장
 
 
-    // 6자리 랜덤 숫자 생성(회원번호)
+    // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
         Random random = new Random();
         return 100000L + random.nextInt(900000); // 100000~999999 사이의 랜덤 숫자 생성

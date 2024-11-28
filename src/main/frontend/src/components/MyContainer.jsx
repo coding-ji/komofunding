@@ -4,7 +4,7 @@ import '../index.css';
 import ProductImg from "./ProductCard1/ProductImg";
 import ProductTitle from "./ProductCard1/ProductTitle";
 import ProductDescription from "./ProductCard1/ProductDescription";
-import MyBtn from "./MyBtn";
+import { Btn } from "./MyBtn";
 
 const Styleddiv = styled(motion.div)`
   display: grid;
@@ -30,7 +30,7 @@ function MyContainer({title, description, text}) {
                 <ProductDescription description={description} />
             </motion.div>
             <motion.div>
-                <MyBtn text={text} />
+                <Btn text={text}>s</Btn>
             </motion.div>
         </Styleddiv>
     );

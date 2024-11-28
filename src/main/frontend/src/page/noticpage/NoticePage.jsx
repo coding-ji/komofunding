@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import Notification from '../pgw/Notification'; // Notification 컴포넌트 불러오기
+import Notification from '../../components/Notification'; // Notification 컴포넌트 불러오기
 import styles from './NoticePage.module.css';
 import Note from './PageInPage/Note';
 import Create from './PageInPage/Create';
@@ -10,8 +10,8 @@ import Userterms from './PageInPage/Userterms';
 import Privacypolicy from './PageInPage/Privacypolicy';
 import Charge from './PageInPage/Charge';
 import Question from './PageInPage/Question';
-import Footer from './Footer';
-import MainHeader from './MainHeader';
+import Footer from '../../components/Footer/Footer';
+import MainHeader from '../../container/MainHeader';
 
 const categories = [
   { name: '전체', content: '전체 페이지' },

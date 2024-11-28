@@ -8,6 +8,7 @@
   background-color: var(--header-color);
   color: #fff;
   width: 100%; /* 100vw 대신 100% 사용 */
+  
   min-width: 400px;
   box-sizing: border-box; /* padding 포함 */
   overflow: hidden; /* 콘텐츠가 넘칠 경우 숨기기 */
