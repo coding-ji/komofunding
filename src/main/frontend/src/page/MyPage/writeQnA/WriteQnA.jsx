@@ -1,8 +1,8 @@
-import Input from "../../components/input";
-import TitleText from "../../components/TitleText";
+import Input from "../../../components/input";
+import TitleText from "../../../components/TitleText";
 import { useState } from "react";
 import styles from "./WriteQnA.module.css";
-import Editor from "../../components/EditorItem/EditorItem";
+import Editor from "../../../components/EditorItem/EditorItem";
 // import Footer from '../../components/Footer/Footer'
 
 // 문의하기 글쓰기

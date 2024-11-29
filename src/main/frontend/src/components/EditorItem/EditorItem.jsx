@@ -4,7 +4,7 @@ import 'quill/dist/quill.snow.css'; // Quill 스타일을 임포트
 import axios from 'axios'; // axios 임포트
 import './EditorItem.css'; // CSS를 임포트
  import {Btn,WhiteBtn} from '../MyBtn';
-import PopupInquiry from '../../page/writeQnA/PopupInquiry';
+import PopupInquiry from '../../page/MyPage/writeQnA/PopupInquiry'
 import { useNavigate } from 'react-router-dom'; // 수정: useNavigate 임포트 추가
 
 

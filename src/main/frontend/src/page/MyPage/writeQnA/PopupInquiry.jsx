@@ -1,7 +1,7 @@
 import React from "react";
 import "./PopupInquiry.css";
-import {Btn} from "../../components/MyBtn";
-import '../../index.css'
+import {Btn} from "../../../components/MyBtn";
+import '../../../index.css'
 import { useNavigate } from "react-router-dom";
 
 function PopupInquiry({ message, onClose,navigateTo}) {
