@@ -45,7 +45,7 @@ public class Project {
     private String shortDescription; // 프로젝트 짧은 소개
 
     @Column(name = "description", nullable = false)
-    private String description; // 프로젝트 긴 소개가 담겨있는 html 파일주소
+    private String description; // 프로젝트 긴 소개가 담겨있는 html  파일주소
 
     @Convert(converter = ItemListConverter.class)
     @Column(name = "items", columnDefinition = "longtext")
