@@ -1,0 +1,97 @@
+/* FindAccount.module.css */
+
+.pageContainer {
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 40px;
+  }
+  
+  .header {
+    width: 100%;
+    max-width: 600px;
+    text-align: start;
+    margin-bottom: 5px;
+  }
+  
+  .title {
+    color: var(--smallText, #6b6b6b);
+    text-align: start;
+    font-family: "Noto Sans KR";
+    font-size: 20px;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 5px;
+    padding-left: 4%;
+  }
+  
+  .hrDarkToLight {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #333 25%, #ccc 25%);
+    border: none;
+    margin-bottom: 10px;
+  }
+  
+  .section {
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #c9c9c9;
+    padding: 20px;
+  }
+  
+  .gridForm {
+    display: grid;
+    grid-template-columns: 150px 1fr 100px;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .label {
+    color: #000;
+    text-align: start;
+    font-family: "Noto Sans KR";
+    font-size: 20px;
+    font-weight: 700;
+    line-height: normal;
+    margin: 15px 0 0 15px;
+  }
+  
+  .input {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid var(--lineColor, #c9c9c9);
+    border-radius: 4px;
+    margin: 15px 0 0 15px;
+    width: 90%;
+  }
+  
+  .button {
+    border-radius: 2px;
+    border: 2px solid #256e91;
+    background-color: #256e91;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .customButtonClass {
+    border-radius: 2px;
+    background-color: var(--user-mainHome, #282828);
+    color: #fff;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin: 15px 0 0 15px;
+  }
+  

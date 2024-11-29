@@ -1,0 +1,78 @@
+/* Login.module.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .loginBox {
+    background-color: white;
+    border-radius: 7px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 564px;
+    margin: 10px;
+  }
+  
+  .topLinks {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  
+  .hrSect {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.35);
+    font-size: 12px;
+    margin: 20px 0;
+  }
+  
+  .hrSect::before,
+  .hrSect::after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 16px;
+  }
+  
+  /* 네이버 로그인 버튼 스타일 */
+  .naverbtn {
+    background-color: #4caf50;
+    color: white;
+    width: 500px;
+    height: 64px;
+    font-size: 24px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    border-radius: 7px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border: 2px solid #4caf50;
+  }
+  
+  /* 카카오톡 로그인 버튼 스타일 */
+  .kakaobtn {
+    background-color: #ffcc00;
+    color: white;
+    padding: 12px;
+    width: 500px;
+    height: 64px;
+    font-size: 24px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    border-radius: 7px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: 2px solid #ffcc00;
+  }
+  
