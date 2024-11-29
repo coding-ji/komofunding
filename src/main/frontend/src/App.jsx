@@ -11,6 +11,9 @@ import QnAListPage from "./page/MyQnA/QnAListPage";
 import QnAView from "./page/MyQnA/QnAView";
 import MyFunding from "./page/MyFunding/MyFunding";
 import MainMenu from "./components/MainMenu/MainMenu";
+import Login from "./page/LoginSign/Login";
+import FindAccount from "./page/LoginSign/FindAccount";
+import SignupForm from "./page/LoginSign/SignupForm";
 
 
 const router = createBrowserRouter([
@@ -18,6 +21,9 @@ const router = createBrowserRouter([
     children: [
       {path: "/", element: <Product/>},
       {path: "/write-qna", element: <WriteQnA/>},
+      {path: "/login", element: <Login/>},
+      {path: "/FindAccount", element: <FindAccount/>},
+      {path: "/SignupForm", element: <SignupForm/>},
       {
         path: "/myqna",
         element: <MyQnA/>, // 부모 컴포넌트
@@ -44,9 +50,9 @@ function App() {
 
 
       
-    </>
+    
 
-  )
+  
 }
 
 export default App

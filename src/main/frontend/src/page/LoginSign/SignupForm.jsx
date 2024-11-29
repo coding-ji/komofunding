@@ -1,58 +1,55 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Alert from "../../components/Alert/Alert";
-import MainHeader from "../../container/MainHeader";
-import MyNav from "../../components/MyNav";
-
-
+import styles from './SignupForm.module.css'; // import external CSS
 
 const SignupForm = () => {
   return (
-    <div style={styles.pageContainer}>
-   <MyNav />
+    <div className={styles.pageContainer}>
+
       <motion.div
-        style={styles.container}
+        className={styles.container}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <motion.div
-          style={styles.header}
+          className={styles.header}
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <h2 style={styles.title}>회원 가입</h2>
-          <hr style={styles.hrDarkToLight} />
+          <h2 className={styles.title}>회원 가입</h2>
+          <hr className={styles.hrDarkToLight} />
         </motion.div>
 
-        <section style={styles.section}>
-          <div style={styles.description}>
+        <section className={styles.section}>
+          <div className={styles.description}>
             개인정보보호법에 따라 회원가입 신청자는 고지 및 동의를 거친 후 회원가입이 가능합니다.
             아래 정보를 입력 후 가입 절차를 진행해 주세요.
           </div>
-          <form style={styles.gridForm}>
+          <form className={styles.gridForm}>
             {/* 이름 */}
-            <label style={styles.label} htmlFor="name">
+            <label className={styles.label} htmlFor="name">
               이름
             </label>
             <input
               id="name"
               type="text"
               placeholder="이름을 입력하세요"
-              style={styles.input}
+              className={styles.input}
             />
             <div></div>
             <div></div>
 
             {/* 이메일 */}
-            <label style={styles.label} htmlFor="email">
+            <label className={styles.label} htmlFor="email">
               이메일
             </label>
             <input
               id="email"
               type="email"
               placeholder="이메일을 입력하세요"
-              style={styles.input}
+              className={styles.input}
             />
             <div></div>
             <Alert
@@ -64,48 +61,48 @@ const SignupForm = () => {
             />
 
             {/* 아이디 */}
-            <label style={styles.label} htmlFor="id">
+            <label className={styles.label} htmlFor="id">
               아이디(이메일)
             </label>
             <input
               id="id"
               type="text"
               placeholder="아이디를 입력하세요"
-              style={styles.input}
+              className={styles.input}
             />
             <div></div>
             <div></div>
 
             {/* 비밀번호 */}
-            <label style={styles.label} htmlFor="password">
+            <label className={styles.label} htmlFor="password">
               비밀번호
             </label>
             <input
               id="password"
               type="password"
               placeholder="비밀번호를 입력하세요"
-              style={styles.input}
+              className={styles.input}
             />
             <div></div>
             <div></div>
 
             {/* 휴대폰 번호 */}
-            <label style={styles.label} htmlFor="phone">
+            <label className={styles.label} htmlFor="phone">
               휴대폰 번호
             </label>
-            <div style={styles.phoneGroup}>
+            <div className={styles.phoneGroup}>
               <input
                 id="phone1"
                 type="text"
                 placeholder="010"
                 maxLength="3"
-                style={styles.phoneInput1}
+                className={styles.phoneInput1}
               />
               <input
                 id="phone2"
                 type="text"
                 placeholder="12345678"
-                style={styles.phoneInput2}
+                className={styles.phoneInput2}
               />
             </div>
             <div></div>
@@ -118,14 +115,14 @@ const SignupForm = () => {
             />
 
             {/* 코드번호 */}
-            <label style={styles.label} htmlFor="code">
+            <label className={styles.label} htmlFor="code">
               코드번호
             </label>
             <input
               id="code"
               type="text"
               placeholder="코드번호를 입력하세요"
-              style={styles.input}
+              className={styles.input}
             />
             <div></div>
             <div></div>
@@ -133,11 +130,11 @@ const SignupForm = () => {
             {/* 회원가입 버튼 */}
             <motion.button
               type="button"
-              style={styles.submitButton}
+              className={styles.submitButton}
               whileHover={{
                 scale: 1.1,
-                backgroundColor: "#256E91",
-                color: "#FFF",
+                backgroundColor: "#FFF",
+                color: "#000",
               }}
               whileTap={{ scale: 0.9 }}
             >
@@ -148,120 +145,8 @@ const SignupForm = () => {
       </motion.div>
 
     </div>
-  
+
   );
 };
 
 export default SignupForm;
-
-const styles = {
-  pageContainer: {
-    marginTop: "5%",
-    marginBottom: "5%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems:"center",
-    justifyContent: "center",
-  },
-  container: {
-    margin:"10%",
-    width: "100%",
-    maxWidth: "700px",
-    padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-
-  },
-  header: {
-    textAlign: "center",
-    marginBottom: "20px",
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    textAlign: "start",
-  },
-  hrDarkToLight: {
-    width: "100%",
-    height: "2px",
-    background: "linear-gradient(to right, #333 20%, #ccc 20%)",
-    border: "none",
-  },
-  description: {
-    fontSize: "14px",
-    marginBottom: "20px",
-    padding: "15px",
-    background: "var(--, #ECECEC)",
-    borderRadius: "4px",
-  },
-  section: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  gridForm: {
-    display: "grid",
-    gridTemplateColumns: "auto auto auto auto", // 4열 구조
-    gridAutoRows: "auto",
-    gap: "10px 20px",
-    alignItems: "center",
-    padding: "20px",
-  },
-  label: {
-    textAlign: "start",
-    fontWeight: "bold",
-    fontSize: "14px",
-    fontFamily: "Noto Sans KR",
-    color: "#000",
-    whiteSpace: "nowrap", // 한 줄로 강제 표시
-    overflow: "hidden",
-    textOverflow: "ellipsis", // 내용이 길 경우 말줄임 표시
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    fontSize: "14px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  phoneGroup: {
-    display: "flex",
-    gap: "10px",
-  },
-  phoneInput1: {
-    flex: 1,
-    width:"30%",
-    padding: "10px",
-    fontSize: "14px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  phoneInput2: {
-     width:"70%",
-    padding: "10px",
-    fontSize: "14px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  button: {
-    padding: "10px",
-    fontSize: "14px",
-    backgroundColor: "#256E91",
-    color: "#FFF",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
- 
-  submitButton: {
-    gridColumn: "2 / span 1", // 버튼 전체 폭 차지
-    textAlign: "center",
-
-    height: "40px",
-    padding: "8px 31px",
-    gap: "10px",
-    borderRadius: "2px",
-    border: "2px solid #256E91",
-    background: "#FFF",
-  },
-};
