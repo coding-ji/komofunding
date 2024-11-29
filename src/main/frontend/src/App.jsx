@@ -14,6 +14,7 @@ import MainMenu from "./components/MainMenu/MainMenu";
 import Login from "./page/LoginSign/Login";
 import FindAccount from "./page/LoginSign/FindAccount";
 import SignupForm from "./page/LoginSign/SignupForm";
+import HomePage from './page/Home/HomePage'
 
 
 const router = createBrowserRouter([
@@ -41,8 +42,10 @@ const router = createBrowserRouter([
           { path: "completed", element: <Completed />}
         ],
       },
+      
 
-    ]}
+    ]},
+    {path : "/home", element:<HomePage/> }
 ])
 
 function App() {

@@ -3,13 +3,20 @@ import styles from "../components/Header/Header.module.css"; // 모듈 CSS 가�
 import HeaderMenu from "../components/Header/HeaderMenu"; // 메뉴 컴포넌트
 import SearchInput from "../components/Header/SearchInput";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+useNavigate
 
 const MainHeader = () => {
+
+  const navigate = useNavigate(); // useNavigate 훅 선언
+
   return (
     <div className={styles.headerContainer}>
       {/* 로고 및 메뉴 섹션 */}
       <div className={styles.logoAndMenu}>
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div whileHover={{ scale: 1.05 }}
+                   onClick={() => navigate("/")} // 홈으로 이동
+        >
           <div
             className={styles.logoImage}
             alt="로고이미지"
@@ -20,7 +27,7 @@ const MainHeader = () => {
           />
         </motion.div>
         <div className={styles.menuList}>
-          <HeaderMenu name="HOME" href="#home" />
+          <HeaderMenu name="HOME" href="/home" />
           <HeaderMenu name="UPCOMING" href="#upcoming" />
           <HeaderMenu name="ACTIVE" href="#active" />
           <HeaderMenu name="MORE" href="#more" />
@@ -38,6 +45,8 @@ const MainHeader = () => {
             className={styles.button}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => navigate("/login")} // /login으로 이동
+            
           >
             Log In
           </motion.button>
@@ -45,6 +54,7 @@ const MainHeader = () => {
             className={styles.button}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => navigate("/SignupForm")} // /SignupForm으로 이동
           >
             Sign Up
           </motion.button>
