@@ -16,6 +16,7 @@ import FindAccount from "./page/LoginSign/FindAccount";
 import SignupForm from "./page/LoginSign/SignupForm";
 import HomePage from './page/Home/HomePage'
 import NoticePage from './page/noticpage/NoticePage'
+import CreatorApply from "./page/MyPage/CreatorApply/CreatorApply";
 
 
 const router = createBrowserRouter([
@@ -51,7 +52,8 @@ const router = createBrowserRouter([
 ])
 
 function App() {
- return <RouterProvider router={router} />;
+//  return <RouterProvider router={router} />;
+return (<CreatorApply/>)
 
 
       
