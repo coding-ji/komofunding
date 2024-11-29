@@ -1,0 +1,86 @@
+.creator-application {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+}
+
+.box {
+  border: 1px solid var(--line-color);
+  padding: 2rem;
+}
+
+.section {
+  margin: 1rem auto;
+}
+
+.type-selection {
+  display: flex;
+  gap: 20px;
+}
+
+.submissionText {
+  font-family: var(--kr-noto);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.instructions {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* 파일 업로드 스타일 */
+.drag-area {
+  border: 2px dashed #ddd;
+  padding: 20px;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.file-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* 라디오 버튼 스타일 */
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6b6b6b;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  background-color: #6b6b6b;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
