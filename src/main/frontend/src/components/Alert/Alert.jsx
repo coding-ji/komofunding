@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './Alert.css';  // 스타일 import
 import { Btn,CheckBtn,ProductBtn1 } from '../MyBtn';
+import '../../index.css'
 
 const Alert = ({ 
   message, 
@@ -42,8 +43,8 @@ const Alert = ({
       {isAlertOpen && (
         <motion.div
           className="alert"
-          initial={{ opacity: 0, scale: 0.8 }}  
-          animate={{ opacity: 1, scale: 1 }}    
+          initial={{ opacity: 0, scale: 0.8, transform: "translate(-50%, -50%)" }}  
+          animate={{ opacity: 1, scale: 1, transform: "translate(-50%, -50%)" }}    
           exit={{ opacity: 0, scale: 0.8 }}    
           transition={{ duration: 0.3 }}        
         >
