@@ -22,7 +22,8 @@
       "totalAmount": "1000000",
       "startDate": "2024-12-01",
       "endDate": "2024-12-31",
-      "writtenDate": "2024-12-01"
+      "writtenDate": "2024-12-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "654321",
@@ -47,7 +48,8 @@
       "totalAmount": "500000",
       "startDate": "2024-11-01",
       "endDate": "2024-12-01",
-      "writtenDate": "2024-11-01"
+      "writtenDate": "2024-11-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "112233",
@@ -72,7 +74,8 @@
       "totalAmount": "1500000",
       "startDate": "2024-09-01",
       "endDate": "2024-12-31",
-      "writtenDate": "2024-09-01"
+      "writtenDate": "2024-09-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "334455",
@@ -97,7 +100,8 @@
       "totalAmount": "1000000",
       "startDate": "2024-10-15",
       "endDate": "2024-11-15",
-      "writtenDate": "2024-10-15"
+      "writtenDate": "2024-10-15",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "556677",
@@ -122,7 +126,8 @@
       "totalAmount": "800000",
       "startDate": "2024-11-01",
       "endDate": "2024-12-01",
-      "writtenDate": "2024-11-01"
+      "writtenDate": "2024-11-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "778899",
@@ -147,7 +152,8 @@
       "totalAmount": "1000000",
       "startDate": "2024-08-01",
       "endDate": "2024-12-31",
-      "writtenDate": "2024-08-01"
+      "writtenDate": "2024-08-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "990011",
@@ -172,7 +178,8 @@
       "totalAmount": "1200000",
       "startDate": "2024-07-01",
       "endDate": "2024-12-01",
-      "writtenDate": "2024-07-01"
+      "writtenDate": "2024-07-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "223344",
@@ -197,7 +204,8 @@
       "totalAmount": "900000",
       "startDate": "2024-06-01",
       "endDate": "2024-12-01",
-      "writtenDate": "2024-06-01"
+      "writtenDate": "2024-06-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     },
     {
       "projectNum": "445566",
@@ -222,7 +230,8 @@
       "totalAmount": "1000000",
       "startDate": "2024-10-01",
       "endDate": "2024-12-15",
-      "writtenDate": "2024-10-01"
+      "writtenDate": "2024-10-01",
+      "imgs" : ["/imgs/profile1.jpg", "/imgs/profile2.jpg"]
     }
   ]
   
