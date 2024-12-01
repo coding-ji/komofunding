@@ -1,0 +1,9 @@
+.profile-image-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ddd;
+}

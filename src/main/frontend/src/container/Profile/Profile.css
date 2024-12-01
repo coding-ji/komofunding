@@ -1,0 +1,17 @@
+
+.profile-flexbox{
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-image-name{
+    display: grid;
+    grid-template:
+    'profileImage profileName support' 1fr
+    'profileImage userId ...' 1fr
+    'profileImage ProfileEdit' 1fr/ 100px 1fr 1fr
+}
+
+.username{
+    grid-area:profileName ;
+}
