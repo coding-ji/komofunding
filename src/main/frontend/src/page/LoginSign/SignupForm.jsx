@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Alert from "../../components/Alert/Alert";
 import styles from './SignupForm.module.css'; // import external CSS
+import { useStore as UserStore } from "../../stores/UserStore/useStore";
+
+// 추후 백이랑 연동해서 인증코드는 검사하기 
+// 유효성검사넣기 !!!!   비밀번호도 확인했을때 맞는지 확인
+
+
 
 const SignupForm = () => {
+  const { state: userState, actions: userActions } = UserStore();
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [authCode, setAuthCode] = useState("");
+
+
   return (
     <div className={styles.pageContainer}>
 
@@ -37,6 +48,8 @@ const SignupForm = () => {
               type="text"
               placeholder="이름을 입력하세요"
               className={styles.input}
+              value={userState.name}
+              onChange={(e) => userActions.changeName(e.target.value)}
             />
             <div></div>
             <div></div>
@@ -50,6 +63,8 @@ const SignupForm = () => {
               type="email"
               placeholder="이메일을 입력하세요"
               className={styles.input}
+              value={userState.email}
+              onChange={(e) => userActions.changeEmail(e.target.value)}
             />
             <div></div>
             <Alert
@@ -62,16 +77,24 @@ const SignupForm = () => {
 
             {/* 아이디 */}
             <label className={styles.label} htmlFor="id">
-              아이디(이메일)
+              인증번호
             </label>
             <input
               id="id"
               type="text"
-              placeholder="아이디를 입력하세요"
+              placeholder="인증번호를 입력하세요"
               className={styles.input}
+              value={authCode}
+              onChange={(e) => setAuthCode(e.target.value)}
             />
             <div></div>
-            <div></div>
+            <Alert
+              message="인증번호가 맞습니다" // 나중에 로직통해서 해야함
+              confirmText="확인"
+              cancelText="취소"
+              alertButtonText="인증번호확인"
+              alertButtonClass="custombuttonclass" // custom class name 전달
+            />
 
             {/* 비밀번호 */}
             <label className={styles.label} htmlFor="password">
@@ -82,6 +105,22 @@ const SignupForm = () => {
               type="password"
               placeholder="비밀번호를 입력하세요"
               className={styles.input}
+              value={userState.password}
+              onChange={(e) => userActions.changePassword(e.target.value)}
+            />
+            <div></div>
+            <div></div>
+
+            {/* 비밀번호확인 */}
+            <label className={styles.label} htmlFor="code">
+              비밀번호 확인
+            </label>
+            <input
+              id="code"
+              type="password"
+              placeholder="비밀번호를 다시 입력하세요"
+              className={styles.input}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <div></div>
             <div></div>
@@ -90,21 +129,14 @@ const SignupForm = () => {
             <label className={styles.label} htmlFor="phone">
               휴대폰 번호
             </label>
-            <div className={styles.phoneGroup}>
-              <input
-                id="phone1"
-                type="text"
-                placeholder="010"
-                maxLength="3"
-                className={styles.phoneInput1}
-              />
-              <input
-                id="phone2"
-                type="text"
-                placeholder="12345678"
-                className={styles.phoneInput2}
-              />
-            </div>
+            <input
+              id="phone2"
+              type="text"
+              placeholder="01012345678"
+              className={styles.phoneInput}
+              value={userState.phone}
+              onChange={(e) => userActions.changePhone(e.target.value)}
+            />
             <div></div>
             <Alert
               message="핸드폰으로 코드를 발송하였습니다."
@@ -113,19 +145,6 @@ const SignupForm = () => {
               alertButtonText="핸드폰인증"
               alertButtonClass="custombuttonclass" // custom class name 전달
             />
-
-            {/* 코드번호 */}
-            <label className={styles.label} htmlFor="code">
-              코드번호
-            </label>
-            <input
-              id="code"
-              type="text"
-              placeholder="코드번호를 입력하세요"
-              className={styles.input}
-            />
-            <div></div>
-            <div></div>
 
             {/* 회원가입 버튼 */}
             <motion.button

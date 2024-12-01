@@ -79,23 +79,10 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
-  .phoneGroup {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .phoneInput1 {
-    flex: 1;
-    width: 30%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .phoneInput2 {
-    width: 69%;
+
+
+  .phoneInput {
+    width: 95%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
