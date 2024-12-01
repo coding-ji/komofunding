@@ -11,6 +11,7 @@ import {
     CHANGE_PROJECT_START_DATE,
     CHANGE_PROJECT_END_DATE,
     CHANGE_PROJECT_WRITTEN_DATE,
+    CHANGE_PROJECT_IMGS,
     RESET_STATE
 } from "./action";
 
@@ -32,7 +33,8 @@ export const initialState = {
     totalAmount: "",
     startDate: "",
     endDate: "",
-    writtenDate: ""
+    writtenDate: "",
+    imgs: []
 };
 
 export const reducer = (state, action) => {
@@ -61,6 +63,8 @@ export const reducer = (state, action) => {
             return { ...state, endDate: action.payload };
         case CHANGE_PROJECT_WRITTEN_DATE:
             return { ...state, writtenDate: action.payload };
+         case CHANGE_PROJECT_IMGS:
+            return {...state, imgs: action.payload};
         case RESET_STATE:
             return initialState;
         default:

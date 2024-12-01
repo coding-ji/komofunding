@@ -10,6 +10,7 @@ export const CHANGE_PROJECT_TOTAL_AMOUNT = "CHANGE_PROJECT_TOTAL_AMOUNT";
 export const CHANGE_PROJECT_START_DATE = "CHANGE_PROJECT_START_DATE";
 export const CHANGE_PROJECT_END_DATE = "CHANGE_PROJECT_END_DATE";
 export const CHANGE_PROJECT_WRITTEN_DATE = "CHANGE_PROJECT_WRITTEN_DATE";
+export const CHANGE_PROJECT_IMGS = "CHANGE_PROJECT_IMGS";
 export const RESET_STATE = "RESET_STATE";
 
 export const changeProjectNum = (projectNum) => ({type: CHANGE_PROJECT_NUM, payload: projectNum});
@@ -24,4 +25,5 @@ export const changeProjectTotalAmount = (totalAmount) => ({type: CHANGE_PROJECT_
 export const changeProjectStartDate = (startDate) => ({type: CHANGE_PROJECT_START_DATE, payload: startDate});
 export const changeProjectEndDate = (endDate) => ({type: CHANGE_PROJECT_END_DATE, payload: endDate});
 export const changeProjectWrittenDate = (writtenDate) => ({type: CHANGE_PROJECT_WRITTEN_DATE, payload: writtenDate});
+export const changeProjectImgs = (imgs) => ({type: CHANGE_PROJECT_IMGS, payload: imgs});
 export const resetState = () => ({type: RESET_STATE});

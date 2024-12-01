@@ -13,6 +13,7 @@ import {
     changeProjectStartDate,
     changeProjectEndDate,
     changeProjectWrittenDate,
+    changeProjectImgs,
     resetState
 } from "./action";
 
@@ -44,6 +45,8 @@ export const useStore = () => {
         changeProjectEndDate: (endDate) => dispatch(changeProjectEndDate(endDate)),
         // 프로젝트 작성 날짜 변경
         changeProjectWrittenDate: (writtenDate) => dispatch(changeProjectWrittenDate(writtenDate)),
+        // 프로젝트 이미지 변경
+        changeProjectImgs: (imgs) => dispatch(changeProjectImgs(imgs)),
         // 상태 초기화
         resetState: () => dispatch(resetState())
     };
