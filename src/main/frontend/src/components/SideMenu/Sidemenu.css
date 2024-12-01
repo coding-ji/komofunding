@@ -1,0 +1,81 @@
+/* 사이드 메뉴 전체 */
+.side-menu {
+    width: clamp(250px, 30vw, 300px);
+    height: auto;
+    background-color: #436446; /* 배경 색상 */
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 20px 20px 5rem 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .profile{
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem au;
+    font-family:var(--kr-noto) ;
+
+  }
+
+  .menutext {
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    font-family:var(--kr-noto) ;
+  }
+  
+  /* 메뉴 섹션 */
+  .menu {
+    flex: 1;
+  }
+  
+  .menu-section {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* 메뉴 제목 */
+  .menu-title {
+    font-size: 1.3rem;
+    font-family:var(--kr-noto) ;
+    color: #e7e7e7;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    
+  }
+
+  .menu-icon{
+    margin-right: 0.5rem;
+  }
+  
+  /* 화살표 */
+  .arrow {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
+  /* 서브메뉴 */
+  .submenu {
+    padding: 10px 20px;
+    margin: 0;
+
+  }
+  
+  .submenu li {
+    font-size: 13px;
+    font-family: var(--kr-noto);
+    margin: 8px 0;
+    cursor: pointer;
+    transition: color 0.3s;
+    list-style-type: disc;
+  }
+  
+  .submenu li:hover {
+    color: #f1c40f; /* 호버 시 강조 색 */
+  }
+  
