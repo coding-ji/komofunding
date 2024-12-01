@@ -111,7 +111,7 @@ export const CancelBtn = ({text, width, height, onClick,fontSize,padding,fontFam
 
 
 // 상품 페이지 수정 / 문의하기 => 블랙
-export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily }) => (
   <Button
   bgColor="black"
   borderColor="white"

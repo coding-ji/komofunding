@@ -10,7 +10,7 @@ function PopupInquiry({ message, onClose,navigateTo}) {
 
   const handleButtonClick = () => {
     if (navigateTo) {
-      navigate('/myqna'); // 페이지 이동
+      navigate(navigateTo); // 전달된 경로로 이동
     }
     onClose(); // 팝업 닫기
   };
