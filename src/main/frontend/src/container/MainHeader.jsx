@@ -30,7 +30,7 @@ const MainHeader = () => {
           <HeaderMenu name="HOME" href="/home" />
           <HeaderMenu name="UPCOMING" href="#upcoming" />
           <HeaderMenu name="ACTIVE" href="#active" />
-          <HeaderMenu name="MORE" href="#more" />
+          <HeaderMenu name="MORE" href="/notice" />
         </div>
       </div>
 

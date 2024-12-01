@@ -1,6 +1,6 @@
 /* 사이드 메뉴 전체 */
 .side-menu {
-    width: clamp(250px, 30vw, 300px);
+    width: clamp(300px, 30vw, 400px);
     height: auto;
     background-color: #436446; /* 배경 색상 */
     color: #fff;
@@ -9,16 +9,25 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+
+    @media (max-width:600px) {
+      width: 100%;
+      height: 440px;
+    }
+
     
   }
   
   .profile{
     font-size: 2rem;
     font-weight: bold;
-    margin: 1rem au;
+    margin: 1rem auto;
     font-family:var(--kr-noto) ;
 
+    
+
   }
+
 
   .menutext {
     font-size: 1.7rem;
@@ -46,6 +55,8 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+
+   
     
   }
 
@@ -64,6 +75,7 @@
     padding: 10px 20px;
     margin: 0;
 
+
   }
   
   .submenu li {
@@ -73,6 +85,12 @@
     cursor: pointer;
     transition: color 0.3s;
     list-style-type: disc;
+
+    @media (max-width:600px) {
+          
+    text-align: center;
+    }
+ 
   }
   
   .submenu li:hover {

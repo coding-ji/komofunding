@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import defaultImage from "./defaultImage.png"; // 기본 프로필 이미지
 import "./ProfileImage.css";
 
-const ProfileImage = ({ initialImageSrc, size = 120, gridArea }) => {
+const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
   const [imageSrc, setImageSrc] = useState(initialImageSrc || defaultImage); // 기본 이미지 설정
 
   const handleImageChange = (event) => {
@@ -20,15 +20,17 @@ const ProfileImage = ({ initialImageSrc, size = 120, gridArea }) => {
     <div
       className="profile-image-wrapper"
       style={{
-        width: `100%`,
-        height: `100%`,
+        // width: `100%`,
+        // height: `100%`,
         borderRadius: "50%",
         overflow: "hidden",
         border: "2px solid #ddd",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        gridArea:{gridArea}
+        gridArea:gridArea,
+        height: size,
+        width : size
       }}
     >
       {/* 프로필 이미지 */}

@@ -1,17 +1,110 @@
-
-.profile-flexbox{
-    display: flex;
-    flex-direction: column;
+/* 프로필 페이지 전체 */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Noto Sans KR", sans-serif;
+  align-items: center
 }
 
-.profile-image-name{
-    display: grid;
-    grid-template:
-    'profileImage profileName support' 1fr
-    'profileImage userId ...' 1fr
-    'profileImage ProfileEdit' 1fr/ 100px 1fr 1fr
+/* 상단 프로필 */
+.profile-header {
+  flex:2;
+  display: grid;
+  grid-template: 
+  'profileImage profileInfo ' 1fr / 1fr 1fr;
+  /* width: 100%;
+  height: auto; */
+
+  @media (max-width:600px ) {
+    grid-template: 
+    'profileImage ' 1fr 
+    'profileInfo' 1fr/ 1fr;
+  }
 }
 
-.username{
-    grid-area:profileName ;
+.profile-info {
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+  
+}
+
+.usernickname {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: var(--kr-noto);
+  margin-bottom: 5px;
+  grid-area: profileInfo;
+}
+
+.user-id {
+  font-size: 14px;
+  color: gray;
+}
+
+
+
+/* 자기 소개 */
+
+
+.profile-section {
+  flex:1;
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  width: 100%;
+}
+
+.profile-sub-title{
+  font-family: var(--kr-noto);
+  font-weight: 700;
+  font-size: 2.5rem;
+
+  @media (max-width:600px) {
+    font-size: 2rem ;
+  }
+}
+
+.profile-section p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* 제작자 전환 신청 */
+.conversion-section {
+  flex:1;
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  width: 100%;
+}
+
+
+
+.conversion-options {
+  margin: 20px auto 20px auto;
+  background-color: #f8f8f8;
+  padding: 1rem;
+  width: 100%;
+}
+
+.option {
+  margin-bottom: 20px;
+}
+
+.option h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.option p {
+  font-size: 14px;
+  color: #555;
 }

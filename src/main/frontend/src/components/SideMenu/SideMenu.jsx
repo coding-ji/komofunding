@@ -15,6 +15,10 @@ const Wrapper = styled.div`
   overflow: hidden; /* 텍스트가 컨테이너 밖으로 넘치지 않도록 설정 */
   height: 4rem;
   margin-bottom: 5rem;
+
+      @media (max-width:600px) {
+      display: none;
+    }
 `;
 
 const WrapperMenu = styled.div`
@@ -36,7 +40,7 @@ function SideMenu() {
 
     return (
         <div className="side-menu">
-            <Wrapper>
+            <Wrapper >
                 <motion.div
                     className="profile"
                     initial={{ y: "-100%" }} // 텍스트가 아래쪽에 숨겨진 상태로 시작
@@ -68,7 +72,7 @@ function SideMenu() {
                         <img src={support} alt="후원 아이콘" className="menu-icon" />
                         나의 후원
                         <span className="arrow">
-                            {activeMenu === "mySupport" ?  (
+                            {activeMenu === "mySupport" ? (
                                 <img src={ArrowUp} alt="Up Arrow" />
                             ) : (
                                 <img src={ArrowDown} alt="Down Arrow" />
