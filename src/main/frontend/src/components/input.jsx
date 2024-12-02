@@ -5,7 +5,7 @@ import React, { useState } from 'react'; // useState를 import 해야 합니다
 
 // 기존의 StyledInput을 motion.input으로 스타일링하여 애니메이션 추가
 const StyledInput = styled(motion.input)`
-    padding: 8px 3px 1px 3px ;
+    padding: 5px ;
     margin: ${(props) => props.margin || "5px 0 0 0"};
     width: ${(props) => props.width || '97%'}; /* props로 width를 받을 수 있도록 설정 */
     font-family : var(--kr-font);
@@ -17,7 +17,7 @@ const StyledInput = styled(motion.input)`
       case 'small':
         return '0.8rem';
       case 'medium':
-        return '1.625rem';
+        return '1rem';
       case 'large':
         return '1.875rem';
       default:

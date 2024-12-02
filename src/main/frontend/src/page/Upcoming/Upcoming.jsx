@@ -7,15 +7,15 @@ import MyNav from '../../components/MyNav';
 function Upcoming() {
 
     const products = [
-        { title: "Product 1", description: "Description for product 1", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
+        { title: "Product 1", description: "Description for product 1", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
+        { title: "포실포실하덕", description: "얄루얄루", text: "EDIT" },
     ];
 
     return (

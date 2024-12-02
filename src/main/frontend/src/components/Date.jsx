@@ -36,13 +36,14 @@ function DateRangePicker() {
 
       {/* 클릭 시 날짜 선택창이 열리는 input */}
       <Input
+        width="300px"
         type="text"
         value={dateRange}
         readOnly
         placeholder="펀딩 기간을 선택하세요"
         onClick={handleInputClick} // input 클릭 시 날짜 선택창 열기
         margin ="5px 0px"
-        size ="small"
+        size ="medium"
       />
 
       {/* 날짜 선택창 */}

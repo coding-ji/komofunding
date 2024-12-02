@@ -28,8 +28,8 @@ const MainHeader = () => {
         </motion.div>
         <div className={styles.menuList}>
           <HeaderMenu name="HOME" href="/home" />
-          <HeaderMenu name="UPCOMING" href="#upcoming" />
-          <HeaderMenu name="ACTIVE" href="#active" />
+          <HeaderMenu name="UPCOMING" href="/upcoming" />
+          <HeaderMenu name="ACTIVE" href="/active" />
           <HeaderMenu name="MORE" href="/notice" />
         </div>
       </div>
