@@ -9,6 +9,8 @@ import cloud2 from "./img/cloud2.png";
 import cloud3 from "./img/cloud3.png";
 import cloud4 from "./img/cloud4.png";
 import cloud5 from "./img/cloud5.png";
+import MainMenu from "../../../components/MainMenu/MainMenu";
+import { motion } from "framer-motion";
 
 
 
@@ -62,6 +64,7 @@ const cloudImages = [
 
 const TopSection = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1200);
+  const [menuOpen, setMenuOpen] = useState(false); // 메뉴 상태 관리
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 1200);
@@ -70,13 +73,22 @@ const TopSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <div className={styles.gridWrapper}>
       <div className={styles.topGroup}>
         <h1 className={styles.komoFunding}>
           KOMO <br /> FUNDING
         </h1>
-        <div className={styles.menu}>Menu</div>
+        <div
+          className={styles.menu}
+          onClick={toggleMenu} // 클릭 시 메뉴 토글
+        >
+          Menu
+        </div>
       </div>
       <h1 className={styles.title}>PROJECT PORTFOLIO CROWD FUNDING</h1>
       <div className={styles.overlayCircle} />
@@ -108,6 +120,25 @@ const TopSection = () => {
             </>
           )}
         </div>
+      </div>
+
+ 
+      {/* 오버레이 메뉴로 MainMenu 렌더링 */}
+      <div
+        className={`${styles.overlayMenu} ${
+          menuOpen ? styles.slideIn : styles.slideOut
+        }`}
+      >
+         {/* CLOSE 버튼에 whileHover 적용 */}
+         <motion.button
+          className={styles.closeButton}
+          onClick={toggleMenu}
+          whileHover={{ scale: 1.04 }}  // hover 시 확대
+          transition={{ duration: 0.3 }}
+        >
+          CLOSE
+        </motion.button>
+        <MainMenu /> {/* MainMenu 컴포넌트 불러오기 */}
       </div>
 
       <CloudsWrapper>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Link } from "react-router-dom"; // Link 컴포넌트 import
+import { Link } from "react-router-dom";
 import HoverRectangle from "./HoverRectangle"; // HoverRectangle 컴포넌트 import
 import NavFont from "./NavFont"; // NavFont 컴포넌트 import
 
@@ -32,16 +32,9 @@ const navVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-function MyNav() {
+function MyNav({ navItems, basePath }) {
   const [hoveredIndex, setHoveredIndex] = useState(null); // hover 상태를 관리
   const [clickedIndex, setClickedIndex] = useState(null); // 클릭된 항목을 관리
-
-  // 네비게이션 항목 데이터
-  const navItems = [
-    { label: "진행 예정 프로젝트", path: "" },
-    { label: "진행 중 프로젝트", path: "ongoing" },
-    { label: "진행 마감 프로젝트", path: "completed" },
-  ];
 
   const handleItemClick = (index) => {
     setClickedIndex(index); // 클릭된 항목의 index를 상태로 저장
@@ -64,8 +57,7 @@ function MyNav() {
           onClick={() => handleItemClick(index)} // 클릭 시 상태 업데이트
         >
           {/* Link를 NavItem으로 감싸서 네비게이션 연결 */}
-            <NavFont nav={item.label}  to={`/myfunding/${item.path}`}/>
-
+          <NavFont nav={item.label} to={`${basePath}/${item.path}`} /> {/* basePath 추가 */}
           <HoverRectangle isHovered={hoveredIndex === index || clickedIndex === index} />
         </NavItem>
       ))}

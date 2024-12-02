@@ -12,13 +12,13 @@ const Button = styled(motion.button)`
   padding: ${(props) => props.padding || "10px 112px" };
   font-weight: bold; 
   letter-spacing: 0.1rem;
-  font-family: ${(props) => props.fontFamily|| "var(--kr-font)"};
+  font-family: ${(props) => props.fontFamily || "var(--kr-font)"};
   margin: 4px 0;
   font-size:  ${(props) => props.fontSize || "2rem"};
   border: 2px solid ${(props) => props.borderColor}; 
 
   /* 호버 시 전환될 스타일 */
-  transition: all 0.2s ease; /* 부드러운 전환 효과 */
+  transition: all 0.13s ease; /* 부드러운 전환 효과 */
 `;
 
 
@@ -27,13 +27,11 @@ const hoverEffects = {
     backgroundColor: "white",  
     color: "var(--darkblue-color)", 
     borderColor: "var(--darkblue-color)",
-    borderRadius: "7px",
   },
 
   Cancel : {
     backgroundColor: "var(--darkblue-color)",  
     color: "white", 
-    borderColor: "white",
   }
 
 }
@@ -111,7 +109,7 @@ export const CancelBtn = ({text, width, height, onClick,fontSize,padding,fontFam
 
 
 // 상품 페이지 수정 / 문의하기 => 블랙
-export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily }) => (
+export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
   <Button
   bgColor="black"
   borderColor="white"

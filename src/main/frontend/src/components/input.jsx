@@ -1,28 +1,42 @@
 import styled from 'styled-components';
+import '../index.css';
+import { motion } from 'framer-motion';
+import React, { useState } from 'react'; // useState를 import 해야 합니다
 
-// isValid 유효성 검사 true / false 값
-// Input 사용하는 곳에서 유효성 검사 시행시에 true/false로 보내기
-
-const StyledInput = styled.input`
-    padding: 10px 10px ;
+// 기존의 StyledInput을 motion.input으로 스타일링하여 애니메이션 추가
+const StyledInput = styled(motion.input)`
+    padding: 8px 3px 1px 3px ;
     margin: ${(props) => props.margin || "5px 0 0 0"};
-width: ${(props) => props.width || '97%'}; /* props로 width를 받을 수 있도록 설정 */
+    width: ${(props) => props.width || '97%'}; /* props로 width를 받을 수 있도록 설정 */
+    font-family : var(--kr-font);
+    border-radius : 2px;
+    border: 1px solid var(--smalltext-graycolor); /* 테두리 색상 */
 
-      font-size: ${(props) => {
+    font-size: ${(props) => {
     switch (props.size) {
       case 'small':
-        return '20px';
+        return '0.8rem';
       case 'medium':
-        return '26px';
+        return '1.625rem';
       case 'large':
-        return '30px';
+        return '1.875rem';
       default:
-        return '24px';  // 기본값 설정
+        return '1.5rem';  // 기본값 설정
     }
   }}
-    `;
+`;
 
-function Input({ type, placeholder, onChange,margin, value, gridArea, size, width}) {
+function Input({ type, placeholder, onChange, margin, value, gridArea, size, width, onClick }) {
+  const [isClicked, setIsClicked] = useState(false); // 클릭 여부를 추적하는 상태 변수
+
+  const handleClick = () => {
+      setIsClicked(true); // 클릭 시 true로 설정
+  };
+
+  const handleBlur = () => {
+      setIsClicked(false); // 포커스 아웃 시 false로 설정
+  };
+
   return (
       <StyledInput
         type={type}
@@ -33,6 +47,15 @@ function Input({ type, placeholder, onChange,margin, value, gridArea, size, widt
         margin={margin}
         style={{ gridArea: gridArea }}
         width={width} // width를 props로 전달
+
+        onClick={onClick ? onClick : handleClick} // 클릭 시 상태 변경
+        onBlur={handleBlur} // 포커스 아웃 시 상태 변경
+        animate={{
+            scale: isClicked ? 1.02 : 1, // 클릭 상태에 따라 확대/축소 효과
+        }}
+        transition={{
+            ease: "easeOut",
+        }}
       />
   );
 }

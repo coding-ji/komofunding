@@ -1,6 +1,6 @@
 .menubar {
-    width: 386px;
-    height: 538px;
+    width: 26vw;    /* 너비를 화면 크기 비율로 설정 */
+    height: 62vh;   /* 높이를 화면 크기 비율로 설정 */
     color: white;
     font-family: "Roboto Slab", Helvetica, sans-serif;
     font-weight: 505;
@@ -8,10 +8,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 30px;
+    border-radius: 20px;
     overflow: hidden;
     position: relative; /* 부모에 relative 설정 */
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .recAndText {
@@ -23,28 +24,61 @@
 }
 
 .rec {
-    height: 72%;
+    height: 50vh;   /* 고정된 비율로 크기 설정 */
     width: 100%;
     object-fit: cover;
 }
 
 .cir {
-    height: 95px;
-    width: 95px;
+    height: 13vh;    /* 원의 크기를 높이에 맞춰 동적으로 설정 */
+    width: 13vh;
     border-radius: 50%;
     object-fit: cover;
     position: absolute;  /* 절대 위치로 배치 */
-    top: 64%;  /* rec와 textrec 사이 중간 위치 */
-    left: 38%;  /* 수평 중앙 정렬 */
+    top: 63%;    /* rec와 textrec 사이 중간 위치 */
+    left: 37%;   /* 수평 중앙 정렬 */
     transform: translate(-50%, -50%);  /* 정확히 중앙에 배치 */
 }
 
 .textrec {
     background-color: #6b6b6b;
     width: 100%;
-    height: 28%;
+    height: 20vh;   /* 고정된 비율로 크기 설정 */
     align-content: center;
     text-align: center;
-    font-size: 2.2rem;
-    border-radius: 0 0 30px 30px;
+    font-size: 1.8rem;
+    padding-bottom: 25px;
+}
+
+/* 화면 너비가 1024px 이하일 때 */
+@media (max-width: 1024px) {
+    .menubar {
+        width: 70vw;    /* 너비를 화면 크기에 맞춰 늘림 */
+        height: auto;  /* 높이를 자동으로 설정 */
+        margin: 0 auto;
+        }
+    
+    .recAndText {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .rec {
+        height: 160px; /* 이미지 높이 축소 */
+        width: 130vw;
+    }
+
+    .cir {
+       display: none;
+        top: 20%;       /* 원 위치 조정 */
+        left: 66%;
+    }
+
+    .textrec {
+        font-size: 1.5rem; /* 텍스트 크기 축소 */
+        height: 160px;
+        border-radius: 0 ;
+        width: 60vw;
+        padding-bottom: 0;
+    }
 }
