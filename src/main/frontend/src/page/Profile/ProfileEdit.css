@@ -1,0 +1,84 @@
+/* ProfileEdit.css */
+
+.profile-edit-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section-title {
+    background-color: #3b5998;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .profile-edit-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .profile-edit-form label {
+    font-weight: bold;
+    margin-top: 8px;
+    align-self: center;
+  }
+  
+  .profile-edit-form input,
+  .profile-edit-form select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .profile-edit-form input[readonly] {
+    background-color: #e9e9e9;
+  }
+  
+  .button-group {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .button-group .btn {
+    width: 48%;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-header img {
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .profile-info {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .profile-info .usernickname {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  
+  .profile-info .user-id {
+    font-size: 1rem;
+    color: #555;
+  }
+  
