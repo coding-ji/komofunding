@@ -60,7 +60,7 @@ const router = createBrowserRouter([
 
       {
         path: "/selectPrj",
-        element: <SelectPrj />, // 부모 컴포넌트
+        // element: <SelectPrj />, // 부모 컴포넌트
         children: [
           { index:true, element: <SelectPrjOne /> },
           { path:"prj-two", element: <SelectPrjTwo /> },

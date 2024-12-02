@@ -1,104 +1,129 @@
 .pageContainer {
-    margin-top: 5%;
-    margin-bottom: 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .container {
-    margin: 10%;
-    width: 100%;
-    min-width: 600px;
-    max-width: 60%;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: start;
-    padding-left: 4%;
-  }
-  
-  .hrDarkToLight {
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(to right, #333 20%, #ccc 20%);
-    border: none;
-  }
-  
-  .description {
-    font-size: 14px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #ECECEC;
-    border-radius: 4px;
-  }
-  
-  .section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .gridForm {
-    display: grid;
-    grid-template-columns: auto auto 0fr auto; /* 4열 구조 */
-    grid-auto-rows:  1fr;
-    gap: 10px 20px;
-    align-items: center;
-    padding: 30px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .label {
-    text-align: start;
-    font-weight: bold;
-    font-size: 14px;
-    font-family: "Noto Sans KR";
-    color: #000;
-    white-space: nowrap; /* 한 줄로 강제 표시 */
-    overflow: hidden;
-    text-overflow: ellipsis; /* 내용이 길 경우 말줄임 표시 */
-  }
-  
-  .input {
-    width: 95%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+  margin-top: 5%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
+.container {
+  margin: 10%;
+  width: 100%;
+  min-width: 600px;
+  max-width: 60%;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
 
-  .phoneInput {
-    width: 95%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .submitButton {
-    grid-column: 2 / span 1; /* 버튼 전체 폭 차지 */
-    text-align: center;
-    color: white;
-    height: 40px;
-    padding: 8px 31px;
-    gap: 10px;
-    border-radius: 2px;
-    border: 2px solid #256E91;
-    background: #256E91;
-    margin-top: 30px;
-  }
-  
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: start;
+  padding-left: 4%;
+}
+
+.hrDarkToLight {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #333 20%, #ccc 20%);
+  border: none;
+}
+
+.description {
+  font-size: 14px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #ECECEC;
+  border-radius: 4px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.gridForm {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* 3열 그리드 */
+
+  grid-template:
+    "label1 input1 ." 
+    "label2 input2 mailbtn"
+    "label3 input3 authbtn"
+    "label4 input4 ."
+    "label5 input5 ."
+    "label6 input6 phonebtn"
+    "label7 input7 ."
+    ". btn ."; /* 하단 버튼 */
+  gap: 15px 10px; /* 행과 열 간격 */
+  align-items: center;
+  padding: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.label {
+  text-align: start;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: "Noto Sans KR";
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.phoneInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.submitButton {
+  grid-area: btn; /* 버튼 영역 */
+  text-align: center;
+  color: white;
+  height: 40px;
+  padding: 8px 31px;
+  gap: 10px;
+  border-radius: 4px;
+  border: 2px solid #256E91;
+  background: #256E91;
+  margin-top: 30px;
+  width: 100%;
+  justify-self: center; /* 가운데 정렬 */
+}
+
+.alert {
+  width: 100%;
+  height: 40px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

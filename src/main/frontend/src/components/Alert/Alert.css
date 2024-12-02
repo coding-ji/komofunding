@@ -3,7 +3,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
    /* 중앙 정렬 */
   background: white;
   width: 440px;
@@ -105,4 +105,3 @@
 .custombuttonclass:hover {
   background-color: #1d1d1d;  /* hover 효과 */
 }
-

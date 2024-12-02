@@ -11,6 +11,7 @@ const StyledInput = styled(motion.input)`
     font-family : var(--kr-font);
     border-radius : 2px;
     border: 1px solid var(--smalltext-graycolor); /* 테두리 색상 */
+  
 
     font-size: ${(props) => {
     switch (props.size) {
@@ -43,6 +44,7 @@ function Input({ type, placeholder, onChange, margin, value, gridArea, size, wid
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        
         size={size}
         margin={margin}
         style={{ gridArea: gridArea }}
