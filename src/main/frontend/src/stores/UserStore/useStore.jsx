@@ -17,7 +17,7 @@ import {
     changeCorporationName,
     changeCorporationTel,
     changeBSN,
-    reserState
+    resetState
 } from "./action";
 
 export const useStore =() => {
@@ -57,7 +57,7 @@ export const useStore =() => {
         //유저 사업자등록번호 변경
         changeBSN: (bsn) => dispatch(changeBSN(bsn)),
         // 상태값초기화
-        reserState: () => dispatch(reserState())
+        resetState: () => dispatch(resetState())
     };
 
     return { state, actions };

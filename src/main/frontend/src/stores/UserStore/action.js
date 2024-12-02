@@ -32,4 +32,4 @@ export const changeUserJoinDate = (joinDate) => ({type: CHANGE_USER_JOIN_DATE, p
 export const changeCorporationName = (corporationName) => ({type: CHANGE_CORPORATION_NAME, payload: corporationName});
 export const changeCorporationTel = (corporationTel) => ({type: CHANGE_CORPORATION_TEL, payload: corporationTel});
 export const changeBSN = (bsn) => ({type: CHANGE_BSN, payload: bsn});
-export const reserState = () => ({type: RESET_STATE});
+export const resetState = () => ({type: RESET_STATE}); 

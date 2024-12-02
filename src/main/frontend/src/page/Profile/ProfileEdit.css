@@ -19,6 +19,21 @@
     margin-bottom: 20px;
   }
   
+  .profile-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
   .profile-edit-form {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -40,45 +55,10 @@
     border: 1px solid #ccc;
   }
   
-  .profile-edit-form input[readonly] {
-    background-color: #e9e9e9;
-  }
-  
   .button-group {
     grid-column: span 2;
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-  }
-  
-  .button-group .btn {
-    width: 48%;
-  }
-  
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .profile-header img {
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  .profile-info {
-    margin-top: 10px;
-    text-align: center;
-  }
-  
-  .profile-info .usernickname {
-    font-size: 1.4rem;
-    font-weight: bold;
-  }
-  
-  .profile-info .user-id {
-    font-size: 1rem;
-    color: #555;
   }
   
