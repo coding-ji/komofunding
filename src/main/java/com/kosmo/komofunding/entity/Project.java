@@ -41,6 +41,10 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectCategory projectCategory;
 
+    @Column(name="thumbnail_imgs")
+    @Convert(converter = StringListConverter.class)
+    private List<String> thumbnailImgs;
+
     @Column(name = "short_description", nullable = false, length = 150)
     private String shortDescription; // 프로젝트 짧은 소개
 

@@ -5,7 +5,7 @@ function Menu({ text, rec, cir }) {
     return (
         <motion.div
             className={styles.menubar}
-            whileHover={{ scale: 1.1 }}  // 전체 메뉴 크기 확대
+            whileHover={{ scale: 1.1 , boxShadow: '5px 5px 1px rgba(0, 0, 0, 0.3)'}}  // 전체 메뉴 크기 확대
             transition={{ duration: 0 }}
         >
             <div className={styles.recAndText}>

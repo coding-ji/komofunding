@@ -17,6 +17,18 @@ import SignupForm from "./page/LoginSign/SignupForm";
 import HomePage from './page/Home/HomePage'
 import NoticePage from './page/noticpage/NoticePage'
 import CreatorApply from "./page/MyPage/CreatorApply/CreatorApply";
+import TitleProduct from "./components/TitleProduct";
+import TitleBox from "./components/TitleBox";
+import DescriptionProduct from "./components/DescriptionProduct";
+import Input from "./components/input";
+import SelectPrjOne from "./page/SeletPrjOne/SeletPrjOne";
+import SelectPrj from "./page/SelectPrj/SelectPrj";
+import SelectPrjTwo from "./page/SelectPrjTwo/SelectPrjTwo";
+import Date from "./components/Date";
+import SelectPrjThree from "./page/SelectPrjThree/SelectPrjThree";
+import UserFunding from "./page/UserFunding/UserFunding";
+import UserIng from "./page/UserIng/UserIng";
+import UserCompleted from "./page/UserCompleted/UserCompleted";
 
 
 const router = createBrowserRouter([
@@ -45,7 +57,30 @@ const router = createBrowserRouter([
           { path: "completed", element: <Completed />}
         ],
       },
-      
+
+      {
+        path: "/selectPrj",
+        element: <SelectPrj />, // 부모 컴포넌트
+        children: [
+          { index:true, element: <SelectPrjOne /> },
+          { path:"prj-two", element: <SelectPrjTwo /> },
+          { path:"prj-three", element: <SelectPrjThree /> },
+
+
+
+        ],
+      },
+
+      {
+        path: "/userfunding",
+        element: <UserFunding />  , // 부모 컴포넌트
+        children: [
+          { index:true, element: <UserIng /> },
+          { path:"user-completed", element: <UserCompleted /> },
+
+        ],
+      },
+
 
     ]},
     {path : "/home", element:<HomePage/> }
@@ -53,7 +88,7 @@ const router = createBrowserRouter([
 
 function App() {
  return <RouterProvider router={router} />;
-// return (<CreatorApply/>)
+// return (<Date /> )
 
 
       

@@ -1,0 +1,13 @@
+.selectBtn {
+    display:flex;
+flex-direction : row;
+gap : 10px;
+justify-content: flex-end;
+}
+
+.prjContainer {
+display:flex;
+flex-direction : column;
+gap : 20px;
+
+}
