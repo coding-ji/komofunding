@@ -30,7 +30,7 @@ function MyContainer({title, description, text}) {
                 <ProductDescription description={description} />
             </motion.div>
             <motion.div>
-                <Btn text={text}>s</Btn>
+                <Btn text={text} fontFamily="var(--eng-font)"></Btn>
             </motion.div>
         </Styleddiv>
     );

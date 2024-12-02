@@ -41,11 +41,15 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectCategory projectCategory;
 
+    @Column(name="thumbnail_imgs")
+    @Convert(converter = StringListConverter.class)
+    private List<String> thumbnailImgs;
+
     @Column(name = "short_description", nullable = false, length = 150)
     private String shortDescription; // 프로젝트 짧은 소개
 
-    @Column(name= "description", columnDefinition = "longtext")
-    private String description; // 프로젝트 긴 소개
+    @Column(name = "description", nullable = false)
+    private String description; // 프로젝트 긴 소개가 담겨있는 html  파일주소
 
     @Convert(converter = ItemListConverter.class)
     @Column(name = "items", columnDefinition = "longtext")

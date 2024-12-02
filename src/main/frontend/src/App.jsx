@@ -1,19 +1,32 @@
-import './App.css'
-import { createBrowserRouter, Route, Router, Routes } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MyNav from "./components/MyNav";
+import Upcoming from "./page/Upcoming/Upcoming";
+import Ongoing from "./page/Ongoing/Ongoing";
+import Completed from "./page/Completed/Completed";
+import MyQnA from "./page/MyPage/MyQnA";
 import Main from "./page/Main/Main";
-import MainProductContainer from './container/MainProductCard/MainProductContainer'
-import { RouterProvider } from 'react-router-dom';
-import Product from './page/MainProduct/Product'
-import QnAView from './page/MyQnA/QnAView';
-import QnAListPage from './page/MyQnA/QnAListPage';
-import MyQnA from './page/MyQnA/MyQnA';
-import WriteQnA from './page/writeQnA/WriteQnA';
+import Product from "./page/MainProduct/Product";
+import WriteQnA from "./page/MyPage/writeQnA/WriteQnA";
+import QnAListPage from "./page/MyPage/QnAListPage";
+import QnAView from "./page/MyPage/QnAView";
+import MyFunding from "./page/MyFunding/MyFunding";
+import MainMenu from "./components/MainMenu/MainMenu";
+import Login from "./page/LoginSign/Login";
+import FindAccount from "./page/LoginSign/FindAccount";
+import SignupForm from "./page/LoginSign/SignupForm";
+import HomePage from './page/Home/HomePage'
+import NoticePage from './page/noticpage/NoticePage'
+import CreatorApply from "./page/MyPage/CreatorApply/CreatorApply";
+
 
 const router = createBrowserRouter([
   {path: "/", element: <Main/>, 
     children: [
       {path: "/", element: <Product/>},
       {path: "/write-qna", element: <WriteQnA/>},
+      {path: "/login", element: <Login/>},
+      {path: "/FindAccount", element: <FindAccount/>},
+      {path: "/SignupForm", element: <SignupForm/>},
       {
         path: "/myqna",
         element: <MyQnA/>, // 부모 컴포넌트
@@ -22,21 +35,31 @@ const router = createBrowserRouter([
           { path: ":id", element: <QnAView /> }, // 상세 경로
         ],
       },
-    ]}
+      { path:"/notice", element:<NoticePage/>},
+      {
+        path: "/myfunding",
+        element: <MyFunding/>, // 부모 컴포넌트
+        children: [
+          { index:true, element: <Upcoming /> },
+          { path: "ongoing", element: <Ongoing />},
+          { path: "completed", element: <Completed />}
+        ],
+      },
+      
+
+    ]},
+    {path : "/home", element:<HomePage/> }
 ])
 
 function App() {
-  return (
-    <>
+ return <RouterProvider router={router} />;
+// return (<CreatorApply/>)
 
-    <RouterProvider router={router}/>
-    {/* <MyInquiryPage/> */}
-   
 
       
-    </>
+    
 
-  )
+  
 }
 
 export default App

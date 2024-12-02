@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './Navbar.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
-
 const categories = [
   { name: 'clothes', content: '여기에 clothes 페이지' },
   { name: 'pet', content: 'Pet 페이지' },
@@ -25,7 +24,7 @@ const Navbar = () => {
     setActiveCategory(category);
   };
 
-  useEffect(() => {
+  const updateUnderlinePosition = () => {
     const activeIndex = categories.findIndex(
       (category) => category.name === activeCategory.name
     );
@@ -34,6 +33,22 @@ const Navbar = () => {
       const { offsetLeft, offsetWidth } = activeItem;
       setUnderlineProps({ left: offsetLeft, width: offsetWidth });
     }
+  };
+
+  useEffect(() => {
+    updateUnderlinePosition();
+  }, [activeCategory]);
+
+  // 화면 크기 변경 시 underline 위치 재계산
+  useEffect(() => {
+    const handleResize = () => {
+      updateUnderlinePosition();
+    };
+
+    window.addEventListener('resize', handleResize); // resize 이벤트 리스너 추가
+    return () => {
+      window.removeEventListener('resize', handleResize); // 컴포넌트 언마운트 시 제거
+    };
   }, [activeCategory]);
 
   return (
@@ -53,7 +68,6 @@ const Navbar = () => {
             </span>
           ))}
         </div>
-
         <AnimatePresence>
           {underlineProps.width > 0 && (
             <motion.div

@@ -125,7 +125,7 @@ const NoticePage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <MainHeader />
+
 
       <motion.div className={styles.title} initial="hidden" animate="visible" variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.8, ease: 'easeOut' }}>
         <h1>공지사항</h1>
@@ -182,7 +182,7 @@ const NoticePage = () => {
         ))}
       </div>
 
-      <Footer />
+
     </div>
   );
 };

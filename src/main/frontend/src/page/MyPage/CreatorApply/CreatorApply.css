@@ -1,0 +1,223 @@
+.creator-application {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+}
+
+.box {
+  border: 1px solid var(--line-color);
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.section {
+  margin: 1rem auto;
+}
+
+.type-selection {
+  display: flex;
+  gap: 20px;
+}
+
+.submission {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submissionText {
+  font-family: var(--kr-noto);
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.BusinessType {
+  font-family: var(--kr-noto);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0.5%;
+  margin: 5px auto;
+}
+
+.list {
+  margin: 10px auto 20px 15px;
+}
+
+.list li {
+  list-style: disc;
+}
+
+.instructions {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px auto;
+}
+
+.pstyle {
+  font-family: var(--kr-noto);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 20px;
+  margin: 1rem 1rem 1rem 0;
+}
+
+.submissionfile {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.btn {
+  width: 7rem;
+  height: 1.7rem;
+  font-size: 0.8rem;
+  padding: 5px 1rem;
+  background-color: #282828;
+  border-radius: 0.2rem;
+  color: white;
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.filetext {
+  font-family: var(--kr-noto);
+  font-size: 14px;
+  line-height: 20px;
+  align-items: center;
+  color: #6b6b6b;
+}
+
+/* 파일 업로드 스타일 */
+.drag-area {
+  border: 2px dashed #ddd;
+  padding: 20px;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.delete-button {
+  margin-left: 10px;
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* 체크박스 컨테이너 */
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    align-items: flex-start;
+  }
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* 라디오 버튼 스타일 */
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6b6b6b;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  background-color: #6b6b6b;
+}
+
+/* 버튼 컨테이너 */
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+
+  @media (max-width: 600px) {
+    justify-content: center;
+  }
+}
+
+/* 반응형 디자인 추가 */
+@media (max-width: 768px) {
+  .box {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .submission {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .submissionText {
+    font-size: 20px;
+  }
+
+  .btn {
+    width: 80%;
+    text-align: center;
+  }
+
+  .filetext {
+    font-size: 12px;
+  }
+
+  .type-selection {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .submissionText {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+  }
+
+  .file-item {
+    font-size: 14px;
+  }
+
+  .pstyle {
+    font-size: 0.9rem;
+  }
+}
+
+.info-text{
+  font-family: var(--kr-noto);
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 2rem auto;
+
+}

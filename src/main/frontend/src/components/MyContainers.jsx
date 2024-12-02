@@ -7,8 +7,11 @@ import MyContainer from "./MyContainer";
 const StyledContainers = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(3, auto);
+
   gap: 30px; /* 요소 간 간격 */
   margin: 0 auto; /* 컨테이너 가운데 정렬 */
+    
+
 
   @media (max-width: 920px) {
     grid-template-columns: repeat(2, auto); /* 열 개수 자동 조정 */
@@ -38,20 +41,7 @@ const itemVariants = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
-// 샘플 데이터 배열
-const products = [
-  { title: "Product", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-  { title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-];
-
-function MyContainers() {
+function MyContainers({ products }) {  // props로 전달받은 products 사용
   return (
     <StyledContainers
       variants={containerVariants} // 부모 요소에 애니메이션 variants 추가
