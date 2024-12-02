@@ -104,7 +104,7 @@ const Profile = () => {
         </div>
         <WhiteBtn text="제작자 전환 신청"
             width="100%" height="50px" padding="3px auto" fontSize="1rem"
-             onClick={handleCreateApply}
+            onClick={handleCreateApply} // 확인해야 할 부분
         ></WhiteBtn>
       </div>
     </div>
