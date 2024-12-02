@@ -29,6 +29,7 @@ import SelectPrjThree from "./page/SelectPrjThree/SelectPrjThree";
 import UserFunding from "./page/UserFunding/UserFunding";
 import UserIng from "./page/UserIng/UserIng";
 import UserCompleted from "./page/UserCompleted/UserCompleted";
+import PrjAll from "./page/PrjAll/PrjAll";
 
 
 const router = createBrowserRouter([
@@ -83,7 +84,9 @@ const router = createBrowserRouter([
 
 
     ]},
-    {path : "/home", element:<HomePage/> }
+    {path : "/home", element:<HomePage/> },
+    {path : "/prjall", element:<PrjAll /> }
+
 ])
 
 function App() {

@@ -71,8 +71,8 @@ function SelectPrjTwo() {
       </div>
 
       <div>
-        <TitleProduct text="상품 수량" />
-        <DescriptionProduct text="해당 상품의 수량을 작성해주세요. 해당 란에는 숫자만 기입해 주세요." />
+        <TitleProduct text="상품 최소 수량" />
+        <DescriptionProduct text="해당 상품의 최소 수량을 작성해주세요. 해당 란에는 숫자만 기입해 주세요." />
         <Input
           size="small"
           value={productQuantity}

@@ -41,7 +41,9 @@ function SelectPrj() {
   };
 
   const handleCompleteClick = () => {
-    setShowPopup(true); // "완료" 클릭 시 팝업 표시
+    // "완료" 클릭 시 PrjAll 페이지로 이동
+    navigate("/prjall");  // PrjAll 페이지로 이동
+    setShowPopup(true); // 팝업 표시 (필요한 경우)
   };
 
   return (
@@ -83,7 +85,7 @@ function SelectPrj() {
           padding="8px 3px"
           onClick={() => {
             if (clickCount === 2) {
-              handleCompleteClick(); // "완료" 클릭 시 팝업 열기
+              handleCompleteClick(); // "완료" 클릭 시 PrjAll 페이지로 이동
             } else {
               getNextPage();
               handleNextClick(); // "다음" 버튼 클릭 시 페이지 이동 및 클릭 횟수 증가
