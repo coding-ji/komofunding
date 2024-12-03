@@ -4,7 +4,7 @@ import { addMonths } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import Input from "./input";
 
-function DateRangePicker() {
+function DateRangePicker({ onDateChange }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [dateRange, setDateRange] = useState(""); // 날짜 범위 문자열 상태
@@ -18,6 +18,10 @@ function DateRangePicker() {
     // 날짜 범위 문자열로 업데이트
     if (start && end) {
       setDateRange(`${start.toLocaleDateString()} - ${end.toLocaleDateString()}`);
+      // 부모 컴포넌트에 날짜 범위 전달
+      if (onDateChange) {
+        onDateChange(start, end);
+      }
     } else {
       setDateRange("");
     }
@@ -33,7 +37,6 @@ function DateRangePicker() {
 
   return (
     <div style={{ position: "relative" }}>
-
       {/* 클릭 시 날짜 선택창이 열리는 input */}
       <Input
         width="300px"
@@ -42,8 +45,8 @@ function DateRangePicker() {
         readOnly
         placeholder="펀딩 기간을 선택하세요"
         onClick={handleInputClick} // input 클릭 시 날짜 선택창 열기
-        margin ="5px 0px"
-        size ="medium"
+        margin="5px 0px"
+        size="medium"
       />
 
       {/* 날짜 선택창 */}

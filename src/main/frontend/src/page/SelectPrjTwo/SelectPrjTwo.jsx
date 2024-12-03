@@ -1,6 +1,5 @@
-// SelectPrjTwo.js
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate import
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
@@ -32,33 +31,45 @@ function SelectPrjTwo() {
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState(""); // 에러 메시지 상태 추가
+  const [error, setError] = useState(""); 
 
   const navigate = useNavigate();
 
   const handleInputChange = (setter) => (e) => setter(e.target.value);
 
   const handleSubmit = () => {
-    if (isNaN(productPrice) || isNaN(productQuantity) || productPrice <= 0 || productQuantity <= 0) {
-      setError("상품 가격과 수량은 숫자만 입력해 주세요.");
+    if (!productName || !productPrice || !productQuantity) {
+      setError("모든 항목을 입력해 주세요.");
       return;
     }
-    
+
     setProducts([...products, { name: productName, price: productPrice, quantity: productQuantity }]);
     setProductName("");
     setProductPrice("");
     setProductQuantity("");
-    setError(""); // 에러 메시지 초기화
+    setError("");
+  };
+
+  const descriptions = [
+    "등록하고자 하는 상품의 이름을 작성해 주세요.",
+    "상품의 개당 가격을 작성해 주세요. 해당 란에는 숫자만 기입해야 합니다.",
+    "상품 최소 수량을 작성해주세요 해당 란에는 숫자만 기입해야 합니다."
+  ];
+
+  const handleNextClick = () => {
+    const projectData = JSON.parse(localStorage.getItem("projectData")) || {};
+    projectData.products = products;
+    localStorage.setItem("projectData", JSON.stringify(projectData));
+    navigate("/selectprj/prj-three"); 
   };
 
   return (
     <SelectBox>
       <TitleBox text="프로젝트 상품 등록" />
-
       {["상품 명", "상품 가격", "상품 최소 수량"].map((title, index) => (
         <div key={index}>
           <TitleProduct text={title} />
-          <DescriptionProduct text={`상품의 ${title}을 작성해주세요. 숫자만 기입해 주세요.`} />
+          <DescriptionProduct text={descriptions[index]} />
           <Input
             size="small"
             value={index === 0 ? productName : index === 1 ? productPrice : productQuantity}
@@ -67,34 +78,25 @@ function SelectPrjTwo() {
           />
         </div>
       ))}
-
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
       <EnrollButton>
         <WhiteBtn
           width="80px"
           fontSize="0.9rem"
           padding="8px 3px"
-          fontFamily="var(--kr-font)"
           text="등록"
           onClick={handleSubmit}
         />
       </EnrollButton>
-
       <MyNavLine />
       <TitleBox text="등록한 상품" />
-
-      {/* 등록 상품 부르기 */}
       <ProductList products={products} />
-
       <MyNavLine />
-
       <PrjFooter>
         <WhiteBtn
           width="80px"
           fontSize="0.9rem"
           padding="8px 3px"
-          fontFamily="var(--kr-font)"
           text="이전"
           onClick={() => navigate("/selectprj")}
         />
@@ -103,7 +105,7 @@ function SelectPrjTwo() {
           fontSize="0.9rem"
           padding="8px 3px"
           text="다음"
-          onClick={() => navigate("/selectprj/prj-three")}
+          onClick={handleNextClick}
         />
       </PrjFooter>
     </SelectBox>
