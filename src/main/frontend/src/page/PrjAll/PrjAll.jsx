@@ -27,6 +27,15 @@ const ProductDetails = styled.div`
   border-radius: 8px;
 `;
 
+const PrjFooter = styled.div`
+width : 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top : 20px;
+  margin-bottom: 20px;
+`;
+
 function PrjAll() {
   // SelectPrjOne 상태
   const [productName, setProductName] = useState("");
@@ -66,6 +75,7 @@ function PrjAll() {
   };
 
   return (
+    <div>
     <SelectBox>
       {/* SelectPrjOne */}
       <TitleBox text="프로젝트 기본 정보" />
@@ -165,7 +175,19 @@ function PrjAll() {
         <TitleProduct text="프로젝트 상세 정보" />
         <ReactQuill value={content} onChange={setContent} />
       </div>
+
+      <MyNavLine />
     </SelectBox>
+
+<PrjFooter>
+<Btn
+    width="80px"
+    fontSize="0.9rem"
+    padding="8px 3px"
+    text="제출"
+/>
+</PrjFooter>
+</div>
   );
 }
 
