@@ -9,6 +9,8 @@ import { useStore } from '../../stores/UserStore/useStore'
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
 import defaultImage from '../../components/ProfilePicture/defaultImage.png'
 import Input from "../../components/input";
+import PasswordPopup from "./PasswordPopup";
+import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
 
 
 const ProfileEdit = () => {
@@ -22,6 +24,7 @@ const ProfileEdit = () => {
     const [currentPassword, setCurrentPassword] = useState(""); // 현재 비밀번호
     const [currentPasswordCheck, setCurrentPasswordCheck] = useState(""); // 비밀번호 재확인
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(false); // 비밀번호 확인 여부
+    
     const [showModal, setShowModal] = useState(false); // 모달 상태
     const [newPassword, setNewPassword] = useState(""); // 새로운 비밀번호
 
@@ -128,14 +131,17 @@ const ProfileEdit = () => {
             });
     
             if (response.status === 200) {
-                alert("프로필이 성공적으로 저장되었습니다.");
+                <PopupInquiry message="수정이 완료되었습니다"
+                navigateTo={`profile-edit/:userNum`}
+                />
                 navigate(`/profile/${userNum}`);
             }
         } catch (error) {
             console.error("프로필 저장 중 오류 발생:", error);
             alert("프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
-    };
+
+    };  
 
     const handleCancel = () => {
         navigate(`/profile/${userNum}`);
@@ -190,7 +196,11 @@ const ProfileEdit = () => {
         reader.readAsDataURL(file);
     };
 
-
+    const handlePasswordSave = (newPassword) => {
+        console.log("새 비밀번호 저장:", newPassword);
+        // 비밀번호 저장 처리 로직 추가
+        actions.changePassword(newPassword);
+    };
 
     return (
         <div className="profile-edit-container">
@@ -311,23 +321,13 @@ const ProfileEdit = () => {
                         </div>
 
                         {showModal && (
-                            <div className="password-modal">
-                                <div className="modal-content">
-                                    <h3>새로운 비밀번호 설정</h3>
-                                    <Input
-                                        type="password"
-                                        value={newPassword}
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                        placeholder="새로운 비밀번호를 입력하세요"
-                                    />
-                                    <button className="btn" onClick={handleNewPasswordSave}>
-                                        비밀번호 저장
-                                    </button>
-                                    <button className="btn cancel" onClick={() => setShowModal(false)}>
-                                        취소
-                                    </button>
-                                </div>
-                            </div>
+                            <PasswordPopup
+                                onClose={() => setShowModal(false)}
+                                onSave={(newPassword) => {
+                                    handlePasswordSave(newPassword);
+                                    setShowModal(false);
+                                }}
+                            />
                         )}
                     </div>
                 </div>
