@@ -13,7 +13,7 @@ const Button = styled(motion.button)`
   font-weight: bold; 
   letter-spacing: 0.1rem;
   font-family: ${(props) => props.fontFamily || "var(--kr-font)"};
-  margin: 4px 0;
+  margin: ${(props) =>props.margin ||" 4px 0"};
   font-size:  ${(props) => props.fontSize || "2rem"};
   border: 2px solid ${(props) => props.borderColor}; 
 
@@ -37,7 +37,7 @@ const hoverEffects = {
 }
 // 딜리드 사이즈 2rem
 // 일반 확인, 마이페이지 수정 삭제 환불, 임시 저장 홈으로, 후원하기 등 일반 통합 버튼
-export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
+export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily,margin}) => (
   <Button
     bgColor="var(--darkblue-color)"
     borderColor="var(--darkblue-color)"
@@ -49,12 +49,13 @@ export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily
     fontSize={fontSize} /* 폰트 크기 프롭 전달 */
     padding={padding}
     fontFamily={fontFamily}
+    margin={margin}
   >{text}
   </Button>
 );
 
 // 일반 취소, 링크 버튼
-export const WhiteBtn = ({text,textAlign,width, height, onClick,fontSize,padding,fontFamily}) => (
+export const WhiteBtn = ({text,textAlign,width, height, onClick,fontSize,padding,fontFamily,margin}) => (
   <Button
     bgColor="white"
     borderColor="var(--darkblue-color)"
@@ -67,7 +68,7 @@ export const WhiteBtn = ({text,textAlign,width, height, onClick,fontSize,padding
     fontSize={fontSize} /* 폰트 크기 프롭 전달 */
     padding={padding}
     fontFamily={fontFamily}
-
+    margin={margin}
   >{text}
   </Button>
   );
