@@ -50,6 +50,9 @@ const Profile = () => {
   }, [userNum]);
 
 
+  function ProfileEdit(){
+    navigate(`/profile-edit/${userNum}`);
+  }
 
   function handleCreateApply(){
     navigate(`/create-apply`)
@@ -69,7 +72,9 @@ const Profile = () => {
         <div className="profile-info">
           <h1 className="usernickname">{state.nickname}</h1>
           <p className="user-id">회원번호: {state.userNum}</p>
-          <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"/>
+          <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"
+           onClick={ProfileEdit}
+          />
         </div>
       </div>
 

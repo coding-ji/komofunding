@@ -35,7 +35,7 @@ const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
     >
       {/* 프로필 이미지 */}
       <img
-        src={initialImageSrc?initialImageSrc: defaultImage}
+        src={initialImageSrc || defaultImage} // 기본 이미지 로직 추가
         alt="Profile"
         style={{
           width: "100%",
