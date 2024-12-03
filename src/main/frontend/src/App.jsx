@@ -32,6 +32,7 @@ import UserCompleted from "./page/UserCompleted/UserCompleted";
 import PrjAll from "./page/PrjAll/PrjAll";
 
 
+
 const router = createBrowserRouter([
   {path: "/", element: <Main/>, 
     children: [
@@ -61,14 +62,12 @@ const router = createBrowserRouter([
 
       {
         path: "/selectPrj",
-        // element: <SelectPrj />, // 부모 컴포넌트
+        element: <SelectPrj />, // 부모 컴포넌트
         children: [
           { index:true, element: <SelectPrjOne /> },
           { path:"prj-two", element: <SelectPrjTwo /> },
           { path:"prj-three", element: <SelectPrjThree /> },
-
-
-
+          {path : "prjall", element:<PrjAll /> }
         ],
       },
 
@@ -85,7 +84,6 @@ const router = createBrowserRouter([
 
     ]},
     {path : "/home", element:<HomePage/> },
-    {path : "/prjall", element:<PrjAll /> }
 
 ])
 
@@ -94,10 +92,10 @@ function App() {
 // return (<Date /> )
 
 
-      
-    
 
-  
+
+
+
 }
 
 export default App
