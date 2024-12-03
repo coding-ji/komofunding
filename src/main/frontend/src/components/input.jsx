@@ -27,7 +27,7 @@ const StyledInput = styled(motion.input)`
   }}
 `;
 
-function Input({ type, placeholder, onChange, margin, value, gridArea, size, width, onClick }) {
+function Input({ type, placeholder, onChange, margin, value, gridArea, size, width, onClick,name }) {
   const [isClicked, setIsClicked] = useState(false); // 클릭 여부를 추적하는 상태 변수
 
   const handleClick = () => {
@@ -44,7 +44,7 @@ function Input({ type, placeholder, onChange, margin, value, gridArea, size, wid
         placeholder={placeholder}
         onChange={onChange}
         value={value}
-        
+        name={name}
         size={size}
         margin={margin}
         style={{ gridArea: gridArea }}
