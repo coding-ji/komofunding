@@ -111,7 +111,7 @@ const CreationGuide = () => {
         }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <h1>창작가이드</h1>
+        <TitleText title="창작가이드"/>
       </Header>
 
       <Divider />
