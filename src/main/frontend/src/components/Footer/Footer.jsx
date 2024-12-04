@@ -13,7 +13,7 @@ const Footer = () => {
                             <li className={styles.li}><Link to="/note" className={styles.linkcss}>공지사항</Link></li>
                             <li className={styles.li}><Link to="/question" className={styles.linkcss}>문의등록</Link></li>
                             <li className={styles.li}><Link to="/creation-guide" className={styles.linkcss}>창작 가이드</Link></li>
-                            <li className={styles.li}><Link to="/donate" className={styles.linkcss}>후원 가이드</Link></li>
+                            <li className={styles.li}><Link to="/donate-guide" className={styles.linkcss}>후원 가이드</Link></li>
                     </ul>
                 </div>
                 <div className={styles.menu2}>
