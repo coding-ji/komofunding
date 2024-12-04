@@ -21,7 +21,7 @@ function MainMenu() {
     };
 
     const handleActiveClick = () => {
-        navigate("/menu"); // ACTIVE 버튼 클릭 시 /ongoing 경로로 이동
+        navigate("/active"); // ACTIVE 버튼 클릭 시 /ongoing 경로로 이동
     };
 
     // Variants 정의
