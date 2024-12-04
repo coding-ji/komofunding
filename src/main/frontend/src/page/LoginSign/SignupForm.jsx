@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Alert from "../../components/Alert/Alert";
-import styles from './SignupForm.module.css';
+import styles from "./SignupForm.module.css";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
-import { namePattern, emailPattern, phonePattern, pwPattern } from "./regExp";
+import { namePattern, emailPattern, phonePattern, pwPattern, nicknamePattern } from "./regExp";
+import axios from "axios";
 
 const SignupForm = () => {
   const { state: userState, actions: userActions } = UserStore();
   const [confirmPassword, setConfirmPassword] = useState("");
   const [authCode, setAuthCode] = useState("");
-  const [authMessage, setAuthMessage] = useState(""); // 인증 상태 메시지
-  const [showAuthAlert, setShowAuthAlert] = useState(false); // 인증 Alert 표시 여부
+  const [authMessage, setAuthMessage] = useState("");
+  const [showAuthAlert, setShowAuthAlert] = useState(false);
 
   const validateForm = () => {
     if (!namePattern.test(userState.name)) {
       alert("이름은 한글 또는 영문으로 1~20자 이내여야 합니다.");
+      return false;
+    }
+    if (!nicknamePattern.test(userState.nickname)) {
+      alert("닉네임은 한글 또는 영문으로 1~20자 이내여야 합니다.");
+      return false;
+    }
+    if (userState.nickname === "중복된닉네임") {
+      alert("이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.");
       return false;
     }
     if (!emailPattern.test(userState.email)) {
@@ -41,8 +50,7 @@ const SignupForm = () => {
   };
 
   const handleAuthCheck = () => {
-    // 여기에 인증번호 확인을 위한 백엔드 요청을 추가
-    const isAuthValid = authCode === "123456"; // 예제: 인증번호가 "123456"일 경우만 유효
+    const isAuthValid = authCode === "123456";
 
     if (isAuthValid) {
       setAuthMessage("인증번호가 올바릅니다.");
@@ -50,13 +58,34 @@ const SignupForm = () => {
       setAuthMessage("인증번호가 맞지 않습니다.");
     }
 
-    setShowAuthAlert(true); // Alert 표시
+    setShowAuthAlert(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      alert("회원가입이 완료되었습니다!");
+
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/register", {
+        name: userState.name,
+        nickname: userState.nickname,
+        email: userState.email,
+        password: userState.password,
+        phone: userState.phone,
+      });
+
+      if (response.status === 200) {
+        alert("회원가입이 완료되었습니다!");
+        userActions.resetState(); // 상태 초기화
+      } else {
+        alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("회원가입 요청 중 오류:", error);
+      alert("서버와 통신 중 문제가 발생했습니다.");
     }
   };
 
@@ -97,6 +126,29 @@ const SignupForm = () => {
               style={{ gridArea: "input1" }}
             />
 
+            {/* 닉네임 */}
+            <label className={styles.label} style={{ gridArea: "label7" }}>
+              닉네임
+            </label>
+            <input
+              id="nickname"
+              type="text"
+              placeholder="닉네임을 입력하세요"
+              className={styles.input}
+              value={userState.nickname}
+              onChange={(e) => userActions.changeNickname(e.target.value)}
+              style={{ gridArea: "input7" }}
+            />
+            <div style={{ gridArea: "nickbtn" }}>
+              <Alert
+                message="사용가능한 닉네임입니다"
+                confirmText="확인"
+                cancelText="취소"
+                alertButtonText={"중복 확인"}
+                onClick={() => alert("닉네임 중복 확인 API 호출")}
+              />
+            </div>
+
             {/* 이메일 */}
             <label className={styles.label} style={{ gridArea: "label2" }}>
               이메일
@@ -134,7 +186,7 @@ const SignupForm = () => {
             />
             <div style={{ gridArea: "authbtn" }}>
               <Alert
-                message={authMessage || "인증번호를 확인하시겠습니까?"}
+                message={authMessage || "인증번호가 확인되었습니다"}
                 confirmText="확인"
                 cancelText="취소"
                 alertButtonText={"인증번호 확인"}

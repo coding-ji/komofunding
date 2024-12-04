@@ -56,12 +56,13 @@
 
   grid-template:
     "label1 input1 ." 
+    "label7 input7 nickbtn"
     "label2 input2 mailbtn"
     "label3 input3 authbtn"
     "label4 input4 ."
     "label5 input5 ."
     "label6 input6 phonebtn"
-    "label7 input7 ."
+
     ". btn ."; /* 하단 버튼 */
   gap: 15px 10px; /* 행과 열 간격 */
   align-items: center;
