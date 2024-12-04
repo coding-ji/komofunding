@@ -4,6 +4,13 @@ import ProductTitle from "./ProductTitle";
 import ProductDescription from "./ProductDescription";
 import {motion} from 'framer-motion'
 import '../../index.css'; 
+import { useStore } from "../../stores/ProjectStore/useStore";
+import { useParams } from "react-router-dom";
+import { useEffect,useMemo } from "react";
+import axios from "axios";
+
+
+
 
 
 const CardContainer = styled(motion.div)`
@@ -56,7 +63,17 @@ const StyledProductDescription = styled(ProductDescription)`
 
 `;
 
-function ProductCard({ src, title, description, fontFamily }) {
+function ProductCard({ data,fontFamily }) {
+  if (!data) {
+    console.error("ProductCard: data is undefined");
+    return null; // 데이터가 없으면 아무것도 렌더링하지 않음
+  }
+
+  const { imgs = [], projectTitle = "Untitled", shortDescription = "No description available" } = data;
+
+  // 이미지 URL 처리: imgs[0]이 없으면 기본 이미지 사용
+  const imageUrl = imgs[0]?.trim() || "https://fakeimg.pl/600x600/?text=KOMO";
+
 
   const animations = [
     {
@@ -77,18 +94,22 @@ function ProductCard({ src, title, description, fontFamily }) {
     },
   ];
 
-  const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+  const appliedAnimation = useMemo(
+    () => animations[Math.floor(Math.random() * animations.length)],
+    [] // 컴포넌트가 마운트될 때 한 번만 실행
+  );
+  
   return (
     <CardContainer
-    {...randomAnimation}
+    {...appliedAnimation}
     whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
     transition={{ duration: 0.5 }}
     style={{ transformOrigin: 'center' }}
 
   >
-      <StyledProductImg src={src} />
-      <StyledProductTitle title={title} fontFamily={fontFamily} />
-      <StyledProductDescription description={description} />
+           <StyledProductImg src={imageUrl} />
+      <StyledProductTitle title={projectTitle} fontFamily={fontFamily} />
+      <StyledProductDescription description={shortDescription} />
     </CardContainer>
   );
 }

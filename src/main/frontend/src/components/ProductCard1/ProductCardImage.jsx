@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import ProductImg from "./ProductImg";
 import {motion} from 'framer-motion'
+import { useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useStore } from "../../stores/ProjectStore/useStore";
+import axios from "axios";
+
+
+
 
 const CardContainer = styled(motion.div)`
   display: grid; /* 그리드 레이아웃 설정 */
@@ -30,7 +37,19 @@ const StyledProductImg = styled(ProductImg)`
 `;
 
 
-function ProductCardImage({ src,animation }) {
+function ProductCardImage({ data,animation }) {
+
+   // 데이터 유효성 검사
+   if (!data) {
+    console.error("ProductCardImage: data is undefined");
+    return null;
+  }
+
+  
+
+
+  const { imgs = [] } = data;
+
 
   const animations = [
     {
@@ -51,9 +70,10 @@ function ProductCardImage({ src,animation }) {
     },
   ];
 
- 
-  const appliedAnimation =
-  animation || animations[Math.floor(Math.random() * animations.length)];
+  const appliedAnimation = useMemo(
+    () => animations[Math.floor(Math.random() * animations.length)],
+    [] // 컴포넌트가 마운트될 때 한 번만 실행
+  );
   
   return (
     <CardContainer
@@ -64,7 +84,7 @@ function ProductCardImage({ src,animation }) {
     
     
     >
-      <StyledProductImg src={src} />
+      <StyledProductImg src={imgs[0] || "https://fakeimg.pl/600x600/?text=KOMO"} />
       </CardContainer>
   );
 }

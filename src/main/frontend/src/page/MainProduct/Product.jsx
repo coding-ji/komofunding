@@ -5,7 +5,9 @@ import Navbar from '../../components/NavBar/Navbar'
 
 
 
+
 function Product(){
+
 
     return(
         <>
@@ -21,9 +23,3 @@ function Product(){
 
 export default Product;
 
-// import { BrowserRouter } from 'react-router-dom' ;
-// 이거 임포트 해줘야함
-
-// <BrowserRouter>
-// <Product/> 
-// </BrowserRouter>
