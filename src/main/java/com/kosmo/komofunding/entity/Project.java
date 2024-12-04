@@ -108,5 +108,8 @@ public class Project {
         if (this.updatedDate == null) {
             this.updatedDate = LocalDateTime.now(); // 작성일 기본값 설정
         }
+        if (this.thumbnailImgs == null) {
+            this.thumbnailImgs = List.of(); // 빈 리스트로 초기화
+        }
     }
 }

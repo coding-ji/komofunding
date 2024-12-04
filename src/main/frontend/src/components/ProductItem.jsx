@@ -30,7 +30,7 @@ const ProductItem = ({ product }) => {
         <DetailValue>{product.price}</DetailValue>
       </DetailItem>
       <DetailItem>
-        <DetailLabel>상품 수량: </DetailLabel>
+        <DetailLabel>최소 수량: </DetailLabel>
         <DetailValue>{product.quantity}</DetailValue>
       </DetailItem>
     </motion.div>

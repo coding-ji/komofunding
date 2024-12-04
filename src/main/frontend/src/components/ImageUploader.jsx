@@ -22,8 +22,8 @@ const ImageUploaderWrapper = styled.div`
   padding : 2px 5px;
 `;
 
-function ImageUploader({ onImagesChange }) {
-  const [images, setImages] = useState([]); // 내부 이미지 상태 관리
+function ImageUploader({ onImagesChange, images }) {
+  const [localImages, setLocalImages] = useState(images || []); // 부모에서 전달된 이미지를 초기값으로 설정
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -34,7 +34,7 @@ function ImageUploader({ onImagesChange }) {
       reader.onload = () => {
         newImages.push(reader.result);
         if (newImages.length === files.length) {
-          setImages((prevImages) => {
+          setLocalImages((prevImages) => {
             const updatedImages = [...prevImages, ...newImages];
             onImagesChange(updatedImages); // 부모 컴포넌트에 이미지 업데이트 전달
             return updatedImages;
@@ -48,9 +48,9 @@ function ImageUploader({ onImagesChange }) {
   return (
     <ImageUploaderWrapper>
       <input type="file" accept="image/*" multiple onChange={handleImageUpload} />
-      {images.length > 0 && (
+      {localImages.length > 0 && (
         <ImagePreview>
-          {images.map((image, index) => (
+          {localImages.map((image, index) => (
             <img key={index} src={image} alt={`첨부된 이미지 ${index + 1}`} />
           ))}
         </ImagePreview>

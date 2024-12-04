@@ -1,40 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
 import "./Profile.css"; // CSS 파일 import
 import { Btn , WhiteBtn } from "../../components/MyBtn";
 import '../../index.css'
+import { useStore } from "../../stores/UserStore/useStore";
 
 
 
 const Profile = () => {
+ const { state, actions } = useStore();
   const { userNum } = useParams(); // URL 파라미터에서 userNum 추출
-  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await axios.get(`/data/userData.json`);
-        const users = response.data;
-        const user = users.find((u) => u.userNum === userNum); // userNum으로 필터링
-        if (user) {
-          setProfile(user);
-        } else {
-          console.error("사용자를 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("데이터를 불러오는 중 오류 발생:", error);
+    //데이터를 가져오는 비동기 작업
+    axios.get("/data/userData.json")
+    .then(response =>{
+      //userData.json 데이터 가져오기
+      const datas = response.data; 
+      // 해당 유저
+      const userData = datas.find(data=> data.userNum === userNum);
+      if(userData){
+        actions.changeUserNum(userData.userNum);
+        actions.changeEmail(userData.email);
+        actions.changePassword(userData.password);
+        actions.changeName(userData.name);
+        actions.changeNickname(userData.nickname);
+        actions.changePhone(userData.phone);
+        actions.changeProfileImg(userData.profileImg);
+        actions.changeUserDescription(userData.description);
+        actions.changeUserActivatedStatus(userData.activatedStatus);
+        actions.changeUserBankName(userData.bankName);
+        actions.changeUserAccountNumber(userData.accountNumber);
+        actions.changeUserAccountHolder(userData.accountHolder);
+        actions.changeUserJoinDate(userData.joinDate);
+        actions.changeCorporationName(userData.corporationName);
+        actions.changeCorporationTel(userData.corporationTel);
+        actions.changeBSN(userData.bsn);
+      }else{
+        console.error("해당 유저를 찾을 수 없습니다.")
       }
-    };
-
-    fetchProfile();
+    })
+    .catch(error=>{
+      console.error("데이터 로딩 실패", error);
+    })
   }, [userNum]);
 
-  if (!profile) {
-    return <p>프로필 데이터를 불러오는 중입니다...</p>; // 로딩 상태
+
+  function ProfileEdit(){
+    navigate(`/profile-edit/${userNum}`);
   }
 
   function handleCreateApply(){
@@ -43,17 +60,21 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
+      {console.log(state)}
       {/* 상단 프로필 정보 */}
       <div className="profile-header">
         <ProfileImage
           size="200px"
-          initialImageSrc={profile.profileImg}
+          initialImageSrc={state.profileImg}
           gridArea="profileImage"
         />
+
         <div className="profile-info">
-          <h1 className="usernickname">{profile.nickname}</h1>
-          <p className="user-id">회원번호: {profile.userNum}</p>
-          <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"/>
+          <h1 className="usernickname">{state.nickname}</h1>
+          <p className="user-id">회원번호: {state.userNum}</p>
+          <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"
+           onClick={ProfileEdit}
+          />
         </div>
       </div>
 
@@ -61,7 +82,8 @@ const Profile = () => {
       <div className="profile-section">
         <h1 className="profile-sub-title">자기 소개</h1>
         <div className="conversion-options">
-        <p>{profile.description}</p>
+        <p>{state.description}</p>
+
         </div>
       </div>
 
@@ -87,7 +109,7 @@ const Profile = () => {
         </div>
         <WhiteBtn text="제작자 전환 신청"
             width="100%" height="50px" padding="3px auto" fontSize="1rem"
-             onClick={handleCreateApply}
+            onClick={handleCreateApply} // 확인해야 할 부분
         ></WhiteBtn>
       </div>
     </div>

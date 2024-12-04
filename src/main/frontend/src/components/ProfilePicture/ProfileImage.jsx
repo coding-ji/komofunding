@@ -3,7 +3,7 @@ import defaultImage from "./defaultImage.png"; // 기본 프로필 이미지
 import "./ProfileImage.css";
 
 const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
-  const [imageSrc, setImageSrc] = useState(initialImageSrc || defaultImage); // 기본 이미지 설정
+  
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -35,7 +35,7 @@ const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
     >
       {/* 프로필 이미지 */}
       <img
-        src={imageSrc}
+        src={initialImageSrc || defaultImage} // 기본 이미지 로직 추가
         alt="Profile"
         style={{
           width: "100%",

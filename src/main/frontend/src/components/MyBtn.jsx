@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import '../index.css';
+import React, { useState } from "react";
+
 
 const Button = styled(motion.button)`
   width: ${(props) => props.width || "100%"};
@@ -13,7 +15,7 @@ const Button = styled(motion.button)`
   font-weight: bold; 
   letter-spacing: 0.1rem;
   font-family: ${(props) => props.fontFamily || "var(--kr-font)"};
-  margin: 4px 0;
+  margin: ${(props) =>props.margin ||" 4px 0"};
   font-size:  ${(props) => props.fontSize || "2rem"};
   border: 2px solid ${(props) => props.borderColor}; 
 
@@ -32,12 +34,14 @@ const hoverEffects = {
   Cancel : {
     backgroundColor: "var(--darkblue-color)",  
     color: "white", 
+    borderColor: "var(--darkblue-color)",
+
   }
 
 }
 // 딜리드 사이즈 2rem
 // 일반 확인, 마이페이지 수정 삭제 환불, 임시 저장 홈으로, 후원하기 등 일반 통합 버튼
-export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily}) => (
+export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily,margin}) => (
   <Button
     bgColor="var(--darkblue-color)"
     borderColor="var(--darkblue-color)"
@@ -54,7 +58,7 @@ export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily
 );
 
 // 일반 취소, 링크 버튼
-export const WhiteBtn = ({text,textAlign,width, height, onClick,fontSize,padding,fontFamily}) => (
+export const WhiteBtn = ({text,textAlign,width, height, onClick,fontSize,padding,fontFamily,margin}) => (
   <Button
     bgColor="white"
     borderColor="var(--darkblue-color)"
@@ -67,7 +71,7 @@ export const WhiteBtn = ({text,textAlign,width, height, onClick,fontSize,padding
     fontSize={fontSize} /* 폰트 크기 프롭 전달 */
     padding={padding}
     fontFamily={fontFamily}
-
+    margin={margin}
   >{text}
   </Button>
   );
@@ -146,7 +150,51 @@ export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontF
   </Button>
 );
 
+// 카테고리 클릭 <- 프로젝트 작성 페이지 사용
+export const ClickBtn = ({
+  text,
+  textAlign,
+  width,
+  height,
+  fontSize,
+  padding,
+  fontFamily,
+  active,
+}) => {
+  const [clicked, setClicked] = useState(false); // 클릭 상태 관리
+
+  const handleClick = () => {
+    setClicked(!clicked); // 클릭 시 상태 토글
+  };
+
+  const currentStyles = clicked
+    ? hoverEffects.Cancel // 클릭된 경우 스타일
+    : {
+        backgroundColor: "white",
+        color: "var(--darkblue-color)",
+        borderColor: "var(--darkblue-color)",
+      }; // 기본 스타일
+
+  return (
+    <Button
+      style={{
+        backgroundColor: currentStyles.backgroundColor,
+        color: currentStyles.color,
+        borderColor: currentStyles.borderColor,
+      }}
+      borderRadius="2px"
+      width={width}
+      height={height}
+      fontSize={fontSize} // 폰트 크기 프롭 전달
+      padding={padding}
+      fontFamily={fontFamily}
+      onClick={handleClick}
+    >
+      {text}
+    </Button>
+  );
+};
 
 
 
-// 수현이 바꿀거 -> 버튼 색상 변경 스위치 케이스
+
