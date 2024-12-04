@@ -4,18 +4,20 @@ import HeaderMenu from "../components/Header/HeaderMenu"; // 메뉴 컴포넌트
 import SearchInput from "../components/Header/SearchInput";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-useNavigate
+
 
 const MainHeader = () => {
-
   const navigate = useNavigate(); // useNavigate 훅 선언
+
+  // 현재 날짜를 ISO 형식으로 가져오기
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className={styles.headerContainer}>
       {/* 로고 및 메뉴 섹션 */}
       <div className={styles.logoAndMenu}>
         <motion.div whileHover={{ scale: 1.05 }}
-                   onClick={() => navigate("/")} // 홈으로 이동
+          onClick={() => navigate("/")} // 홈으로 이동
         >
           <div
             className={styles.logoImage}
@@ -27,10 +29,19 @@ const MainHeader = () => {
           />
         </motion.div>
         <div className={styles.menuList}>
-          <HeaderMenu name="HOME" href="/home" />
-          <HeaderMenu name="UPCOMING" href="/upcoming" />
-          <HeaderMenu name="ACTIVE" href="/active" />
-          <HeaderMenu name="MORE" href="/notice" />
+          <HeaderMenu name="HOME" 
+           onClick={() => navigate("/home")}/>
+          <HeaderMenu
+            name="UPCOMING"
+            onClick={() => navigate("/upcoming")} // Upcoming 경로로 이동
+          />
+          <HeaderMenu
+            name="ACTIVE"
+            onClick={() => navigate("/active")} // Active 경로로 이동
+          />
+
+          <HeaderMenu name="MORE" 
+              onClick={() => navigate("/notice")}/>
         </div>
       </div>
 
@@ -46,7 +57,7 @@ const MainHeader = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate("/login")} // /login으로 이동
-            
+
           >
             Log In
           </motion.button>
