@@ -77,7 +77,7 @@ const ProgressContainer = () => {
   return (
     <div className={styles.container}>
       {/* 기타 영역 */}
-      <div className={styles.OtherTextWrapper}>
+      <div>
         <OtherText text="기타" />
       </div>
 

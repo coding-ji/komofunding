@@ -12,15 +12,6 @@
   position: relative;
 }
 
-.OtherTextWrapper{
-  position: absolute;
-  top: 50px;
-  left: 0;
-  color: #c9c9c9;
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 1.5rem;
-}
-
 .buttonWrapper {
   position: absolute;
   top: 2px;
