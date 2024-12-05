@@ -1,232 +1,114 @@
 package com.kosmo.komofunding.controller;
 
-import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.service.UserService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-
-@Controller
-@RequestMapping("/api/auth")
+@RestController
+@RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
+    // 회원가입
     @PostMapping("/register")
-    public ResponseEntity<UserOutDTO> registerUser(@RequestBody UserInDTO userInDTO) {
-        UserOutDTO createdUser = userService.registerUser(userInDTO);
+    public ResponseEntity<UserOutDTO> register(@Valid @RequestBody User user) {
+        UserOutDTO registeredUser = userService.registerUser(user);
+        return ResponseEntity.ok(registeredUser);
+    }
 
-        System.out.println("가입이 완료되었습니다: " + createdUser.getEmail());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    // 이메일 인증 코드 발송
+    @PostMapping("/emailcheck")
+    public ResponseEntity<Void> sendVerificationCode(@RequestParam String email) {
+        boolean isEmailSent = userService.sendVerificationCode(email);
+        if (!isEmailSent) {
+            return ResponseEntity.status(500).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     // 이메일 인증
-    @PostMapping("/emailcheck")
-    public ResponseEntity<UserOutDTO> emailCheck(@RequestBody UserInDTO userInDTO) {
-        // UserService의 sendVerificationCode 메서드를 호출하여 결과 반환
-        UserOutDTO response = userService.sendVerificationCode(userInDTO);
-        return ResponseEntity.ok(response);
-    }
-
-    // 이메일 인증 요청?
     @PostMapping("/emailverification")
-    public ResponseEntity<UserOutDTO> emailverification(@RequestBody UserInDTO userInDTO) {
-        // 이메일 인증 로직 호출
-        UserOutDTO response = userService.sendVerificationCode(userInDTO);
-        if (response.getShortDescription().contains("이메일 전송 실패")) {
-            return ResponseEntity.badRequest().body(response); // 실패 시 400 Bad Request 반환
+    public ResponseEntity<Void> emailVerification(@RequestParam String email, @RequestParam String code) {
+        boolean isVerified = userService.verifyEmailCode(email, code);
+        if (!isVerified) {
+            return ResponseEntity.status(400).build();
         }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().build();
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(
-            @RequestBody Map<String, String> credentials,
-            HttpSession session
-    ) {
-        String email = credentials.get("email");
-        String password = credentials.get("password");
-
-        // 이메일로 사용자 찾기
-        Optional<User> userOptional = userService.findUserByEmail(email);
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(401).body("사용자를 찾을 수 없습니다.");
+    public ResponseEntity<UserOutDTO> login(@RequestParam String email, @RequestParam String password) {
+        UserOutDTO user = userService.login(email, password);
+        if (user == null) {
+            return ResponseEntity.status(401).build(); // Unauthorized
         }
-
-        User user = userOptional.get();
-
-        // 비밀번호 확인
-        if (!userService.isPasswordCorrect(password, user)) {
-            return ResponseEntity.status(401).body("비밀번호가 잘못되었습니다.");
-        }
-
-        // 세션 설정
-        session.setMaxInactiveInterval(1800); // 30분
-        session.setAttribute("userEmail", email);
-        return ResponseEntity.ok("로그인에 성공하였습니다.");
+        return ResponseEntity.ok(user);
     }
 
+    // 사용자 정보 조회
     @GetMapping("/user")
-    public ResponseEntity<UserOutDTO> getUserByEmail(HttpSession session) {
-        // 세션에서 사용자 이메일 가져오기
-        String email = (String) session.getAttribute("userEmail");
-        if (email == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);  // 세션에 이메일이 없으면 401 반환
+    public ResponseEntity<User> getUserInfo(@RequestParam String email) {
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(404).build(); // User not found
         }
-
-        try {
-            // 이메일에 해당하는 사용자 정보 가져오기
-            UserOutDTO userOutDTO = userService.getUserOutDTOByEmail(email);
-            return ResponseEntity.ok(userOutDTO);  // 사용자 정보 반환
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 사용자가 없으면 404 반환
-        }
+        return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logoutUser(HttpSession session) {
-        // 세션 무효화
-        session.invalidate();
-        return ResponseEntity.ok("로그아웃 되었습니다.");
-    }
-
+    // 회원 탈퇴
     @DeleteMapping("/delete/{email}")
-    public ResponseEntity<String> deleteUser(@PathVariable("email") String email) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
         boolean isDeleted = userService.deleteUser(email);
-        if (isDeleted) {
-            return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
-        } else {
-            return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
+        if (!isDeleted) {
+            return ResponseEntity.status(404).build(); // User not found
         }
+        return ResponseEntity.noContent().build();
     }
 
+    // 아이디 찾기 (이메일 찾기)
     @PostMapping("/id")
-    public ResponseEntity<String> findEmail(@RequestBody Map<String, String> request) {
-        String name = request.get("name");
-        String phoneNumber = request.get("phoneNumber");
-
-        // 이메일 찾기
+    public ResponseEntity<String> findUserId(@RequestParam String name, @RequestParam String phoneNumber) {
         String email = userService.findEmailByNameAndPhoneNumber(name, phoneNumber);
-
-        if (email != null) {
-            // 이메일을 부분적으로 마스킹 처리
-            String maskedEmail = maskEmail(email);
-            return ResponseEntity.ok("이메일은 " + maskedEmail + " 입니다.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        if (email == null) {
+            return ResponseEntity.status(404).body("User not found");
         }
+        return ResponseEntity.ok(email);
     }
 
-    private String maskEmail(String email) {
-        int atIndex = email.indexOf("@");
-        String localPart = email.substring(0, atIndex);
-        String domainPart = email.substring(atIndex);
-
-        // 이메일 로컬 부분의 첫 2글자를 보이게 하고 나머지는 *로 마스킹
-        String maskedLocalPart = localPart.charAt(0) + "" + localPart.charAt(1) + "**";
-
-        return maskedLocalPart + domainPart;
-    }
-
+    // 비밀번호 재설정
     @PostMapping("/pw")
-    public ResponseEntity<?> handlePasswordReset(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String verificationCode = request.get("verificationCode");
-
-        if (verificationCode == null || verificationCode.isEmpty()) {
-            // 인증 코드 보내기
-            userService.sendVerificationCode(email);
-            return ResponseEntity.ok().body(Collections.singletonMap("message", "인증 코드가 이메일로 전송되었습니다."));
-        } else {
-            // 비밀번호 재설정
-            try {
-                String message = userService.resetPassword(email, verificationCode);
-                return ResponseEntity.ok().body(Collections.singletonMap("message", message));
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("message", e.getMessage()));
-            }
+    public ResponseEntity<Void> resetPassword(@RequestParam String email) {
+        boolean isReset = userService.resetPassword(email);
+        if (!isReset) {
+            return ResponseEntity.status(400).build();
         }
+        return ResponseEntity.ok().build();
     }
 
+    // 비밀번호 변경
     @PatchMapping("/setting/pw")
-    public ResponseEntity<Map<String, String>> updatePassword(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String currentPassword = request.get("password");
-        String newPassword = request.get("newpw");
-
-        try {
-            userService.updatePassword(email, currentPassword, newPassword);
-            return ResponseEntity.ok(Collections.singletonMap("message", "비밀번호가 성공적으로 변경되었습니다."));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("message", e.getMessage()));
+    public ResponseEntity<Void> changePassword(@RequestParam String email, @RequestParam String newPassword) {
+        boolean isChanged = userService.updatePassword(email, newPassword);
+        if (!isChanged) {
+            return ResponseEntity.status(400).build();
         }
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/pw/{userid}")
-    public ResponseEntity<Map<String, String>> verifyPassword(
-            @PathVariable("userid") String userId,
-            @RequestBody Map<String, String> request) {
-        String password = request.get("password");
-
-        try {
-            // 비밀번호 확인 서비스 호출
-            userService.verifyPassword(userId, password);
-            return ResponseEntity.ok(Collections.singletonMap("message", "비밀번호가 확인되었습니다."));
-        } catch (IllegalArgumentException e) {
-            // 비밀번호가 틀렸을 경우 예외 처리
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("message", e.getMessage()));
+    // 로그인 정지 상태 확인
+    @GetMapping("/login/status/{email}")
+    public ResponseEntity<String> checkSuspension(@PathVariable String email) {
+        String suspensionReason = userService.getSuspensionReason(email);
+        if (suspensionReason != null) {
+            return ResponseEntity.status(403).body(suspensionReason); // Forbidden
         }
+        return ResponseEntity.ok("Normal login");
     }
-
-    @GetMapping("/login/{email}")
-    public ResponseEntity<Map<String, String>> login(
-            @PathVariable("email") String email,
-            @RequestParam("suspended") boolean suspended,
-            @RequestBody Map<String, String> requestBody) {
-
-        // 요청 본문에서 email과 password를 가져옴
-        String requestEmail = requestBody.get("email");
-        String password = requestBody.get("password");
-
-        // 요청 본문의 email과 PathVariable의 email이 일치하는지 확인
-        if (!email.equals(requestEmail)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("message", "이메일이 URL과 본문에서 일치하지 않습니다."));
-        }
-
-        // 쿼리 파라미터로 전달된 suspended 값이 true일 때만 처리
-        if (suspended) {
-            try {
-                // 로그인 및 정지 이유 확인
-                String suspensionReason = userService.getSuspensionReason(email, password);
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(Collections.singletonMap("message", suspensionReason));
-            } catch (IllegalArgumentException e) {
-                // 비밀번호가 틀렸거나 다른 오류가 발생한 경우
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Collections.singletonMap("message", e.getMessage()));
-            }
-        }
-
-        // suspended가 false일 경우 정상적인 로그인 처리
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(Collections.singletonMap("message", "로그인 성공"));
-    }
-
 }

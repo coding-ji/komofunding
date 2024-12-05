@@ -52,14 +52,25 @@ const TextBox = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
   text-align: left;
-  line-height: 1.6;
+  line-height: 1.8;
 
   p {
-    color: #555;
-    line-height: 1.5;
-    margin: 10px 0;
+    color: #444;
+    line-height: 1.8;
+    margin: 12px 0;
+    font-weight: 400;
+    word-break: keep-all; /* 긴 텍스트도 보기 좋게 줄바꿈 */
+  }
+
+  p::first-line {
+    font-weight: bold; /* 첫 줄 강조 */
+  }
+
+  p + p {
+    margin-top: 16px; /* 문단 간격 추가 */
   }
 `;
+
 
 const StepsWrapper = styled.div`
   display: flex;
@@ -112,14 +123,14 @@ const DonateGuide = () => {
         }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <TitleText title="후원가이드"/>
+        <TitleText title="후원가이드" />
       </Header>
 
       <Divider />
 
       <MainContent>
         <TextBox>
-         
+
           <div
             style={{
               display: 'flex',
@@ -135,21 +146,31 @@ const DonateGuide = () => {
           <Divider />
 
           <p>
-          코모 펀딩을 이용하는 후원자 분들께 꼭 알아야 할 사항을 몇 가지 사항을 안내드리겠습니다.
-          <br />
+            코모 펀딩을 이용하는 후원자 분들께 꼭 알아야 할 사항을 몇 가지 사항을 안내드리겠습니다.
+            <br />
+            <br />
 
-코모 펀딩이란? <br />
- 제작자의 창의적인 프로젝트를 발견하고 일정 금액을 후원할 경우, 
- <br />
- 특별한 경험을 선물받을 수 있는 공간입니다.
+            코모 펀딩이란? <br />
+            제작자의 창의적인 프로젝트를 발견하고 일정 금액을 후원할 경우,
 
-프로젝트란?
- 프로젝트는 제작자만의 새로운 제품 혹은 독립적인 콘텐츠에 대한 기획서입니다. 자신이 원하는 카테고리에 맞게 후원자 분들이 원하는 제품을 만나볼 수 있습니다.
+            특별한 경험을 선물받을 수 있는 공간입니다.
+            <br />
+            <br />
 
-후원이란?
- 후원은 제작자의 프로젝트 제작 비용을 지원하는 것으로 제작자가 선정한 목표 금액을 달성할 경우, 해당 제품을 선물받을 수 있습니다.
+            프로젝트란?<br />
 
-KOMO FUNDING 을 여행할 준비 되었나요? 그럼 즐거운 시간 되시길 바랍니다:)
+            프로젝트는 제작자만의 새로운 제품 혹은 독립적인 콘텐츠에 대한 기획서입니다.
+            <br />
+            자신이 원하는 카테고리에 맞게 후원자 분들이 원하는 제품을 만나볼 수 있습니다.
+            <br />
+            <br />
+            후원이란?
+            후원은 제작자의 프로젝트 제작 비용을 지원하는 것으로 제작자가 선정한 목표 금액을 달성할 경우, 해당 제품을 선물받을 수 있습니다.
+            <br />
+
+            <br />
+            KOMO FUNDING 을 여행할 준비 되었나요?
+            그럼 즐거운 시간 되시길 바랍니다:)
 
 
           </p>

@@ -18,6 +18,8 @@ const Button = styled(motion.button)`
   margin: ${(props) =>props.margin ||" 4px 0"};
   font-size:  ${(props) => props.fontSize || "2rem"};
   border: 2px solid ${(props) => props.borderColor}; 
+  min-width: ${(props) => props.minWidth || "auto"};  /* minWidth가 없으면 auto */
+
 
   /* 호버 시 전환될 스타일 */
   transition: all 0.13s ease; /* 부드러운 전환 효과 */
@@ -36,6 +38,18 @@ const hoverEffects = {
     color: "white", 
     borderColor: "var(--darkblue-color)",
 
+  },
+
+  White : {
+    backgroundColor: "white",  
+    color: "black", 
+    borderColor: "black",
+  },
+
+  Black : {
+    backgroundColor: "Black",  
+    color: "white", 
+    borderColor: "black",
   }
 
 }
@@ -195,6 +209,49 @@ export const ClickBtn = ({
   );
 };
 
+// 상품 페이지 탭 버튼
+export const TapBtn = ({
+  text,
+  textAlign,
+  width,
+  height,
+  fontSize,
+  padding,
+  fontFamily,
+  isActive, // 활성화 상태를 나타내는 프롭
+  onTap,
+  minWidth
 
+}) => {
+  // const [tapped, setTapped] = useState(false);
 
+  // const handleTap = () => {
+  //   setTapped(!tapped); // 클릭 시 상태 토글
+  // };
+
+  const normal = isActive
+    ? hoverEffects.Black // 클릭된 경우 스타일
+    : {
+        backgroundColor: "white",
+        color: "black",
+        borderColor: "black",
+      }; // 기본 스타일
+
+      return(
+        <Button
+        style={{
+          backgroundColor: normal.backgroundColor,
+          color: normal.color,
+          borderColor: normal.borderColor,
+        }}
+        minWidth={minWidth}
+        borderRadius="2px"
+        width={width}
+        height={height}
+        fontSize={fontSize} // 폰트 크기 프롭 전달
+        padding={padding}
+        fontFamily={fontFamily}
+        onClick={onTap}>{text}</Button>
+      )
+}
 
