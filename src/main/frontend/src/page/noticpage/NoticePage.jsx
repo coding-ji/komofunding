@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Notification from "../../components/Notification"; // 기존 Notification 컴포넌트
+import Notification from "../../components/Notification"; // 공지사항 표시 컴포넌트
 import styles from "./NoticePage.module.css";
+import Pagination from "../MyPage/Pagination";
+
 
 const categories = [
   { name: "전체", content: "전체 페이지" },
@@ -11,6 +13,8 @@ const categories = [
   { name: "이벤트", content: "이벤트 페이지" },
   { name: "자주 묻는 질문", content: "자주 묻는 질문 페이지" },
 ];
+
+const ITEMS_PER_PAGE = 5; // 한 페이지에 표시할 공지사항 수
 
 const NoticePage = () => {
   const [notificationsData, setNotificationsData] = useState({
@@ -20,9 +24,8 @@ const NoticePage = () => {
     "자주 묻는 질문": [],
   });
   const [activeCategory, setActiveCategory] = useState(categories[0]);
-  const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 페이지당 표시할 항목 수
+  const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
   const itemRefs = useRef([]);
   const navigate = useNavigate();
 
@@ -63,14 +66,6 @@ const NoticePage = () => {
     }
   };
 
-  const handleCategoryClick = (index) => {
-    const activeItem = itemRefs.current[index];
-    if (activeItem) {
-      const { offsetLeft, offsetWidth } = activeItem;
-      setUnderlineProps({ left: offsetLeft, width: offsetWidth });
-    }
-  };
-
   useLayoutEffect(() => {
     updateUnderlinePosition();
     window.addEventListener("resize", updateUnderlinePosition);
@@ -79,22 +74,19 @@ const NoticePage = () => {
     };
   }, [activeCategory]);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const currentNotifications =
-    notificationsData[activeCategory.name]?.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
-    ) || [];
+  // 현재 선택된 카테고리에서 페이지별 데이터를 계산
+  const currentNotifications = notificationsData[activeCategory.name]?.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   const totalPages = Math.ceil(
-    (notificationsData[activeCategory.name]?.length || 0) / itemsPerPage
+    notificationsData[activeCategory.name]?.length / ITEMS_PER_PAGE
   );
 
   return (
     <div className={styles.pageContainer}>
+      {/* 제목 */}
       <motion.div
         className={styles.title}
         initial="hidden"
@@ -108,6 +100,7 @@ const NoticePage = () => {
         <h1>공지사항</h1>
       </motion.div>
 
+      {/* 카테고리 선택 */}
       <div className={styles.navbarline}>
         <div className={styles.navbar}>
           {categories.map((category, index) => (
@@ -118,7 +111,6 @@ const NoticePage = () => {
               }`}
               onClick={() => {
                 setActiveCategory(category);
-                handleCategoryClick(index);
                 setCurrentPage(1);
               }}
               ref={(el) => (itemRefs.current[index] = el)}
@@ -143,8 +135,9 @@ const NoticePage = () => {
         </AnimatePresence>
       </div>
 
+      {/* 공지사항 목록 */}
       <div className={styles.content}>
-        {currentNotifications.map((item, index) => (
+        {currentNotifications?.map((item, index) => (
           <div
             key={index}
             onClick={() => navigate(`/announcement/${item.id}`)} // 상세 페이지로 이동
@@ -160,17 +153,14 @@ const NoticePage = () => {
         ))}
       </div>
 
-      <div className={styles.pagination}>
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => handlePageChange(index + 1)}
-            className={currentPage === index + 1 ? styles.activePage : ""}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      {/* 페이지네이션 */}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </div>
   );
 };
