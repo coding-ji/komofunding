@@ -30,15 +30,21 @@ import UserFunding from "./page/UserFunding/UserFunding";
 import UserIng from "./page/UserIng/UserIng";
 import UserCompleted from "./page/UserCompleted/UserCompleted";
 import PrjAll from "./page/PrjAll/PrjAll";
-import ProductDetail from "./page/MainProduct/ProductDetail";
+// import ProductDetail from "./page/MainProduct/ProductDetail";
 import Announcement from "./page/noticpage/Announcement";
 
+import ProfileEdit from "./page/Profile/ProfileEdit";
+import Profile from "./container/Profile/Profile";
+import CreationGuide from './page/noticpage/CreationGuide'
+import DonateGuide from "./page/noticpage/DonateGuide";
 
 
 const router = createBrowserRouter([
   {path: "/", element: <Main/>, 
     children: [
-      {path: "/", element: <Product/>},
+      {index: true, element: <Product/>},
+      {path :"upcoming", element:<Product />},
+      {path :"active", element:<Product/>},
       {path: "/write-qna", element: <WriteQnA/>},
       {path: "/login", element: <Login/>},
       {path: "/FindAccount", element: <FindAccount/>},
@@ -55,7 +61,7 @@ const router = createBrowserRouter([
       },
       {path: "/announcement/:id",element: <Announcement />
       },
-      { path:"/productDetail", element:<ProductDetail/>},
+      // { path:"/productDetail", element:<ProductDetail/>},
       {
         path: "/myfunding",
         element: <MyFunding/>, // 부모 컴포넌트
@@ -73,7 +79,7 @@ const router = createBrowserRouter([
           { index:true, element: <SelectPrjOne /> },
           { path:"prj-two", element: <SelectPrjTwo /> },
           { path:"prj-three", element: <SelectPrjThree /> },
-          {path : "prjall", element:<PrjAll /> }
+          // {path : "prjall", element:<PrjAll /> }
         ],
       },
 
@@ -86,8 +92,12 @@ const router = createBrowserRouter([
 
         ],
       },
+      {path:"/create-apply", element:<CreatorApply/> },
+      {path:"profile/:userNum", element:<Profile/> },
+      {path:"profile-edit/:userNum", element:<ProfileEdit/> },
 
-
+      {path:"creation-guide", element:<CreationGuide/>},
+      {path:"donate-guide", element:<DonateGuide/>}
     ]},
     {path : "/home", element:<HomePage/> },
 
