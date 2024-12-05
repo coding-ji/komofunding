@@ -93,7 +93,6 @@ public class User {
     @Column(nullable = true)
     private String verificationCode;
 
-
     // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
         Random random = new Random();
