@@ -1,77 +1,92 @@
-/* 전체 레이아웃 */
+/* 메인 레이아웃 */
 .mainGrid {
-  display: grid;
-  grid-template:
-    "... topSection ..." 0.1fr
-    "... middleSection ..." 1fr / 0.5fr 1000px 0.5fr;
-  row-gap: 2rem;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   padding: 20px;
-  margin: 0 auto;
-
-}
-
-.topSection {
-  grid-area: topSection;
-}
-
-.middleSection {
-  grid-area: middleSection;
   width: 100%;
+  border-radius: 8px;
+  margin: 40px auto;
 }
 
-/* 제목 스타일 */
+/* 상단 섹션 */
+.topSection {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 중단 섹션 */
+.middleSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .subtitle {
-  color: var(--user-btn, #256e91);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 35px;
-  font-weight: 700;
-  margin: 40px 0 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 8px;
 }
 
-/* 입력창 스타일 */
 .input {
-  height: 60px;
-  border: 2px solid #c9c9c9;
-  background-color: white;
-  font-size: 16px;
-  padding: 10px;
-  width: 100%; /* 반응형에서 너비 조정 가능 */
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #256e91;
 }
 
 /* 버튼 컨테이너 */
-.button-container {
-  display: grid;
-  grid-template-columns: auto auto; /* 두 버튼을 나란히 배치 */
-  justify-content: end; /* 오른쪽 정렬 */
-  align-items: center;
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
-/* 반응형 처리 */
-@media (max-width: 1000px) {
-  .mainGrid {
-    grid-template: 
-      "topSection" auto
-      "middleSection" 1fr / 1fr;
-    padding: 15px;
-  }
 
-  .subtitle {
-    font-size: 25px; /* 제목 크기 축소 */
-    text-align: center;
-  }
-
-  .input {
-    height: 40px;
-    font-size: 12px; /* 인풋 글자 크기 축소 */
-    padding: 8px;
-  }
-
-  .button-container {
-    grid-template-columns: 1fr 1fr; /* 버튼 크기를 줄이고 비율을 동일하게 */
-    justify-content: space-between; /* 버튼 간격 조정 */
-  }
+/* 팝업 스타일 */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  z-index: 1000;
 }
 
+.popupMessage {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.popupButton {
+  background-color: #256e91;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.popupButton:hover {
+  background-color: #1d4e6d;
+}
