@@ -1,51 +1,59 @@
-import React from 'react';
-import styles from './Announcement.module.css'; // CSS Modules로 가져오기
-import { motion } from 'framer-motion';
-
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import styles from "./Announcement.module.css";
 
 const Announcement = () => {
-  return (<>
-  
+  const { id } = useParams();
+  const [announcement, setAnnouncement] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAnnouncement = async () => {
+      try {
+        const response = await fetch("/data/notifications.json"); // JSON 파일 경로
+        const data = await response.json();
+        const foundAnnouncement = data.find((item) => item.id === parseInt(id));
+        setAnnouncement(foundAnnouncement);
+      } catch (error) {
+        console.error("공지사항 데이터를 불러오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchAnnouncement();
+  }, [id]);
+
+  if (!announcement) {
+    return <div className={styles.loading}>공지사항 로딩 중...</div>;
+  }
+
+  return (
     <div className={styles.announcementPage}>
-
-
-      <motion.div className={styles.header} initial="hidden" animate="visible" variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-        <h1>공지사항</h1>
-      </motion.div>
-
-
+      <h1 className={styles.header}>공지사항</h1>
       <hr />
       <main className={styles.mainContent}>
         <article className={styles.announcement}>
           <header className={styles.announcementHeader}>
-            <h2>갈비뼈를 다 발라먹어버렸다</h2>
-
+            <h2>{announcement.title}</h2>
             <div className={styles.announcementMeta}>
-              <span className={styles.date}>2024-11-09</span>
-              <span className={styles.author}>관리자</span>
-
+              <span className={styles.date}>{announcement.date}</span>
+              <span className={styles.author}>{announcement.author}</span>
             </div>
-            <hr />
           </header>
           <section className={styles.announcementBody}>
-            <div className={styles.textBox}>
-              <p>크라우드 펀딩 이용 안내입니다.</p>
-              <p>
-                프로젝트 등록을 원한다면 마이페이지 제작자 신청을 통해 승인 받은 뒤 등록이 가능합니다.
-              </p>
-              <p>추가 문의는 문의하기를 이용해 주세요.</p>
-              <br /><br /><br /><br /><br /><br />
-            </div>
+            {announcement.content.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
           </section>
         </article>
-
+        
       </main>
-      <div className={styles.buttonWrapper}>
-          <button className={styles.backButton}>목록</button>
-        </div>
-
+      <button
+          className={styles.backButton}
+          onClick={() => navigate("/notice")}
+        >
+          목록으로 돌아가기
+        </button>
     </div>
-    </>
   );
 };
 

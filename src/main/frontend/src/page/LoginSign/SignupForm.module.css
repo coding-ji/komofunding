@@ -36,35 +36,25 @@
   border: none;
 }
 
-.description {
-  font-size: 14px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background: #ECECEC;
-  border-radius: 4px;
-}
-
 .section {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 .gridForm {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr; /* 3열 그리드 */
-
-  grid-template:
-    "label1 input1 ." 
+  grid-template-areas:
+    "label1 input1 ."
     "label7 input7 nickbtn"
     "label2 input2 mailbtn"
     "label3 input3 authbtn"
     "label4 input4 ."
     "label5 input5 ."
     "label6 input6 phonebtn"
-
-    ". btn ."; /* 하단 버튼 */
-  gap: 15px 10px; /* 행과 열 간격 */
+    ". btn .";
+  gap: 15px; /* 그리드 간격 */
   align-items: center;
   padding: 30px;
   margin-top: 15px;
@@ -72,59 +62,74 @@
 }
 
 .label {
-  text-align: start;
+  grid-column: span 1;
   font-weight: bold;
   font-size: 14px;
-  font-family: "Noto Sans KR";
+  text-align: start;
   color: #000;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .input {
+  grid-column: span 2;
   width: 100%;
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.phoneInput {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+.input:focus {
+  border-color: #256e91;
+  box-shadow: 0 0 5px rgba(37, 110, 145, 0.5);
+  outline: none;
 }
 
-.submitButton {
-  grid-area: btn; /* 버튼 영역 */
-  text-align: center;
-  color: white;
-  height: 40px;
-  padding: 8px 31px;
-  gap: 10px;
-  border-radius: 4px;
-  border: 2px solid #256E91;
-  background: #256E91;
-  margin-top: 30px;
-  width: 100%;
-  justify-self: center; /* 가운데 정렬 */
-}
-
-.alert {
+.smallButton {
+  grid-column: span 1;
   width: 100%;
   height: 40px;
-  background: #333;
-  color: white;
+  background-color: #282828;
+  color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 14px;
+  cursor: pointer;
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.smallButton:hover {
+  background-color: #1b5672;
+  transform: scale(1.05);
+}
+
+.smallButton:active {
+  transform: scale(0.95);
+}
+
+.submitButton {
+  grid-area: btn;
+  width: 100%;
+  height: 45px;
+  background-color: #256e91;
+  color: #fff;
+  border: 1px solid #282828;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #1b5672;
+  transform: scale(1.05);
+}
+
+.submitButton:active {
+  transform: scale(0.95);
 }

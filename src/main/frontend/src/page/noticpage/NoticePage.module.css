@@ -31,8 +31,6 @@
   letter-spacing: 0.325px;
   margin-bottom: 20px;
 }
-
-/* 네비게이션 바 */
 .navbarline {
   border-bottom: 1px solid #000;
   position: relative;
@@ -42,24 +40,28 @@
 }
 
 .navbar {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  justify-items: center;
-  padding: 10px 0;
+  display: flex; /* 플렉스 박스 사용 */
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center;
+  gap: 37px; /* 항목 간격을 37px로 설정 */
+  padding: 10px 0; /* 상하 여백 */
   font-size: 18px;
   font-weight: 700;
   color: #282828;
   text-align: center;
 }
 
+/* 네비게이션 항목 */
 .navbaritems {
-  cursor: pointer;
-  padding: 10px 15px;
-  text-decoration: none;
   color: #282828;
+  text-align: center;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
-  border-radius: 8px; /* 부드러운 모서리 */
 }
 
 .navbaritems:hover {
@@ -134,4 +136,19 @@
 .pagination .activePage {
   background-color: #256e91;
   color: white;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 리스트 중앙 정렬 */
+  width: 100%;
+  padding: 20px;
+}
+
+.notificationList {
+  width: 100%;
+  max-width: 942px; /* 리스트의 최대 너비 */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* 각 리스트 간 간격 */
 }

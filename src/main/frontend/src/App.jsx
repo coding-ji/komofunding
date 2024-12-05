@@ -30,6 +30,8 @@ import UserFunding from "./page/UserFunding/UserFunding";
 import UserIng from "./page/UserIng/UserIng";
 import UserCompleted from "./page/UserCompleted/UserCompleted";
 import PrjAll from "./page/PrjAll/PrjAll";
+import ProductDetail from "./page/MainProduct/ProductDetail";
+import Announcement from "./page/noticpage/Announcement";
 
 
 
@@ -49,7 +51,11 @@ const router = createBrowserRouter([
           { path: ":id", element: <QnAView /> }, // 상세 경로
         ],
       },
-      { path:"/notice", element:<NoticePage/>},
+      {path: "/notice", element: <NoticePage />
+      },
+      {path: "/announcement/:id",element: <Announcement />
+      },
+      { path:"/productDetail", element:<ProductDetail/>},
       {
         path: "/myfunding",
         element: <MyFunding/>, // 부모 컴포넌트
