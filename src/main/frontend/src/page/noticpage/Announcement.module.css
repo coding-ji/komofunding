@@ -7,28 +7,30 @@
     padding: 20px;
     justify-content: center; /* 세로로 중앙 정렬 */
     align-items: center;     /* 가로로 중앙 정렬 */
-    margin: 70px 0 70px 0;
+    margin: 70px 0; /* 페이지 상하 여백 */
 }
 
 /* 공지사항 헤더 */
 .header {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 세로로 중앙 정렬 */
+    justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 1px;
+    margin-bottom: 30px; /* 헤더와 콘텐츠 간 여백 */
 }
 
 hr {
     width: 100%;
+    margin: 20px 0; /* 구분선 상하 여백 */
+    border: none;
+    border-top: 1px solid #C9C9C9;
 }
 
 .header h1 {
     font-size: 36px;
     font-weight: bold;
     color: #333;
-    width: 100%; /* 반응형으로 고정 폭 제거 */
     max-width: 1100px; /* 최대 폭 제한 */
 }
 
@@ -38,79 +40,62 @@ hr {
     border: 1px solid #ddd;
     border-radius: 2px;
     padding: 40px;
-    width: 100%; /* 반응형: 고정된 폭을 제거 */
+    width: 100%;
     max-width: 1043px; /* 최대 폭 제한 */
-    height: auto; /* 높이 유연하게 변경 */
+    min-height: 800px; /* 콘텐츠 최소 높이 */
     box-sizing: border-box;
 }
 
-.mainbody {
+/* 공지사항 본문 */
+.announcementBody {
     width: 100%;
     max-width: 1043px;
-    flex-shrink: 0;
     border-radius: 2px;
-    border: 1px solid black;
-    padding: 30px;
+    padding: 5%; /* 내부 패딩 */
     box-sizing: border-box;
-}
-
-.textBox {
-    padding: 10px;
-    width: 100%; /* 반응형: 고정된 폭 제거 */
-    max-width: 958px; /* 최대 폭 제한 */
-    height: auto; /* 높이 유연하게 변경 */
-    color: #6B6B6B;
-    font-family: "Noto Sans KR", sans-serif;
-    font-size: 18px; /* 기본 크기 */
-    text-align: left;
-    line-height: 1.6;
-}
-
-.announcement {
-    margin-bottom: 20px;
+    text-align: start; /* 본문 정렬 */
+    line-height: 1.5;
+    color: #555;
 }
 
 .announcementHeader h2 {
     font-size: 24px;
     font-weight: bold;
     color: #256e91;
+    margin-bottom: 20px; /* 본문과의 간격 */
 }
 
 .announcementMeta {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
     font-size: 14px;
     color: #888;
+    margin-bottom: 10px;
 }
 
-.date {
-    color: #256E91;
-}
-
+.date,
 .author {
     color: #256e91;
-    text-decoration: none;
 }
 
 .author:hover {
     text-decoration: underline;
 }
 
-/* 본문 스타일 */
+/* 본문 단락 스타일 */
 .announcementBody p {
+    margin: 10px 0; /* 단락 간 간격 */
     color: #555;
-    line-height: 1.5;
-    margin: 10px 0;
 }
 
 /* 목록 버튼 */
-.buttonWrapper{
-    padding: 30px;
+.buttonWrapper {
+    padding: 20px;
+    text-align: center;
 }
+
 .backButton {
-    display: block;
-    margin: 20px auto 0;
+    margin: 20px auto;
     padding: 10px 20px;
     background-color: #256e91;
     color: #fff;
@@ -118,6 +103,7 @@ hr {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .backButton:hover {
@@ -127,15 +113,16 @@ hr {
 /* 반응형 디자인 */
 @media (max-width: 1024px) {
     .header h1 {
-        font-size: 32px; /* 헤더 글씨 크기 축소 */
-    }
-
-    .textBox {
-        font-size: 16px; /* 텍스트 크기 축소 */
+        font-size: 32px;
     }
 
     .mainContent {
-        padding: 15px;
+        padding: 20px;
+    }
+
+    .announcementBody {
+        padding: 20px;
+        font-size: 16px;
     }
 }
 
@@ -144,13 +131,18 @@ hr {
         font-size: 28px;
     }
 
-    .textBox {
+    .mainContent {
+        padding: 15px;
+    }
+
+    .announcementBody {
         font-size: 14px;
-        padding: 10px;
     }
 
     .backButton {
-        width: 100%; /* 버튼 전체 폭으로 변경 */
+        width: 100%;
+        font-size: 14px;
+        padding: 10px;
     }
 }
 
@@ -159,15 +151,14 @@ hr {
         font-size: 24px;
     }
 
-    .textBox {
-        font-size: 14px;
+    .announcementBody {
+        font-size: 12px;
         line-height: 1.4;
     }
 
     .announcementMeta {
         flex-direction: column;
         align-items: center;
-        gap: 5px;
     }
 
     .backButton {
