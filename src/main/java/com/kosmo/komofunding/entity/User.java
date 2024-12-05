@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -89,6 +90,9 @@ public class User {
     @Convert(converter = StringListConverter.class)
     private List<String> projectIds; // 프로젝트 ID들 저장
 
+    @Column(nullable = true)
+    private String verificationCode;
+
 
     // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
@@ -112,5 +116,8 @@ public class User {
         if (this.joinDate == null){
             this.joinDate = LocalDateTime.now();
         }
+    }
+    public boolean isSuspended() {
+        return this.activatedStatus == UserStatus.SUSPENDED;
     }
 }

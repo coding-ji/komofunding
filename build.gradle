@@ -28,6 +28,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.security:spring-security-core:6.3.2'
+	implementation 'org.modelmapper:modelmapper:2.4.4'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -38,4 +42,50 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs << "-parameters"
+}
+
+
+def frontendDir = "$projectDir/src/main/frontend"
+
+sourceSets {
+	main {resources {
+		srcDirs = ["$projectDir/src/main/resources"]
+	}}}
+
+processResources {dependsOn "copyViteBuildFiles"}
+
+// install을하고
+task installVite(type: Exec) {
+	workingDir "$frontendDir"
+	inputs.dir "$frontendDir"
+	group = BasePlugin.BUILD_GROUP
+
+	if (System.getProperty('os.name')
+			.toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "install"
+	} else {commandLine "npm", "install"}
+}
+
+//build를 할거임
+task buildVite(type: Exec) {
+	dependsOn "installVite"
+	workingDir "$frontendDir"
+	inputs.dir "$frontendDir"
+	group = BasePlugin.BUILD_GROUP
+
+	if (System.getProperty('os.name')
+			.toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "run", "build"
+	} else {commandLine "npm", "run", "build"}
+}
+
+//static으로 빌드를 복사해놓는다.
+task copyViteBuildFiles(type: Copy) {
+	dependsOn "buildVite"
+	from "$frontendDir/dist"
+	into "$projectDir/src/main/resources/static"
 }
