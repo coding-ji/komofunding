@@ -29,7 +29,8 @@ const Announcement = () => {
   return (
     <div className={styles.announcementPage}>
       <h1 className={styles.header}>공지사항</h1>
-      <hr />
+     <hr />
+   
       <main className={styles.mainContent}>
         <article className={styles.announcement}>
           <header className={styles.announcementHeader}>
@@ -37,7 +38,9 @@ const Announcement = () => {
             <div className={styles.announcementMeta}>
               <span className={styles.date}>{announcement.date}</span>
               <span className={styles.author}>{announcement.author}</span>
+            
             </div>
+            <hr />
           </header>
           <section className={styles.announcementBody}>
             {announcement.content.map((paragraph, index) => (
@@ -51,7 +54,7 @@ const Announcement = () => {
           className={styles.backButton}
           onClick={() => navigate("/notice")}
         >
-          목록으로 돌아가기
+          목록
         </button>
     </div>
   );
