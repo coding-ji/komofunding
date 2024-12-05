@@ -1,81 +1,167 @@
-import React from 'react';
-import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from './components/MyBtn';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // 경로 파라미터 추출
+import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from './MyBtn';
 import styles from './ProgressContainer.module.css';
-import Progress from './components/Progress';
-import AmountInfo from './components/AmountInfo';
-import OtherText from './components/OtherText'; // 새로 추가된 OtherText import
+import Progress from './Progress';
+import AmountInfo from './AmountInfo';
+import OtherText from './OtherText';
+import MyNavLine from './MyNavLine';
 
 const ProgressContainer = () => {
-  const targetAmount = 3750000; // 목표 금액
-  const currentAmount = 3000000; // 현재 금액 (AmountInfo에 전달되는 값)
-    // 목표금액과 현재금액은 props로 밖에서 받아서 쓸수있게 해주시면됩니다
-  // const targetAmount = {targetAmount}; 
-  // const currentAmount = {currentAmount};
-  
-  // 퍼센티지 계산 (소수점 두자리까지 표시)
-  const percentage = ((currentAmount / targetAmount) * 100).toFixed(2);
+  const { projectNum } = useParams(); // 경로 파라미터 추출
+  const [projectData, setProjectData] = useState(null); // 선택된 프로젝트의 데이터
+  const [selectedItems, setSelectedItems] = useState([]); // 선택된 아이템들 저장
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false); // 아코디언 상태 관리
+  const [totalSelectedPrice, setTotalSelectedPrice] = useState(0); // 선택된 아이템들의 총 금액
+
+  // 특정 프로젝트 데이터 가져오기
+  useEffect(() => {
+    const fetchProjectData = async () => {
+      try {
+        const response = await fetch(`/data/project_${projectNum}.json`); // 경로 파라미터 기반으로 JSON 호출
+        const data = await response.json();
+        setProjectData(data);
+      } catch (error) {
+        console.error('데이터를 불러오는데 실패했습니다:', error);
+      }
+    };
+
+    if (projectNum) {
+      fetchProjectData();
+    }
+  }, [projectNum]);
+
+  // 선택된 아이템들의 총 금액 계산
+  useEffect(() => {
+    const calculatedTotalPrice = selectedItems.reduce(
+      (sum, item) => sum + item.itemPrice * item.count,
+      0
+    );
+    setTotalSelectedPrice(calculatedTotalPrice);
+  }, [selectedItems]);
+
+  const handleAddItem = (item) => {
+    setSelectedItems((prevItems) => {
+      const existingItemIndex = prevItems.findIndex(
+        (selectedItem) => selectedItem.itemName === item.itemName
+      );
+      if (existingItemIndex >= 0) {
+        const updatedItems = [...prevItems];
+        updatedItems[existingItemIndex].count += 1; // 기존 아이템의 수량 증가
+        return updatedItems;
+      }
+      return [...prevItems, { ...item, count: 1 }]; // 새 아이템 추가
+    });
+    setIsAccordionOpen(false);
+  };
+
+  const handleRemoveItem = (index) => {
+    setSelectedItems((prevItems) => prevItems.filter((_, i) => i !== index));
+  };
+
+  const handleUpdateCount = (index, newCount) => {
+    setSelectedItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[index].count = newCount;
+      return updatedItems;
+    });
+  };
+
+  if (!projectData) {
+    return <p>데이터를 불러오는 중입니다...</p>;
+  }
+
+  const { currentAmount, totalAmount, items } = projectData;
+  const percentage = totalAmount ? ((currentAmount / totalAmount) * 100).toFixed(2) : 0;
 
   return (
     <div className={styles.container}>
-      
-      {/* 수정, 삭제 버튼 */}
-      <div className={styles.buttonWrapper}>
-        <ProductBtn2 
-          text="수정" 
-          width="100px" 
-          height="40px" 
-          fontSize="1rem"
-          padding="5px"
-          fontFamily="'Noto Sans', sans-serif" 
-        />
-        <ProductBtn1 
-          text="삭제" 
-          width="100px" 
-          height="40px" 
-          fontSize="1rem"
-          padding="5px"
-          fontFamily="'Noto Sans', sans-serif" 
-        />
-      </div>
-
-      {/* 텍스트컴포넌츠 불러오기 */}
+      {/* 기타 영역 */}
       <div className={styles.OtherTextWrapper}>
-        <OtherText text="기타"/>
+        <OtherText text="기타" />
       </div>
 
-      {/* AmountInfo 영역 */}
+      {/* 버튼 영역 */}
+      <div className={styles.buttonWrapper}>
+        <ProductBtn2 text="수정" width="100px" height="40px" fontSize="1rem" padding="5px" />
+        <ProductBtn1 text="삭제" width="100px" height="40px" fontSize="1rem" padding="5px" />
+      </div>
+
+      {/* 금액 정보 */}
       <div className={styles.amountInfoWrapper}>
         <AmountInfo amount={currentAmount} percentage={percentage} />
       </div>
 
       {/* Progress 영역 */}
       <div className={styles.progressWrapper}>
-        {/* Progress에 퍼센티지 기반 값 전달 */}
-        <Progress color="#F5E6D6" value={currentAmount} max={targetAmount} />
-        <p className={styles.targetAmount}>목표금액 : {targetAmount.toLocaleString()} 원</p>
+        <Progress color="#F5E6D6" value={currentAmount} max={totalAmount} />
+        <p className={styles.targetAmount}>목표금액 : {totalAmount.toLocaleString()} 원</p>
+      </div>
+      <div>
+        <MyNavLine />
       </div>
 
-      {/* 회색 선 */}
-      <div className={styles.separator}></div>
+      {/* 드롭다운(아코디언) */}
+      <div className={styles.accordionWrapper}>
+        <button
+          className={`${styles.accordionToggle} ${isAccordionOpen ? styles.open : ''}`}
+          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+        >
+          상품을 선택해주세요
+        </button>
+        {isAccordionOpen && (
+          <div className={styles.dropdownContent}>
+            {items.map((item) => (
+              <div
+                key={item.itemName}
+                className={styles.dropdownItem}
+                onClick={() => handleAddItem(item)}
+              >
+                <span>{item.itemName}</span>
+                <span className={styles.itemPrice}>{item.itemPrice.toLocaleString()} 원</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 선택된 아이템 상자 */}
+      {selectedItems.map((item, index) => (
+        <div key={item.itemName} className={styles.selectedItemBox}>
+          <div className={styles.closeBtn} onClick={() => handleRemoveItem(index)}>
+            x
+          </div>
+          <p className={styles.itemName}>{item.itemName}</p>
+          <div className={styles.itemControls}>
+            <button
+              onClick={() => handleUpdateCount(index, Math.max(1, item.count - 1))}
+              className={styles.controlBtn}
+            >
+              -
+            </button>
+            <span>{item.count}</span>
+            <button
+              onClick={() => handleUpdateCount(index, item.count + 1)}
+              className={styles.controlBtn}
+            >
+              +
+            </button>
+            <span className={styles.itemPrice}>
+              {(item.itemPrice * item.count).toLocaleString()} 원
+            </span>
+          </div>
+        </div>
+      ))}
+
+      {/* 선택된 상품 총 금액 */}
+      <div className={styles.totalPrice}>
+        총 금액: {totalSelectedPrice.toLocaleString()} 원
+      </div>
 
       {/* 버튼 영역 */}
       <div className={styles.buttonContainer}>
-        <Btn
-          text="후원하기"
-          width="78%"
-          height="50px"
-          fontSize="1.2rem"
-          padding="10px"
-          fontFamily="'Noto Sans', sans-serif" 
-        />
-        <WhiteBtn
-          text="링크"
-          width="20%"
-          height="50px"
-          fontSize="1.2rem"
-          padding="10px"
-          fontFamily="'Noto Sans', sans-serif" 
-        />
+        <Btn text="후원하기" width="78%" height="50px" fontSize="1.2rem" padding="10px" />
+        <WhiteBtn text="링크" width="20%" height="50px" fontSize="1.2rem" padding="10px" />
       </div>
     </div>
   );
