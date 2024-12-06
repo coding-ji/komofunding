@@ -7,15 +7,14 @@ const Title = styled.p`
     font-family : var(--kr-font);
     font-weight : bold;
     letter-spacing: 0.15px;
-    font-size: 1.2rem;
+    font-size: ${({ fontSize }) => fontSize || "1.2rem"};
     padding : 5px 5px;
+`;
 
-    `;
-
-function TitleProduct({text}) {
+function TitleProduct({ text, fontSize }) {
     return(
-        <Title>{text}</Title>
-    )
+        <Title fontSize={fontSize}>{text}</Title>
+    );
 }
 
 export default TitleProduct;

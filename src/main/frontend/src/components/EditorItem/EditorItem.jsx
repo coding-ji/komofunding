@@ -104,4 +104,4 @@ const Editor = ({ editorContent, setEditorContent, quillRef }) => {
   );
 };
 
-export default Editor;
+export default Editor; 

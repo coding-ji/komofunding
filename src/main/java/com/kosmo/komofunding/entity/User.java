@@ -93,6 +93,9 @@ public class User {
     @Column(nullable = true)
     private String verificationCode;
 
+    @Column(name = "verification_code_expiration")
+    private LocalDateTime verificationCodeExpiration; // 인증 코드 만료 시간
+
     // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
         Random random = new Random();
@@ -118,5 +121,17 @@ public class User {
     }
     public boolean isSuspended() {
         return this.activatedStatus == UserStatus.SUSPENDED;
+    }
+
+    // 만료된 코드인지 확인하는 메소드
+    public boolean isVerificationCodeExpired() {
+        return verificationCodeExpiration.isBefore(LocalDateTime.now());
+    }
+
+    // 인증 코드 설정 시 만료 시간도 설정
+    @PrePersist
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+        this.verificationCodeExpiration = LocalDateTime.now().plusMinutes(5); // 예시: 5분 후 만료
     }
 }

@@ -47,11 +47,12 @@ const StyledInput = styled(motion.input)`
 
 
 
-function SearchInput({onClick,onChange,value,placeholder}) {
+function SearchInput({onClick,onChange,value,placeholder,onKeyDown}) {
   return (
     <StyledDiv>
       <StyledInput  
       onChange={onChange} 
+      onKeyDown={onKeyDown}
       value={value} 
       placeholder={placeholder}
       maxLength={30} // 최대길이
@@ -67,33 +68,3 @@ function SearchInput({onClick,onChange,value,placeholder}) {
 
 export default SearchInput;
 
-
-//-------------------------------------------------------
-//아래와 같이 인풋... 음...
-
-
-// function App() {
-
-//   const [searchValue, setSearchValue] = useState("");
-
-//   const handleInputChange = (event) => {
-//     setSearchValue(event.target.value);
-//   };
-
-//   const handleSearchClick = () => {
-//     alert(`검색 내용: ${searchValue}`);
-//   };
-
-//   return (
-//     <>
-//        <SearchInput
-//         onClick={handleSearchClick}
-//         onChange={handleInputChange}
-//         value={searchValue}
-//         placeholder="검색어를 입력하세요"
-//       />
-//     </>
-//   )
-// }
-
-// export default App

@@ -1,21 +1,22 @@
 package com.kosmo.komofunding.service;
 
-import com.kosmo.komofunding.dto.UserOutDTO;
+import com.kosmo.komofunding.common.enums.UserStatus;
+import com.kosmo.komofunding.dto.Valid;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.UserRepository;
-import com.kosmo.komofunding.common.enums.UserStatus;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.Valid;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -23,13 +24,19 @@ import java.util.*;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final JavaMailSender mailSender;
     private final BCryptPasswordEncoder passwordEncoder;
 
     // 랜덤 인증 코드 생성
     private String generateVerificationCode() {
         return String.format("%06d", (int) (Math.random() * 1000000));
+    }
+
+    // 매일 자정에 만료된 인증 코드 삭제
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void deleteExpiredVerificationCodes() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        userRepository.deleteExpiredVerificationCodes(currentTime);
     }
 
     // 랜덤 비밀번호 생성
@@ -46,19 +53,16 @@ public class UserService {
 
     // 회원가입
     @Transactional
-    public UserOutDTO registerUser(@Valid User user) {
+    public User registerUser(@Valid User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         }
 
         // 비밀번호 암호화
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
-
-        // User 엔티티로 매핑
         user.setPassword(encryptedPassword);
         userRepository.save(user);
-
-        return modelMapper.map(user, UserOutDTO.class);
+        return user; // DTO 반환 대신 Entity 그대로 반환
     }
 
     // 인증 코드 전송
@@ -95,13 +99,13 @@ public class UserService {
     }
 
     // 로그인
-    public UserOutDTO login(String email, String password) {
+    public User login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        return modelMapper.map(user, UserOutDTO.class);
+        return user; // DTO 없이 Entity 반환
     }
 
     // 비밀번호 재설정
@@ -112,7 +116,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
-        // 이메일로 새 비밀번호 전송
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
@@ -161,6 +164,17 @@ public class UserService {
         return true;
     }
 
+    // 비밀번호 인증
+    public void verifyPassword(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 비밀번호 비교
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
     // 로그인 정지 상태 확인
     public String getSuspensionReason(String email) {
         User user = userRepository.findByEmail(email)
@@ -171,31 +185,5 @@ public class UserService {
             return "사용자가 정지되었습니다.";
         }
         return null; // 정상 로그인
-    }
-
-
-
-// 마이페이지 정보 제공
-    public Map<String, String> getMyPageInfo(String email) {
-        // 이메일로 사용자 조회
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-
-        // 마이페이지 정보 구성
-        Map<String, String> userDetails = new HashMap<>();
-        userDetails.put("userId", user.getUserId());
-        userDetails.put("nickName", user.getNickName());
-        userDetails.put("profileImg", user.getProfileImg());
-        userDetails.put("userRole", user.getActivatedStatus().toString()); // 역할 정보 추가
-        return userDetails;
-    }
-
-    // 사용자 프로필 조회
-    public UserOutDTO getUserProfile(String userEmail) {
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-
-        // User -> UserOutDTO로 변환
-        return modelMapper.map(user, UserOutDTO.class);
     }
 }
