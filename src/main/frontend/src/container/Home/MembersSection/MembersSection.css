@@ -43,7 +43,7 @@
 /* 이름 마키 스타일 */
 .name-marquee {
   width: 100%;
-  height: calc(50vw - 24rem); /* 전체 높이에서 header의 공간 제외 */
+  height: calc(65vw - 24rem); /* 전체 높이에서 header의 공간 제외 */
   overflow: hidden;
   display: flex; /* 세로 2열 구성 */
   flex-direction: row; /* 좌우 배치 */
