@@ -6,7 +6,7 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 중앙 정렬로 변경 */
   align-items: center;
 }
 
@@ -43,29 +43,35 @@
 /* 이름 마키 스타일 */
 .name-marquee {
   width: 100%;
+  height: calc(50vw - 24rem); /* 전체 높이에서 header의 공간 제외 */
   overflow: hidden;
-  position: relative;
-  white-space: nowrap;
+  display: flex; /* 세로 2열 구성 */
+  flex-direction: row; /* 좌우 배치 */
+  justify-content: space-around; /* 열 간 간격 균등 분배 */
+  align-items: center;
 }
 
 .name-list {
-  display: inline-flex;
-  animation: scroll-left 10s linear infinite; /* 10초 동안 왼쪽으로 스크롤 */
+  display: flex;
+  flex-direction: column; /* 수직 배치 */
+  animation: scroll-up 18s linear infinite; /* 수직 스크롤 애니메이션 */
+  font-family: "Roboto Slab", Helvetica, sans-serif;
 }
 
 .name {
   font-size: 3vw;
   font-weight: 600;
   color: white;
-  margin-right: 2vw; /* 이름 간 간격 */
+  margin: 1vw 0; /* 이름 간 간격 */
+  white-space: nowrap; /* 이름 줄바꿈 방지 */
 }
 
-/* 가로 스크롤 애니메이션 */
-@keyframes scroll-left {
+/* 수직 스크롤 애니메이션 */
+@keyframes scroll-up {
   0% {
-    transform: translateX(0); /* 시작 위치 */
+    transform: translateY(100%); /* 시작 위치: 아래에서 */
   }
   100% {
-    transform: translateX(-50%); /* 이름 리스트의 절반까지만 스크롤 */
+    transform: translateY(-100%); /* 끝 위치: 위로 완전히 스크롤 */
   }
 }
