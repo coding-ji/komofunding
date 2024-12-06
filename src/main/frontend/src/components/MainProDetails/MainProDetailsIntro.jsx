@@ -9,6 +9,7 @@ import PrjCategory from "../PrjCategory";
 import TitleProduct from "../TitleProduct";
 import MainProDetailQnA from "./MainProDetailQnA";
 import RefundPolicy from "./RefundPolicy";
+import UserQnaBox from "./UserQnaBox/UserQnaBox";
 
 const ImageContainer = styled.div`
   display: flex;
@@ -20,7 +21,7 @@ const ImageContainer = styled.div`
 const IntroBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 `;
 
 const ItemCard = styled.div`
@@ -109,10 +110,9 @@ function MainProDetailsIntro() {
                     />
                     <DescriptionProduct
                         color="black"
-                        textAlign="center"
                         fontSize="1.0rem"
                         lineHeight="2rem"
-                        text={`가격: ${item.itemPrice}원 수량: ${item.itemAmount}`}
+                        text={`가격: ${item.itemPrice}원\n 수량: ${item.itemAmount}`}
                     />
                 </ItemCard>
             ))}
@@ -123,7 +123,8 @@ function MainProDetailsIntro() {
             <RefundPolicy ref={policyRef} />
 
             {/* 문의 */}
-             <MainProDetailQnA ref={inquiryRef} />            
+             <MainProDetailQnA ref={inquiryRef} />
+             <UserQnaBox />            
 
         </IntroBox>
     );

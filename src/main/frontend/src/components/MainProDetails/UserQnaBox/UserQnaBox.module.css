@@ -1,0 +1,61 @@
+.qnaBox,
+.answerBox {
+  width: 100%;
+  border-radius: 2px;
+  padding: 16px;
+  display: grid;
+  grid-template-areas:
+    "user date"
+    "question buttons";
+  grid-template-columns: 1fr auto;
+  grid-row-gap: 4px;
+  align-items: center;
+}
+
+.qnaBox {
+  cursor: pointer; /* 질문 박스만 클릭 가능 표시 */
+  border: 1px solid var(--line-color);
+
+}
+
+.answerBox {
+  overflow: hidden; /* 숨겨진 상태 */
+  transform: scaleY(0); /* 초기 상태: 높이 0 */
+  opacity: 0; /* 초기 상태: 투명 */
+  transform-origin: top; /* 위쪽 기준으로 확장/축소 */
+  transition: transform 0.6s ease-in-out, opacity 0.3s ease-in-out;
+  background-color: #e4e4e4;
+}
+
+.answerBox.show {
+  transform: scaleY(1); /* 열림 상태: 원래 크기 */
+  opacity: 1; /* 열림 상태: 불투명 */
+}
+
+.answerBox.hide {
+  transform: scaleY(0); /* 닫힘 상태: 높이 0 */
+  opacity: 0; /* 닫힘 상태: 투명 */
+  padding: 0;
+}
+
+.userInfo {
+  grid-area: user;
+}
+
+.dateInfo {
+  grid-area: date;
+  text-align: right;
+}
+
+.questionText {
+  grid-area: question;
+  text-align: center;
+}
+
+.buttons {
+  grid-area: buttons;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
