@@ -7,16 +7,17 @@ import { Btn, WhiteBtn, ProductBtn1 } from "../../../components/MyBtn";
 import Alert from "../../../components/Alert/Alert";
 import PopupInquiry from "../writeQnA/PopupInquiry";
 import TermsPopup from "./TermsPopup";
-
+import { tr } from "date-fns/locale";
 
 const CreatorApply = () => {
   const [type, setType] = useState("개인"); // 법인 또는 개인 선택 상태
   const [files, setFiles] = useState([]); // 업로드된 파일 목록
   const [agree, setAgree] = useState(""); // 이용약관 동의 상태
-  const [isPopupOpen, setIsPopupOpen] = useState(false)//신청완료
-  const [isPopupOpen2, setIsPopupOpen2] = useState(false)//취소 버튼
-  const [isPopupOpen3, setIsPopupOpen3] = useState(false)//이용약관 아니오
-  const [isPopupOpen4, setIsPopupOpen4] = useState(false)//이용약관 팝업창
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // 신청 완료 팝업
+  const [isPopupOpen2, setIsPopupOpen2] = useState(false); // 취소 팝업
+  const [isPopupOpen3, setIsPopupOpen3] = useState(false); // 이용약관 아니오 팝업
+  const [isPopupOpen4, setIsPopupOpen4] = useState(false); // 이용약관 팝업
+  const [isPopupOpen5, setIsPopupOpen5] = useState(false); // 파일첨부 
   const fileInputRef = useRef(null); // 파일 input 참조
 
   // 파일 추가 핸들러
@@ -27,9 +28,9 @@ const CreatorApply = () => {
 
   // 파일 업로드 버튼 클릭 핸들러
   const handleClick = (e) => {
-    e.preventDefault(); // form의 기본 동작 방지
+    e.preventDefault();
     if (fileInputRef.current) {
-      fileInputRef.current.click(); // 숨겨진 input 클릭
+      fileInputRef.current.click();
     }
   };
 
@@ -52,29 +53,40 @@ const CreatorApply = () => {
     setFiles(updatedFiles);
   };
 
+  // 데이터 제출 테스트
   const handleSubmit = (e) => {
-    e.preventDefault(); // form 제출 동작 방지
-    if (!agree) {
-      alert("이용 약관에 동의해주세요.");
+    e.preventDefault();
+
+    if (!agree || agree !== "yes") {
+      setIsPopupOpen3(true)
       return;
     }
-    console.log("제출 데이터:", { type, files, agree });
 
-    // 서버로 데이터 전송 로직 추가 가능
-    setIsPopupOpen(true)
+    if (files.length === 0) {
+      setIsPopupOpen5(true)
+      return;
+    }
+
+    const data = {
+      type,
+      files: files.map((file) => file.name), // 파일 이름만 저장
+      agree,
+    };
+
+    console.log("제출 데이터:", data);
+    setIsPopupOpen(true); // 성공 팝업 열기
   };
 
-
+  // 팝업 닫기 핸들러
   const handlePopupClose = () => {
-    setIsPopupOpen(false); // 팝업 닫기
-    setIsPopupOpen2(false); // 팝업 닫기
+    setIsPopupOpen(false);
+    setIsPopupOpen2(false);
   };
-
 
   const handleCancel = (e) => {
-    e.preventDefault(); // form 제출 동작 방지
+    e.preventDefault();
     setFiles([]);
-    setAgree(false);
+    setAgree("");
     setIsPopupOpen2(true);
   };
 
@@ -135,8 +147,7 @@ const CreatorApply = () => {
                   <ul className="list">
                     <li>제출 서류 : 사업자 등록증</li>
                     <li>
-                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행
-                      계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
+                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행 계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
                     </li>
                   </ul>
                 </>
@@ -149,10 +160,8 @@ const CreatorApply = () => {
           {/* 파일 업로드 */}
           <div className="section">
             <div className="submissionfile">
-
               <p className="pstyle">파일 첨부</p>
-              <button className="btn" onClick={handleClick}
-              >
+              <button className="btn" onClick={handleClick}>
                 파일업로드
               </button>
 
@@ -206,9 +215,9 @@ const CreatorApply = () => {
                 <button
                   className="btn"
                   onClick={(e) => {
-                    e.preventDefault(); // 기본 동작 방지
-                    e.stopPropagation(); // 이벤트 전파 방지
-                    setIsPopupOpen4(true); // 팝업 열기
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsPopupOpen4(true);
                   }}
                 >
                   내용확인
@@ -219,15 +228,15 @@ const CreatorApply = () => {
                 <label>
                   <input
                     type="checkbox"
-                    checked={agree === "yes"} // "예" 상태 확인
-                    onChange={() => setAgree(agree === "yes" ? "" : "yes")} // 토글 동작
+                    checked={agree === "yes"}
+                    onChange={() => setAgree(agree === "yes" ? "" : "yes")}
                   />
                   예
                 </label>
                 <label>
                   <input
                     type="checkbox"
-                    checked={agree === "no"} // "아니오" 상태 확인
+                    checked={agree === "no"}
                     onChange={() => {
                       if (agree !== "no") {
                         setAgree("no");
@@ -235,7 +244,7 @@ const CreatorApply = () => {
                       } else {
                         setAgree(""); // 체크 해제
                       }
-                    }} // 토글 동작
+                    }}
                   />
                   아니오
                 </label>
@@ -243,20 +252,34 @@ const CreatorApply = () => {
             </div>
           </div>
 
-          <p className="info-text">승인까지 3일에서 5일 정도 소요되며 잘못된 정보를 요청하면 승인이 반려될 수 있습니다.</p>
+          <p className="info-text">
+            승인까지 3일에서 5일 정도 소요되며 잘못된 정보를 요청하면 승인이 반려될 수 있습니다.
+          </p>
 
           {/* 버튼 */}
           <div className="buttons">
-            <Btn text="확인"
-              width="8rem" height="2rem" fontSize="1rem" padding="2px 15px"
+            <Btn
+              text="확인"
+              width="8rem"
+              height="2rem"
+              fontSize="1rem"
+              padding="2px 15px"
               onClick={handleSubmit}
             />
-            <WhiteBtn text="취소"
-              width="8rem" height="2rem" fontSize="1rem" padding="2px 15px"
-              onClick={handleCancel} />
+            <WhiteBtn
+              text="취소"
+              width="8rem"
+              height="2rem"
+              fontSize="1rem"
+              padding="2px 15px"
+              onClick={handleCancel}
+            />
           </div>
         </form>
+
+
       </div>
+
       {isPopupOpen && (
         <PopupInquiry
           message={
@@ -265,20 +288,16 @@ const CreatorApply = () => {
               승인까지는 3~5일이 소모됩니다.
             </>
           }
-          onClose={handlePopupClose} // 팝업 닫기 함수
-          navigateTo="/" // 이동할 경로
+          onClose={handlePopupClose}
+          navigateTo="/"
         />
       )}
 
       {isPopupOpen2 && (
         <PopupInquiry
-          message={
-            <>
-              제작자 신청이 취소되었습니다.
-            </>
-          }
-          onClose={handlePopupClose} // 팝업 닫기 함수
-          navigateTo="/" // 이동할 경로
+          message={<>제작자 신청이 취소되었습니다.</>}
+          onClose={handlePopupClose}
+          navigateTo="/"
         />
       )}
 
@@ -289,10 +308,23 @@ const CreatorApply = () => {
               개인정보 수집에 동의하지 않으시면 제작자 신청을 할 수 없습니다.
             </>
           }
-          onClose={() => setIsPopupOpen3(false)} // 팝업 닫기 핸들러
-          navigateTo="/create-apply" // 이동할 경로 (필요 시 수정 가능)
+          onClose={() => setIsPopupOpen3(false)}
+          navigateTo="/create-apply"
         />
       )}
+      
+      {isPopupOpen5 && (
+        <PopupInquiry
+          message={
+            <>
+              파일을 첨부해주세요.
+            </>
+          }
+          onClose={() => setIsPopupOpen5(false)}
+          navigateTo="/create-apply"
+        />
+      )}
+      
     </div>
   );
 };
