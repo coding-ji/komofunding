@@ -104,6 +104,29 @@ const ProfileEdit = () => {
     };
 
     const handleSaveProfile = async () => {
+
+     /*   데이터 확인용.. 나중에 지워도 됨 
+        const updatedProfile = {
+            userNum: state.userNum,
+            email: state.email,
+            password: state.password,
+            name: state.name,
+            nickname: state.nickname,
+            phone: state.phone,
+            profileImg: previewImage, // 변경된 이미지 또는 기존 이미지
+            description: state.description,
+            activatedStatus: state.activatedStatus,
+            bankName: state.bankName,
+            accountNumber: state.accountNumber,
+            accountHolder: state.accountHolder,
+            joinDate: state.joinDate,
+            corporationName: state.corporationName,
+            corporationTel: state.corporationTel,
+            bsn: state.bsn,
+        };
+        console.log("제출 데이터:", updatedProfile); */
+
+
         try {
             const updatedProfile = {
                 userNum: state.userNum,
@@ -124,6 +147,8 @@ const ProfileEdit = () => {
                 bsn: state.bsn,
             };
     
+
+
             const response = await axios.put(`/api/users/${userNum}`, updatedProfile, {
                 headers: {
                     "Content-Type": "application/json",
@@ -141,6 +166,9 @@ const ProfileEdit = () => {
             alert("프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
 
+
+
+        
     };  
 
     const handleCancel = () => {
@@ -168,19 +196,6 @@ const ProfileEdit = () => {
         }
     };
 
-    const handleNewPasswordSave = () => {
-        if (!newPassword) {
-            alert("새로운 비밀번호를 입력해주세요.");
-            return;
-        }
-        // 더미 데이터에서 상태 업데이트
-        actions.changePassword(newPassword);
-        alert("비밀번호가 성공적으로 변경되었습니다.");
-        setShowModal(false); // 모달 닫기
-        setNewPassword(""); // 입력 필드 초기화
-        setCurrentPassword(""); // 현재 비밀번호 초기화
-        setCurrentPasswordCheck(""); // 재확인 비밀번호 초기화
-    };
 
 
 
@@ -329,7 +344,7 @@ const ProfileEdit = () => {
                                 }}
                             />
                         )}
-                    </div>
+                    </div> 
                 </div>
             </div>
 
