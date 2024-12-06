@@ -16,10 +16,6 @@ const SignupForm = () => {
   const [emailSent, setEmailSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
 
-  const [phoneSent, setPhoneSent] = useState(false);
-  // const [phoneVerified, setPhoneVerified] = useState(false); 
-  // 실제로 핸드폰 인증 검증 로직을 추가하려면 별도 상태 관리 필요
-
   // 닉네임 중복 확인 (로컬 스토리지의 existingNicknames를 사용)
   const handleNicknameCheck = () => {
     const existingNicknames = JSON.parse(localStorage.getItem("existingNicknames") || "[]");
@@ -53,18 +49,7 @@ const SignupForm = () => {
     }
   };
 
-  // 핸드폰 인증 요청: 로컬에서 인증코드 생성 후 저장
-  const handleSendPhoneAuth = () => {
-    if (!state.phone) {
-      alert("핸드폰 번호를 입력하세요.");
-      return;
-    }
-    const code = Math.floor(100000 + Math.random() * 900000).toString(); 
-    localStorage.setItem("phoneAuthCode", code);
-    setPhoneSent(true);
-    alert("핸드폰 인증코드(가상)가 전송되었습니다. 로컬 스토리지에서 확인하세요.");
-  };
-
+  // 회원가입 처리
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -79,9 +64,6 @@ const SignupForm = () => {
       alert("이메일 인증을 완료해주세요.");
       return;
     }
-
-    // 핸드폰 인증 확인 로직은 실제 구현 필요. 여기서는 생략.
-    // 필요하다면 별도 인증번호 입력 필드를 만들어 검증하고 state를 업데이트한 뒤 조건 검사.
 
     // 모든 조건 충족 시 가입 정보 로컬 스토리지 저장
     const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
@@ -102,9 +84,7 @@ const SignupForm = () => {
     setConfirmPassword("");
     setEmailSent(false);
     setEmailVerified(false);
-    setPhoneSent(false);
     localStorage.removeItem("emailAuthCode");
-    localStorage.removeItem("phoneAuthCode");
   };
 
   return (
@@ -239,7 +219,8 @@ const SignupForm = () => {
               style={{ gridArea: "input5" }}
             />
 
-            {/* 휴대폰 번호 */}
+            {/* 휴대폰 번호 */} 
+            {/* 인증 로직 제거, 단순 입력 */}
             <label className={styles.label} style={{ gridArea: "label6" }}>
               휴대폰 번호
             </label>
@@ -252,15 +233,6 @@ const SignupForm = () => {
               onChange={(e) => actions.changePhone(e.target.value)}
               style={{ gridArea: "input6" }}
             />
-            <div style={{ gridArea: "phonebtn" }}>
-              <button
-                type="button"
-                className={styles.smallButton}
-                onClick={handleSendPhoneAuth}
-              >
-                핸드폰 인증
-              </button>
-            </div>
 
             {/* 회원가입 버튼 */}
             <motion.button
@@ -270,7 +242,7 @@ const SignupForm = () => {
               whileHover={{
                 scale: 1.1,
                 backgroundColor: "#FFF",
-                color: "#000",
+                color: "#256E91",
               }}
               whileTap={{ scale: 0.9 }}
             >
