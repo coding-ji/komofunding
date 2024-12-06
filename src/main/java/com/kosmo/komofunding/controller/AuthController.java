@@ -31,21 +31,17 @@ public class AuthController {
     // 이메일 인증 코드 발송
     @PostMapping("/emailcheck")
     public ResponseEntity<Void> sendVerificationCode(@RequestBody String email) {
-        boolean isEmailSent = userService.sendVerificationCode(email);
-        if (!isEmailSent) {
-            return ResponseEntity.status(500).build();
-        }
-        return ResponseEntity.ok().build();
+        return userService.sendVerificationCode(email)
+                ? ResponseEntity.noContent().build() // 204 No Content
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
     }
 
     // 이메일 인증
     @PostMapping("/emailverification")
     public ResponseEntity<Void> emailVerification(@RequestBody String email, String code) {
-        boolean isVerified = userService.verifyEmailCode(email, code);
-        if (!isVerified) {
-            return ResponseEntity.status(400).build();
-        }
-        return ResponseEntity.ok().build();
+        return userService.verifyEmailCode(email, code)
+                ? ResponseEntity.noContent().build() // 204 No Content
+                : ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build(); // 422 Unprocessable Entity
     }
 
     // 로그인
@@ -71,11 +67,9 @@ public class AuthController {
     // 회원 탈퇴
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable String email) {
-        boolean isDeleted = userService.deleteUser(email);
-        if (!isDeleted) {
-            return ResponseEntity.status(404).build(); // User not found
-        }
-        return ResponseEntity.noContent().build();
+        return userService.deleteUser(email)
+                ? ResponseEntity.noContent().build() // 204 No Content
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
     }
 
     // 아이디 찾기 (이메일 찾기)
@@ -91,11 +85,9 @@ public class AuthController {
     // 비밀번호 재설정
     @PostMapping("/pw")
     public ResponseEntity<Void> resetPassword(@RequestBody String email) {
-        boolean isReset = userService.resetPassword(email);
-        if (!isReset) {
-            return ResponseEntity.status(400).build();
-        }
-        return ResponseEntity.ok().build();
+        return userService.resetPassword(email)
+                ? ResponseEntity.noContent().build() // 204 No Content
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
     }
 
     // 비밀번호 변경

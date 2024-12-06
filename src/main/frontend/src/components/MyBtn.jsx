@@ -130,9 +130,9 @@ export const CancelBtn = ({text, width, height, onClick,fontSize,padding,fontFam
 export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
   <Button
   bgColor="black"
-  borderColor="white"
+  borderColor="black"
   textColor= "white"
-  whileHover={hoverEffects.Black}
+  whileHover={hoverEffects.White}
   borderRadius = "2px"
   onClick={onClick}
   width={width}
@@ -151,7 +151,7 @@ export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontF
   bgColor="white"
   borderColor="black"
   textColor= "black"
-  whileHover={hoverEffects.White}
+  whileHover={hoverEffects.Black}
   borderRadius = "2px"
   onClick={onClick}
   width={width}
