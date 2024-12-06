@@ -30,7 +30,7 @@ function PopupInquiry({ message, onClose,navigateTo}) {
           width = "100px"
           padding="2px 2px"
           fontSize = "1rem"
-          height = "30px"
+          height = "30px" 
             >
          
           </Btn>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";

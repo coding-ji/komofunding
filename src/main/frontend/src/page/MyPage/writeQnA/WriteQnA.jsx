@@ -50,7 +50,7 @@ function WriteQnA() {
           <Editor
             editorContent={editorContent}
             setEditorContent={setEditorContent}
-            quillRef={quillRef}
+            quillRef={quillRef} 
           />
         </div>
 
