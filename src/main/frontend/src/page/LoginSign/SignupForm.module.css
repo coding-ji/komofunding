@@ -90,6 +90,7 @@
 
 .smallButton {
   grid-column: span 1;
+  max-width: 124px;
   width: 100%;
   height: 40px;
   background-color: #282828;
