@@ -2,98 +2,109 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
-import axios from "axios";
+
+// 로컬에 가상의 유저 닉네임 목록(이미 가입된 닉네임들) 저장 예시
+if (!localStorage.getItem("existingNicknames")) {
+  localStorage.setItem("existingNicknames", JSON.stringify(["testuser", "john", "jane"]));
+}
 
 const SignupForm = () => {
   const { state, actions } = UserStore();
-  const [authCode, setAuthCode] = useState("");
-  const [authMessage, setAuthMessage] = useState("");
+  const [authCode, setAuthCode] = useState(""); // 이메일 인증 코드 입력값
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  // 이메일 인증 요청
-  const handleSendEmail = async () => {
-    try {
-      const response = await axios.post("/api/auth/emailcheck", { email: userState.email });
-      if (response.status === 200) {
-        alert("인증코드가 이메일로 전송되었습니다.");
-      } else {
-        alert("이메일 전송 실패.");
-      }
-    } catch (error) {
-      console.error("이메일 인증 요청 중 오류:", error);
-      alert("서버와의 통신 중 문제가 발생했습니다.");
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  const [phoneSent, setPhoneSent] = useState(false);
+  // const [phoneVerified, setPhoneVerified] = useState(false); 
+  // 실제로 핸드폰 인증 검증 로직을 추가하려면 별도 상태 관리 필요
+
+  // 닉네임 중복 확인 (로컬 스토리지의 existingNicknames를 사용)
+  const handleNicknameCheck = () => {
+    const existingNicknames = JSON.parse(localStorage.getItem("existingNicknames") || "[]");
+    if (existingNicknames.includes(state.nickname)) {
+      alert("이미 사용 중인 닉네임입니다.");
+    } else {
+      alert("사용 가능한 닉네임입니다.");
     }
+  };
+
+  // 이메일 인증 요청: 로컬에서 인증코드 생성 후 저장
+  const handleSendEmail = () => {
+    if (!state.email) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 인증번호
+    localStorage.setItem("emailAuthCode", code);
+    setEmailSent(true);
+    alert("인증코드가 이메일(가상)로 전송되었습니다. 로컬 스토리지에서 확인하세요.");
   };
 
   // 이메일 인증 코드 검증
-  const handleVerifyEmail = async () => {
-    try {
-      const response = await axios.post("/api/auth/emailverification", {
-        email: userState.email,
-        verificationCode: authCode,
-      });
-      if (response.status === 200 && response.data.shortDescription.includes("성공")) {
-        setAuthMessage("인증 성공!");
-      } else {
-        setAuthMessage("인증코드가 올바르지 않습니다.");
-      }
-    } catch (error) {
-      console.error("이메일 인증 확인 중 오류:", error);
-      setAuthMessage("서버와의 통신 중 오류가 발생했습니다.");
+  const handleVerifyEmail = () => {
+    const storedCode = localStorage.getItem("emailAuthCode");
+    if (authCode === storedCode) {
+      setEmailVerified(true);
+      alert("이메일 인증 성공!");
+    } else {
+      alert("인증코드가 일치하지 않습니다.");
     }
   };
 
-  // 닉네임 중복 확인
-  const handleNicknameCheck = async () => {
-    try {
-      const response = await axios.get(`/api/auth/check-nickname?nickname=${userState.nickname}`);
-      if (response.data.available) {
-        alert("사용 가능한 닉네임입니다.");
-      } else {
-        alert("이미 사용 중인 닉네임입니다.");
-      }
-    } catch (error) {
-      console.error("닉네임 확인 중 오류:", error);
-      alert("닉네임 중복 확인 요청 실패.");
+  // 핸드폰 인증 요청: 로컬에서 인증코드 생성 후 저장
+  const handleSendPhoneAuth = () => {
+    if (!state.phone) {
+      alert("핸드폰 번호를 입력하세요.");
+      return;
     }
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); 
+    localStorage.setItem("phoneAuthCode", code);
+    setPhoneSent(true);
+    alert("핸드폰 인증코드(가상)가 전송되었습니다. 로컬 스토리지에서 확인하세요.");
   };
 
-  // 핸드폰 인증 요청
-  const handleSendPhoneAuth = async () => {
-    try {
-      const response = await axios.post("/api/auth/send-phone-auth", { phone: userState.phone });
-      if (response.status === 200) {
-        alert("핸드폰 인증코드가 전송되었습니다.");
-      } else {
-        alert("핸드폰 인증 실패.");
-      }
-    } catch (error) {
-      console.error("핸드폰 인증 요청 중 오류:", error);
-      alert("핸드폰 인증 요청 실패.");
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post("/api/auth/register", {
-        name: userState.name,
-        nickname: userState.nickname,
-        email: userState.email,
-        password: userState.password,
-        phone: userState.phone,
-      });
-
-      if (response.status === 201) {
-        alert("회원가입이 완료되었습니다!");
-        userActions.resetState();
-      } else {
-        alert("회원가입 중 오류가 발생했습니다.");
-      }
-    } catch (error) {
-      console.error("회원가입 요청 중 오류:", error);
-      alert("서버와 통신 중 문제가 발생했습니다.");
+    // 비밀번호 확인
+    if (state.password !== confirmPassword) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
     }
+
+    // 이메일 인증 확인
+    if (!emailVerified) {
+      alert("이메일 인증을 완료해주세요.");
+      return;
+    }
+
+    // 핸드폰 인증 확인 로직은 실제 구현 필요. 여기서는 생략.
+    // 필요하다면 별도 인증번호 입력 필드를 만들어 검증하고 state를 업데이트한 뒤 조건 검사.
+
+    // 모든 조건 충족 시 가입 정보 로컬 스토리지 저장
+    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    const newUser = {
+      name: state.name,
+      nickname: state.nickname,
+      email: state.email,
+      password: state.password,
+      phone: state.phone,
+    };
+    registeredUsers.push(newUser);
+    localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+
+    alert("회원가입이 완료되었습니다! 로컬 스토리지에 저장되었습니다.");
+
+    actions.resetState();
+    setAuthCode("");
+    setConfirmPassword("");
+    setEmailSent(false);
+    setEmailVerified(false);
+    setPhoneSent(false);
+    localStorage.removeItem("emailAuthCode");
+    localStorage.removeItem("phoneAuthCode");
   };
 
   return (
@@ -109,7 +120,7 @@ const SignupForm = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <h2 className={styles.title}>회원 가입</h2>
+          <h2 className={styles.title}>회원 가입 </h2>
           <hr className={styles.hrDarkToLight} />
         </motion.div>
 
@@ -124,8 +135,8 @@ const SignupForm = () => {
               type="text"
               placeholder="이름을 입력하세요"
               className={styles.input}
-              value={userState.name}
-              onChange={(e) => userActions.changeName(e.target.value)}
+              value={state.name}
+              onChange={(e) => actions.changeName(e.target.value)}
               style={{ gridArea: "input1" }}
             />
 
@@ -138,8 +149,8 @@ const SignupForm = () => {
               type="text"
               placeholder="닉네임을 입력하세요"
               className={styles.input}
-              value={userState.nickname}
-              onChange={(e) => userActions.changeNickname(e.target.value)}
+              value={state.nickname}
+              onChange={(e) => actions.changeNickname(e.target.value)}
               style={{ gridArea: "input7" }}
             />
             <div style={{ gridArea: "nickbtn" }}>
@@ -161,8 +172,8 @@ const SignupForm = () => {
               type="email"
               placeholder="이메일을 입력하세요"
               className={styles.input}
-              value={userState.email}
-              onChange={(e) => userActions.changeEmail(e.target.value)}
+              value={state.email}
+              onChange={(e) => actions.changeEmail(e.target.value)}
               style={{ gridArea: "input2" }}
             />
             <div style={{ gridArea: "mailbtn" }}>
@@ -187,12 +198,14 @@ const SignupForm = () => {
               value={authCode}
               onChange={(e) => setAuthCode(e.target.value)}
               style={{ gridArea: "input3" }}
+              disabled={!emailSent}
             />
             <div style={{ gridArea: "authbtn" }}>
               <button
                 type="button"
                 className={styles.smallButton}
                 onClick={handleVerifyEmail}
+                disabled={!emailSent}
               >
                 인증번호 확인
               </button>
@@ -207,8 +220,8 @@ const SignupForm = () => {
               type="password"
               placeholder="비밀번호를 입력하세요"
               className={styles.input}
-              value={userState.password}
-              onChange={(e) => userActions.changePassword(e.target.value)}
+              value={state.password}
+              onChange={(e) => actions.changePassword(e.target.value)}
               style={{ gridArea: "input4" }}
             />
 
@@ -221,8 +234,8 @@ const SignupForm = () => {
               type="password"
               placeholder="비밀번호를 다시 입력하세요"
               className={styles.input}
-              value={userState.confirmPassword}
-              onChange={(e) => setAuthCode(e.target.value)}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               style={{ gridArea: "input5" }}
             />
 
@@ -235,8 +248,8 @@ const SignupForm = () => {
               type="text"
               placeholder="010-0000-0000"
               className={styles.input}
-              value={userState.phone}
-              onChange={(e) => userActions.changePhone(e.target.value)}
+              value={state.phone}
+              onChange={(e) => actions.changePhone(e.target.value)}
               style={{ gridArea: "input6" }}
             />
             <div style={{ gridArea: "phonebtn" }}>
