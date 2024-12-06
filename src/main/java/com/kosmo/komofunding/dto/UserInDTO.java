@@ -28,4 +28,7 @@ public class UserInDTO {
     private Long BSN;
     private List<String> projectIds;
 
+    private String newPassword;
+    private String confirmPassword;
+
 }

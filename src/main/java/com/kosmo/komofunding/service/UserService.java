@@ -1,9 +1,8 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
-import com.kosmo.komofunding.dto.UserInDTO;
-import com.kosmo.komofunding.dto.UserOutDTO;
-import com.kosmo.komofunding.dto.Valid;
+import com.kosmo.komofunding.dto.*;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
@@ -217,6 +216,60 @@ public class UserService {
         userDetails.put("description", user.getShortDescription());  // 짧은 소개글
 
         return userDetails;
+    }
+
+    // 프로필 비밀번호 수정
+    public boolean updateUserPassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 새 비밀번호 유효성 검사
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("비밀번호는 필수 항목입니다.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
+
+    // 프로필 페이지 수정 내용
+    public boolean updateUserProfile(String email, UserInDTO userInDTO) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        if (userInDTO.getShortDescription() != null) user.setShortDescription(userInDTO.getShortDescription());
+        if (userInDTO.getBankName() != null) user.setBankName(userInDTO.getBankName());
+        if (userInDTO.getAccountNumber() != null) user.setAccountNumber(userInDTO.getAccountNumber());
+        if (userInDTO.getAccountHolder() != null) user.setAccountHolder(userInDTO.getAccountHolder());
+        if (userInDTO.getCorporationName() != null) user.setCorporationName(userInDTO.getCorporationName());
+        if (userInDTO.getCorporationTel() != null) user.setCorporationTel(userInDTO.getCorporationTel());
+        if (userInDTO.getBSN() != null) user.setBSN(userInDTO.getBSN());
+
+        userRepository.save(user);
+        return true;
+    }
+
+    // 제작자 전환 신청 처리
+    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
+        // 이메일을 기준으로 사용자 조회
+        User user = userRepository.findByEmail(requestDTO.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 제작자 전환 신청 상태 업데이트
+        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
+
+        // 추가 필드들 설정
+        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
+        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
+        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
+
+        // 변경된 사용자 정보 저장
+        userRepository.save(user);
+
+        // 응답 DTO 반환
+        CreatorSwitchResponseDTO responseDTO = new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
+
+        return responseDTO;
     }
 
 }
