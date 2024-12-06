@@ -5,34 +5,25 @@ import DescriptionProduct from "../../components/DescriptionProduct";
 import TitleText from "../../components/TitleText";
 import PrjCategory from "../../components/PrjCategory";
 import ImageCarousel from "../../components/ImageCarousel/ImageCarousel";
+import ProgressContainer from "../../components/ProgressContainer";
+import MainProDetailsIntro from "../../components/MainProDetails/MainProDetailsIntro";
 
 const ProDetails = styled.div`
-`;
 
-    const images = [
-      {
-        large: "https://via.placeholder.com/450x450",
-        thumbnail: "https://via.placeholder.com/450x450"
-      },
-      {
-        large: "https://via.placeholder.com/320x320",
-        thumbnail: "https://via.placeholder.com/320x320"
-      },
-      {
-        large: "https://via.placeholder.com/250x250",
-        thumbnail: "https://via.placeholder.com/250x250"
-      }
-    ];
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
 
 
 function MainProDetails() {
     return (
         <ProDetails>
             {/* <ImageCarousel images={images} /> */}
+            <ProgressContainer></ProgressContainer>
             <TitleProduct text="상품 제목 들어가는 공간" fontSize="2rem" />
             <DescriptionProduct text="상품 설명 들어가는 공간" />
-            <TitleProduct text="프로젝트 스토리" />
-            <PrjCategory ></PrjCategory>
+            <MainProDetailsIntro />
 
         </ProDetails>      
     )

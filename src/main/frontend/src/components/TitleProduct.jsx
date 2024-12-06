@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import '../index.css'; 
 import { motion } from "framer-motion";
+import React from "react"; // React import 추가
+
 
 const Title = styled.p`
     color : black;
@@ -11,10 +13,9 @@ const Title = styled.p`
     padding : 5px 5px;
 `;
 
-function TitleProduct({ text, fontSize }) {
-    return(
-        <Title fontSize={fontSize}>{text}</Title>
-    );
-}
+
+const TitleProduct = React.forwardRef(({ text, fontSize }, ref) => {
+    return <Title ref={ref} fontSize={fontSize}>{text}</Title>;
+  });
 
 export default TitleProduct;
