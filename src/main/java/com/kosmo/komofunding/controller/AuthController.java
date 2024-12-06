@@ -1,14 +1,17 @@
 package com.kosmo.komofunding.controller;
 
-import com.kosmo.komofunding.dto.Valid;
+import com.kosmo.komofunding.dto.UserInDTO;
+import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -17,11 +20,12 @@ public class AuthController {
 
     private final UserService userService;
 
-    // 회원가입
+    // 회원 가입
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
-        User registeredUser = userService.registerUser(user); // UserEntity 그대로 반환
-        return ResponseEntity.ok(registeredUser); // User Entity 반환
+    public ResponseEntity<UserOutDTO> registerUser(@RequestBody UserInDTO userInDTO) {
+        // UserService에서 회원 가입 로직 처리 후 UserOutDTO로 반환
+        UserOutDTO createdUser = userService.registerUser(userInDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     // 이메일 인증 코드 발송
@@ -55,13 +59,13 @@ public class AuthController {
     }
 
     // 사용자 정보 조회
-    @GetMapping("/user")
+    @GetMapping("/users")
     public ResponseEntity<User> getUserInfo(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            return ResponseEntity.status(404).build(); // User not found
+        Optional<User> user = userService.getUserByEmail(email);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(404).build();  // 사용자 없음
         }
-        return ResponseEntity.ok(user); // User Entity 반환
+        return ResponseEntity.ok(user.get());  // User 반환
     }
 
     // 회원 탈퇴

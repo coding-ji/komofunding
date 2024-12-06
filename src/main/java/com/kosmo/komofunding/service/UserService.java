@@ -1,7 +1,8 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
-import com.kosmo.komofunding.dto.Valid;
+import com.kosmo.komofunding.dto.*;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
@@ -15,8 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -53,16 +53,31 @@ public class UserService {
 
     // 회원가입
     @Transactional
-    public User registerUser(@Valid User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
+    public UserOutDTO registerUser(@Valid UserInDTO userInDTO) {
+        if (userRepository.findByEmail(userInDTO.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         }
 
         // 비밀번호 암호화
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
+        String encryptedPassword = passwordEncoder.encode(userInDTO.getPassword());
+        userInDTO.setPassword(encryptedPassword);
+
+        User user = new User();
+        // userInDTO를 User 엔티티로 변환
+        user.setEmail(userInDTO.getEmail());
+        user.setPassword(userInDTO.getPassword());
+        user.setName(userInDTO.getName());
+        // 다른 필드들도 설정
+
         userRepository.save(user);
-        return user; // DTO 반환 대신 Entity 그대로 반환
+
+        // User 엔티티를 UserOutDTO로 변환
+        UserOutDTO userOutDTO = new UserOutDTO();
+        userOutDTO.setEmail(user.getEmail());
+        userOutDTO.setName(user.getName());
+        // 다른 필드들도 설정
+
+        return userOutDTO;
     }
 
     // 인증 코드 전송
@@ -105,7 +120,7 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        return user; // DTO 없이 Entity 반환
+        return user; // Entity 반환
     }
 
     // 비밀번호 재설정
@@ -143,9 +158,8 @@ public class UserService {
     }
 
     // 사용자 이메일로 조회
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);  // Optional 반환
     }
 
     // 이름과 전화번호로 이메일 찾기
@@ -180,10 +194,82 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        // 로그인 정지 상태 확인 (이 부분은 예시입니다)
+        // 로그인 정지 상태 확인
         if (user.getActivatedStatus() == UserStatus.SUSPENDED) {
             return "사용자가 정지되었습니다.";
         }
         return null; // 정상 로그인
     }
+
+    // 사용자 정보 조회
+    public Map<String, String> getMyPageInfo(String email) {
+        // 이메일로 사용자 조회
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다"));
+
+        // 반환할 사용자 정보 Map에 저장
+        Map<String, String> userDetails = new HashMap<>();
+        userDetails.put("profileImage", user.getProfileImg());    // 프로필 이미지 URL
+        userDetails.put("userId", user.getUserId());              // 유저 ID
+        userDetails.put("nickName", user.getNickName());          // 유저 닉네임
+        userDetails.put("userRole", user.getActivatedStatus().toString());  // 유저 역할 (후원자, 제작자 등)
+        userDetails.put("description", user.getShortDescription());  // 짧은 소개글
+
+        return userDetails;
+    }
+
+    // 프로필 비밀번호 수정
+    public boolean updateUserPassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 새 비밀번호 유효성 검사
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("비밀번호는 필수 항목입니다.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
+
+    // 프로필 페이지 수정 내용
+    public boolean updateUserProfile(String email, UserInDTO userInDTO) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        if (userInDTO.getShortDescription() != null) user.setShortDescription(userInDTO.getShortDescription());
+        if (userInDTO.getBankName() != null) user.setBankName(userInDTO.getBankName());
+        if (userInDTO.getAccountNumber() != null) user.setAccountNumber(userInDTO.getAccountNumber());
+        if (userInDTO.getAccountHolder() != null) user.setAccountHolder(userInDTO.getAccountHolder());
+        if (userInDTO.getCorporationName() != null) user.setCorporationName(userInDTO.getCorporationName());
+        if (userInDTO.getCorporationTel() != null) user.setCorporationTel(userInDTO.getCorporationTel());
+        if (userInDTO.getBSN() != null) user.setBSN(userInDTO.getBSN());
+
+        userRepository.save(user);
+        return true;
+    }
+
+    // 제작자 전환 신청 처리
+    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
+        // 이메일을 기준으로 사용자 조회
+        User user = userRepository.findByEmail(requestDTO.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 제작자 전환 신청 상태 업데이트
+        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
+
+        // 추가 필드들 설정
+        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
+        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
+        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
+
+        // 변경된 사용자 정보 저장
+        userRepository.save(user);
+
+        // 응답 DTO 반환
+        CreatorSwitchResponseDTO responseDTO = new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
+
+        return responseDTO;
+    }
+
 }

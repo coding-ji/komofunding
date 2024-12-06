@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.entity;
 
+import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
@@ -95,6 +96,19 @@ public class User {
 
     @Column(name = "verification_code_expiration")
     private LocalDateTime verificationCodeExpiration; // 인증 코드 만료 시간
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "creator_switch_status")
+    private CreatorSwitchStatus creatorSwitchStatus;  // 제작자 전환 신청 상태
+
+    @Column(name = "request_image")
+    private String requestImage;   // 신청 이미지 URL
+
+    @Column(name = "application_date")
+    private LocalDateTime applicationDate;  // 신청일
+
+    @Column(name = "privacy_agreement")
+    private boolean privacyAgreement; // 개인정보 동의 여부
 
     // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
