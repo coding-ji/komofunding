@@ -10,14 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findById(String userId);
     Optional<User> findByEmail(String email);
     Optional<User> findByNameAndPhoneNumber(String name, String phoneNumber);
-    boolean existsByEmail(String email);
 
     // 만료된 인증 코드가 있는 사용자 조회
     List<User> findByVerificationCodeExpirationBefore(LocalDateTime currentTime);
