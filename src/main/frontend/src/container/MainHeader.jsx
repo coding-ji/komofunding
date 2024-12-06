@@ -11,8 +11,9 @@ const MainHeader = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
   const navigate = useNavigate(); // useNavigate 훅 선언
   const [userNum, setUserNum] = useState(null); // 로그인한 유저의 userNum 관리
+  const [searchValue, setSearchValue] = useState("");
 
-     // 컴포넌트가 렌더링될 때 로그인 상태 확인
+    // 컴포넌트가 렌더링될 때 로그인 상태 확인
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user")); // localStorage에서 사용자 정보 가져오기
     if (user) {
@@ -32,12 +33,36 @@ const MainHeader = () => {
   // 현재 날짜를 ISO 형식으로 가져오기
   const today = new Date().toISOString().split("T")[0];
 
+
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value); // 검색어 업데이트
+  };
+
+// 검색 실행 함수
+const handleSearch = () => {
+  if (searchValue.trim()) {
+    navigate(`/search?query=${encodeURIComponent(searchValue)}`);
+    setSearchValue("")
+  }
+};
+
+const handleSearchClick = () => {
+  handleSearch(); // 버튼 클릭 시 검색 실행
+};
+
+const handleKeyDown = (event) => {
+  if (event.key === "Enter") {
+    handleSearch(); // 엔터 키로 검색 실행
+  }
+};
+
+
   return (
     <div className={styles.headerContainer}>
       {/* 로고 및 메뉴 섹션 */}
       <div className={styles.logoAndMenu}>
         <motion.div whileHover={{ scale: 1.05 }}
-          onClick={() => navigate("/")} // 홈으로 이동
+          onClick={() => navigate("/home")} // 홈으로 이동
         >
           <div
             className={styles.logoImage}
@@ -50,7 +75,7 @@ const MainHeader = () => {
         </motion.div>
         <div className={styles.menuList}>
           <HeaderMenu name="HOME" 
-           onClick={() => navigate("/home")}/>
+           onClick={() => navigate("/")}/>
           <HeaderMenu
             name="UPCOMING"
             onClick={() => navigate("/upcoming")} // Upcoming 경로로 이동
@@ -68,7 +93,14 @@ const MainHeader = () => {
       {/* 검색 및 버튼 섹션 */}
       <div className={styles.searchAndButtons}>
         {/* 검색창 */}
-        <SearchInput className={styles.searchInput} placeholder={"Search"} />
+        <SearchInput 
+          onClick={handleSearchClick}
+          onChange={handleInputChange}
+          value={searchValue}
+          className={styles.searchInput}
+          placeholder={"Search"}
+          onKeyDown={handleKeyDown} // 엔터 키 핸들러 추가
+          />
       {/* 로그인 여부에 따라 버튼 변경 */}
       <div className={styles.buttonContainer}>
           {isLoggedIn ? (
