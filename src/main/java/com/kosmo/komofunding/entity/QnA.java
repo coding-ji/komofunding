@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @Table(name = "QNA",
         indexes = {
                 @Index(name = "idx_user_id", columnList = "user_id"),
-                @Index(name = "idx_qna_category", columnList = "qna_category")
+                @Index(name = "idx_qna_category", columnList = "qna_category"),
+                @Index(name = "idx_qna_written_date", columnList = "written_date"),
+                @Index(name = "idx_qna_number", columnList = "qna_number")
         })
 @Getter
 @Setter
@@ -24,6 +26,9 @@ public class QnA {
     @Column(name = "qna_id", nullable = false, updatable = false)
     private String qnaId; // 문의글 id
 
+    @Column(name="qna_number", nullable = false, unique = true)
+    private Long qnaNumber; // 문의글 번호 (자동생성, 6자리)
+
     @Column(name = "user_id", nullable = false, updatable = false)
     private String userId; //문의글을 작성한 userId
 
@@ -31,7 +36,7 @@ public class QnA {
     @Column(name = "qna_category")
     private QnaCategory qnaCategory; // 문의글 카테고리
 
-    @Column(name = "title", length = 100) //댓글로 문의글 적을경우 title null값 허용
+    @Column(name = "title", length = 100, nullable = true)  // title은 null 허용
     private String title;
 
     @Column(name = "question_comment")

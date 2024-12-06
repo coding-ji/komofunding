@@ -2,11 +2,14 @@ package com.kosmo.komofunding.service;
 
 import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
+import com.kosmo.komofunding.dto.UserInDTO;
+import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.dto.*;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

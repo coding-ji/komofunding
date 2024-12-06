@@ -7,6 +7,7 @@ import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,6 +57,7 @@ public class Project {
     private List<ItemDTO> items; // 프로젝트 아이템들
 
     @Column(name = "current_amount", nullable = false)
+    @ColumnDefault("0")
     private Long currentAmount;  // 현재 금액
 
     @Column(name = "total_amount", nullable = false)
@@ -88,6 +90,9 @@ public class Project {
     @Convert(converter = StringListConverter.class)
     @Column(name = "qna_id_list")
     private List<String> QnaIdList; // 프로젝트 내에 문의댓글
+
+    @ManyToMany(mappedBy = "supportedProjects")
+    private List<User> supporters; // 프로젝트 후원자목록
 
     // 6자리 랜덤 숫자 생성
     private Long generateRandomNumber() {

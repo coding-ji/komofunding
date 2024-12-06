@@ -110,6 +110,15 @@ public class User {
     @Column(name = "privacy_agreement")
     private Boolean privacyAgreement = false; // 개인정보 동의 여부 (객체로 변경)
 
+    // 후원한 프로젝트
+    @ManyToMany
+    @JoinTable(
+            name="project_supporter",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> supportedProjects;
+
     // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
         Random random = new Random();
