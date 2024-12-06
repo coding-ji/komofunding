@@ -2,8 +2,10 @@ import React from "react";
 import styles from "./GuideSection.module.css";
 import image from "./img2.jpg"; // 이미지 파일을 임포트
 import SelectProjectBtn from "../../../components/SelectProjectBtn";
+import { useNavigate } from "react-router-dom";
 
 const GuideSection = () => {
+  const navinate = useNavigate();
   return (
     <div className={styles.gridDiv}>
       <div className={styles.maindiv}>
@@ -21,16 +23,16 @@ const GuideSection = () => {
             <div className={styles.buttonContainer}>
               <SelectProjectBtn title="PROJECT SELECT" 
               subtitle="프로젝트 등록"
-              // onClick={onClick} 
+              // onClick={()=>navinate("")} 
               />
               <SelectProjectBtn title="PROJECT MANAGE" 
               subtitle="프로젝트 관리"
-              // onClick={onClick} 
+                    // onClick={()=>navinate("")} 
               />
               <SelectProjectBtn title="PROJECT SUPPORT" 
                subtitle="프로젝트 관리"
-              // onClick={onClick}
-               />
+                    // onClick={()=>navinate("")} 
+               /> 
             </div>
           </div>
         </div>

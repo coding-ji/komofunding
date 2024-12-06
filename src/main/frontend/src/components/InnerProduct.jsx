@@ -12,21 +12,32 @@ align-items : center;
 flex-direction : column;
 width : 100%;
 height: 100%;
+
 `
 
 
-function InnerProduct() {
+function InnerProduct({src, currentAmount, totalAmount, isNew, isPopular }) {
+
+    const progressValue = totalAmount
+    ? (currentAmount / totalAmount) * 100
+    : 0; // 달성률 계산
+
+    const labelProps = isNew
+    ? { text: "new", color: "#436446" }
+    : isPopular
+    ? { text: "popular", color: "var(--navy-color)" }
+    : null;
+
+
     return (
         <StyledProduct>
-            <Label text="popular" color='var(--navy-color)' />
-            <Img src={"https://via.placeholder.com/450x450"}></Img>
+                {labelProps && <Label text={labelProps.text} color={labelProps.color} />}
+            <Img src={src || "https://via.placeholder.com/450x450"} /> {/* 기본 이미지 처리 */}
             {/* <ProductImg src={"https://via.placeholder.com/450x450"}></ProductImg> */}
-            <Progress value={30} max={100} color='var(--navy-color)'></Progress>
+            <Progress value={progressValue} max={100} color='var(--navy-color)'></Progress>
         </StyledProduct>
     )
 }
 
 export default InnerProduct;
 
-// 메인페이지 product
-// Img src ={데이터} -> 지워~
