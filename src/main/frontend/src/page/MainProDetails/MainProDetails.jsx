@@ -4,7 +4,7 @@ import TitleProduct from "../../components/TitleProduct";
 import DescriptionProduct from "../../components/DescriptionProduct";
 import TitleText from "../../components/TitleText";
 import PrjCategory from "../../components/PrjCategory";
-import ImageCarousel from "../../components/ImageCarousel/ImageCarousel";
+// import ImageCarousel from "../../components/ImageCarousel/ImageCarousel";
 import ProgressContainer from "../../components/ProgressContainer";
 import MainProDetailsIntro from "../../components/MainProDetails/MainProDetailsIntro";
 
