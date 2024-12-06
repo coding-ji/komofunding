@@ -23,6 +23,7 @@ function MainProductHorizontal({
   totalAmount,
   isNew,
   isPopular,
+  onClick
 }) {
   const animations = [
     {
@@ -64,6 +65,7 @@ function MainProductHorizontal({
       transition={{ duration: 0.5 }}
       style={{ transformOrigin: "center" }}
       isNew={isNew} // isNew 전달
+      onClick={onClick}
     >
       <InnerProduct
         src={imgSrc}
