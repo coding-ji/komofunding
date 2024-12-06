@@ -38,7 +38,7 @@ const ProjectTitle = styled.p`
   color: ${({ color }) => (color === "gray" ? "#fff" : "#216418")};
   text-align: center;
 `;
-function TopSectionBtnCard({text,color}) {
+function TopSectionBtnCard({text,color,onClick}) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -46,7 +46,8 @@ function TopSectionBtnCard({text,color}) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       isHovered={isHovered}
-      color={color} >
+      color={color}
+      onClick={onClick} >
         <InnerDiv color={color}>
       <ProjectTitle isHovered={isHovered} color={color}>{text}</ProjectTitle>
       </InnerDiv>

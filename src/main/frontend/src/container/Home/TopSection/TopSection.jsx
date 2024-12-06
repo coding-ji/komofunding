@@ -11,6 +11,8 @@ import cloud4 from "./img/cloud4.png";
 import cloud5 from "./img/cloud5.png";
 import MainMenu from "../../../components/MainMenu/MainMenu";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -63,6 +65,7 @@ const cloudImages = [
 
 
 const TopSection = () => {
+  const navigate = useNavigate(); // useNavigate 훅 선언
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1200);
   const [menuOpen, setMenuOpen] = useState(false); // 메뉴 상태 관리
 
@@ -96,7 +99,8 @@ const TopSection = () => {
         <div className={styles.cardGroup}>
           <MainProductHorizontal title="KOMO" />
           <MainProductHorizontal title="HOME" />
-          <TopSectionBtnCard text="HOME" color="white" />
+          <TopSectionBtnCard text="HOME" color="white"
+          onClick={()=> navigate("/")} />
           <MainProductHorizontal title="UPCOMING" />
           <MainProductHorizontal title="UPCOMING" />
           {isSmallScreen && <TopSectionBtnCard text="ACTIVE" color="white" />}
@@ -105,7 +109,8 @@ const TopSection = () => {
           <TopSectionBtnCard text="KOMO" color="gray" />
           <MainProductHorizontal title="ACTIVE" />
           <MainProductHorizontal title="KOMO" />
-          <TopSectionBtnCard text="UPCOMING" color="gray" />
+          <TopSectionBtnCard text="UPCOMING" color="gray" 
+          onClick={()=> navigate("/upcoming")}/>
           <MainProductHorizontal title="HOME" />
           <MainProductHorizontal title="UPCOMING" />
         </div>
@@ -114,7 +119,8 @@ const TopSection = () => {
             <>
               <MainProductHorizontal title="HOME" />
               <MainProductHorizontal title="UPCOMING" />
-              <TopSectionBtnCard text="ACTIVE" color="white" />
+              <TopSectionBtnCard text="ACTIVE" color="white"
+              onClick={()=> navigate("active")} />
               <MainProductHorizontal title="ACTIVE" />
               <MainProductHorizontal title="ACTIVE" />
             </>
