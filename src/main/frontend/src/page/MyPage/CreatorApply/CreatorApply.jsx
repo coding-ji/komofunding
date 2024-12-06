@@ -6,13 +6,17 @@ import MyNavLine from "../../../components/MyNavLine";
 import { Btn, WhiteBtn, ProductBtn1 } from "../../../components/MyBtn";
 import Alert from "../../../components/Alert/Alert";
 import PopupInquiry from "../writeQnA/PopupInquiry";
+import TermsPopup from "./TermsPopup";
+
 
 const CreatorApply = () => {
   const [type, setType] = useState("개인"); // 법인 또는 개인 선택 상태
   const [files, setFiles] = useState([]); // 업로드된 파일 목록
   const [agree, setAgree] = useState(""); // 이용약관 동의 상태
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
-  const [isPopupOpen2, setIsPopupOpen2] = useState(false)
+  const [isPopupOpen, setIsPopupOpen] = useState(false)//신청완료
+  const [isPopupOpen2, setIsPopupOpen2] = useState(false)//취소 버튼
+  const [isPopupOpen3, setIsPopupOpen3] = useState(false)//이용약관 아니오
+  const [isPopupOpen4, setIsPopupOpen4] = useState(false)//이용약관 팝업창
   const fileInputRef = useRef(null); // 파일 input 참조
 
   // 파일 추가 핸들러
@@ -55,12 +59,12 @@ const CreatorApply = () => {
       return;
     }
     console.log("제출 데이터:", { type, files, agree });
-   
+
     // 서버로 데이터 전송 로직 추가 가능
     setIsPopupOpen(true)
   };
 
-  
+
   const handlePopupClose = () => {
     setIsPopupOpen(false); // 팝업 닫기
     setIsPopupOpen2(false); // 팝업 닫기
@@ -195,73 +199,100 @@ const CreatorApply = () => {
           {/* 이용약관 동의 */}
           <div className="section">
             <div className="submission">
-            <div className="submissionfile">
-              <p className="pstyle">
-                제출하기 전에 이용 약관에 동의하셨습니까?
-              </p>
-              <button className="btn" onClick={handleClick} >
-                내용확인
-              </button>
+              <div className="submissionfile">
+                <p className="pstyle">
+                  제출하기 전에 이용 약관에 동의하셨습니까?
+                </p>
+                <button
+                  className="btn"
+                  onClick={(e) => {
+                    e.preventDefault(); // 기본 동작 방지
+                    e.stopPropagation(); // 이벤트 전파 방지
+                    setIsPopupOpen4(true); // 팝업 열기
+                  }}
+                >
+                  내용확인
+                </button>
+                {isPopupOpen4 && <TermsPopup onClose={() => setIsPopupOpen4(false)} />}
+              </div>
+              <div className="checkbox-container">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={agree === "yes"} // "예" 상태 확인
+                    onChange={() => setAgree(agree === "yes" ? "" : "yes")} // 토글 동작
+                  />
+                  예
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={agree === "no"} // "아니오" 상태 확인
+                    onChange={() => {
+                      if (agree !== "no") {
+                        setAgree("no");
+                        setIsPopupOpen3(true); // 팝업 열기
+                      } else {
+                        setAgree(""); // 체크 해제
+                      }
+                    }} // 토글 동작
+                  />
+                  아니오
+                </label>
+              </div>
             </div>
-            <div  className="checkbox-container">
-            <label>
-                <input
-                  type="checkbox"
-                  checked={agree === "yes"} // "예" 상태 확인
-                  onChange={() => setAgree(agree === "yes" ? "" : "yes")} // 토글 동작
-                />
-                예
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={agree === "no"} // "아니오" 상태 확인
-                  onChange={() => setAgree(agree === "no" ? "" : "no")} // 토글 동작
-                />
-                아니오
-              </label>
-              </div>
-              </div>
           </div>
 
           <p className="info-text">승인까지 3일에서 5일 정도 소요되며 잘못된 정보를 요청하면 승인이 반려될 수 있습니다.</p>
 
           {/* 버튼 */}
           <div className="buttons">
-            <Btn text="확인"  
-            width="8rem" height="2rem" fontSize="1rem" padding="2px 15px" 
-            onClick={handleSubmit}
-            />
-            <WhiteBtn text="취소" 
+            <Btn text="확인"
               width="8rem" height="2rem" fontSize="1rem" padding="2px 15px"
-            onClick={handleCancel} />
+              onClick={handleSubmit}
+            />
+            <WhiteBtn text="취소"
+              width="8rem" height="2rem" fontSize="1rem" padding="2px 15px"
+              onClick={handleCancel} />
           </div>
         </form>
       </div>
       {isPopupOpen && (
         <PopupInquiry
-        message={
-          <>
-            제작자 신청이 완료되었습니다. <br/>
-            승인까지는 3~5일이 소모됩니다.
-          </>
-        }
-        onClose={handlePopupClose} // 팝업 닫기 함수
-        navigateTo="/" // 이동할 경로
-      />
+          message={
+            <>
+              제작자 신청이 완료되었습니다. <br />
+              승인까지는 3~5일이 소모됩니다.
+            </>
+          }
+          onClose={handlePopupClose} // 팝업 닫기 함수
+          navigateTo="/" // 이동할 경로
+        />
       )}
 
-{isPopupOpen2 && (
+      {isPopupOpen2 && (
         <PopupInquiry
-        message={
-          <>
-            제작자 신청이 취소되었습니다.
-          </>
-        }
-        onClose={handlePopupClose} // 팝업 닫기 함수
-        navigateTo="/" // 이동할 경로
-      />
-      )}  
+          message={
+            <>
+              제작자 신청이 취소되었습니다.
+            </>
+          }
+          onClose={handlePopupClose} // 팝업 닫기 함수
+          navigateTo="/" // 이동할 경로
+        />
+      )}
+
+      {isPopupOpen3 && (
+        <PopupInquiry
+          message={
+            <>
+              개인정보 수집에 동의하지 않으시면 제작자 신청을 할 수 없습니다.
+            </>
+          }
+          onClose={() => setIsPopupOpen3(false)} // 팝업 닫기 핸들러
+          navigateTo="/create-apply" // 이동할 경로 (필요 시 수정 가능)
+        />
+      )}
     </div>
   );
 };
