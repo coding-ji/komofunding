@@ -15,20 +15,22 @@ const categories = [
   { name: "etc", content: "Others" },
 ];
 
-const Navbar = ({ setActiveCategory }) => {
-  const [activeCategory, setLocalActiveCategory] = useState(categories[0]); // 초기값 설정
-  const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
+const Navbar = ({  setSubCategory, activeCategory }) => {
+  
   const navbarRef = useRef(null);
   const itemRefs = useRef([]);
+  const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
 
+
+  // **카테고리 클릭 핸들러 수정**
   const handleCategoryClick = (category) => {
-    setLocalActiveCategory(category); // 로컬 상태 업데이트
-    setActiveCategory(category.name); // 부모 컴포넌트에 선택된 카테고리 전달
+    setSubCategory(category.name); // 세부 카테고리 업데이트
   };
 
+  
   const updateUnderlinePosition = () => {
     const activeIndex = categories.findIndex(
-      (category) => category.name === activeCategory.name
+      (category) => category.name === activeCategory
     );
     const activeItem = itemRefs.current[activeIndex];
     if (activeItem) {
