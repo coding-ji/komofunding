@@ -31,6 +31,7 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     List<Project> findSupportersByProjectId(String projectId);
     // 프로젝트 제목에서 포함된 단어 찾기
     List<Project> findByTitleContaining(String keyword);
-
+    // 프로젝트 존재여부 확인
+    Boolean existsByProjectNum(Long projectNum);
 
 }

@@ -48,8 +48,6 @@ public class ProjectInDTO {
     @FutureOrPresent(message = "프로젝트 종료 날짜는 현재나 미래여야 합니다.")
     private LocalDateTime projectEndDate;
 
-    private Boolean isHidden;
-
     @Size(max = 100, message = "거부/숨김 이유는 100자 이하로 입력해야 합니다.")
     private String statusChangeReason;
 
