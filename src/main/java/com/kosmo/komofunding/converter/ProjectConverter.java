@@ -2,6 +2,7 @@ package com.kosmo.komofunding.converter;
 
 import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.dto.QnAOutDTO;
+import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.Project;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.QnARepository;
@@ -10,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ProjectConverter {
     private final UserRepository userRepository;
+    private final QnARepository qnARepository;
 
     //Entity에서 DTO 변환
     public ProjectOutDTO toOutDTO(Project project){
@@ -25,10 +26,15 @@ public class ProjectConverter {
 
         // QnA 리스트 생성
         List<QnAOutDTO> qnaList = project.getQnaIdList().stream()
-                .map(qna -> QnAConverter.toOutDTO(qna))
-                .collect(Collectors.toList());
+                .map(qnaId -> qnARepository.findByQnaId(qnaId)
+                        .orElseThrow(()-> new RuntimeException("QnA를 찾을 수 없습니다.")))
+                .map(qna -> QnAConverter.toOutDTO(qna, userRepository))
+                .toList();
 
-
+        // Supporters 리스트 생성
+        List<UserOutDTO> supporters = project.getSupporters().stream()
+                .map(UserConverter::toOutDTO)
+                .toList();
 
         return ProjectOutDTO.builder()
                 .userNum(user.getUserNum())
@@ -50,6 +56,8 @@ public class ProjectConverter {
                 .approvalDate(project.getApprovalDate())
                 .rejectionDate(project.getRejectionDate())
                 .isHidden(project.getIsHidden())
+                .qnaList(qnaList)
+                .supporters(supporters)
                 .build();
     }
 }

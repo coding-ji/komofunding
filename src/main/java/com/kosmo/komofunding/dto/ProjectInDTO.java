@@ -13,6 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 public class ProjectInDTO {
+    private String userId;
+
     @NotBlank(message = "제목은 필수로 입력해주세요.")
     private String title;
 

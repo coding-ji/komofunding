@@ -7,17 +7,13 @@ import com.kosmo.komofunding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
 public class QnAConverter {
-    private final UserRepository userRepository;
-
     //QnA 엔티티에서 DTO로 변환  (DTO에서 엔티티 변환은 서비스계층에서 자동생성되는 애들과 함께 처리할 예정)
-    public QnAOutDTO toOutDTO(QnA qna){
+    public static QnAOutDTO toOutDTO(QnA qna, UserRepository userRepository){
         // 작성자 찾기
         User user = userRepository.findById(qna.getUserId())
                 .orElseThrow(() -> new RuntimeException("작성자를 찾을 수 없습니다."));
-        // 답변자 찾기
+        // 답변자 찾기z
         User answerUser = null;
         if(qna.getAnswerUserId() !=null){
             answerUser = userRepository.findById(qna.getAnswerUserId())

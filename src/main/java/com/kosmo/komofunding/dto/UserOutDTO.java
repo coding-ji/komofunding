@@ -5,6 +5,7 @@ package com.kosmo.komofunding.dto;
 
 
 import com.kosmo.komofunding.common.enums.UserStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class UserOutDTO {
     private String userid;
     private Long userNum;

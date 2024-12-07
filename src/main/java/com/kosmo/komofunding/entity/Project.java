@@ -5,15 +5,18 @@ import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ItemListConverter;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @Entity
+@Builder
 @Table(name = "PROJECT",
         indexes = {
                 @Index(name = "idx_project_num", columnList = "project_num"),
@@ -33,7 +36,8 @@ public class Project {
     private String userId; // 프로젝트 작성자아이디
 
     @Column(name = "project_num", nullable = false, unique = true, updatable = false)
-    private Long projectNum; // 프로젝트 번호 (자동 생성, 6자리)
+    @Builder.Default
+    private Long projectNum = null; // 프로젝트 번호 (자동 생성, 6자리)
 
     @Column(name = "title", nullable = false, length = 100)
     private String title; // 프로젝트 제목
@@ -57,8 +61,8 @@ public class Project {
     private List<ItemDTO> items; // 프로젝트 아이템들
 
     @Column(name = "current_amount", nullable = false)
-    @ColumnDefault("0")
-    private Long currentAmount;  // 현재 금액
+    @Builder.Default
+    private Long currentAmount =0L;  // 현재 금액
 
     @Column(name = "total_amount", nullable = false)
     private Long totalAmount; // 총 금액
@@ -82,39 +86,19 @@ public class Project {
     private LocalDateTime rejectionDate; // 프로젝트 거부날짜
 
     @Column(name = "is_hidden", nullable = false)
-    private Boolean isHidden; // 숨김 여부
+    @Builder.Default
+    private Boolean isHidden = true; // 숨김 여부
 
     @Column(name = "status_change_reason")
     private String statusChangeReason; // 거부 / 숨김인 이유
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "qna_id_list")
-    private List<String> QnaIdList; // 프로젝트 내에 문의댓글
+    @Builder.Default
+    private List<String> QnaIdList = new ArrayList<>(); // 프로젝트 내에 문의댓글
 
     @ManyToMany(mappedBy = "supportedProjects")
-    private List<User> supporters; // 프로젝트 후원자목록
+    @Builder.Default
+    private List<User> supporters = new ArrayList<>(); // 프로젝트 후원자목록
 
-    // 6자리 랜덤 숫자 생성
-    private Long generateRandomNumber() {
-        Random random = new Random();
-        return 100000L + random.nextInt(900000); // 100000~999999 사이의 랜덤 숫자 생성
-    }
-
-    // 엔티티가 저장되기 전에 값 설정 ----> 나중에 service 생성하면서 save 할때 !!!!!
-    @PrePersist
-    public void setProjectDefaults() {
-        if (this.projectNum == null) {
-            this.projectNum = generateRandomNumber();
-        }
-        if (this.writtenDate == null) {
-            this.writtenDate = LocalDateTime.now(); // 작성일 기본값 설정
-        }
-
-        if (this.updatedDate == null) {
-            this.updatedDate = LocalDateTime.now(); // 작성일 기본값 설정
-        }
-        if (this.thumbnailImgs == null) {
-            this.thumbnailImgs = List.of(); // 빈 리스트로 초기화
-        }
-    }
 }
