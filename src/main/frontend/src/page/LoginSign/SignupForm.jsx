@@ -1,90 +1,81 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
-import { useStore as UserStore } from "../../stores/UserStore/useStore";
-
-// 로컬에 가상의 유저 닉네임 목록(이미 가입된 닉네임들) 저장 예시
-if (!localStorage.getItem("existingNicknames")) {
-  localStorage.setItem("existingNicknames", JSON.stringify(["testuser", "john", "jane"]));
-}
+import { registerUser, sendEmailCode, verifyEmailCode } from "../../service/apiService";
 
 const SignupForm = () => {
-  const { state, actions } = UserStore();
+  const [formData, setFormData] = useState({
+    name: "",
+    nickname: "",
+    email: "",
+    password: "",
+    phone: "",
+  });
   const [authCode, setAuthCode] = useState(""); // 이메일 인증 코드 입력값
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [emailSent, setEmailSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  // 닉네임 중복 확인 (로컬 스토리지의 existingNicknames를 사용)
-  const handleNicknameCheck = () => {
-    const existingNicknames = JSON.parse(localStorage.getItem("existingNicknames") || "[]");
-    if (existingNicknames.includes(state.nickname)) {
-      alert("이미 사용 중인 닉네임입니다.");
-    } else {
-      alert("사용 가능한 닉네임입니다.");
-    }
+  // 폼 데이터 업데이트
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
   };
 
-  // 이메일 인증 요청: 로컬에서 인증코드 생성 후 저장
-  const handleSendEmail = () => {
-    if (!state.email) {
-      alert("이메일을 입력하세요.");
+  // 이메일 인증 코드 발송
+  const handleSendEmail = async () => {
+    if (!formData.email) {
+      setErrorMessage("이메일을 입력하세요.");
       return;
     }
-    const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 인증번호
-    localStorage.setItem("emailAuthCode", code);
-    setEmailSent(true);
-    alert("인증코드가 이메일(가상)로 전송되었습니다. 로컬 스토리지에서 확인하세요.");
+    try {
+      await sendEmailCode(formData.email);
+      setEmailSent(true);
+      setSuccessMessage("인증코드가 이메일로 전송되었습니다.");
+    } catch (error) {
+      setErrorMessage("이메일 전송 중 오류가 발생했습니다.");
+    }
   };
 
   // 이메일 인증 코드 검증
-  const handleVerifyEmail = () => {
-    const storedCode = localStorage.getItem("emailAuthCode");
-    if (authCode === storedCode) {
+  const handleVerifyEmail = async () => {
+    try {
+      await verifyEmailCode(formData.email, authCode);
       setEmailVerified(true);
-      alert("이메일 인증 성공!");
-    } else {
-      alert("인증코드가 일치하지 않습니다.");
+      setSuccessMessage("이메일 인증 성공!");
+    } catch (error) {
+      setErrorMessage("인증코드가 일치하지 않습니다.");
     }
   };
 
   // 회원가입 처리
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 비밀번호 확인
-    if (state.password !== confirmPassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+    if (formData.password !== confirmPassword) {
+      setErrorMessage("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     }
 
-    // 이메일 인증 확인
     if (!emailVerified) {
-      alert("이메일 인증을 완료해주세요.");
+      setErrorMessage("이메일 인증을 완료해주세요.");
       return;
     }
 
-    // 모든 조건 충족 시 가입 정보 로컬 스토리지 저장
-    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
-    const newUser = {
-      name: state.name,
-      nickname: state.nickname,
-      email: state.email,
-      password: state.password,
-      phone: state.phone,
-    };
-    registeredUsers.push(newUser);
-    localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
-
-    alert("회원가입이 완료되었습니다! 로컬 스토리지에 저장되었습니다.");
-
-    actions.resetState();
-    setAuthCode("");
-    setConfirmPassword("");
-    setEmailSent(false);
-    setEmailVerified(false);
-    localStorage.removeItem("emailAuthCode");
+    try {
+      await registerUser(formData);
+      setSuccessMessage("회원가입이 완료되었습니다!");
+      setFormData({ name: "", nickname: "", email: "", password: "", phone: "" });
+      setAuthCode("");
+      setConfirmPassword("");
+      setEmailSent(false);
+      setEmailVerified(false);
+    } catch (error) {
+      setErrorMessage("회원가입 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -100,7 +91,7 @@ const SignupForm = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <h2 className={styles.title}>회원 가입 </h2>
+          <h2 className={styles.title}>회원 가입</h2>
           <hr className={styles.hrDarkToLight} />
         </motion.div>
 
@@ -115,8 +106,8 @@ const SignupForm = () => {
               type="text"
               placeholder="이름을 입력하세요"
               className={styles.input}
-              value={state.name}
-              onChange={(e) => actions.changeName(e.target.value)}
+              value={formData.name}
+              onChange={handleInputChange}
               style={{ gridArea: "input1" }}
             />
 
@@ -129,19 +120,10 @@ const SignupForm = () => {
               type="text"
               placeholder="닉네임을 입력하세요"
               className={styles.input}
-              value={state.nickname}
-              onChange={(e) => actions.changeNickname(e.target.value)}
+              value={formData.nickname}
+              onChange={handleInputChange}
               style={{ gridArea: "input7" }}
             />
-            <div style={{ gridArea: "nickbtn" }}>
-              <button
-                type="button"
-                className={styles.smallButton}
-                onClick={handleNicknameCheck}
-              >
-                중복 확인
-              </button>
-            </div>
 
             {/* 이메일 */}
             <label className={styles.label} style={{ gridArea: "label2" }}>
@@ -152,8 +134,8 @@ const SignupForm = () => {
               type="email"
               placeholder="이메일을 입력하세요"
               className={styles.input}
-              value={state.email}
-              onChange={(e) => actions.changeEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleInputChange}
               style={{ gridArea: "input2" }}
             />
             <div style={{ gridArea: "mailbtn" }}>
@@ -161,6 +143,7 @@ const SignupForm = () => {
                 type="button"
                 className={styles.smallButton}
                 onClick={handleSendEmail}
+                disabled={emailSent}
               >
                 이메일 인증
               </button>
@@ -200,8 +183,8 @@ const SignupForm = () => {
               type="password"
               placeholder="비밀번호를 입력하세요"
               className={styles.input}
-              value={state.password}
-              onChange={(e) => actions.changePassword(e.target.value)}
+              value={formData.password}
+              onChange={handleInputChange}
               style={{ gridArea: "input4" }}
             />
 
@@ -219,8 +202,7 @@ const SignupForm = () => {
               style={{ gridArea: "input5" }}
             />
 
-            {/* 휴대폰 번호 */} 
-            {/* 인증 로직 제거, 단순 입력 */}
+            {/* 휴대폰 번호 */}
             <label className={styles.label} style={{ gridArea: "label6" }}>
               휴대폰 번호
             </label>
@@ -229,8 +211,8 @@ const SignupForm = () => {
               type="text"
               placeholder="010-0000-0000"
               className={styles.input}
-              value={state.phone}
-              onChange={(e) => actions.changePhone(e.target.value)}
+              value={formData.phone}
+              onChange={handleInputChange}
               style={{ gridArea: "input6" }}
             />
 
@@ -248,6 +230,10 @@ const SignupForm = () => {
             >
               약관 동의 후 회원가입
             </motion.button>
+
+            {/* 오류 및 성공 메시지 */}
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+            {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
           </form>
         </section>
       </motion.div>

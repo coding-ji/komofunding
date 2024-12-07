@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import TitleText from "../../components/TitleText";
 import { Btn } from "../../components/MyBtn";
 import Input from "../../components/input";
-import axios from "axios";
+import { loginUser } from "../../service/apiService";
 import styles from "./Login.module.css";
 
 const Login = () => {
@@ -22,26 +22,21 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.get("/data/userData.json"); // JSON 데이터 API 호출
-      const users = response.data;
+      // loginUser API 호출
+      const response = await loginUser(email, password);
 
-      // 입력한 이메일과 비밀번호가 일치하는 사용자 찾기
-      const user = users.find(
-        (user) => user.email === email && user.password === password
-      );
-
-      if (user) {
-        // 로그인 성공
-        setMessage("로그인 성공!");
-        localStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
-        window.location.href = "/"; // 메인 페이지로 리디렉션
-      } else {
-        // 로그인 실패
-        setError("이메일 또는 비밀번호가 일치하지 않습니다.");
-      }
+      // 로그인 성공 시
+      setMessage("로그인 성공!");
+      localStorage.setItem("user", JSON.stringify(response.data)); // 사용자 정보 저장
+      window.location.href = "/"; // 메인 페이지로 리디렉션
     } catch (err) {
       console.error(err);
-      setError("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
+      // 에러 처리
+      if (err.response && err.response.status === 401) {
+        setError("이메일 또는 비밀번호가 일치하지 않습니다.");
+      } else {
+        setError("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
 
@@ -78,7 +73,7 @@ const Login = () => {
           {/* 로그인 버튼 */}
           <Btn text={"로그인"} width={"500px"} type="submit" />
 
-          {/* 오류 메시지 */}
+          {/* 오류 및 성공 메시지 */}
           {error && <p className={styles.errorMessage}>{error}</p>}
           {message && <p className={styles.successMessage}>{message}</p>}
 
