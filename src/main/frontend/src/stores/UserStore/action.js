@@ -1,3 +1,6 @@
+
+import { fetchItems, createItem, updateItem, deleteItem } from '../../service/apiService';
+
 export const CHANGE_USER_NUM = "CHANGE_USER_NUM"; 
 export const CHANGE_EMAIL = "CHANGE_EMAIL";
 export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
@@ -14,7 +17,10 @@ export const CHANGE_USER_JOIN_DATE = "CHANGE_USER_JOIN_DATE";
 export const CHANGE_CORPORATION_NAME = "CHANGE_CORPORATION_NAME" ;
 export const CHANGE_CORPORATION_TEL = "CHANGE_CORPORATION_TEL";
 export const CHANGE_BSN = "CHANGE_BSN"; 
-export const RESET_STATE = "RESET_STATE"; 
+export const RESET_STATE = "RESET_STATE";
+export const ADD_ITEM = 'ADD_ITEM';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const DELETE_ITEM = 'DELETE_ITEM'; 
 
 export const changeUserNum = (userNum) => ({type: CHANGE_USER_NUM, payload: userNum});
 export const changeEmail = (email) => ({type: CHANGE_EMAIL, payload: email});
@@ -32,4 +38,32 @@ export const changeUserJoinDate = (joinDate) => ({type: CHANGE_USER_JOIN_DATE, p
 export const changeCorporationName = (corporationName) => ({type: CHANGE_CORPORATION_NAME, payload: corporationName});
 export const changeCorporationTel = (corporationTel) => ({type: CHANGE_CORPORATION_TEL, payload: corporationTel});
 export const changeBSN = (bsn) => ({type: CHANGE_BSN, payload: bsn});
-export const resetState = () => ({type: RESET_STATE}); 
+export const resetState = () => ({type: RESET_STATE});
+
+// axios 연동
+export const addItem = (item) => async (dispatch) => {
+    try {
+        const response = await createItem(item);
+        dispatch({ type: ADD_ITEM, payload: response.data });
+    } catch (error) {
+        console.error('Failed to add item', error);
+    }
+};
+
+export const updateItemAction = (item) => async (dispatch) => {
+    try {
+        const response = await updateItem(item);
+        dispatch({ type: UPDATE_ITEM, payload: response.data });
+    } catch (error) {
+        console.error('Failed to update item', error);
+    }
+};
+
+export const deleteItemAction = (id) => async (dispatch) => {
+    try {
+        await deleteItem(id);
+        dispatch({ type: DELETE_ITEM, payload: id });
+    } catch (error) {
+        console.error('Failed to delete item', error);
+    }
+};

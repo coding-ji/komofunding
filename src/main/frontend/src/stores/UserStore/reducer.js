@@ -15,7 +15,8 @@ import {
     CHANGE_CORPORATION_NAME,
     CHANGE_CORPORATION_TEL,
     CHANGE_BSN,
-    RESET_STATE
+    RESET_STATE,
+    ADD_ITEM, UPDATE_ITEM, DELETE_ITEM
 } from "./action";
 
 export const initialState = {
@@ -73,7 +74,24 @@ export const reducer = (state, action) => {
             return { ...state, bsn: action.payload };
         case RESET_STATE:
             return initialState;
+            case ADD_ITEM:
+            return { ...state, items: [...state.items, action.payload] };
+        case UPDATE_ITEM:
+            return {
+                ...state,
+                items: state.items.map(item =>
+                    item.id === action.payload.id ? action.payload : item
+                )
+            };
+        case DELETE_ITEM:
+            return {
+                ...state,
+                items: state.items.filter(item => item.id !== action.payload)
+            };
         default:
             state;
     }
 }
+
+
+
