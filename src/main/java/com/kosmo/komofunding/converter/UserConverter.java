@@ -6,7 +6,7 @@ import com.kosmo.komofunding.entity.User;
 public class UserConverter {
     public static UserOutDTO toOutDTO(User user){
         return UserOutDTO.builder()
-                .userid(user.getUserId())
+//                .userid(user.getUserId())
                 .nickName(user.getNickName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())

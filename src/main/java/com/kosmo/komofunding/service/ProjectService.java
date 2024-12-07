@@ -1,16 +1,21 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
+import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.entity.Project;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.ProjectRepository;
+import com.kosmo.komofunding.repository.QnARepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -19,11 +24,28 @@ import java.util.Optional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ProjectConverter projectConverter;
+    private final UserRepository userRepository;
+    private final QnARepository qnARepository;
+
+
+    // 유저 uid로 프로젝트 조회
+    public List<Project> getProjectsByUserId(String userId){
+        return projectRepository.findByUserId(userId);
+    }
 
     // 프로젝트 저장 로직 (projectInDTO를 Entity로 저장)
     public Project createProject(ProjectInDTO projectInDTO) {
         Project project = toEntity(projectInDTO);
         return projectRepository.save(project);
+    }
+
+    // 특정 프로젝트 조회
+    public ProjectOutDTO getProjectDetails(Long projectNum){
+        Project project = projectRepository.findByProjectNum(projectNum)
+                .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
+        return projectConverter.toOutDTO(project);
     }
 
     // DTO를 엔티티로 변환하는 메서드

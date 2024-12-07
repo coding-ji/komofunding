@@ -15,6 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ProjectConverter {
+
     private final UserRepository userRepository;
     private final QnARepository qnARepository;
 
@@ -32,7 +33,9 @@ public class ProjectConverter {
                 .toList();
 
         // Supporters 리스트 생성
-        List<UserOutDTO> supporters = project.getSupporters().stream()
+        List<UserOutDTO> supporters = project.getSupportersIdList().stream()
+                .map(userId -> userRepository.findById(userId)
+                        .orElseThrow(() -> new RuntimeException("후원자를 찾을 수 없습니다.")))
                 .map(UserConverter::toOutDTO)
                 .toList();
 

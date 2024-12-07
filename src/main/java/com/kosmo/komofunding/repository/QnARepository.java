@@ -15,7 +15,7 @@ public interface QnARepository extends JpaRepository<QnA, String> {
     // QnaId로 검색 (uid)
     Optional<QnA> findByQnaId(String qndId);
     // QnaNumber로 검색
-    Optional<QnA> findByQnaNumber(String qnaNumber);
+    Optional<QnA> findByQnaNumber(Long qnaNumber);
     // 작성자ID로 검색
     Optional<QnA> findByUserId(String userId);
     // 카테고리로 검색 : 댓글(COMMENT) / 1:1문의(QUESTION)

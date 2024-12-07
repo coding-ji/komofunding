@@ -33,7 +33,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Map<String, String>> handleUnauthorizedException(UnauthorizedException ex) {
         Map<String, String> response = new HashMap<>();
-        response.put("message", "인증되지 않은 사용자입니다.");
+        //예외에서 전달된 메세지 반환
+        response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
     // 사용방법 : throw new UnauthorizedException("로그인정보가 유효하지않습니다" );

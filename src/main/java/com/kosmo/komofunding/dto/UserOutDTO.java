@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Builder
 public class UserOutDTO {
-    private String userid;
     private Long userNum;
     private String email;
     private String name;

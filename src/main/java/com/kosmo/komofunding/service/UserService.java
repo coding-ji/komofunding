@@ -75,10 +75,22 @@ public class UserService {
         userRepository.save(user);
 
         // User 엔티티를 UserOutDTO로 변환
-        UserOutDTO userOutDTO = new UserOutDTO();
-        userOutDTO.setEmail(user.getEmail());
-        userOutDTO.setName(user.getName());
-        // 다른 필드들도 설정
+        UserOutDTO userOutDTO = UserOutDTO.builder()
+                .userNum(user.getUserNum())
+                .email(user.getEmail())
+                .name(user.getName())
+                .nickName(user.getNickName())
+                .phoneNumber(user.getPhoneNumber())
+                .profileImg(user.getProfileImg())
+                .shortDescription(user.getShortDescription())
+                .activatedStatus(user.getActivatedStatus())
+                .deactivationReason(user.getDeactivationReason())
+                .deactivationDate(user.getDeactivationDate())
+                .joinDate(user.getJoinDate())
+                .lastLoginTime(user.getLastLoginTime())
+                .projectIds(user.getProjectIds())
+                .build();
+
 
         return userOutDTO;
     }

@@ -97,8 +97,9 @@ public class Project {
     @Builder.Default
     private List<String> QnaIdList = new ArrayList<>(); // 프로젝트 내에 문의댓글
 
-    @ManyToMany(mappedBy = "supportedProjects")
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "supporters_id_list")
     @Builder.Default
-    private List<User> supporters = new ArrayList<>(); // 프로젝트 후원자목록
+    private List<String> supportersIdList = null; // 프로젝트 후원자목록
 
 }
