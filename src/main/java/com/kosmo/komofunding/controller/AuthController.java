@@ -4,6 +4,7 @@ import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,12 +47,14 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody String email, String password) {
-        User user = userService.login(email, password); // DTO 대신 Entity 반환
-        if (user == null) {
-            return ResponseEntity.status(401).build(); // Unauthorized
-        }
-        return ResponseEntity.ok(user); // User Entity 반환
+    public ResponseEntity<Map<String, String>> login(
+            @RequestBody UserInDTO loginRequest,
+            HttpSession session) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+
+        Map<String, String> response = userService.login(email, password, session);
+        return ResponseEntity.ok(response); // 세션 ID 포함 응답 반환
     }
 
     // 사용자 정보 조회
@@ -65,9 +68,9 @@ public class AuthController {
     }
 
     // 회원 탈퇴
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
-        return userService.deleteUser(email)
+    @DeleteMapping("/delete/{usernum}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userNum) {
+        return userService.deleteUser(String.valueOf(userNum))
                 ? ResponseEntity.noContent().build() // 204 No Content
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
     }
@@ -109,10 +112,10 @@ public class AuthController {
     }
 
     // 비밀번호 인증
-    @PostMapping("/pw/{email}")
-    public ResponseEntity<String> verifyPassword(@PathVariable String email, @RequestBody String password) {
+    @PostMapping("/pw/{usernum}")
+    public ResponseEntity<String> verifyPassword(@PathVariable Long userNum, @RequestBody String password, HttpSession session) {
         try {
-            userService.verifyPassword(email, password);
+            userService.verifyPassword(session, password);
             return ResponseEntity.ok("비밀번호 인증 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body("비밀번호가 일치하지 않습니다."); // Unauthorized
@@ -120,9 +123,9 @@ public class AuthController {
     }
 
     // 로그인 정지 상태 확인
-    @GetMapping("/login/status/{email}")
-    public ResponseEntity<String> checkSuspension(@PathVariable String email) {
-        String suspensionReason = userService.getSuspensionReason(email);
+    @GetMapping("/login/status/{usernum}")
+    public ResponseEntity<String> checkSuspension(@PathVariable Long userNum) {
+        String suspensionReason = userService.getSuspensionReason(String.valueOf(userNum));
         if (suspensionReason != null) {
             return ResponseEntity.status(403).body(suspensionReason); // Forbidden
         }

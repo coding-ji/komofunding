@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findById(String userId);
     Optional<User> findByEmail(String email);
     Optional<User> findByNameAndPhoneNumber(String name, String phoneNumber);
-
+    Optional<User> findByUserNum(Long userNum);
     // 만료된 인증 코드가 있는 사용자 조회
     List<User> findByVerificationCodeExpirationBefore(LocalDateTime currentTime);
 

@@ -8,6 +8,7 @@ import com.kosmo.komofunding.dto.*;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static com.kosmo.komofunding.dto.Valid.password;
 
 @Slf4j
 @Service
@@ -129,13 +132,29 @@ public class UserService {
     }
 
     // 로그인
-    public User login(String email, String password) {
+    @Transactional
+    public Map<String, String> login(String email, String password, HttpSession session) {
+        // 이메일로 사용자 조회
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 비밀번호 확인
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        return user; // Entity 반환
+
+        // 세션 생성 및 사용자 데이터 저장
+        session.setAttribute("userId", user.getUserId()); // 세션에 사용자 ID 저장
+
+        // 세션 ID 반환
+        String sessionId = session.getId();
+
+        // 클라이언트로 반환할 데이터 준비
+        Map<String, String> response = new HashMap<>();
+        response.put("sessionId", sessionId); // 세션 ID
+        response.put("userName", user.getName()); // 예: 사용자 이름 추가
+
+        return response; // 세션 ID 포함 응답
     }
 
     // 비밀번호 재설정
@@ -194,8 +213,14 @@ public class UserService {
     }
 
     // 비밀번호 인증
-    public void verifyPassword(String email, String password) {
-        User user = userRepository.findByEmail(email)
+    public void verifyPassword(HttpSession session, String password) {
+        // 세션에서 사용자 ID를 가져옵니다
+        Long userNum = (Long) session.getAttribute("userNum");
+        if (userNum == null) {
+            throw new IllegalArgumentException("로그인된 사용자가 없습니다.");
+        }
+
+        User user = userRepository.findByUserNum(userNum)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         // 비밀번호 비교
@@ -206,13 +231,20 @@ public class UserService {
 
     // 로그인 정지 상태 확인
     public String getSuspensionReason(String email) {
+        // 이메일로 사용자 조회
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
         // 로그인 정지 상태 확인
         if (user.getActivatedStatus() == UserStatus.SUSPENDED) {
             return "사용자가 정지되었습니다.";
         }
+
         return null; // 정상 로그인
     }
 
@@ -225,7 +257,7 @@ public class UserService {
         // 반환할 사용자 정보 Map에 저장
         Map<String, String> userDetails = new HashMap<>();
         userDetails.put("profileImage", user.getProfileImg());    // 프로필 이미지 URL
-        userDetails.put("userId", user.getUserId());              // 유저 ID
+        userDetails.put("userNum", String.valueOf(user.getUserNum()));              // 유저 ID
         userDetails.put("nickName", user.getNickName());          // 유저 닉네임
         userDetails.put("userRole", user.getActivatedStatus().toString());  // 유저 역할 (후원자, 제작자 등)
         userDetails.put("description", user.getShortDescription());  // 짧은 소개글
@@ -281,10 +313,7 @@ public class UserService {
         // 변경된 사용자 정보 저장
         userRepository.save(user);
 
-        // 응답 DTO 반환
-        CreatorSwitchResponseDTO responseDTO = new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
-
-        return responseDTO;
+        return new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
     }
 
 }

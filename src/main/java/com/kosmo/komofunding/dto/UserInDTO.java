@@ -4,13 +4,17 @@ package com.kosmo.komofunding.dto;
 // 비밀번호나 계좌 정보같은 민감한 정보는 별도의 로직이 필요할 수도 있음
 
 import com.kosmo.komofunding.common.enums.UserStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserInDTO {
     private String email;
     private String password;
