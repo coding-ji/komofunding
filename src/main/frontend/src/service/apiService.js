@@ -26,7 +26,7 @@ export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api
 export const registerUser = (userInDTO) => apiClient.post('/api/auth/register', userInDTO);
 
 // 회원가입 이메일 인증 요청 
-export const sendRegisterEmailCode = (email) => apiClient.post('/register/emailcheck', {email});
+export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck', {email});
 
 // 이메일 인증 코드 발송 요청
 export const sendEmailCode = (email) => apiClient.post('/api/auth/emailcheck', { email });

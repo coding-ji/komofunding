@@ -8,11 +8,13 @@ import com.kosmo.komofunding.exception.UnauthorizedException;
 import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.EmailService;
 import com.kosmo.komofunding.service.UserService;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -28,6 +30,8 @@ public class AuthController {
     private UserRepository userRepository;
     private final UserService userService;
     private final EmailService emailService;
+    @Autowired
+    private JavaMailSender mailSender;
 
     // 회원 가입
     @PostMapping("/register")
@@ -39,30 +43,62 @@ public class AuthController {
 
     // 이메일 인증 코드 발송 (회원가입용)
     @PostMapping("/register/emailcheck")
-    public ResponseEntity<Void> sendRegisterEmailCode(@RequestBody EmailRequestDTO emailRequest) {
-        boolean isSent = emailService.sendVerificationCode(emailRequest.email());
-        return isSent
-                ? ResponseEntity.noContent().build() // 204 No Content
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
+    public HashMap<String, Object> sendRegisterEmailCode(@RequestBody EmailRequestDTO emailRequest) {
+        HashMap<String, Object> map = new HashMap<>();
+        String email = emailRequest.email();  // 이메일 주소 추출
+
+        try {
+            // 이메일 유효성 검사
+            if (email == null || email.isEmpty()) {
+                map.put("success", Boolean.FALSE);
+                map.put("message", "이메일을 입력해주세요.");
+                return map;
+            }
+
+            // 이메일 인증 코드 전송 메서드 호출
+            MimeMessage message = emailService.sendVerificationCode(email);
+
+            if (message != null) {
+                // 이메일 전송 성공 시
+                mailSender.send(message);  // 실제 이메일 전송
+                map.put("success", Boolean.TRUE);
+                map.put("message", "이메일이 발송되었습니다.");
+            } else {
+                // 이메일 전송 실패 시
+                map.put("success", Boolean.FALSE);
+                map.put("message", "이메일 발송에 실패했습니다.");
+            }
+
+        } catch (Exception e) {
+            // 예외 발생 시 처리
+            map.put("success", Boolean.FALSE);
+            map.put("message", "이메일 처리 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return map;
     }
 
     // 이메일 인증 코드 발송
-    @PostMapping("/emailcheck")
-    public ResponseEntity<Void> sendVerificationCode(@RequestBody EmailRequestDTO emailRequest) {
-        boolean isSent = emailService.sendVerificationCode(emailRequest.email());
-        return isSent
-                ? ResponseEntity.noContent().build() // 204 No Content
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
-    }
+//    @PostMapping("/emailcheck")
+//    public ResponseEntity<Void> sendVerificationCode(@RequestBody EmailRequestDTO emailRequest) {
+//        boolean isSent = emailService.sendVerificationCode(emailRequest.email());
+//        return isSent
+//                ? ResponseEntity.noContent().build() // 204 No Content
+//                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
+//    }
 
     // 이메일 인증 코드 검증
     @PostMapping("/emailverification")
     public ResponseEntity<Void> emailVerification(@RequestBody EmailRequestDTO emailRequest) {
-        boolean isValid = emailService.verifyCode(emailRequest.email(), emailRequest.verificationCode());
+        String email = emailRequest.email(); // 이메일 주소
+        String inputCode = emailRequest.verificationCode(); // 입력된 인증 코드
+
+        boolean isValid = emailService.verifyCode(email, inputCode);
+
         return isValid
                 ? ResponseEntity.noContent().build() // 204 No Content
                 : ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build(); // 422 Unprocessable Entity
-    }
+  }
 
 //     로그인
     @PostMapping("/login")

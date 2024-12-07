@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
-import { registerUser, sendEmailCode, verifyEmailCode } from "../../service/apiService";
+import { registerUser, sendRegisterEmailCode, verifyEmailCode } from "../../service/apiService";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -31,6 +31,7 @@ const SignupForm = () => {
       setErrorMessage("이메일을 입력하세요.");
       return;
     }
+
     try {
       await sendRegisterEmailCode(formData.email);
       setEmailSent(true);
@@ -42,15 +43,21 @@ const SignupForm = () => {
 
   // 이메일 인증 코드 검증
   const handleVerifyEmail = async () => {
+    // 입력한 인증 코드의 앞뒤 공백을 제거
+    const trimmedAuthCode = authCode.trim();
+    
+    console.log("Email: ", formData.email);  // 이메일 값 확인
+    console.log("Auth Code: ", trimmedAuthCode);  // 공백 제거된 인증 코드 값 확인
+  
     try {
-      await verifyEmailCode(formData.email, authCode);
+      await verifyEmailCode(formData.email, trimmedAuthCode);  // 공백 제거된 코드 전송
       setEmailVerified(true);
       setSuccessMessage("이메일 인증 성공!");
     } catch (error) {
       setErrorMessage("인증코드가 일치하지 않습니다.");
     }
   };
-
+  
   // 회원가입 처리
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -18,9 +18,11 @@ import java.util.Optional;
 @Service
 public class EmailService {
 
-
+    @Autowired
     private EmailRepository emailRepository;
+    @Autowired
     private JavaMailSender mailSender;
+    private static final String senderEmail= "k93305@gmail.com";
 
     // 랜덤 인증 코드 생성
     private String generateVerificationCode() {
@@ -28,20 +30,39 @@ public class EmailService {
     }
 
     // 회원가입 인증코드 전송
-    public boolean sendVerificationCode(String email) {
+    public MimeMessage sendVerificationCode(String email) {
         String verificationCode = generateVerificationCode();
 
-        // 이메일 엔티티 조회 또는 생성
-        Email emailEntity = emailRepository.findById(email)
-                .orElse(new Email()); // 새로운 이메일 엔티티 생성
+        // 이메일이 없으면 새로 생성
+        Email emailEntity = emailRepository.findByEmail(email).orElse(new Email());
+
+        // 이메일 엔티티 설정
         emailEntity.setEmail(email);
         emailEntity.setVerificationCode(verificationCode);
         emailEntity.setCreatedAt(LocalDateTime.now());
 
-        emailRepository.save(emailEntity); // 저장 또는 업데이트
+        // 이메일 저장
+        emailRepository.save(emailEntity);
 
-        // 이메일 전송
-        return sendEmail(email, verificationCode);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        // 이메일 전송 코드
+        try {
+            message.setFrom(senderEmail);
+            // 수신자 설정
+            message.setRecipients(MimeMessage.RecipientType.TO, email);
+
+            // 제목 설정
+            message.setSubject("회원가입 인증 코드");
+
+            // 본문 설정
+            String body = "<p>회원가입을 위한 인증 코드입니다.</p><p>인증 코드: <strong>" + verificationCode + "</strong></p>";
+            message.setText(body,"UTF-8", "html");  // HTML 형식의 텍스트 설정
+
+        } catch (Exception e) {
+            e.printStackTrace();  // 로그를 좀 더 상세하게 남기기
+        }
+        return message;
     }
 
     // 이메일 전송 로직 분리
