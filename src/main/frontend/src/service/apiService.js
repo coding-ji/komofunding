@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8080', // 백엔드 서버의 기본 주소
+    baseURL: 'http://localhost:8080.com', // 백엔드 서버의 기본 주소
     timeout: 10000, // 요청 타임아웃 설정 (10초)
     headers: { 'Content-Type': 'application/json' }, // 기본 헤더 설정
 });
@@ -38,7 +38,7 @@ export const loginUser = (email, password) => apiClient.post('/api/auth/login', 
 export const fetchUserInfo = (email) => apiClient.get(`/api/auth/users?email=${email}`);
 
 // 특정 사용자를 삭제 (회원 탈퇴)
-export const deleteUser = (email) => apiClient.delete(`/api/auth/delete/${email}`);
+export const deleteUser = (userNum) => apiClient.delete(`/api/auth/delete/${userNum}`);
 
 // 이름과 전화번호를 기반으로 이메일 찾기 요청
 export const findUserId = (name, phoneNumber) => apiClient.post('/api/auth/id', { name, phoneNumber });
@@ -50,10 +50,11 @@ export const resetPassword = (email) => apiClient.post('/api/auth/pw', { email }
 export const changePassword = (email, newPassword) => apiClient.patch(`/api/auth/setting/pw`, { email, newPassword });
 
 // 비밀번호 검증 요청
-export const verifyPassword = (email, password) => apiClient.post(`/api/auth/pw/${email}`, { password });
+export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/pw/${userNum}`, { password });
 
 // 특정 사용자의 로그인 정지 상태 확인
-export const checkSuspension = (email) => apiClient.get(`/api/auth/login/status/${email}`);
+export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`);
+
 
 // 프로젝트 관련 API
 // 모든 프로젝트 목록을 가져옴
@@ -80,5 +81,10 @@ export const updateComment = (commentId, updateData) => apiClient.put(`/api/comm
 
 // 특정 댓글을 삭제
 export const deleteComment = (commentId) => apiClient.delete(`/api/comments/${commentId}`);
+
+export const fetchItems = () => apiClient.get('/items');
+export const createItem = (item) => apiClient.post('/items', item);
+export const updateItem = (item) => apiClient.put(`/items/${item.id}`, item);
+export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 
 export default apiClient;
