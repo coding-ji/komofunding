@@ -1,10 +1,12 @@
 package com.kosmo.komofunding.controller;
 
+import com.kosmo.komofunding.dto.EmailRequestDTO;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.exception.UnauthorizedException;
 import com.kosmo.komofunding.repository.UserRepository;
+import com.kosmo.komofunding.service.EmailService;
 import com.kosmo.komofunding.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
     private final UserService userService;
+    private final EmailService emailService;
 
     // 회원 가입
     @PostMapping("/register")
@@ -34,18 +37,29 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    // 이메일 인증 코드 발송
-    @PostMapping("/emailcheck")
-    public ResponseEntity<Void> sendVerificationCode(@RequestBody String email) {
-        return userService.sendVerificationCode(email)
+    // 이메일 인증 코드 발송 (회원가입용)
+    @PostMapping("/register/emailcheck")
+    public ResponseEntity<Void> sendRegisterEmailCode(@RequestBody EmailRequestDTO emailRequest) {
+        boolean isSent = emailService.sendVerificationCode(emailRequest.email());
+        return isSent
                 ? ResponseEntity.noContent().build() // 204 No Content
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
     }
 
-    // 이메일 인증
+    // 이메일 인증 코드 발송
+    @PostMapping("/emailcheck")
+    public ResponseEntity<Void> sendVerificationCode(@RequestBody EmailRequestDTO emailRequest) {
+        boolean isSent = emailService.sendVerificationCode(emailRequest.email());
+        return isSent
+                ? ResponseEntity.noContent().build() // 204 No Content
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
+    }
+
+    // 이메일 인증 코드 검증
     @PostMapping("/emailverification")
-    public ResponseEntity<Void> emailVerification(@RequestBody String email, String code) {
-        return userService.verifyEmailCode(email, code)
+    public ResponseEntity<Void> emailVerification(@RequestBody EmailRequestDTO emailRequest) {
+        boolean isValid = emailService.verifyCode(emailRequest.email(), emailRequest.verificationCode());
+        return isValid
                 ? ResponseEntity.noContent().build() // 204 No Content
                 : ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build(); // 422 Unprocessable Entity
     }

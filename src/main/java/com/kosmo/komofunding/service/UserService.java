@@ -101,38 +101,7 @@ public class UserService {
         return userOutDTO;
     }
 
-    // 인증 코드 전송
-    public boolean sendVerificationCode(String email) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
-        }
 
-        String verificationCode = generateVerificationCode();
-        User user = userOptional.get();
-        user.setVerificationCode(verificationCode);
-        userRepository.save(user);
-
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-            helper.setTo(email);
-            helper.setSubject("인증 코드");
-            helper.setText("인증 코드는 다음과 같습니다: " + verificationCode);
-            mailSender.send(message);
-            return true;
-        } catch (Exception e) {
-            log.error("이메일 전송 실패: {}", e.getMessage());
-            return false;
-        }
-    }
-
-    // 이메일 인증 코드 검증
-    public boolean verifyEmailCode(String email, String code) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        return user.getVerificationCode() != null && user.getVerificationCode().equals(code);
-    }
 
     // 로그인
     @Transactional

@@ -32,7 +32,7 @@ const SignupForm = () => {
       return;
     }
     try {
-      await sendEmailCode(formData.email);
+      await sendRegisterEmailCode(formData.email);
       setEmailSent(true);
       setSuccessMessage("인증코드가 이메일로 전송되었습니다.");
     } catch (error) {
