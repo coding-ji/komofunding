@@ -1,89 +1,51 @@
-import { motion } from "framer-motion";
-import Alert from "../../components/Alert/Alert";
-import styles from "./FindAccount.module.css"; // CSS 모듈
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useStore } from "../../stores/UserStore/useStore";
+import { motion } from "framer-motion";
+import styles from "./FindAccount.module.css"; // CSS 모듈
+import { findId, sendEmailCode, verifyEmailCode } from "../../service/apiService";
 
 const FindAccount = () => {
-  const { state: formData, actions } = useStore();
-  const { changeName, changePhone, changeEmail } = actions;
-
-  // 로컬 상태로 인증번호 관리
+  const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [verificationCode, setVerificationCode] = useState("");
-
-  const [authCode, setAuthCode] = useState(""); // 생성된 인증번호
   const [message, setMessage] = useState("");   // 상태 메시지
-  const [userData, setUserData] = useState([]); // JSON 데이터
   const [foundId, setFoundId] = useState("");   // 찾은 아이디
   const [temporaryPassword, setTemporaryPassword] = useState(""); // 임시 비밀번호
 
-  // JSON 데이터 로드
-  useEffect(() => {
-    axios
-      .get("/data/userData.json") // 로컬 JSON 데이터 경로
-      .then((response) => setUserData(response.data))
-      .catch(() => setMessage("데이터 로드 중 오류가 발생했습니다."));
-  }, []);
-
+  // 폼 데이터 변경 핸들러
   const handleInputChange = (field, value) => {
-    switch (field) {
-      case "name":
-        changeName(value);
-        break;
-      case "phone":
-        changePhone(value);
-        break;
-      case "email":
-        changeEmail(value);
-        break;
-      default:
-        break;
-    }
+    setFormData({ ...formData, [field]: value });
   };
 
   // 아이디 찾기
-  const findId = () => {
-    const user = userData.find(
-      (user) =>
-        user.name === formData.name && user.phone === formData.phone
-    );
-    if (user) {
-      setFoundId(user.email); // 아이디(이메일)를 저장
-      alert(`아이디는 ${user.email}입니다.`);
-      setMessage(`아이디는 ${user.email}입니다.`);
-    } else {
-      alert("입력한 정보와 일치하는 유저가 없습니다.");
+  const handleFindId = async () => {
+    try {
+      const response = await findId(formData.name, formData.phone);
+      setFoundId(response.data.email);
+      setMessage(`아이디는 ${response.data.email}입니다.`);
+    } catch (error) {
+      console.error(error);
       setMessage("입력한 정보와 일치하는 유저가 없습니다.");
     }
   };
 
-  // 인증번호 전송 및 로컬 스토리지 저장
-  const sendAuthCode = () => {
-    const user = userData.find((user) => user.email === formData.email);
-    if (user) {
-      const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 인증번호 생성
-      setAuthCode(code);
-      localStorage.setItem("authCode", code); // 로컬 스토리지에 인증번호 저장
-      console.log(`인증번호: ${code}`);
-      setMessage("인증번호가 전송되었습니다. 로컬 스토리지에서 확인하세요.");
-    } else {
+  // 인증번호 전송
+  const handleSendAuthCode = async () => {
+    try {
+      await sendEmailCode(formData.email);
+      setMessage("인증번호가 전송되었습니다.");
+    } catch (error) {
+      console.error(error);
       setMessage("입력한 이메일과 일치하는 유저가 없습니다.");
     }
   };
 
   // 인증번호 확인 및 임시 비밀번호 발급
-  const verifyAuthCode = () => {
-    const storedAuthCode = localStorage.getItem("authCode"); // 로컬 스토리지에서 인증번호 가져오기
-    if (verificationCode === storedAuthCode) {
-      const tempPassword = Math.random().toString(36).slice(-8); // 8자리 임시 비밀번호 생성
-      setTemporaryPassword(tempPassword);
-      alert(`임시 비밀번호는 ${tempPassword}입니다.`);
-      setMessage(`인증번호가 확인되었습니다. 임시 비밀번호는 ${tempPassword}입니다.`);
-
-      // 로컬 스토리지에 임시 비밀번호 저장 (백엔드 대체)
-      localStorage.setItem("temporaryPassword", tempPassword);
-    } else {
+  const handleVerifyAuthCode = async () => {
+    try {
+      const response = await verifyEmailCode(formData.email, verificationCode);
+      setTemporaryPassword(response.data.temporaryPassword);
+      setMessage(`임시 비밀번호는 ${response.data.temporaryPassword}입니다.`);
+    } catch (error) {
+      console.error(error);
       setMessage("인증번호가 일치하지 않습니다.");
     }
   };
@@ -131,7 +93,7 @@ const FindAccount = () => {
               <motion.button
                 type="button"
                 className={styles.button}
-                onClick={findId}
+                onClick={handleFindId}
                 whileHover={{ scale: 1.1, backgroundColor: "#FFF", color: "#000" }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -162,7 +124,7 @@ const FindAccount = () => {
               <motion.button
                 type="button"
                 className={styles.customButtonClass}
-                onClick={sendAuthCode}
+                onClick={handleSendAuthCode}
                 whileHover={{ scale: 1.1, backgroundColor: "#FFF", color: "#000" }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -182,7 +144,7 @@ const FindAccount = () => {
               <motion.button
                 type="button"
                 className={styles.button}
-                onClick={verifyAuthCode}
+                onClick={handleVerifyAuthCode}
                 whileHover={{ scale: 1.1, backgroundColor: "#FFF", color: "#000" }}
                 whileTap={{ scale: 0.9 }}
               >

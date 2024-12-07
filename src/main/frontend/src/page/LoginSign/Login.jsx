@@ -10,8 +10,8 @@ import styles from "./Login.module.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState(""); // 메시지 상태
-  const [error, setError] = useState(""); // 에러 상태
+  const [message, setMessage] = useState(""); // 성공 메시지 상태
+  const [error, setError] = useState(""); // 에러 메시지 상태
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,52 +69,16 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             margin={"5px 0 30px 0"}
           />
-
+    {/* 오류 및 성공 메시지 */}
+    {error && <p className={styles.errorMessage}>{error}</p>}
+          {message && <p className={styles.successMessage}>{message}</p>}
           {/* 로그인 버튼 */}
           <Btn text={"로그인"} width={"500px"} type="submit" />
 
-          {/* 오류 및 성공 메시지 */}
-          {error && <p className={styles.errorMessage}>{error}</p>}
-          {message && <p className={styles.successMessage}>{message}</p>}
+      
 
-          {/* 구분선 */}
-          <div className={styles.hrSect}>
-            <span>또는</span>
-          </div>
+    
 
-          {/* 네이버 로그인 버튼 */}
-          <motion.button
-            className={styles.naverbtn}
-            type="button"
-            whileHover={{
-              backgroundColor: "white",
-              color: "#4caf50",
-              borderColor: "#4caf50",
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-            }}
-          >
-            네이버 로그인
-          </motion.button>
-
-          {/* 카카오톡 로그인 버튼 */}
-          <motion.button
-            className={styles.kakaobtn}
-            type="button"
-            whileHover={{
-              backgroundColor: "white",
-              color: "#ffcc00",
-              borderColor: "#ffcc00",
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-            }}
-          >
-            카카오톡 로그인
-          </motion.button>
         </form>
       </div>
     </div>
