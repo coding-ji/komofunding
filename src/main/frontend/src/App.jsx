@@ -37,6 +37,7 @@ import ProfileEdit from "./page/Profile/ProfileEdit";
 import Profile from "./container/Profile/Profile";
 import CreationGuide from './page/noticpage/CreationGuide'
 import DonateGuide from "./page/noticpage/DonateGuide";
+import ProfileView from "./page/Profile/ProfileView";
 
 
 const router = createBrowserRouter([
@@ -93,7 +94,7 @@ const router = createBrowserRouter([
         ],
       },
       {path:"/create-apply", element:<CreatorApply/> },
-      {path:"profile/:userNum", element:<Profile/> },
+      {path:"profile/:userNum", element:<ProfileView/> },
       {path:"profile-edit/:userNum", element:<ProfileEdit/> },
 
       {path:"creation-guide", element:<CreationGuide/>},

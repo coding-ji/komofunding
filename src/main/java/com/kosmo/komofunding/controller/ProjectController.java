@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/user/myinfo/projects")
+    @RequestMapping("/api/user/myinfo/projects")
 public class ProjectController {
     @Autowired
     ProjectService projectService;

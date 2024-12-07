@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8080.com', // 백엔드 서버의 기본 주소
+    baseURL: 'http://localhost:8080', // 백엔드 서버의 기본 주소
     timeout: 10000, // 요청 타임아웃 설정 (10초)
     headers: { 'Content-Type': 'application/json' }, // 기본 헤더 설정
 });
@@ -12,8 +12,8 @@ const apiClient = axios.create({
 // 현재 로그인한 사용자의 정보를 가져옴
 export const fetchMyInfo = () => apiClient.get('/api/user/myinfo');
 
-// 특정 사용자의 프로필 정보를 가져옴 (이메일 기반)
-export const fetchUserProfile = (email) => apiClient.get(`/api/user/${email}/myinfo/profile`);
+// 특정 사용자의 프로필 정보를 가져옴 (유저번호 기준)
+export const fetchUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/myinfo/profile`);
 
 // 특정 사용자의 프로필을 업데이트
 export const updateUserProfile = (email, userInDTO) => apiClient.patch(`/api/user/${email}/myinfo/profile`, userInDTO);

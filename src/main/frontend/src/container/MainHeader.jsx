@@ -13,6 +13,7 @@ const MainHeader = () => {
   const [userNum, setUserNum] = useState(null); // 로그인한 유저의 userNum 관리
   const [searchValue, setSearchValue] = useState("");
 
+
     // 컴포넌트가 렌더링될 때 로그인 상태 확인
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user")); // localStorage에서 사용자 정보 가져오기

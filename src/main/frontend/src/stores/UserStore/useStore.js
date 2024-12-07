@@ -17,11 +17,12 @@ import {
     changeCorporationName,
     changeCorporationTel,
     changeBSN,
+    updateAllFields,
     resetState,
     addItem, updateItemAction, deleteItemAction
 } from "./action";
 
-export const useStore =() => {
+export const useStore = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const actions = {
@@ -57,6 +58,8 @@ export const useStore =() => {
         changeCorporationTel: (corporationTel) => dispatch(changeCorporationTel(corporationTel)),
         //유저 사업자등록번호 변경
         changeBSN: (bsn) => dispatch(changeBSN(bsn)),
+        //전체 변경
+        updateAllFields: (fields) => dispatch(updateAllFields(fields)),
         // 상태값초기화
         resetState: () => dispatch(resetState()),
         addItem: (item) => addItem(item)(dispatch),

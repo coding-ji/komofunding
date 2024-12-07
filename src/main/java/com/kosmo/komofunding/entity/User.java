@@ -39,13 +39,13 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password; // 유저 비밀번호
 
-    @Column(name = "name", nullable = false, length = 20)
+    @Column(name = "name",  length = 20)
     private String name;  // 유저 이름
 
-    @Column(name = "nick_name", nullable = false, unique = true, length = 20)
+    @Column(name = "nick_name", unique = true, length = 20)
     private String nickName;  // 유저 별명
 
-    @Column(name = "phone_number", nullable = false, unique = true, length = 20)
+    @Column(name = "phone_number", unique = true, length = 20)
     private String phoneNumber; // 유저 핸드폰 번호
 
     @Column(name = "profile_img", length = 255)
@@ -55,7 +55,7 @@ public class User {
     private String shortDescription; // 유저 짧은 소개글
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "activated_status", nullable = false, columnDefinition = "varchar(255) default 'DONOR'")
+    @Column(name = "activated_status", columnDefinition = "varchar(255) default 'DONOR'")
     private UserStatus activatedStatus;  // 유저의 활동(후원자, 제작자 대기, 제작자), 탈퇴, 정지 상태
 
     @Column(name = "deactivation_reason", length = 200)
@@ -137,18 +137,6 @@ public class User {
 
         if (this.joinDate == null){
             this.joinDate = LocalDateTime.now();
-        }
-
-        if (this.privacyAgreement == null) {
-            this.privacyAgreement = false; // 기본값 설정
-        }
-
-        if (this.nickName == null) {
-            this.nickName = "닉네임없음";
-        }
-
-        if (this.phoneNumber == null){
-            this.phoneNumber ="핸드폰번호없음";
         }
     }
 

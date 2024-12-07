@@ -16,6 +16,7 @@ export const CHANGE_USER_ACCOUNT_HOLDER = "CHANGE_USER_ACCOUNT_HOLDER";
 export const CHANGE_USER_JOIN_DATE = "CHANGE_USER_JOIN_DATE";
 export const CHANGE_CORPORATION_NAME = "CHANGE_CORPORATION_NAME" ;
 export const CHANGE_CORPORATION_TEL = "CHANGE_CORPORATION_TEL";
+export const UPDATE_ALL_FIELDS = "UPDATE_ALL_FIELDS";
 export const CHANGE_BSN = "CHANGE_BSN"; 
 export const RESET_STATE = "RESET_STATE";
 export const ADD_ITEM = 'ADD_ITEM';
@@ -37,6 +38,7 @@ export const changeUserAccountHolder = (accountHolder) => ({type: CHANGE_USER_AC
 export const changeUserJoinDate = (joinDate) => ({type: CHANGE_USER_JOIN_DATE, payload: joinDate});
 export const changeCorporationName = (corporationName) => ({type: CHANGE_CORPORATION_NAME, payload: corporationName});
 export const changeCorporationTel = (corporationTel) => ({type: CHANGE_CORPORATION_TEL, payload: corporationTel});
+export const updateAllFields = (fields) => ({ type: UPDATE_ALL_FIELDS, payload: fields });
 export const changeBSN = (bsn) => ({type: CHANGE_BSN, payload: bsn});
 export const resetState = () => ({type: RESET_STATE});
 

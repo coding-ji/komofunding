@@ -44,11 +44,13 @@ public class UserController {
     }
 
     // 프로필 조회
-    @GetMapping("/{email}/myinfo/profile")
-    public ResponseEntity<User> getUserProfile(@PathVariable("email") String email) {
+    @GetMapping("/{userNum}/myinfo/profile")
+    public ResponseEntity<User> getUserProfile(@PathVariable("userNum") String userNum) {
         try {
+            Long userNumLong = Long.parseLong(userNum);  // String -> Long 변환
+
             // 이메일로 사용자 정보 조회
-            User user = userService.getUserByEmail(email)
+            User user = userService.getUserByUserNum(userNumLong)
                     .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
 
             return ResponseEntity.ok(user); // 성공적으로 반환

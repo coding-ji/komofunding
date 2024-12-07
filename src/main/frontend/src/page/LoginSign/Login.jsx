@@ -6,6 +6,7 @@ import { Btn } from "../../components/MyBtn";
 import Input from "../../components/input";
 import { loginUser } from "../../service/apiService";
 import styles from "./Login.module.css";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,13 +22,22 @@ const Login = () => {
       return;
     }
 
+
     try {
       // loginUser API 호출
-      const response = await loginUser(email, password);
+      // const response = await loginUser(email, password);
 
       // 로그인 성공 시
       setMessage("로그인 성공!");
-      localStorage.setItem("user", JSON.stringify(response.data)); // 사용자 정보 저장
+      // localStorage.setItem("user", JSON.stringify(response.data)); // 사용자 정보 저장
+      axios.get("/data/userData.json").then(
+        response => {
+          const datas = response.data;
+          const selectdUser = datas.find(data => data.email == email);
+          localStorage.setItem("userNum", JSON.stringify(selectdUser.userNum))
+        }
+      )
+
       window.location.href = "/"; // 메인 페이지로 리디렉션
     } catch (err) {
       console.error(err);

@@ -16,26 +16,11 @@ import {
     CHANGE_CORPORATION_TEL,
     CHANGE_BSN,
     RESET_STATE,
+    UPDATE_ALL_FIELDS,
     ADD_ITEM, UPDATE_ITEM, DELETE_ITEM
 } from "./action";
 
 export const initialState = {
-    userNum: "",
-    email: "",
-    password: "",
-    name: "",
-    nickname: "",
-    phone: "",
-    profileImg: "",
-    description: "",
-    activatedStatus: "",
-    bankname: "",
-    accountNumber: "",
-    accountHolder: "",
-    joinDate: "",
-    corporationName: "",
-    corporationTeal: "",
-    bsn: ""
 }
 
 export const reducer = (state, action) => {
@@ -72,9 +57,11 @@ export const reducer = (state, action) => {
             return { ...state, corporationTel: action.payload };
         case CHANGE_BSN:
             return { ...state, bsn: action.payload };
+        case UPDATE_ALL_FIELDS:
+            return { ...state, ...action.payload };
         case RESET_STATE:
             return initialState;
-            case ADD_ITEM:
+        case ADD_ITEM:
             return { ...state, items: [...state.items, action.payload] };
         case UPDATE_ITEM:
             return {

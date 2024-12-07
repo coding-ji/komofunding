@@ -70,9 +70,12 @@ public class UserService {
 
         User user = new User();
         // userInDTO를 User 엔티티로 변환
+        user.setName(userInDTO.getName());
+        user.setNickName(userInDTO.getNickName());
         user.setEmail(userInDTO.getEmail());
         user.setPassword(userInDTO.getPassword());
-        user.setName(userInDTO.getName());
+        user.setPhoneNumber(userInDTO.getPhoneNumber());
+
         // 다른 필드들도 설정
 
         userRepository.save(user);
@@ -152,10 +155,12 @@ public class UserService {
         // 클라이언트로 반환할 데이터 준비
         Map<String, String> response = new HashMap<>();
         response.put("sessionId", sessionId); // 세션 ID
-        response.put("userName", user.getName()); // 예: 사용자 이름 추가
+        response.put("userNum", user.getUserNum().toString()); // 유저 번호 로컬스토리지에 저장
 
         return response; // 세션 ID 포함 응답
     }
+
+
 
     // 비밀번호 재설정
     public boolean resetPassword(String email) {
@@ -194,6 +199,11 @@ public class UserService {
     // 사용자 이메일로 조회
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);  // Optional 반환
+    }
+
+    // 사용자 번호로 조회
+    public Optional<User> getUserByUserNum(Long userNum){
+        return userRepository.findByUserNum(userNum);
     }
 
     // 이름과 전화번호로 이메일 찾기

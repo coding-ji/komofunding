@@ -72,7 +72,8 @@ function ProductCard({ data,fontFamily }) {
   const { imgs = [], projectTitle = "Untitled", shortDescription = "No description available" } = data;
 
   // 이미지 URL 처리: imgs[0]이 없으면 기본 이미지 사용
-  const imageUrl = imgs[0]?.trim() || "https://fakeimg.pl/600x600/?text=KOMO";
+//   const imageUrl = imgs[0]?.trim() || "https://fakeimg.pl/600x600/?text=KOMO";
+  const imageUrl = imgs[0]?.trim() ? `http://localhost:8080/images/${imgs[0].trim()}` : "https://fakeimg.pl/600x600/?text=KOMO";
 
 
   const animations = [
