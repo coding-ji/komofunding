@@ -57,6 +57,16 @@ public class AuthController {
         return ResponseEntity.ok(response); // 세션 ID 포함 응답 반환
     }
 
+    // 로그아웃 처리
+    @PostMapping("/api/user/logout")
+    public ResponseEntity<String> logout(@RequestBody UserInDTO userInDTO, HttpSession session) {
+        // 로그아웃 처리: 세션을 종료해서 jsessionid만 삭제
+        session.invalidate();  // 세션 무효화 (jsessionid 제거)
+
+        // 응답 반환
+        return ResponseEntity.ok("로그아웃이 완료되었습니다.");
+    }
+
     // 사용자 정보 조회
     @GetMapping("/users")
     public ResponseEntity<User> getUserInfo(@RequestParam String email) {
