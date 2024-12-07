@@ -5,15 +5,11 @@ import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ItemListConverter;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 @Builder
@@ -25,8 +21,9 @@ import java.util.Random;
         })
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Project {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "project_id", nullable = false, updatable = false, length = 36)

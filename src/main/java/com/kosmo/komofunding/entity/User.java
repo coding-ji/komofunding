@@ -142,6 +142,14 @@ public class User {
         if (this.privacyAgreement == null) {
             this.privacyAgreement = false; // 기본값 설정
         }
+
+        if (this.nickName == null) {
+            this.nickName = "닉네임없음";
+        }
+
+        if (this.phoneNumber == null){
+            this.phoneNumber ="핸드폰번호없음";
+        }
     }
 
     public boolean isSuspended() {

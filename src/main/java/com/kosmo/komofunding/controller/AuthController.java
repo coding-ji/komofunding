@@ -3,9 +3,12 @@ package com.kosmo.komofunding.controller;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
+import com.kosmo.komofunding.exception.UnauthorizedException;
+import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
+    @Autowired
+    private UserRepository userRepository;
     private final UserService userService;
 
     // 회원 가입
@@ -45,7 +50,7 @@ public class AuthController {
                 : ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build(); // 422 Unprocessable Entity
     }
 
-    // 로그인
+//     로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(
             @RequestBody UserInDTO loginRequest,

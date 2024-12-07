@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Query("DELETE FROM User u WHERE u.verificationCodeExpiration < :currentTime")
     void deleteExpiredVerificationCodes(@Param("currentTime") LocalDateTime currentTime);
+
+    User findByEmailAndPassword(String email, String password);
 }

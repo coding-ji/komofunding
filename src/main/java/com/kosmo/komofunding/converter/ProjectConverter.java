@@ -10,7 +10,9 @@ import com.kosmo.komofunding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -25,19 +27,22 @@ public class ProjectConverter {
         User user = userRepository.findById(project.getUserId())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // QnA 리스트 생성
-        List<QnAOutDTO> qnaList = project.getQnaIdList().stream()
-                .map(qnaId -> qnARepository.findByQnaId(qnaId)
-                        .orElseThrow(()-> new RuntimeException("QnA를 찾을 수 없습니다.")))
+        // QnA 리스트 생성 (null 처리)
+        List<QnAOutDTO> qnaList = (project.getQnaIdList() != null ? project.getQnaIdList() : Collections.emptyList())
+                .stream()
+                .map(qna -> qnARepository.findByQnaId((String) qna)
+                        .orElseThrow(() -> new RuntimeException("QnA를 찾을 수 없습니다.")))
                 .map(qna -> QnAConverter.toOutDTO(qna, userRepository))
-                .toList();
+                .collect(Collectors.toList());
 
-        // Supporters 리스트 생성
-        List<UserOutDTO> supporters = project.getSupportersIdList().stream()
-                .map(userId -> userRepository.findById(userId)
+        // Supporters 리스트 생성 (null 처리)
+        List<UserOutDTO> supporters = (project.getSupportersIdList() != null ? project.getSupportersIdList() : Collections.emptyList())
+                .stream()
+                .map(userId -> userRepository.findById((String) userId)
                         .orElseThrow(() -> new RuntimeException("후원자를 찾을 수 없습니다.")))
                 .map(UserConverter::toOutDTO)
-                .toList();
+                .collect(Collectors.toList());
+
 
         return ProjectOutDTO.builder()
                 .userNum(user.getUserNum())
