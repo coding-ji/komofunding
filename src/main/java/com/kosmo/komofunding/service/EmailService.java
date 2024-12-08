@@ -1,9 +1,7 @@
 package com.kosmo.komofunding.service;
 
 import com.kosmo.komofunding.entity.Email;
-import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.EmailRepository;
-import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,13 +85,27 @@ public class EmailService {
 
         if (optionalEmail.isPresent()) {
             Email emailEntity = optionalEmail.get();
-            // 만료 시간 검증 (예: 5분)
+            log.info("Email found: {}", email);
+            log.info("Input Code: {}", inputCode);
+            log.info("Stored Code: {}", emailEntity.getVerificationCode());
+
+            // 만료 시간 검증
             if (emailEntity.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(5))) {
+                log.warn("Verification code expired");
                 return false; // 만료됨
             }
+
             // 인증 코드 일치 여부 검증
-            return emailEntity.getVerificationCode().equals(inputCode);
+            if (emailEntity.getVerificationCode().equals(inputCode)) {
+                log.info("Verification code is valid");
+                return true;
+            } else {
+                log.warn("Verification code does not match");
+                return false;
+            }
+        } else {
+            log.warn("Email not found: {}", email);
+            return false; // 이메일 정보 없음
         }
-        return false; // 이메일 정보 없음
     }
 }

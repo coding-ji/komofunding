@@ -32,7 +32,7 @@ export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/regist
 export const sendEmailCode = (email) => apiClient.post('/api/auth/emailcheck', { email });
 
 // 이메일 인증 코드 검증 요청
-export const verifyEmailCode = (email, code) => apiClient.post('/api/auth/emailverification', { email, code });
+export const verifyEmailCode = (email, verificationCode) => apiClient.post('/api/auth/emailverification', { email, verificationCode });
 
 // 사용자 로그인 요청
 export const loginUser = (email, password) => apiClient.post('/api/auth/login', { email, password });

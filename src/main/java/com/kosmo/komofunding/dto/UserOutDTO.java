@@ -5,6 +5,7 @@ package com.kosmo.komofunding.dto;
 
 
 import com.kosmo.komofunding.common.enums.UserStatus;
+import com.kosmo.komofunding.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -29,4 +30,7 @@ public class UserOutDTO {
     private LocalDateTime joinDate;
     private LocalDateTime lastLoginTime;
     private List<String> projectIds;
+
+    public UserOutDTO(User user) {
+    }
 }

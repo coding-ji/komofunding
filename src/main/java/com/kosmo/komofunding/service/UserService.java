@@ -5,12 +5,13 @@ import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.dto.*;
+import com.kosmo.komofunding.entity.Email;
 import com.kosmo.komofunding.entity.User;
+import com.kosmo.komofunding.repository.EmailRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,17 +33,42 @@ public class UserService {
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EmailRepository emailRepository;
+
 
     // 랜덤 인증 코드 생성
     private String generateVerificationCode() {
         return String.format("%06d", (int) (Math.random() * 1000000));
     }
 
+    // 이메일 인증 코드 발송 및 저장
+    private void sendVerificationEmail(String email) {
+        String verificationCode = generateVerificationCode();
+
+        // 인증 코드 데이터베이스에 저장
+        Email emailEntity = new Email();
+        emailEntity.setEmail(email);
+        emailEntity.setVerificationCode(verificationCode);
+        emailEntity.setCreatedAt(LocalDateTime.now());
+
+        emailRepository.save(emailEntity);
+    }
+
+    // 이메일 인증 코드 검증
+    public boolean verifyEmailCode(String email, String inputCode) {
+        Optional<Email> emailEntity = emailRepository.findByEmail(email);
+        if (emailEntity.isPresent()) {
+            String storedCode = emailEntity.get().getVerificationCode();
+            return storedCode.equals(inputCode);
+        }
+        return false;
+    }
+
     // 매일 자정에 만료된 인증 코드 삭제
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredVerificationCodes() {
         LocalDateTime currentTime = LocalDateTime.now();
-        userRepository.deleteExpiredVerificationCodes(currentTime);
+        emailRepository.deleteExpiredVerificationCodes(currentTime);
     }
 
     // 랜덤 비밀번호 생성

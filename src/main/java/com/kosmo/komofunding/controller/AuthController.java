@@ -4,7 +4,6 @@ import com.kosmo.komofunding.dto.EmailRequestDTO;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
-import com.kosmo.komofunding.exception.UnauthorizedException;
 import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.EmailService;
 import com.kosmo.komofunding.service.UserService;

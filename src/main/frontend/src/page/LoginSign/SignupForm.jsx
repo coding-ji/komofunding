@@ -6,10 +6,10 @@ import { registerUser, sendRegisterEmailCode, verifyEmailCode } from "../../serv
 const SignupForm = () => {
   const [formData, setFormData] = useState({
     name: "",
-    nickname: "",
+    nickName: "",
     email: "",
     password: "",
-    phone: "",
+    phoneNumber: "",
   });
   const [authCode, setAuthCode] = useState(""); // 이메일 인증 코드 입력값
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -75,7 +75,7 @@ const SignupForm = () => {
     try {
       await registerUser(formData);
       setSuccessMessage("회원가입이 완료되었습니다!");
-      setFormData({ name: "", nickname: "", email: "", password: "", phone: "" });
+      setFormData({ name: "", nickName: "", email: "", password: "", phoneNumber: "" });
       setAuthCode("");
       setConfirmPassword("");
       setEmailSent(false);
@@ -123,11 +123,11 @@ const SignupForm = () => {
               닉네임
             </label>
             <input
-              id="nickname"
+              id="nickName"
               type="text"
               placeholder="닉네임을 입력하세요"
               className={styles.input}
-              value={formData.nickname}
+              value={formData.nickName}
               onChange={handleInputChange}
               style={{ gridArea: "input7" }}
             />
@@ -214,11 +214,11 @@ const SignupForm = () => {
               휴대폰 번호
             </label>
             <input
-              id="phone"
+              id="phoneNumber"
               type="text"
               placeholder="010-0000-0000"
               className={styles.input}
-              value={formData.phone}
+              value={formData.phoneNumber}
               onChange={handleInputChange}
               style={{ gridArea: "input6" }}
             />
