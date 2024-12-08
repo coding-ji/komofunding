@@ -23,15 +23,15 @@ const GuideSection = () => {
             <div className={styles.buttonContainer}>
               <SelectProjectBtn title="PROJECT SELECT" 
               subtitle="프로젝트 등록"
-               onClick={()=>navinate("/selectPrj")} 
+               onClick={()=>navinate("/home/selectPrj")} 
               />
               <SelectProjectBtn title="PROJECT MANAGE" 
               subtitle="프로젝트 관리"
-                  onClick={()=>navinate("myfunding")} 
+                  onClick={()=>navinate("/home/myfunding")} 
               />
               <SelectProjectBtn title="PROJECT SUPPORT" 
                subtitle="후원 프로젝트"
-                  onClick={()=>navinate("/userfunding")} 
+                  onClick={()=>navinate("/home/userfunding")} 
                /> 
             </div>
           </div>

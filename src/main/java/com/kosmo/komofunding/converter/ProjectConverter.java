@@ -43,6 +43,11 @@ public class ProjectConverter {
                 .map(UserConverter::toOutDTO)
                 .collect(Collectors.toList());
 
+        // 달성률 계산
+        Double progressRate = 0.0;
+        if (project.getTotalAmount() > 0) {
+            progressRate = (project.getCurrentAmount() / (double) project.getTotalAmount()) * 100;
+        }
 
         return ProjectOutDTO.builder()
                 .userNum(user.getUserNum())
@@ -66,6 +71,7 @@ public class ProjectConverter {
                 .isHidden(project.getIsHidden())
                 .qnaList(qnaList)
                 .supporters(supporters)
+                .progressRate(progressRate)
                 .build();
     }
 }

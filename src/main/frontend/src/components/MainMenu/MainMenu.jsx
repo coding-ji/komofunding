@@ -13,15 +13,15 @@ function MainMenu() {
     const navigate = useNavigate(); // navigate 함수 초기화
 
     const handleLoginClick = () => {
-        navigate("/login"); // 로그인 버튼 클릭 시 /login 경로로 이동
+        navigate("/home/login"); // 로그인 버튼 클릭 시 /login 경로로 이동
     };
 
     const handleUpcomingClick = () => {
-        navigate("/upcoming"); // UPCOMING 버튼 클릭 시 /upcoming 경로로 이동
+        navigate("/home/upcoming"); // UPCOMING 버튼 클릭 시 /upcoming 경로로 이동
     };
 
     const handleActiveClick = () => {
-        navigate("/active"); // ACTIVE 버튼 클릭 시 /ongoing 경로로 이동
+        navigate("/home/active"); // ACTIVE 버튼 클릭 시 /ongoing 경로로 이동
     };
 
     // Variants 정의

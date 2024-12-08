@@ -57,7 +57,7 @@ const Login = () => {
       <div className={styles.loginBox}>
         {/* 오른쪽 상단에 아이디/PW 찾기, 회원가입 링크 */}
         <div className={styles.topLinks}>
-          <Link to="/FindAccount">아이디/PW 찾기</Link> | <Link to="/SignupForm">회원가입</Link>
+          <Link to="/home/FindAccount">아이디/PW 찾기</Link> | <Link to="/home/SignupForm">회원가입</Link>
         </div>
 
         {/* 로그인 폼 */}

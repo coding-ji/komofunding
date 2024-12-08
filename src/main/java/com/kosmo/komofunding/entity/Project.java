@@ -43,7 +43,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectCategory projectCategory;
 
-    @Column(name="thumbnail_imgs")
+    @Column(name="thumbnail_imgs", columnDefinition = "LONGTEXT")
     @Convert(converter = StringListConverter.class)
     private List<String> thumbnailImgs;
 
@@ -90,12 +90,12 @@ public class Project {
     private String statusChangeReason; // 거부 / 숨김인 이유
 
     @Convert(converter = StringListConverter.class)
-    @Column(name = "qna_id_list")
+    @Column(name = "qna_id_list", columnDefinition = "LONGTEXT")
     @Builder.Default
     private List<String> QnaIdList = new ArrayList<>(); // 프로젝트 내에 문의댓글
 
     @Convert(converter = StringListConverter.class)
-    @Column(name = "supporters_id_list")
+    @Column(name = "supporters_id_list", columnDefinition = "LONGTEXT")
     @Builder.Default
     private List<String> supportersIdList = null; // 프로젝트 후원자목록
 

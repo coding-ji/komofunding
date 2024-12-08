@@ -11,16 +11,17 @@ import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-    @RequestMapping("/api/user/myinfo/projects")
 public class ProjectController {
     @Autowired
     ProjectService projectService;
@@ -31,8 +32,36 @@ public class ProjectController {
     @Autowired
     ProjectConverter projectConverter;
 
+    // 전체 프로젝트 조회
+    @GetMapping("/api/projects")
+    public ResponseEntity<List<ProjectOutDTO>> getAllProjects(){
+
+        try {
+            System.out.println("Handling GET request for /api/projects...");
+            List<ProjectOutDTO> projects = projectService.getAllProjects();
+            System.out.println("Number of projects to return: " + projects.size());
+            return ResponseEntity.ok(projects);
+        } catch (Exception e) {
+            System.err.println("Error in getAllProjects API: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+//        try {
+//            // 서비스에서 전체 프로젝트를 조회
+//            List<ProjectOutDTO> projects = projectService.getAllProjects();
+//
+//            // 조회된 프로젝트 리스트가 있으면 OK(200) 상태 코드 반환
+//            return ResponseEntity.ok(projects);
+//        } catch (Exception e) {
+//            // 예외 발생 시 내부 서버 오류(500) 상태 코드 반환
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(Collections.emptyList());  // 빈 리스트 반환 (또는 오류 메시지 포함)
+//        }
+    }
+
     // 유저(uid)에 해당하는 프로젝트 조회
-    @GetMapping
+    @GetMapping("/api/user/myinfo/projects")
     public ResponseEntity<List<ProjectOutDTO>> getProjects(HttpSession session){
         // 세션에서 userId 가져오기
         String userId = (String) session.getAttribute("userId");
@@ -66,7 +95,7 @@ public class ProjectController {
 
 
     // 개인 프로젝트 생성
-    @PostMapping
+    @PostMapping("/api/user/myinfo/projects")
     public ResponseEntity<Map<String, String>> createProject(
             @RequestBody ProjectInDTO projectRequest,
             HttpSession session) {

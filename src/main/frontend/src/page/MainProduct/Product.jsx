@@ -17,7 +17,7 @@ function Product() {
     // 데이터 가져오기
     axios.get("/data/projectData.json").then((response) => {
       const data = response.data;
-
+      console.log(data)
       // 전체 데이터 설정
       setProducts(data);
 
