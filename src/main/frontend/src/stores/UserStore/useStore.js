@@ -5,10 +5,10 @@ import {
     changeEmail,
     changePassword,
     changeName,
-    changeNickname,
-    changePhone,
+    changeNickName,
+    changePhoneNumber,
     changeProfileImg,
-    changeUserDescription,
+    changeUserShortDescription,
     changeUserActivatedStatus,
     changeUserBankName,
     changeUserAccountNumber,
@@ -35,13 +35,13 @@ export const useStore = () => {
         //유저이름 변경
         changeName: (name) => dispatch(changeName(name)),
         //유저별명 변경
-        changeNickname: (nickname) => dispatch(changeNickname(nickname)),
+        changeNickName: (nickName) => dispatch(changeNickName(nickName)),
         //유저 핸드폰 변경
-        changePhone: (phone) => dispatch(changePhone(phone)),
+        changePhoneNumber: (phoneNumber) => dispatch(changePhoneNumber(phoneNumber)),
         //유저 프로필사진 변경
         changeProfileImg: (profileImg) => dispatch(changeProfileImg(profileImg)),
         //유저 짧은 소개글 변경
-        changeUserDescription: (description) => dispatch(changeUserDescription(description)),
+        changeUserShortDescriptionDescription: (shortDescription) => dispatch(changeUserShortDescription(shortDescription)),
         //유저 활동 상태 변경
         changeUserActivatedStatus: (status) => dispatch(changeUserActivatedStatus(status)),
         //유저 은행명 변경
@@ -57,7 +57,7 @@ export const useStore = () => {
         //유저 회사 번호 변경
         changeCorporationTel: (corporationTel) => dispatch(changeCorporationTel(corporationTel)),
         //유저 사업자등록번호 변경
-        changeBSN: (bsn) => dispatch(changeBSN(bsn)),
+        changeBSN: (BSN) => dispatch(changeBSN(BSN)),
         //전체 변경
         updateAllFields: (fields) => dispatch(updateAllFields(fields)),
         // 상태값초기화

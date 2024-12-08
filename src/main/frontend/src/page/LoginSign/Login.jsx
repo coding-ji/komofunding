@@ -28,15 +28,17 @@ const Login = () => {
       // const response = await loginUser(email, password);
 
       // 로그인 성공 시
-      setMessage("로그인 성공!");
-      // localStorage.setItem("user", JSON.stringify(response.data)); // 사용자 정보 저장
-      axios.get("/data/userData.json").then(
-        response => {
-          const datas = response.data;
-          const selectdUser = datas.find(data => data.email == email);
-          localStorage.setItem("userNum", JSON.stringify(selectdUser.userNum))
-        }
-      )
+      await loginUser(email, password)
+        .then(response => {
+          setMessage("로그인 성공!");
+          const userInfo = response.data; // 백엔드에서 반환된 사용자 정보
+          localStorage.setItem("user", JSON.stringify(userInfo)); // 반환된 정보를 user라는 키값으로 localStorage에 저장
+          window.location.href = "/"; // 메인 페이지로 리디렉션
+        })
+        .catch(error => {
+          console.error("로그인 실패", error);
+          setError("로그인 실패");
+        });
 
       window.location.href = "/"; // 메인 페이지로 리디렉션
     } catch (err) {

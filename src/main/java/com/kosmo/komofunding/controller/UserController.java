@@ -1,8 +1,6 @@
 package com.kosmo.komofunding.controller;
 
-import com.kosmo.komofunding.dto.CreatorSwitchRequestDTO;
-import com.kosmo.komofunding.dto.CreatorSwitchResponseDTO;
-import com.kosmo.komofunding.dto.UserInDTO;
+import com.kosmo.komofunding.dto.*;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/myinfo")
+    @GetMapping("/my_info")
     public ResponseEntity<Map<String, String>> getMyPageInfo(HttpSession session){
         // 세션에서 사용자 이메일 가져오기
         String email = (String) session.getAttribute("userEmail");
@@ -44,7 +42,7 @@ public class UserController {
     }
 
     // 프로필 조회
-    @GetMapping("/{userNum}/myinfo/profile")
+    @GetMapping("/{user_num}/my_info/profile")
     public ResponseEntity<User> getUserProfile(@PathVariable("userNum") String userNum) {
         try {
             Long userNumLong = Long.parseLong(userNum);  // String -> Long 변환
@@ -60,47 +58,42 @@ public class UserController {
     }
 
     // 프로필 수정
-    @PatchMapping("/{email}/myinfo/profile")
-    public ResponseEntity<String> updateUserProfile(
-            @PathVariable("email") String email,
-            @RequestBody UserInDTO userInDTO) {
-
+    @PatchMapping("/{user_num}/my_info/profile")
+    public ResponseEntity<Boolean> updateUserProfile(
+            @PathVariable("userNum") Long userNum,
+            @RequestBody UserProfileUpdateDTO request,  // 수정할 프로필 정보 받기
+            @RequestParam String password  // 기존 비밀번호 받기
+        ) {
         try {
+            // 비밀번호 확인
+            boolean isPasswordValid = userService.verifyPassword(String.valueOf(userNum), password);  // 비밀번호 검증
+            if (!isPasswordValid) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
+            }
+
             // 프로필 업데이트
-            boolean isProfileUpdated = userService.updateUserProfile(email, userInDTO);
+            boolean updatedProfile = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
 
-            // 비밀번호가 포함된 경우 업데이트 처리
-            if (userInDTO.getPassword() != null) {
-                boolean isPasswordUpdated = userService.updateUserPassword(email, userInDTO.getPassword());
-                if (isPasswordUpdated) {
-                    return ResponseEntity.ok("프로필 및 비밀번호 수정 완료");
-                }
-            }
-
-            // 비밀번호 없이 프로필만 수정한 경우
-            if (isProfileUpdated) {
-                return ResponseEntity.ok("프로필 수정 완료");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("수정 실패");
-            }
+            // 수정된 프로필 반환
+            return ResponseEntity.ok(updatedProfile); // 성공적으로 수정된 프로필 반환
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 예외 처리
         }
     }
 
-    @PostMapping("/{email}/myinfo/creator-switch")
-    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(
-            @PathVariable String email,
-            @RequestBody CreatorSwitchRequestDTO requestDTO) {
-
-        // 이메일이 일치하는지 확인
-        if (!requestDTO.getEmail().equals(email)) {
-            return ResponseEntity.badRequest().body(new CreatorSwitchResponseDTO("이메일이 일치하지 않습니다."));
-        }
-
-        // 제작자 전환 신청 처리
-        CreatorSwitchResponseDTO responseDTO = userService.applyForCreatorSwitch(requestDTO);
-        return ResponseEntity.ok(responseDTO);
-    }
+//    @PostMapping("/{email}/myinfo/creator-switch")
+//    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(
+//            @PathVariable String email,
+//            @RequestBody CreatorSwitchRequestDTO requestDTO) {
+//
+//        // 이메일이 일치하는지 확인
+//        if (!requestDTO.getEmail().equals(email)) {
+//            return ResponseEntity.badRequest().body(new CreatorSwitchResponseDTO("이메일이 일치하지 않습니다."));
+//        }
+//
+//        // 제작자 전환 신청 처리
+//        CreatorSwitchResponseDTO responseDTO = userService.applyForCreatorSwitch(requestDTO);
+//        return ResponseEntity.ok(responseDTO);
+//    }
 
 }

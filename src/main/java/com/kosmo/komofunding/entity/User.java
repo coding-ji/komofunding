@@ -157,4 +157,8 @@ public class User {
         this.verificationCode = verificationCode;
         this.verificationCodeExpiration = LocalDateTime.now().plusMinutes(5); // 예시: 5분 후 만료
     }
+
+    public void setProfileImage(String profileImage) {
+
+    }
 }

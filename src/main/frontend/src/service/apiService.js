@@ -10,16 +10,16 @@ const apiClient = axios.create({
 
 // 유저 관련 API
 // 현재 로그인한 사용자의 정보를 가져옴
-export const fetchMyInfo = () => apiClient.get('/api/user/myinfo');
+export const getMyPageInfo = () => apiClient.get('/api/user/my_info');
 
 // 특정 사용자의 프로필 정보를 가져옴 (유저번호 기준)
-export const fetchUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/myinfo/profile`);
+export const getUserProfile = (user_num) => apiClient.get(`/api/user/${user_num}/my_info/profile`);
 
 // 특정 사용자의 프로필을 업데이트
-export const updateUserProfile = (email, userInDTO) => apiClient.patch(`/api/user/${email}/myinfo/profile`, userInDTO);
+export const updateUserProfile = (email, userInDTO) => apiClient.patch(`/api/user/${email}/my_info/profile`, userInDTO);
 
 // 특정 사용자가 제작자 전환을 신청함
-export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/myinfo/creator-switch`, requestDTO);
+export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/my_info/creator-switch`, requestDTO);
 
 // 인증 관련 API
 // 회원가입 요청
@@ -37,8 +37,12 @@ export const verifyEmailCode = (email, verificationCode) => apiClient.post('/api
 // 사용자 로그인 요청
 export const loginUser = (email, password) => apiClient.post('/api/auth/login', { email, password });
 
+// 사용자 로그아웃
+export const logout = () => apiClient.post('/api/user/logout');
+
+
 // 특정 사용자의 정보를 가져옴 (이메일 기반)
-export const fetchUserInfo = (email) => apiClient.get(`/api/auth/users?email=${email}`);
+export const getUserInfo = (email) => apiClient.get(`/api/auth/users?email=${email}`);
 
 // 특정 사용자를 삭제 (회원 탈퇴)
 export const deleteUser = (userNum) => apiClient.delete(`/api/auth/delete/${userNum}`);

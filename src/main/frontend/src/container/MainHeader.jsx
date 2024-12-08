@@ -121,7 +121,7 @@ const handleKeyDown = (event) => {
                 className={styles.button}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate(`/profile/${userNum}`)} // userNum으로 마이페이지로 이동
+                onClick={() => navigate(`/home/profile/${userNum}`)} // userNum으로 마이페이지로 이동
               >
                 My Page
               </motion.button>
