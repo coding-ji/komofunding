@@ -35,14 +35,20 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     Boolean existsByProjectNum(Long projectNum);
 
     // 온고잉이면 진행되는 것들이 사이에 , upcoming이면 시작되는게 지금보다 뒤에 !!
-    @Query("SELECT p FROM Project p WHERE p.projectCategory = :projectCategory " +
-            "AND ((:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
-            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now))")
-    List<Project> findByProjectsCategoryAndFundingStatusAndDateRange(
+    @Query("SELECT p FROM Project p WHERE " +
+            "((:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
+            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now) " +
+            "OR (:fundingStatus = 'HOME')) " +
+            "AND (:projectCategory = 'ALL' OR p.projectCategory = :projectCategory)")
+    List<Project> findProjectsByCategoryAndFundingStatusAndDateRange(
             @Param("projectCategory") ProjectCategory projectCategory,
             @Param("fundingStatus") String fundingStatus,
             @Param("now") LocalDateTime now);
 
-    @Query("SELECT p FROM Project p WHERE p.projectCategory = :projectCategory")
-    List<Project> findAllByCategory(@Param("projectCategory") ProjectCategory projectCategory);
+    @Query("SELECT p FROM Project p WHERE " +
+            "((:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
+            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now)) ")
+    List<Project> findProjectsByFundingStatus(@Param("fundingStatus") String fundingStatus, @Param("now") LocalDateTime now);
+
+
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,27 +50,30 @@ public class ProjectService {
             throw e; // 예외를 다시 던져 컨트롤러에서 처리
         }
     }
-    // 카테고리 및 상태별 프로젝트 조회
-    public List<ProjectOutDTO> getProjectsByCategoryAndStatus(ProjectCategory category, String fundingStatus) {
-        try {
-            List<Project> projects;
-            // fundingStatus가 HOME이면 전체 프로젝트
-            if(fundingStatus.equals("HOME")){
-                projects = projectRepository.findAllByCategory(category);
-            }
-            // fundingStatus가 ONGOING / UPCOMING이면 조건에 맞게 가져옴
-            else {
-                LocalDateTime now = LocalDateTime.now();
-                projects = projectRepository.findByProjectsCategoryAndFundingStatusAndDateRange(
-                        category, fundingStatus, now);
-            }
 
-            // 프로젝트 목록을 DTO로 변환하여 반환
-            return projects.stream()
+    // 카테고리 및 상태별 프로젝트 조회
+// 카테고리 및 상태별 프로젝트 조회
+    public List<ProjectOutDTO> getProjectsByCategoryAndStatus(String projectCategory, String fundingStatus) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // projectCategory가 "all"일 경우, fundingStatus만 고려하여 조회
+        if ("all".equalsIgnoreCase(projectCategory)) {
+            return projectRepository.findProjectsByFundingStatus(fundingStatus, now)
+                    .stream()
                     .map(project -> projectConverter.toOutDTO(project))
                     .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException("프로젝트 조회 중 오류가 발생했습니다.", e);
+        } else {
+            // "ALL"이 아닌 카테고리는 Enum으로 변환하여 조회
+            try {
+                ProjectCategory category = ProjectCategory.valueOf(projectCategory.toUpperCase());
+                return projectRepository.findProjectsByCategoryAndFundingStatusAndDateRange(category, fundingStatus, now)
+                        .stream()
+                        .map(project -> projectConverter.toOutDTO(project))
+                        .collect(Collectors.toList());
+            } catch (IllegalArgumentException e) {
+                // Enum 변환 실패 시 빈 리스트 반환
+                return Collections.emptyList();
+            }
         }
     }
 
