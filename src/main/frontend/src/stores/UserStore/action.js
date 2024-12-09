@@ -73,10 +73,8 @@ export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'; // 비밀번�
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = 'UPLOAD_PROFILE_IMAGE_SUCCESS'; // 프로필 이미지 업로드 성공
 
 
-export const
 
-// axios 연동
-// 마이페이지 정보 가져오기
+// 마이 페이지 정보 가져오기
 export const fetchMyPageInfo = () => async(dispatch) => {
     try {
         const response = await getMyPageInfo();
@@ -110,7 +108,7 @@ export const updateProfile = (userNum, profileData) => async(dispatch) => {
         dispatch({
                 type: UPDATE_USER,
                 payload: response.data
-        ); // 업데이트 후 최신 정보 가져오기
+        }); // 업데이트 후 최신 정보 가져오기
     } catch (error) {
         console.error('프로필 업데이트 실패:', error);
     }
@@ -197,7 +195,7 @@ export const logoutUser = () => async(dispatch) => {
 // 회원 탈퇴
 export const removeUser = (userNum) => async(dispatch) => {
     try {
-        await deleteUser(userNum);
+        const response = await deleteUser(userNum);
         console.log('회원 탈퇴 성공');
         dispatch({ type : 'DELETE_USER', payload : response.data}); // 상태 초기화
     } catch (error) {
@@ -227,9 +225,9 @@ export const resetUserPassword = (email) => async(dispatch) => {
     }
 };
 
-export const changePassword = (email, newPassword) => async(dispatch) => {
+export const changeUserPassword = (email, newPassword) => async(dispatch) => {
     try {
-        await changePassword(email, newPassword);
+        await changeUserPassword(email, newPassword);
         console.log('비밀번호 변경 성공');
         dispatch({ type: 'CHANGE_PASSWORD_SUCCESS' });
     } catch (error) {

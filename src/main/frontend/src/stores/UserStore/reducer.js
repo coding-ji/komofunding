@@ -20,7 +20,7 @@ import {
 } from './action.js';
 
 // 초기 상태 정의
-const initialState = {
+export const initialState = {
     userNum: null,
     email: '',
     password: '',
@@ -40,13 +40,13 @@ const initialState = {
 };
 
 // 동적 상태 업데이트 함수
-const updateStateField = (state, field, value) => ({
+export const updateStateField = (state, field, value) => ({
     ...state,
     [field]: value,
 });
 
 // 리듀서 함수
-const reducer = (state = initialState, action) => {
+export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_USER_NUM:
             return updateStateField(state, 'userNum', action.payload);
@@ -58,7 +58,7 @@ const reducer = (state = initialState, action) => {
             return updateStateField(state, 'password', action.payload);
 
         case CHANGE_NAME:
-            return updateStateField{ ...state, name: action.payload };
+            return updateStateField(state, 'name', action.payload );
 
         case CHANGE_NICKNAME:
             return updateStateField(state, 'nickname', action.payload);
@@ -127,5 +127,3 @@ const reducer = (state = initialState, action) => {
             return state;
     }
 };
-
-export default reducer;

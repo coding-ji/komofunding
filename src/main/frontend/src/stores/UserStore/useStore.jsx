@@ -28,7 +28,7 @@ export const useStore = () => {
         // 유저 정보 관련 액션들
         changeUserNum: (userNum) => dispatch(changeUserNum(userNum)),
         changeEmail: (email) => dispatch(changeEmail(email)),
-        changePassword: (password) => dispatch(changePassword(password)),
+        changeUserPassword: (password) => dispatch(changeUserPassword(password)),
         changeName: (name) => dispatch(changeName(name)),
         changeNickname: (nickname) => dispatch(changeNickname(nickname)),
         changePhoneNumber: (phoneNumber) => dispatch(changePhoneNumber(phoneNumber)),
