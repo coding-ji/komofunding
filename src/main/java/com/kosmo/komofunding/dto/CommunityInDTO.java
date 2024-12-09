@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 @Data
 public class CommunityInDTO {
 
-    private CommunityCategory communityCategory; // 카테고리
     private String communityTitle; // 커뮤니티 제목
     private String communityContent; // 커뮤니티 내용
-    private LocalDateTime writeDate; // 작성일
+    private CommunityCategory communityCategory; // 카테고리
+    private LocalDateTime endDate; // 종료일
+    private boolean isHidden = false; // 기본값 false로 설정
     private String author; // 작성자
 }

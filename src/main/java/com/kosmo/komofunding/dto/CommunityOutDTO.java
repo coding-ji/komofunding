@@ -10,8 +10,15 @@ import java.time.LocalDateTime;
 @Builder
 public class CommunityOutDTO {
 
-    private CommunityCategory communityCategory; // 카테고리
+
+    private Integer communityNumber; // 커뮤니티 번호 (6자리 숫자)
     private String communityTitle; // 커뮤니티 제목
+    private String communityContent; // 커뮤니티 내용
+    private CommunityCategory communityCategory; // 카테고리
     private LocalDateTime writeDate; // 작성일
+    private LocalDateTime updatedDate; // 수정일
+    private LocalDateTime endDate; // 종료일
+    private boolean isHidden; // 숨김 처리 여부
     private String author; // 작성자
+    private String url; // 상세 조회 URL
 }
