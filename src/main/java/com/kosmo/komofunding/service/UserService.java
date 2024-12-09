@@ -286,28 +286,28 @@ public class UserService {
     }
 
     // 프로필 페이지 수정 내용
-    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
-        Optional<User> userOptional = userRepository.findByUserNum(userNum);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            // 요청에서 받은 값을 통해 프로필 정보 수정
-            if (request.getNickName() != null) user.setNickName(request.getNickName());
-            if (request.getShortDescription() != null) user.setShortDescription(request.getShortDescription());
-            if (request.getPhoneNumber() != null) user.setPhoneNumber(request.getPhoneNumber());
-            if (request.getBankName() != null) user.setBankName(request.getBankName());
-            if (request.getAccountNumber() != null) user.setAccountNumber(request.getAccountNumber());
-            if (request.getAccountHolder() != null) user.setAccountHolder(request.getAccountHolder());
-            if (request.getCorporationName() != null) user.setCorporationName(request.getCorporationName());
-            if (request.getCorporationTel() != null) user.setCorporationTel(request.getCorporationTel());
-            if (request.getBSN() != null) user.setBSN(Long.valueOf(request.getBSN()));
-            if (request.getProfileImage() != null) user.setProfileImage(request.getProfileImage());
-
-            // 수정된 사용자 저장
-            userRepository.save(user);
-        }
-        return true;
-    }
+//    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
+//        Optional<User> userOptional = userRepository.findByUserNum(userNum);
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//
+//            // 요청에서 받은 값을 통해 프로필 정보 수정
+//            if (request.getNickName() != null) user.setNickName(request.getNickName());
+//            if (request.getShortDescription() != null) user.setShortDescription(request.getShortDescription());
+//            if (request.getPhoneNumber() != null) user.setPhoneNumber(request.getPhoneNumber());
+//            if (request.getBankName() != null) user.setBankName(request.getBankName());
+//            if (request.getAccountNumber() != null) user.setAccountNumber(request.getAccountNumber());
+//            if (request.getAccountHolder() != null) user.setAccountHolder(request.getAccountHolder());
+//            if (request.getCorporationName() != null) user.setCorporationName(request.getCorporationName());
+//            if (request.getCorporationTel() != null) user.setCorporationTel(request.getCorporationTel());
+//            if (request.getBSN() != null) user.setBSN(Long.valueOf(request.getBSN()));
+//            if (request.getProfileImage() != null) user.setProfileImage(request.getProfileImage());
+//
+//            // 수정된 사용자 저장
+//            userRepository.save(user);
+//        }
+//        return true;
+//    }
 
 //    // 제작자 전환 신청 처리
 //    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {

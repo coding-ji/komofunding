@@ -37,12 +37,9 @@ public class ProjectController {
     public ResponseEntity<List<ProjectOutDTO>> getAllProjects(){
 
         try {
-            System.out.println("Handling GET request for /api/projects...");
             List<ProjectOutDTO> projects = projectService.getAllProjects();
-            System.out.println("Number of projects to return: " + projects.size());
             return ResponseEntity.ok(projects);
         } catch (Exception e) {
-            System.err.println("Error in getAllProjects API: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.emptyList());

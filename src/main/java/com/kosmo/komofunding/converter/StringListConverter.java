@@ -33,7 +33,6 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
             return objectMapper.readValue(dbData, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
         } catch (JsonProcessingException e) {
             // JSON 형식이 잘못된 경우 로깅하고 빈 리스트 반환
-            System.err.println("잘못된 JSON 형식: " + dbData);
             return List.of(); // 빈 리스트 반환
         } catch (Exception e) {
             throw new IllegalArgumentException("데이터베이스 컬럼을 리스트로 변환하는 중 오류 발생", e);

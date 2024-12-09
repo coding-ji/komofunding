@@ -38,7 +38,7 @@ export const verifyEmailCode = (email, verificationCode) => apiClient.post('/api
 export const loginUser = (email, password) => apiClient.post('/api/auth/login', { email, password });
 
 // 사용자 로그아웃
-export const logout = () => apiClient.post('/api/user/logout');
+export const logout = () => apiClient.post('/api/auth/logout');
 
 
 // 특정 사용자의 정보를 가져옴 (이메일 기반)
