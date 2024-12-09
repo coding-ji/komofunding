@@ -13,10 +13,10 @@ const apiClient = axios.create({
 export const getMyPageInfo = () => apiClient.get('/api/user/my_info');
 
 // 특정 사용자의 프로필 정보를 가져옴 (유저번호 기준)
-export const getUserProfile = (user_num) => apiClient.get(`/api/user/${user_num}/my_info/profile`);
+export const getUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/my_info/profile`);
 
 // 특정 사용자의 프로필을 업데이트
-export const updateUserProfile = (email, userInDTO) => apiClient.patch(`/api/user/${email}/my_info/profile`, userInDTO);
+export const updateUserProfile = (email, userProfileUpdateDTO) => apiClient.patch('/api/user/${email}/my_info/profile', userInDTO);
 
 // 특정 사용자가 제작자 전환을 신청함
 export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/my_info/creator-switch`, requestDTO);
@@ -38,7 +38,7 @@ export const verifyEmailCode = (email, verificationCode) => apiClient.post('/api
 export const loginUser = (email, password) => apiClient.post('/api/auth/login', { email, password });
 
 // 사용자 로그아웃
-export const logout = () => apiClient.post('/api/user/logout');
+export const logout = () => apiClient.post('/api/auth/logout');
 
 
 // 특정 사용자의 정보를 가져옴 (이메일 기반)
@@ -65,7 +65,12 @@ export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/statu
 
 // 프로젝트 관련 API
 // 모든 프로젝트 목록을 가져옴
-export const fetchProjects = () => apiClient.get('/api/projects');
+export const fetchProjects = () => apiClient.get('/posts');
+
+// 프로젝트 카테고리 & 펀딩 상태에 따라 가져옴 
+export const fetchProjectsByCategoryAndStatus = (projectCategory, fundingStatus) => {
+    return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
+};
 
 // 새로운 프로젝트를 생성
 export const createProject = (projectData) => apiClient.post('/api/projects', projectData);

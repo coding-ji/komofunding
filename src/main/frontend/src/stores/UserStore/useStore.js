@@ -43,7 +43,7 @@ export const useStore = () => {
         //유저 짧은 소개글 변경
         changeUserShortDescriptionDescription: (shortDescription) => dispatch(changeUserShortDescription(shortDescription)),
         //유저 활동 상태 변경
-        changeUserActivatedStatus: (status) => dispatch(changeUserActivatedStatus(status)),
+        changeUserActivatedStatus: (activatedStatus) => dispatch(changeUserActivatedStatus(activatedStatus)),
         //유저 은행명 변경
         changeUserBankName: (bankName) => dispatch(changeUserBankName(bankName)),
         //유저 계좌번호 변경

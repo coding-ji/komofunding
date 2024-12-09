@@ -7,7 +7,6 @@ import "../../index.css";
 import TitleBox from "../../components/TitleBox";
 import { useStore } from '../../stores/UserStore/useStore'
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
-import defaultImage from '../../components/ProfilePicture/defaultImage.png'
 import Input from "../../components/input";
 import PasswordPopup from "./PasswordPopup";
 import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
@@ -28,7 +27,7 @@ const ProfileEdit = () => {
 
     // 이미지 상태 관리
     const [newProfileImage, setNewProfileImage] = useState(null); // 새 이미지 파일
-    const [previewImage, setPreviewImage] = useState(state.profileImg); // 미리보기 이미지
+    // const [previewImage, setPreviewImage] = useState(state.profileImg); // 미리보기 이미지
 
     useEffect(() => {
         const fetchUserData = async () => {

@@ -74,12 +74,6 @@ useEffect(() => {
     return () => window.removeEventListener("resize", handleResize);
 }, []);
 
-// 필터링: 30일 이내 시작한 프로젝트
-const filteredProjects = datas.filter((project) => {
-  const startDate = new Date(project.projectStartDate);
-  return startDate >= thirtyDaysAgo && startDate <= today;
-});
-
 // 현재 진행 중인 프로젝트 필터링
 const activeProjects = datas.filter(
   (item) =>
@@ -253,7 +247,7 @@ const selectedPopularProjects = [...projectsWithFlags]
         >
           CLOSE
         </motion.button>
-        <MainMenu />
+        <MainMenu setMenuOpen={setMenuOpen} />
       </div>
       <CloudsWrapper>
         {cloudImages.map((cloud, i) => (

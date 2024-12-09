@@ -9,45 +9,12 @@ import { useStore } from "../../stores/UserStore/useStore";
 
 
 
-const Profile = (userState) => {
-  // 상위 컴포넌트에서 가져옴
-  // useEffect(() => {
-  //   //데이터를 가져오는 비동기 작업
-  //   axios.get("/data/userData.json")
-  //   .then(response =>{
-  //     //userData.json 데이터 가져오기
-  //     const datas = response.data; 
-  //     // 해당 유저
-  //     const userData = datas.find(data=> data.userNum === userNum);
-  //     if(userData){
-  //       actions.changeUserNum(userData.userNum);
-  //       actions.changeEmail(userData.email);
-  //       actions.changePassword(userData.password);
-  //       actions.changeName(userData.name);
-  //       actions.changeNickname(userData.nickname);
-  //       actions.changePhone(userData.phone);
-  //       actions.changeProfileImg(userData.profileImg);
-  //       actions.changeUserDescription(userData.description);
-  //       actions.changeUserActivatedStatus(userData.activatedStatus);
-  //       actions.changeUserBankName(userData.bankName);
-  //       actions.changeUserAccountNumber(userData.accountNumber);
-  //       actions.changeUserAccountHolder(userData.accountHolder);
-  //       actions.changeUserJoinDate(userData.joinDate);
-  //       actions.changeCorporationName(userData.corporationName);
-  //       actions.changeCorporationTel(userData.corporationTel);
-  //       actions.changeBSN(userData.bsn);
-  //     }else{
-  //       console.error("해당 유저를 찾을 수 없습니다.")
-  //     }
-  //   })
-  //   .catch(error=>{
-  //     console.error("데이터 로딩 실패", error);
-  //   })
-  // }, [userNum]);
+const Profile = ({profileData, userNum}) => {
 
+    const navigate = useNavigate();
 
   function ProfileEdit(){
-    navigate(`/profile-edit/${userState.userNum}`);
+    navigate(`/home/profile-edit/${userNum}`);
   }
 
   function handleCreateApply(){
@@ -60,13 +27,12 @@ const Profile = (userState) => {
       <div className="profile-header">
         <ProfileImage
           size="200px"
-          initialImageSrc={userState.profileImg}
+          initialImageSrc={profileData.profileImg}
           gridArea="profileImage"
         />
-
         <div className="profile-info">
-          <h1 className="usernickname">{userState.nickname}</h1>
-          <p className="user-id">회원번호: {userState.userNum}</p>
+          <h1 className="usernickname">{profileData.nickName}</h1>
+          <p className="user-id">회원번호: {profileData.userNum}</p>
           <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"
            onClick={ProfileEdit}
           />
@@ -77,7 +43,7 @@ const Profile = (userState) => {
       <div className="profile-section">
         <h1 className="profile-sub-title">자기 소개</h1>
         <div className="conversion-options">
-        <p>{userState.description}</p>
+        <p>{profileData.shortDescription}</p>
 
         </div>
       </div>

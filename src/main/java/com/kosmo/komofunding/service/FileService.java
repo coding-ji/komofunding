@@ -70,8 +70,6 @@ public class FileService {
     public Path loadImage(String filename) {
         // 이미지 파일 경로 설정
         Path filePath = impUploadPath.resolve(filename);
-        System.out.println("로드하려는 파일 경로: " + filePath.toString());
-
 
         // 파일이 존재하면 경로 반환, 존재하지 않으면 예외 처리
         if (!Files.exists(filePath)) {

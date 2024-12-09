@@ -100,19 +100,23 @@ public class AuthController {
   }
 
 //     로그인
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(
-            @RequestBody UserInDTO loginRequest,
-            HttpSession session) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
+@PostMapping("/login")
+public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginRequest, HttpSession session) {
+    String email = loginRequest.getEmail();
+    String password = loginRequest.getPassword();
 
+    try {
         Map<String, String> response = userService.login(email, password, session);
-        return ResponseEntity.ok(response); // 세션 ID 포함 응답 반환
+        System.out.println("로그인 성공: " + response);
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        System.err.println("로그인 실패: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
+}
 
     // 로그아웃 처리
-    @PostMapping("/api/user/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody UserInDTO userInDTO, HttpSession session) {
         // 로그아웃 처리: 세션을 종료해서 jsessionid만 삭제
         session.invalidate();  // 세션 무효화 (jsessionid 제거)

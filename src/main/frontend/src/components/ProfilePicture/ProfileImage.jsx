@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import defaultImage from "./defaultImage.png"; // 기본 프로필 이미지
 import "./ProfileImage.css";
 
 const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
@@ -35,7 +34,7 @@ const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
     >
       {/* 프로필 이미지 */}
       <img
-        src={initialImageSrc || defaultImage} // 기본 이미지 로직 추가
+        src={initialImageSrc}
         alt="Profile"
         style={{
           width: "100%",

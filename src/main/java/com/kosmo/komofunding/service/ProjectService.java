@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,22 +30,15 @@ public class ProjectService {
 
     // 전체 프로젝트 조회
     public List<ProjectOutDTO> getAllProjects() {
-
         try {
-            System.out.println("Fetching all projects from the database...");
             List<Project> allProjects = projectRepository.findAll();
-
-            System.out.println("Number of projects fetched: " + allProjects.size());
-
             LocalDateTime now = LocalDateTime.now();
             return allProjects.stream()
                     .map(project -> {
-                        System.out.println("Converting project: " + project.getProjectId());
-                        return projectConverter.toOutDTO(project);
+                       return projectConverter.toOutDTO(project);
                     })
                     .filter(projectOutDTO -> {
-                        System.out.println("Checking end date for project: " + projectOutDTO.getTitle());
-                        return projectOutDTO.getProjectEndDate().isAfter(now);
+                       return projectOutDTO.getProjectEndDate().isAfter(now);
                     })
                     .sorted(Comparator.comparingDouble(ProjectOutDTO::getProgressRate).reversed())
                     .limit(50)
@@ -53,21 +48,23 @@ public class ProjectService {
             e.printStackTrace();
             throw e; // 예외를 다시 던져 컨트롤러에서 처리
         }
-
-//        // 전체 프로젝트 리스트 조회
-//        List<Project> allProjects = projectRepository.findAll();
-//
-//        // 현재 날짜를 가져오기
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        // 프로젝트의 달성률을 계산하고, 달성률 내림차순으로 상위 50개만 선택
-//        return allProjects.stream()
-//                .map(project -> projectConverter.toOutDTO(project))
-//                .filter(projectOutDTO -> projectOutDTO.getProjectEndDate().isAfter(now)) // 마감된 프로젝트 제외
-//                .sorted(Comparator.comparingDouble(ProjectOutDTO::getProgressRate).reversed()) // 달성률이 높은 50개의 프로젝트만 불러옴
-//                .limit(50)
-//                .collect(Collectors.toList());
     }
+
+    // 카테고리 및 상태별 프로젝트 조회
+    public List<ProjectOutDTO> getProjectsByCategoryAndStatus(ProjectCategory category, String fundingStatus) {
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            List<Project> projects = projectRepository.findByProjectsCategoryAndFundingStatusAndDateRange(
+                    category, fundingStatus, now);
+
+            return projects.stream()
+                    .map(project -> projectConverter.toOutDTO(project))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("프로젝트 조회 중 오류가 발생했습니다.", e);
+        }
+    }
+
 
     // 유저 uid로 프로젝트 조회
     public List<Project> getProjectsByUserId(String userId){

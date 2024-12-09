@@ -69,11 +69,11 @@ function ProductCard({ data,fontFamily }) {
     return null; // 데이터가 없으면 아무것도 렌더링하지 않음
   }
 
-  const { imgs = [], projectTitle = "Untitled", shortDescription = "No description available" } = data;
+  const { thumbnailImgs = [], title = "Untitled", projectShortDescription = "No description available" } = data;
 
   // 이미지 URL 처리: imgs[0]이 없으면 기본 이미지 사용
 //   const imageUrl = imgs[0]?.trim() || "https://fakeimg.pl/600x600/?text=KOMO";
-  const imageUrl = imgs[0]?.trim() ? `http://localhost:8080/images/${imgs[0].trim()}` : "https://fakeimg.pl/600x600/?text=KOMO";
+  const imageUrl = thumbnailImgs[0]?.trim() ? thumbnailImgs[0]?.trim() : "https://fakeimg.pl/600x600/?text=KOMO";
 
 
   const animations = [
@@ -109,8 +109,8 @@ function ProductCard({ data,fontFamily }) {
 
   >
            <StyledProductImg src={imageUrl} />
-      <StyledProductTitle title={projectTitle} fontFamily={fontFamily} />
-      <StyledProductDescription description={shortDescription} />
+      <StyledProductTitle title={title} fontFamily={fontFamily} />
+      <StyledProductDescription description={projectShortDescription} />
     </CardContainer>
   );
 }

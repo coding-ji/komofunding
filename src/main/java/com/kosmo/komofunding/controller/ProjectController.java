@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.controller;
 
+import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
@@ -33,31 +34,36 @@ public class ProjectController {
     ProjectConverter projectConverter;
 
     // 전체 프로젝트 조회
-    @GetMapping("/api/projects")
+    @GetMapping("/posts")
     public ResponseEntity<List<ProjectOutDTO>> getAllProjects(){
 
         try {
-            System.out.println("Handling GET request for /api/projects...");
             List<ProjectOutDTO> projects = projectService.getAllProjects();
-            System.out.println("Number of projects to return: " + projects.size());
             return ResponseEntity.ok(projects);
         } catch (Exception e) {
-            System.err.println("Error in getAllProjects API: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.emptyList());
         }
-//        try {
-//            // 서비스에서 전체 프로젝트를 조회
-//            List<ProjectOutDTO> projects = projectService.getAllProjects();
-//
-//            // 조회된 프로젝트 리스트가 있으면 OK(200) 상태 코드 반환
-//            return ResponseEntity.ok(projects);
-//        } catch (Exception e) {
-//            // 예외 발생 시 내부 서버 오류(500) 상태 코드 반환
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(Collections.emptyList());  // 빈 리스트 반환 (또는 오류 메시지 포함)
-//        }
+    }
+
+    // 카테고리별 프로젝트 조회
+    @GetMapping("/posts/category")
+    public ResponseEntity<List<ProjectOutDTO>> getProjectsByCategory(
+            @RequestParam(name = "projectCategory") String projectCategory,
+            @RequestParam(name = "fundingStatus") String fundingStatus) {
+        try {
+            // ProjectCategory 변환
+            ProjectCategory category = ProjectCategory.valueOf(projectCategory.toUpperCase());
+            List<ProjectOutDTO> projects = projectService.getProjectsByCategoryAndStatus(category, fundingStatus);
+            return ResponseEntity.ok(projects);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
     }
 
     // 유저(uid)에 해당하는 프로젝트 조회

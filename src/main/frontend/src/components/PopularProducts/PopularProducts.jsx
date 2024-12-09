@@ -18,9 +18,8 @@ function PopularProducts({ products }) {
   useEffect(() => {
     if (Array.isArray(products) && products.length > 0) {
       const sortedProducts = [...products].sort(
-        (a, b) =>
-          b.currentAmount / b.totalAmount - a.currentAmount / a.totalAmount
-      );
+        (a, b) => b.progressRate - a.progressRate
+      ); // progressRate로 내림차순 정렬
       setPopularProducts(sortedProducts.slice(0, 5)); // 상위 5개 저장
     }
   }, [products]);
@@ -67,7 +66,9 @@ function PopularProducts({ products }) {
       </Wrapper>
 
       {/* AnimatePresence로 슬라이드 감싸기 */}
-      <div style={{ position: "relative", height: "300px", overflow: "hidden" }}>
+      <div
+        style={{ position: "relative", height: "300px", overflow: "hidden" }}
+      >
         <AnimatePresence>
           {popularProducts[currentIndex] && (
             <motion.div
@@ -91,7 +92,7 @@ function PopularProducts({ products }) {
                 animation={imageAnimation}
               />
               <div className="product-description">
-                {popularProducts[currentIndex].projectTitle}
+                {popularProducts[currentIndex].title}
               </div>
             </motion.div>
           )}
