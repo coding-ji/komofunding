@@ -2,36 +2,43 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const CarouselContainer = styled.div`
-  display: flex; /* 메인 이미지와 썸네일/버튼을 나란히 배치 */
+  display: flex;
   align-items: center;
   gap: 20px;
+  align-items: flex-end;
 `;
 
 const MainImage = styled.img`
   width: 300px;
   height: 300px;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
 `;
 
 const SideContainer = styled.div`
   display: flex;
-  flex-direction: column; /* 위아래로 버튼과 썸네일 배치 */
+  flex-direction: column;
   align-items: center;
   gap: 10px;
 `;
 
 const ThumbnailContainer = styled.div`
   display: flex;
-  flex-direction: column; /* 썸네일을 세로로 배치 */
+  flex-direction: column;
   gap: 10px;
-  overflow-y: scroll; /* 세로 스크롤 가능 */
-  max-height: 300px; /* 썸네일 영역 높이 제한 */
-  scrollbar-width: none; /* Firefox 스크롤바 숨기기 */
-  -ms-overflow-style: none; /* Internet Explorer/Edge 스크롤바 숨기기 */
+  overflow-y: auto;
+  max-height: 300px;
+  scrollbar-width: thin;
+  scrollbar-color: #ddd #f4f4f4;
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari 스크롤바 숨기기 */
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #f4f4f4;
   }
 `;
 
@@ -39,19 +46,23 @@ const Thumbnail = styled.img`
   width: 60px;
   height: 60px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 2px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   border: ${(props) => (props.isSelected ? "2px solid #007BFF" : "none")};
+  box-shadow: ${(props) =>
+    props.isSelected ? "0px 0px 6px rgba(0, 123, 255, 0.5)" : "none"};
 `;
 
 const NavButton = styled.button`
-  padding: 8px 12px;
+  width: 60px; /* 썸네일과 동일한 너비 */
+  height: 20px;
   font-size: 16px;
   cursor: pointer;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 2px;
   background-color: #f4f4f4;
+
   &:hover {
     background-color: #e0e0e0;
   }
@@ -60,41 +71,39 @@ const NavButton = styled.button`
 function ImageCarousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
+  const changeImage = (index) => {
+    if (index < 0) setCurrentIndex(images.length - 1);
+    else if (index >= images.length) setCurrentIndex(0);
+    else setCurrentIndex(index);
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+  const handlePrev = () => changeImage(currentIndex - 1);
+  const handleNext = () => changeImage(currentIndex + 1);
+  const handleThumbnailClick = (index) => changeImage(index);
 
-  const handleThumbnailClick = (index) => {
-    setCurrentIndex(index);
-  };
+  // 이미지가 없는 경우 처리
+  if (!images || images.length === 0) {
+    return <div>No images available</div>;
+  }
 
   return (
     <CarouselContainer>
       <MainImage src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
       <SideContainer>
-        <div>
-          <NavButton onClick={handlePrev}>▲</NavButton>
-        </div>
+        <NavButton onClick={handlePrev} aria-label="Previous image">▲</NavButton>
         <ThumbnailContainer>
           {images.map((image, index) => (
-              <Thumbnail
+            <Thumbnail
               key={index}
+              id={`thumbnail-${index}`}
               src={image}
               alt={`Thumbnail ${index + 1}`}
               onClick={() => handleThumbnailClick(index)}
               isSelected={currentIndex === index}
-              />
-            ))}
+            />
+          ))}
         </ThumbnailContainer>
-            <NavButton onClick={handleNext}>▼</NavButton>
+        <NavButton onClick={handleNext} aria-label="Next image">▼</NavButton>
       </SideContainer>
     </CarouselContainer>
   );

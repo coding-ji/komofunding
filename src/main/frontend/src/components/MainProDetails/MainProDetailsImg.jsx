@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import axios from "axios";
 import ImageCarousel from "../ImageCarousel/ImageCarousel";
+import DescriptionProduct from "../DescriptionProduct";
 
 const Container = styled.div`
   display: flex;
@@ -11,10 +11,7 @@ const Container = styled.div`
 `;
 
 const ProjectSection = styled.div`
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
 `;
 
 const ProjectTitle = styled.h2`
@@ -22,45 +19,20 @@ const ProjectTitle = styled.h2`
   margin-bottom: 16px;
 `;
 
-function MainProDetailsImg() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    axios
-      .get("/data/projectData.json")
-      .then((response) => {
-        if (Array.isArray(response.data)) {
-          setProjects(response.data); // JSON이 배열이라면 그대로 사용
-        } else if (response.data.projects) {
-          setProjects(response.data.projects); // JSON이 객체라면 변환
-        } else {
-          console.error("올바르지 않은 데이터 형식입니다:", response.data);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("데이터를 가져오는 데 실패했습니다:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (!Array.isArray(projects)) {
-    return <div>올바른 데이터 형식이 아닙니다.</div>;
+function MainProDetailsImg({ project }) {
+  if (!project) {
+    return <div>프로젝트 데이터가 없습니다.</div>;
   }
 
   return (
     <Container>
-      {projects.map((project, index) => (
-        <ProjectSection key={index}>
-          <ProjectTitle>{project.projectTitle}</ProjectTitle>
-          <ImageCarousel images={project.imgs} />
-        </ProjectSection>
-      ))}
+      <ProjectSection>
+        <ImageCarousel images={project.imgs} />
+        <ProjectTitle>{project.projectTitle} 상품 제목 불러올 거임</ProjectTitle>
+        <DescriptionProduct
+        padding="0px"
+        text={project.description}></DescriptionProduct>
+      </ProjectSection>
     </Container>
   );
 }
