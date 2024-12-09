@@ -51,23 +51,36 @@ public class ProjectController {
 
 
     // 카테고리별 프로젝트 조회
-    @GetMapping("/posts/main")
+    @GetMapping("/posts/category")
     public ResponseEntity<List<ProjectOutDTO>> getProjectsByCategory(
             @RequestParam(name = "projectCategory") String projectCategory,
             @RequestParam(name = "fundingStatus") String fundingStatus) {
         try {
-            // ProjectCategory 변환
+            // "ALL"일 경우 전체 조회
+            if (projectCategory.equalsIgnoreCase("all")) {
+                List<ProjectOutDTO> allProjects = projectService.getAllProjects();
+                return ResponseEntity.ok(allProjects);
+            }
+
+            // projectCategory를 대문자로 변환 후 Enum으로 변환
             ProjectCategory category = ProjectCategory.valueOf(projectCategory.toUpperCase());
+
+            // 특정 카테고리의 프로젝트 조회
             List<ProjectOutDTO> projects = projectService.getProjectsByCategoryAndStatus(category, fundingStatus);
             return ResponseEntity.ok(projects);
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+            // projectCategory가 Enum 값으로 변환되지 않을 경우
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.emptyList());
         } catch (Exception e) {
             e.printStackTrace();
+            // 다른 예외 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.emptyList());
         }
     }
+
 
     // 유저(uid)에 해당하는 프로젝트 조회
     @GetMapping("/api/user/myinfo/projects")

@@ -76,7 +76,7 @@ export const fetchDetailPost = () => apiClient.get(`/posts/${projectNum}`)
 
 // 전체 게시물 카테고리별 & 상태별(all, upcoming, active )
 export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) => {
-    return apiClient.get(`/posts/projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
+    return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
 
 

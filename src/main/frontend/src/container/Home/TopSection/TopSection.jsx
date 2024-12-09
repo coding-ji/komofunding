@@ -80,8 +80,7 @@ const TopSection = ({ datas }) => {
   // 프로젝트 데이터가 존재할 때만 필터링 실행
   useEffect(() => {
     if (datas && Array.isArray(datas) && datas.length > 0) {
-      console.log("datas가 정상적으로 전달되었습니다:", datas);
-  
+
       const today = new Date(); // 오늘 날짜
       const projectDatas = datas.filter(
         (item) =>
@@ -89,8 +88,6 @@ const TopSection = ({ datas }) => {
           new Date(item.projectEndDate) >= today
       );
       setActiveProjects(projectDatas);
-    } else {
-      console.log("데이터가 없거나 null입니다.");
     }
   }, [datas]); // datas 변경 시에만 실행되도록
 
