@@ -34,7 +34,7 @@ function ProfileView() {
       <Sidemenu />
       {console.log(userState)}
       {userState ? (
-        <Profile profileData={userState} /> // Profile 컴포넌트에 데이터 전달
+        <Profile profileData={userState} userNum={userNum}/> // Profile 컴포넌트에 데이터 전달
       ) : (
         <div>로딩 중...</div> // 프로필 데이터 로딩 중이면 표시할 내용
       )}

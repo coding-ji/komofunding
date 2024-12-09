@@ -7,7 +7,6 @@ import "../../index.css";
 import TitleBox from "../../components/TitleBox";
 import { useStore } from '../../stores/UserStore/useStore'
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
-import defaultImage from '../../components/ProfilePicture/defaultImage.png'
 import Input from "../../components/input";
 import PasswordPopup from "./PasswordPopup";
 import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";

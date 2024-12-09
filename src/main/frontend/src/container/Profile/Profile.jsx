@@ -9,46 +9,12 @@ import { useStore } from "../../stores/UserStore/useStore";
 
 
 
-const Profile = ({profileData}) => {
-    const navigate = useNavigate();
-  // 상위 컴포넌트에서 가져옴
-  // useEffect(() => {
-  //   //데이터를 가져오는 비동기 작업
-  //   axios.get("/data/userData.json")
-  //   .then(response =>{
-  //     //userData.json 데이터 가져오기
-  //     const datas = response.data; 
-  //     // 해당 유저
-  //     const userData = datas.find(data=> data.userNum === userNum);
-  //     if(userData){
-  //       actions.changeUserNum(userData.userNum);
-  //       actions.changeEmail(userData.email);
-  //       actions.changePassword(userData.password);
-  //       actions.changeName(userData.name);
-  //       actions.changeNickname(userData.nickname);
-  //       actions.changePhone(userData.phone);
-  //       actions.changeProfileImg(userData.profileImg);
-  //       actions.changeUserDescription(userData.description);
-  //       actions.changeUserActivatedStatus(userData.activatedStatus);
-  //       actions.changeUserBankName(userData.bankName);
-  //       actions.changeUserAccountNumber(userData.accountNumber);
-  //       actions.changeUserAccountHolder(userData.accountHolder);
-  //       actions.changeUserJoinDate(userData.joinDate);
-  //       actions.changeCorporationName(userData.corporationName);
-  //       actions.changeCorporationTel(userData.corporationTel);
-  //       actions.changeBSN(userData.bsn);
-  //     }else{
-  //       console.error("해당 유저를 찾을 수 없습니다.")
-  //     }
-  //   })
-  //   .catch(error=>{
-  //     console.error("데이터 로딩 실패", error);
-  //   })
-  // }, [userNum]);
+const Profile = ({profileData, userNum}) => {
 
+    const navigate = useNavigate();
 
   function ProfileEdit(){
-    navigate(`/${user_num}/my_info/profile`);
+    navigate(`/home/profile-edit/${userNum}`);
   }
 
   function handleCreateApply(){
@@ -102,10 +68,10 @@ const Profile = ({profileData}) => {
             <p>추가 조건: 법인 명의 계좌 및 입금 가능 여부 확인</p>
           </div>
         </div>
-        {/* <WhiteBtn text="제작자 전환 신청"
+        <WhiteBtn text="제작자 전환 신청"
             width="100%" height="50px" padding="3px auto" fontSize="1rem"
             onClick={handleCreateApply} // 확인해야 할 부분
-        ></WhiteBtn> */}
+        ></WhiteBtn>
       </div>
     </div>
   );
