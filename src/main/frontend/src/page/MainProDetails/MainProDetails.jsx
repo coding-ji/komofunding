@@ -64,8 +64,6 @@ function MainProDetails() {
   return (
     <ProDetails>
       <MainProDetailsImg project={selectedProject} /> 
-      <TitleProduct text="상품 제목 들어가는 공간" fontSize="2rem" />
-      <DescriptionProduct text="상품 설명 들어가는 공간" />
       <MainProDetailsIntro project={selectedProject} qnaList={qnaList} setQnaList={setQnaList} />
     </ProDetails>
   );

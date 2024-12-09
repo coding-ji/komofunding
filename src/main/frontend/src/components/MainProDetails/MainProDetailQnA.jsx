@@ -8,7 +8,7 @@ import "../../index.css";
 import Input from "../input";
 
 const Head = styled.div`
-  margin: 5px 12px 0px 5px;
+  margin: 5px 0px 5px 5px;
   display: flex;
   justify-content: space-between;
 `;
