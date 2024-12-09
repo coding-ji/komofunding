@@ -38,11 +38,12 @@ import Profile from "./container/Profile/Profile";
 import CreationGuide from './page/noticpage/CreationGuide'
 import DonateGuide from "./page/noticpage/DonateGuide";
 import ProfileView from "./page/Profile/ProfileView";
+import MainProDetails from "./page/MainProDetails/MainProDetails";
 
 
 const router = createBrowserRouter([
   {path : "/", element:<HomePage/> },
-  {path: "/home", element: <Main/>, 
+  {path: "/home", element: <Main/>,
     children: [
       {index: true, element: <Product/>},
       {path :"upcoming", element:<Product />},
@@ -99,7 +100,9 @@ const router = createBrowserRouter([
       {path:"profile-edit/:userNum", element:<ProfileEdit/> },
 
       {path:"creation-guide", element:<CreationGuide/>},
-      {path:"donate-guide", element:<DonateGuide/>}
+      {path:"donate-guide", element:<DonateGuide/>},
+      {path :"product-details", element:<MainProDetails/> },
+
     ]},
 
 

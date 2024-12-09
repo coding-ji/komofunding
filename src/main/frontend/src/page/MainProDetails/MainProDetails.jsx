@@ -10,6 +10,7 @@ const ProDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+    margin: 1.875rem 10vw; /* 10vw는 화면 너비의 10% */
 `;
 function MainProDetails() {
   const [project, setProject] = useState(null);
