@@ -5,7 +5,7 @@ import {
     changeEmail,
     changePassword,
     changeName,
-    changeNickname,
+    changeNickName,
     changePhoneNumber,
     changeProfileImg,
     changeUserShortDescription,
@@ -16,7 +16,7 @@ import {
     changeUserJoinDate,
     changeCorporationName,
     changeCorporationTel,
-    changeBsn,
+    changeBSN,
     updateAllFields,
     resetState
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.

@@ -23,6 +23,7 @@ import {
     changeProgressRate,
     changeQnaList,
     changeSupporters,
+    updateAllFields,
     resetState,
     readProjects,
     readProjectDetail,
@@ -62,18 +63,19 @@ export const useStore = () => {
         changeProgressRate: (progressRate) => dispatch(changeProgressRate(progressRate)),
         changeQnaList: (qnaList) => dispatch(changeQnaList(qnaList)),
         changeSupporters: (supporters) => dispatch(changeSupporters(supporters)),
+        updateAllFields: (fields) => dispatch(updateAllFields(fields)),
 
         // 초기화
         resetState: () => dispatch(resetState()),
 
         // 프로젝트 API 서비스 관련
-        readProjects: () => dispatch(readProjects()),
-        readProjectDetail: (projectNum) => dispatch(readProjectDetail(projectNum)),
-        readProjectsByCategoryAndStatus: (projectCategory, fundingStatus) => dispatch(readProjectsByCategoryAndStatus(projectCategory, fundingStatus)),
-        readUserProjects: (userNum) => dispatch(readUserProjects(userNum)),
-        createNewProject: (userNum, projectData) => dispatch(createNewProject(userNum, projectData)),
-        updateExistingProject: (userNum, updateData) => dispatch(updateExistingProject(userNum, updateData)),
-        deleteExistingProject: (userNum, projectNum) => dispatch(deleteExistingProject(userNum, projectNum))
+        readProjects: () => readProjects()(dispatch),
+        readProjectDetail: (projectNum) => readProjectDetail(projectNum)(dispatch),
+        readProjectsByCategoryAndStatus: (projectCategory, fundingStatus) => readProjectsByCategoryAndStatus(projectCategory, fundingStatus)(dispatch),
+        readUserProjects: (userNum) => readUserProjects(userNum)(dispatch),
+        createNewProject: (userNum, projectData) => createNewProject(userNum, projectData)(dispatch),
+        updateExistingProject: (userNum, updateData) => updateExistingProject(userNum, updateData)(dispatch),
+        deleteExistingProject: (userNum, projectNum) => deleteExistingProject(userNum, projectNum)(dispatch)
     };
 
     return { state, actions };

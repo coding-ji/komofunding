@@ -20,27 +20,10 @@ import {
 } from './action.js';
 
 // 초기 상태 정의
-const initialState = {
-    userNum: null,
-    email: '',
-    password: '',
-    name: '',
-    nickname: '',
-    phoneNumber: '',
-    profileImg: '',
-    userShortDescription: '',
-    activatedStatus: false,
-    bankName: '',
-    accountNumber: '',
-    accountHolder: '',
-    joinDate: '',
-    corporationName: '',
-    corporationTel: '',
-    bsn: ''
-};
+export const initialState = {};
 
 // 리듀서 함수
-const reducer = (state = initialState, action) => {
+export const reducer = (state, action) => {
     switch (action.type) {
         case CHANGE_USER_NUM:
             return { ...state, userNum: action.payload };
@@ -100,5 +83,3 @@ const reducer = (state = initialState, action) => {
             return state;
     }
 };
-
-export default reducer;

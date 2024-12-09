@@ -33,6 +33,7 @@ export const CHANGE_IS_HIDDEN = "CHANGE_IS_HIDDEN";
 export const CHANGE_PROGRESS_RATE = "CHANGE_PROGRESS_RATE";
 export const CHANGE_QNA_LIST = "CHANGE_QNA_LIST";
 export const CHANGE_SUPPORTERS = "CHANGE_SUPPORTERS";
+export const UPDATE_ALL_FIELDS = 'UPDATE_ALL_FIELDS';
 
 // 초기화 
 export const RESET_STATE = "RESET_STATE";
@@ -157,6 +158,10 @@ export const changeSupporters = (supporters) => ({
     payload: supporters,
 });
 
+export const updateAllFields = (fields) => ({ 
+    type: UPDATE_ALL_FIELDS, 
+    payload: fields 
+});
 
 // 초기화
 export const resetState = () => ({
