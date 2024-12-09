@@ -48,7 +48,7 @@ public class ProjectController {
     }
 
     // 카테고리별 프로젝트 조회
-    @GetMapping("/posts/category")
+    @GetMapping("/posts/main")
     public ResponseEntity<List<ProjectOutDTO>> getProjectsByCategory(
             @RequestParam(name = "projectCategory") String projectCategory,
             @RequestParam(name = "fundingStatus") String fundingStatus) {

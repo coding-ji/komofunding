@@ -34,13 +34,15 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     // 프로젝트 존재여부 확인
     Boolean existsByProjectNum(Long projectNum);
 
-    // projectCategory와 동일하고, fundingStatus가 ongoing일 경우 projectstartdate가 오늘 이전이고 enddate가 오늘 이후인 경우
-    // fundingstatus가 prelaunched일 경우 startdate가 지금 이후임
+    // 온고잉이면 진행되는 것들이 사이에 , upcoming이면 시작되는게 지금보다 뒤에 !!
     @Query("SELECT p FROM Project p WHERE p.projectCategory = :projectCategory " +
             "AND ((:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
-            "OR (:fundingStatus = 'PRELAUNCHED' AND p.projectStartDate > :now))")
+            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now))")
     List<Project> findByProjectsCategoryAndFundingStatusAndDateRange(
             @Param("projectCategory") ProjectCategory projectCategory,
             @Param("fundingStatus") String fundingStatus,
             @Param("now") LocalDateTime now);
+
+    @Query("SELECT p FROM Project p WHERE p.projectCategory = :projectCategory")
+    List<Project> findAllByCategory(@Param("projectCategory") ProjectCategory projectCategory);
 }

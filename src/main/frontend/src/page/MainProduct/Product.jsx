@@ -3,12 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PopularProducts from "../../components/PopularProducts/PopularProducts";
 import MainProductContainer from "../../container/MainProductCard/MainProductContainer";
 import Navbar from "../../components/NavBar/Navbar";
-import { fetchProjects, fetchProjectsByCategoryAndStatus } from "../../service/apiService";
+import {
+  fetchProjects,
+  fetchProjectsByCategoryAndStatus,
+} from "../../service/apiService";
 
 function Product() {
   const location = useLocation(); // 현재 경로 정보를 가져옴
-  const [subCategory, setSubCategory] = useState("clothes"); // 세부 카테고리;
-  const [fundingStatus, setFundingStatus] = useState("all"); 
+  const [subCategory, setSubCategory] = useState("all"); // 세부 카테고리;
+  const [fundingStatus, setFundingStatus] = useState("");
 
   const [products, setProducts] = useState([]);
   const [popularProducts, setPopularProducts] = useState([]); // 인기 상품 상태
@@ -17,30 +20,28 @@ function Product() {
   const today = new Date().toISOString().split("T")[0];
 
   // 경로에 따라 카테고리 및 상태 설정
+  const pathname = location.pathname;
+
   useEffect(() => {
-    const pathname = location.pathname;
-    if (pathname.includes("home")) {
-      setFundingStatus("ONGOING");
-    } else if (pathname.includes("upcoming")) {
+    if (pathname.includes("upcoming")) {
       setFundingStatus("UPCOMING");
+      setSubCategory("all");
     } else if (pathname.includes("ongoing")) {
       setFundingStatus("ONGOING");
-    } else {
-      setFundingStatus("ONGOING");
+      setSubCategory("all");
+    } else if (pathname.includes("home")){
+      setFundingStatus("HOME")
+      setSubCategory("all");
     }
-  }, [location]);
+  }, [pathname]);
 
   // 프로젝트 데이터 불러오기
   useEffect(() => {
-    const fetchData = async() => {
-      try{
-        let response; 
-        if(fundingStatus == "ONGOING" || fundingStatus == "UPCOMING"){
-          // 'onging'과 'upcoming'일 경우에는 fetchProjectsByCategoryAndStatus로
-          response = await fetchProjectsByCategoryAndStatus(subCategory, fundingStatus);
-        } else{
-          response = await fetchProjects();
-        }
+    const fetchData = async () => {
+      try {
+       const response = await fetchProjectsByCategoryAndStatus(subCategory,fundingStatus);
+       
+
         const projectDatas = response.data;
 
         // 인기 상품 로직
@@ -50,35 +51,32 @@ function Product() {
           .slice(0, 20);
 
         setPopularProducts(topProducts);
-        setProducts(projectDatas); // 모든 프로젝트 데이터를 저장
-
-      }catch(error){
-        console.error("데이터 로드 실패 :" + error);
-        setError(err.message || "데이터 로드 실패");
-      }finally{
+        setProducts(projectDatas);
+      } catch (error) {
+        console.error("데이터 로드 실패:", error);
+        setError(error.message || "데이터 로드 실패");
+      } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  },[subCategory, fundingStatus])
-
+  }, [subCategory, fundingStatus, pathname]);
 
   // 필터링된 데이터 (fundingStatus가 "all"일 경우)
   const filteredProducts = useMemo(() => {
     if (fundingStatus === "all" && products.length > 0) {
       return products.filter(
         (item) =>
-          item.projectCategory.toLowerCase() === subCategory.toLowerCase()
+          item.projectCategory.toLowerCase() === subCategory.toLowerCase() ||
+          subCategory === "all"
       );
     }
     return products;
   }, [products, subCategory, fundingStatus]);
 
-
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>

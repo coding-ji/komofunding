@@ -49,14 +49,22 @@ public class ProjectService {
             throw e; // 예외를 다시 던져 컨트롤러에서 처리
         }
     }
-
     // 카테고리 및 상태별 프로젝트 조회
     public List<ProjectOutDTO> getProjectsByCategoryAndStatus(ProjectCategory category, String fundingStatus) {
         try {
-            LocalDateTime now = LocalDateTime.now();
-            List<Project> projects = projectRepository.findByProjectsCategoryAndFundingStatusAndDateRange(
-                    category, fundingStatus, now);
+            List<Project> projects;
+            // fundingStatus가 HOME이면 전체 프로젝트
+            if(fundingStatus.equals("HOME")){
+                projects = projectRepository.findAllByCategory(category);
+            }
+            // fundingStatus가 ONGOING / UPCOMING이면 조건에 맞게 가져옴
+            else {
+                LocalDateTime now = LocalDateTime.now();
+                projects = projectRepository.findByProjectsCategoryAndFundingStatusAndDateRange(
+                        category, fundingStatus, now);
+            }
 
+            // 프로젝트 목록을 DTO로 변환하여 반환
             return projects.stream()
                     .map(project -> projectConverter.toOutDTO(project))
                     .collect(Collectors.toList());
@@ -64,7 +72,6 @@ public class ProjectService {
             throw new RuntimeException("프로젝트 조회 중 오류가 발생했습니다.", e);
         }
     }
-
 
     // 유저 uid로 프로젝트 조회
     public List<Project> getProjectsByUserId(String userId){

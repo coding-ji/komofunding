@@ -1,6 +1,4 @@
 
-import { fetchItems, createItem, updateItem, deleteItem } from '../../service/apiService';
-
 export const CHANGE_USER_NUM = "CHANGE_USER_NUM"; 
 export const CHANGE_EMAIL = "CHANGE_EMAIL";
 export const CHANGE_PASSWORD = "CHANGE_PASSWORD";

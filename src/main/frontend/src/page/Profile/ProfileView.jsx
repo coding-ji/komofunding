@@ -32,7 +32,6 @@ function ProfileView() {
   return (
     <div className="ProfileViewPosition">
       <Sidemenu />
-      {console.log(userState)}
       {userState ? (
         <Profile profileData={userState} userNum={userNum}/> // Profile 컴포넌트에 데이터 전달
       ) : (

@@ -63,23 +63,42 @@ export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/p
 export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`);
 
 
-// 프로젝트 관련 API
-// 모든 프로젝트 목록을 가져옴
-export const fetchProjects = () => apiClient.get('/posts');
 
-// 프로젝트 카테고리 & 펀딩 상태에 따라 가져옴 
-export const fetchProjectsByCategoryAndStatus = (projectCategory, fundingStatus) => {
-    return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
+
+
+// 프로젝트 관련 API
+
+// 전체 게시물 조회
+export const fetchPosts  = () => apiClient.get('/posts');
+
+// 상세 게시물 조회
+export const fetchDetailPost = () => apiClient.get(`/posts/${projectNum}`)
+
+// 전체 게시물 카테고리별 & 상태별(all, upcoming, active )
+export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) => {
+    return apiClient.get(`/posts/projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
 
-// 새로운 프로젝트를 생성
-export const createProject = (projectData) => apiClient.post('/api/projects', projectData);
 
-// 특정 프로젝트를 업데이트
-export const updateProject = (projectId, updateData) => apiClient.put(`/api/projects/${projectId}`, updateData);
+// 개인 프로젝트 
 
-// 특정 프로젝트를 삭제
-export const deleteProject = (projectId) => apiClient.delete(`/api/projects/${projectId}`);
+// 조회
+export const fetchUserProjects = (userNum) => apiClient.get(`/api/user/${userNum}}/myinfo/projects`);
+
+// 생성
+export const createProject = (userNum, projectData) => apiClient.put(`/api/user/${userNum}}/myinfo/projects`, projectData);
+
+// 업데이트
+export const updateProject = (userNum, updateData) => apiClient.patch(`/api/user/${userNum}}/myinfo/projects`, updateData);
+
+// 삭제
+export const deleteProject = (userNum, projectNum) => apiClient.delete(`/api/user/${userNum}}/myinfo/projects`, projectNum);
+
+
+
+
+
+
 
 // 댓글 관련 API
 // 특정 게시물의 댓글 목록을 가져옴
@@ -94,9 +113,5 @@ export const updateComment = (commentId, updateData) => apiClient.put(`/api/comm
 // 특정 댓글을 삭제
 export const deleteComment = (commentId) => apiClient.delete(`/api/comments/${commentId}`);
 
-export const fetchItems = () => apiClient.get('/items');
-export const createItem = (item) => apiClient.post('/items', item);
-export const updateItem = (item) => apiClient.put(`/items/${item.id}`, item);
-export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 
 export default apiClient;

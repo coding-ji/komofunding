@@ -1,54 +1,79 @@
 import { useReducer } from "react";
 import { initialState, reducer } from "./reducer";
 import {
+    changeUserNickname,
+    changeEmail,
+    changePhoneNumber,
+    changeUserShortDescription,
     changeProjectNum,
-    changeCreatorName,
-    changeProjectTitle,
+    changeTitle,
     changeProjectCategory,
+    changeProjectThumbnailImgs,
     changeProjectShortDescription,
-    changeProjectDescription,
-    changeProjectItems,
-    changeProjectCurrentAmount,
-    changeProjectTotalAmount,
+    changeDescription,
+    changeItems,
+    changeCurrentAmount,
+    changeTotalAmount,
     changeProjectStartDate,
     changeProjectEndDate,
-    changeProjectWrittenDate,
-    changeProjectImgs,
-    resetState
+    changeWrittenDate,
+    changeApprovalDate,
+    changeRejectionDate,
+    changeIsHidden,
+    changeProgressRate,
+    changeQnaList,
+    changeSupporters,
+    resetState,
+    readProjects,
+    readProjectDetail,
+    readProjectsByCategoryAndStatus,
+    readUserProjects,
+    createNewProject,
+    updateExistingProject,
+    deleteExistingProject
 } from "./action";
 
 export const useStore = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const actions = {
-        // 프로젝트 글 번호 변경
+        // 프로젝트 유저 관련
+        changeUserNickname: (nickname) => dispatch(changeUserNickname(nickname)),
+        changeEmail: (email) => dispatch(changeEmail(email)),
+        changePhoneNumber: (phoneNumber) => dispatch(changePhoneNumber(phoneNumber)),
+        changeUserShortDescription: (shortDescription) => dispatch(changeUserShortDescription(shortDescription)),
+
+        // 프로젝트 관련
         changeProjectNum: (projectNum) => dispatch(changeProjectNum(projectNum)),
-        // 제작자 이름 변경
-        changeCreatorName: (creatorName) => dispatch(changeCreatorName(creatorName)),
-        // 프로젝트 제목 변경
-        changeProjectTitle: (projectTitle) => dispatch(changeProjectTitle(projectTitle)),
-        // 프로젝트 카테고리 변경
-        changeProjectCategory: (projectCategory) => dispatch(changeProjectCategory(projectCategory)),
-        // 프로젝트 간략 설명 변경
+        changeTitle: (title) => dispatch(changeTitle(title)),
+        changeProjectCategory: (category) => dispatch(changeProjectCategory(category)),
+        changeProjectThumbnailImgs: (thumbnailImgs) => dispatch(changeProjectThumbnailImgs(thumbnailImgs)),
         changeProjectShortDescription: (shortDescription) => dispatch(changeProjectShortDescription(shortDescription)),
-        // 프로젝트 상세 설명 변경
-        changeProjectDescription: (description) => dispatch(changeProjectDescription(description)),
-        // 프로젝트 아이템 변경
-        changeProjectItems: (items) => dispatch(changeProjectItems(items)),
-        // 프로젝트 현재 모금액 변경
-        changeProjectCurrentAmount: (currentAmount) => dispatch(changeProjectCurrentAmount(currentAmount)),
-        // 프로젝트 목표 금액 변경
-        changeProjectTotalAmount: (totalAmount) => dispatch(changeProjectTotalAmount(totalAmount)),
-        // 프로젝트 시작 날짜 변경
+        changeDescription: (description) => dispatch(changeDescription(description)),
+        changeItems: (items) => dispatch(changeItems(items)),
+        changeCurrentAmount: (currentAmount) => dispatch(changeCurrentAmount(currentAmount)),
+        changeTotalAmount: (totalAmount) => dispatch(changeTotalAmount(totalAmount)),
         changeProjectStartDate: (startDate) => dispatch(changeProjectStartDate(startDate)),
-        // 프로젝트 종료 날짜 변경
         changeProjectEndDate: (endDate) => dispatch(changeProjectEndDate(endDate)),
-        // 프로젝트 작성 날짜 변경
-        changeProjectWrittenDate: (writtenDate) => dispatch(changeProjectWrittenDate(writtenDate)),
-        // 프로젝트 이미지 변경
-        changeProjectImgs: (imgs) => dispatch(changeProjectImgs(imgs)),
-        // 상태 초기화
-        resetState: () => dispatch(resetState())
+        changeWrittenDate: (writtenDate) => dispatch(changeWrittenDate(writtenDate)),
+        changeApprovalDate: (approvalDate) => dispatch(changeApprovalDate(approvalDate)),
+        changeRejectionDate: (rejectionDate) => dispatch(changeRejectionDate(rejectionDate)),
+        changeIsHidden: (isHidden) => dispatch(changeIsHidden(isHidden)),
+        changeProgressRate: (progressRate) => dispatch(changeProgressRate(progressRate)),
+        changeQnaList: (qnaList) => dispatch(changeQnaList(qnaList)),
+        changeSupporters: (supporters) => dispatch(changeSupporters(supporters)),
+
+        // 초기화
+        resetState: () => dispatch(resetState()),
+
+        // 프로젝트 API 서비스 관련
+        readProjects: () => dispatch(readProjects()),
+        readProjectDetail: (projectNum) => dispatch(readProjectDetail(projectNum)),
+        readProjectsByCategoryAndStatus: (projectCategory, fundingStatus) => dispatch(readProjectsByCategoryAndStatus(projectCategory, fundingStatus)),
+        readUserProjects: (userNum) => dispatch(readUserProjects(userNum)),
+        createNewProject: (userNum, projectData) => dispatch(createNewProject(userNum, projectData)),
+        updateExistingProject: (userNum, updateData) => dispatch(updateExistingProject(userNum, updateData)),
+        deleteExistingProject: (userNum, projectNum) => dispatch(deleteExistingProject(userNum, projectNum))
     };
 
     return { state, actions };
