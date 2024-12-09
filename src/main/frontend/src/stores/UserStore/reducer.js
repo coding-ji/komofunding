@@ -20,58 +20,81 @@ import {
 } from './action.js';
 
 // 초기 상태 정의
-export const initialState = {};
+const initialState = {
+    userNum: null,
+    email: '',
+    password: '',
+    name: '',
+    nickname: '',
+    phoneNumber: '',
+    profileImg: '',
+    userShortDescription: '',
+    activatedStatus: false,
+    bankName: '',
+    accountNumber: '',
+    accountHolder: '',
+    joinDate: '',
+    corporationName: '',
+    corporationTel: '',
+    bsn: '',
+};
+
+// 동적 상태 업데이트 함수
+const updateStateField = (state, field, value) => ({
+    ...state,
+    [field]: value,
+});
 
 // 리듀서 함수
-export const reducer = (state, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_USER_NUM:
-            return { ...state, userNum: action.payload };
+            return updateStateField(state, 'userNum', action.payload);
 
         case CHANGE_EMAIL:
-            return { ...state, email: action.payload };
+            return updateStateField(state, 'email', action.payload);
 
         case CHANGE_PASSWORD:
-            return { ...state, password: action.payload };
+            return updateStateField(state, 'password', action.payload);
 
         case CHANGE_NAME:
-            return { ...state, name: action.payload };
+            return updateStateField{ ...state, name: action.payload };
 
         case CHANGE_NICKNAME:
-            return { ...state, nickname: action.payload };
+            return updateStateField(state, 'nickname', action.payload);
 
         case CHANGE_PHONE_NUMBER:
-            return { ...state, phoneNumber: action.payload };
+            return updateStateField(state, 'phoneNumber', action.payload);
 
         case CHANGE_PROFILE_IMG:
-            return { ...state, profileImg: action.payload };
+            return updateStateField(state, 'profileImg', action.payload);
 
         case CHANGE_USER_SHORT_DESCRIPTION:
-            return { ...state, userShortDescription: action.payload };
+            return updateStateField(state, 'userShortDescription', action.payload);
 
         case CHANGE_USER_ACTIVATED_STATUS:
-            return { ...state, activatedStatus: action.payload };
+            return updateStateField(state, 'activatedStatus', action.payload);
 
         case CHANGE_USER_BANK_NAME:
-            return { ...state, bankName: action.payload };
+            return updateStateField(state, 'bankName', action.payload);
 
         case CHANGE_USER_ACCOUNT_NUMBER:
-            return { ...state, accountNumber: action.payload };
+            return updateStateField(state, 'accountNumber', action.payload);
 
         case CHANGE_USER_ACCOUNT_HOLDER:
-            return { ...state, accountHolder: action.payload };
+            return updateStateField(state, 'accountHolder', action.payload);
 
         case CHANGE_USER_JOIN_DATE:
-            return { ...state, joinDate: action.payload };
+            return updateStateField(state, 'joinDate', action.payload);
 
         case CHANGE_CORPORATION_NAME:
-            return { ...state, corporationName: action.payload };
+            return updateStateField(state, 'corporationName', action.payload);
 
         case CHANGE_CORPORATION_TEL:
-            return { ...state, corporationTel: action.payload };
+            return updateStateField(state, 'corporationTel', action.payload);
 
         case CHANGE_BSN:
-            return { ...state, bsn: action.payload };
+            return updateStateField(state, 'bsn', action.payload);
 
         case UPDATE_ALL_FIELDS:
             return { ...state, ...action.payload };
@@ -79,7 +102,30 @@ export const reducer = (state, action) => {
         case RESET_STATE:
             return { ...initialState };
 
+        case 'READ_USER':
+            return { ...state, user: action.payload, isLoading: false };
+
+        case 'CREATE_USER':
+            return { ...state, user: action.payload, isLoading: false };
+
+        case 'UPDATE_USER':
+            return {...state, user: action.payload, isLoading: false };
+
+        case 'DELETE_USER':
+            return { ...state, user: action.payload, isLoading: false  };
+
+        case 'USER_REQUEST_START':
+            return { ...state, isLoading: true, error: null };
+
+        case 'USER_REQUEST_FAIL':
+            return { ...state, isLoading: false, error: action.payload };
+
+        case 'RESET_STATE':
+            return initialState;
+
         default:
             return state;
     }
 };
+
+export default reducer;

@@ -47,8 +47,23 @@ export const useStore = () => {
         updateAllFields: (fields) => dispatch(updateAllFields(fields)),
 
         // 상태 초기화
-        resetState: () => dispatch(resetState())
-    };
+        resetState: () => dispatch(resetState()),
 
+        fetchMyPageInfo: () => fetchMyPageInfo()(dispatch),
+        fetchUserProfile: (userNum) => fetchUserProfile(userNum)(dispatch),
+        updateProfile:(userNum, profileData) => updateProfile(userNum, profileData)(dispatch),
+        applyCreatorSwitch: (email, requestDTO) => applyCreatorSwitch(email, requestDTO)(dispatch),
+        register:(userInDTO) => register(userInDTO)(dispatch),
+        sendEmailForRegister: (email) => sendEmailForRegister(email)(dispatch),
+        sendEmailVerificationCode: (email) => sendEmailVerificationCode(email)(dispatch),
+        verifyEmail: (email, code) => verifyEmail(email, code)(dispatch),
+        login: (email, password) => login(email, password)(dispatch),
+        logoutUser: () => logoutUser()(dispatch),
+        removeUser: (userNum) => removeUser(userNum)(dispatch),
+        findEmail: (name, phoneNumber) => findEmail(name, phoneNumber)(dispatch),
+        resetUserPassword: (email) => resetUserPassword(email)(dispatch),
+        changePassword: (email, newPassword) => changePassword(email, newPassword)(dispatch),
+        uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
+     };
     return { state, actions };
 };
