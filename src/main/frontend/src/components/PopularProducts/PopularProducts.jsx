@@ -17,10 +17,10 @@ function PopularProducts({ products }) {
 
   // 데이터 정렬 후 상위 5개 추출
   useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
+    if (products && products.length > 0) {
       const sortedProducts = [...products].sort(
         (a, b) => b.progressRate - a.progressRate
-      ); // progressRate로 내림차순 정렬
+      );
       setPopularProducts(sortedProducts.slice(0, 5)); // 상위 5개 저장
       setLoading(false); // 데이터 로드 완료
     } else {

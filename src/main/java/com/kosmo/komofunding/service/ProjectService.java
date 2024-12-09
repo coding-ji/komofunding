@@ -30,7 +30,7 @@ public class ProjectService {
     private final QnARepository qnARepository;
 
     // 전체 프로젝트 조회
-    public List<ProjectOutDTO> getAllProjects() {
+       public List<ProjectOutDTO> getAllProjects() {
         try {
             List<Project> allProjects = projectRepository.findAll();
             LocalDateTime now = LocalDateTime.now();

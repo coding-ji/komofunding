@@ -46,9 +46,8 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
             @Param("now") LocalDateTime now);
 
     @Query("SELECT p FROM Project p WHERE " +
-            "((:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
-            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now)) ")
+            "(:fundingStatus = 'HOME' OR " + // fundingStatus가 'HOME'일 경우 모든 프로젝트 반환
+            "(:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
+            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now))")
     List<Project> findProjectsByFundingStatus(@Param("fundingStatus") String fundingStatus, @Param("now") LocalDateTime now);
-
-
 }
