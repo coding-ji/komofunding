@@ -18,7 +18,6 @@ const HomePage = () => {
         setLoading(false); // 데이터 로딩 완료
       })
       .catch(error => {
-        console.error("Error fetching projects: ", error); // 오류 로그
         setError(error); // 에러 상태 업데이트
         setLoading(false); // 로딩 종료
       });

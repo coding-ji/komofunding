@@ -28,7 +28,7 @@ const ProfileEdit = () => {
 
     // 이미지 상태 관리
     const [newProfileImage, setNewProfileImage] = useState(null); // 새 이미지 파일
-    const [previewImage, setPreviewImage] = useState(state.profileImg); // 미리보기 이미지
+    // const [previewImage, setPreviewImage] = useState(state.profileImg); // 미리보기 이미지
 
     useEffect(() => {
         const fetchUserData = async () => {

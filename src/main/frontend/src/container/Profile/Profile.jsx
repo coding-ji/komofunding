@@ -9,7 +9,7 @@ import { useStore } from "../../stores/UserStore/useStore";
 
 
 
-const Profile = ({userState}) => {
+const Profile = ({profileData}) => {
     const navigate = useNavigate();
   // 상위 컴포넌트에서 가져옴
   // useEffect(() => {
@@ -61,13 +61,12 @@ const Profile = ({userState}) => {
       <div className="profile-header">
         <ProfileImage
           size="200px"
-          initialImageSrc={userState.profileImg ? userState.profileImg : "https://www.w3schools.com/howto/img_avatar.png"}
+          initialImageSrc={profileData.profileImg}
           gridArea="profileImage"
         />
-
         <div className="profile-info">
-          <h1 className="usernickname">{userState.nickName}</h1>
-          <p className="user-id">회원번호: {userState.userNum}</p>
+          <h1 className="usernickname">{profileData.nickName}</h1>
+          <p className="user-id">회원번호: {profileData.userNum}</p>
           <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"
            onClick={ProfileEdit}
           />
@@ -78,7 +77,7 @@ const Profile = ({userState}) => {
       <div className="profile-section">
         <h1 className="profile-sub-title">자기 소개</h1>
         <div className="conversion-options">
-        <p>{userState.shortDescription}</p>
+        <p>{profileData.shortDescription}</p>
 
         </div>
       </div>
@@ -103,10 +102,10 @@ const Profile = ({userState}) => {
             <p>추가 조건: 법인 명의 계좌 및 입금 가능 여부 확인</p>
           </div>
         </div>
-        <WhiteBtn text="제작자 전환 신청"
+        {/* <WhiteBtn text="제작자 전환 신청"
             width="100%" height="50px" padding="3px auto" fontSize="1rem"
             onClick={handleCreateApply} // 확인해야 할 부분
-        ></WhiteBtn>
+        ></WhiteBtn> */}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import Header from "../../container/MainHeader";
 import Footer from "../../components/Footer/Footer";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { useState } from "react";
 
 const Layout = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const Content = styled.main`
 function Main() {
   return (
     <Layout>
-      <Header />
+      <Header/>
       <Content>
         <Outlet />
       </Content>

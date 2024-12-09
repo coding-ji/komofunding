@@ -295,48 +295,48 @@ public class UserService {
 
         return passwordEncoder.matches(password, user.getPassword());
     }
-
-    // 프로필 업데이트
-    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
-        User user = userRepository.findByUserNum(userNum)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-        // 요청 데이터를 기반으로 사용자 프로필 업데이트
-        if (request.getProfileImage() != null) {
-            user.setProfileImg(request.getProfileImage());
-        }
-        if (request.getNickName() != null) {
-            user.setNickName(request.getNickName());
-        }
-        if (request.getShortDescription() != null) {
-            user.setShortDescription(request.getShortDescription());
-        }
-        if (request.getPhoneNumber() != null) {
-            user.setPhoneNumber(request.getPhoneNumber());
-        }
-        if (request.getBankName() != null) {
-            user.setBankName(request.getBankName()); // 수정 필요 시 반영
-        }
-        if (request.getAccountNumber() != null) {
-            user.setAccountNumber(request.getAccountNumber());
-        }
-        if (request.getAccountHolder() != null) {
-            user.setAccountHolder(request.getAccountHolder());
-        }
-        if (request.getCorporationName() != null) {
-            user.setCorporationName(request.getCorporationName());
-        }
-        if (request.getCorporationTel() != null) {
-            user.setCorporationTel(request.getCorporationTel());
-        }
-        if (request.getBSN() != null) {
-            user.setBSN(request.getBSN());
-        }
-
-        userRepository.save(user); // 업데이트된 정보 저장
-
-        return true; // 성공적으로 업데이트된 경우 true 반환
-    }
+//
+//    // 프로필 업데이트
+//    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
+//        User user = userRepository.findByUserNum(userNum)
+//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//
+//        // 요청 데이터를 기반으로 사용자 프로필 업데이트
+//        if (request.getProfileImage() != null) {
+//            user.setProfileImg(request.getProfileImage());
+//        }
+//        if (request.getNickName() != null) {
+//            user.setNickName(request.getNickName());
+//        }
+//        if (request.getShortDescription() != null) {
+//            user.setShortDescription(request.getShortDescription());
+//        }
+//        if (request.getPhoneNumber() != null) {
+//            user.setPhoneNumber(request.getPhoneNumber());
+//        }
+//        if (request.getBankName() != null) {
+//            user.setBankName(request.getBankName()); // 수정 필요 시 반영
+//        }
+//        if (request.getAccountNumber() != null) {
+//            user.setAccountNumber(request.getAccountNumber());
+//        }
+//        if (request.getAccountHolder() != null) {
+//            user.setAccountHolder(request.getAccountHolder());
+//        }
+//        if (request.getCorporationName() != null) {
+//            user.setCorporationName(request.getCorporationName());
+//        }
+//        if (request.getCorporationTel() != null) {
+//            user.setCorporationTel(request.getCorporationTel());
+//        }
+//        if (request.getBSN() != null) {
+//            user.setBSN(request.getBSN());
+//        }
+//
+//        userRepository.save(user); // 업데이트된 정보 저장
+//
+//        return true; // 성공적으로 업데이트된 경우 true 반환
+//    }
 
 //    // 제작자 전환 신청 처리
 //    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {

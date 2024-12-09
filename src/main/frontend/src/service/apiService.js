@@ -65,7 +65,12 @@ export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/statu
 
 // 프로젝트 관련 API
 // 모든 프로젝트 목록을 가져옴
-export const fetchProjects = () => apiClient.get('/api/projects');
+export const fetchProjects = () => apiClient.get('/posts');
+
+// 프로젝트 카테고리 & 펀딩 상태에 따라 가져옴 
+export const fetchProjectsByCategoryAndStatus = (projectCategory, fundingStatus) => {
+    return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
+};
 
 // 새로운 프로젝트를 생성
 export const createProject = (projectData) => apiClient.post('/api/projects', projectData);
