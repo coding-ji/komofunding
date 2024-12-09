@@ -9,7 +9,8 @@ import { useStore } from "../../stores/UserStore/useStore";
 
 
 
-const Profile = (userState) => {
+const Profile = ({userState}) => {
+    const navigate = useNavigate();
   // 상위 컴포넌트에서 가져옴
   // useEffect(() => {
   //   //데이터를 가져오는 비동기 작업
@@ -47,7 +48,7 @@ const Profile = (userState) => {
 
 
   function ProfileEdit(){
-    navigate(`/profile-edit/${userState.userNum}`);
+    navigate(`/${user_num}/my_info/profile`);
   }
 
   function handleCreateApply(){
@@ -60,12 +61,12 @@ const Profile = (userState) => {
       <div className="profile-header">
         <ProfileImage
           size="200px"
-          initialImageSrc={userState.profileImg}
+          initialImageSrc={userState.profileImg ? userState.profileImg : "https://www.w3schools.com/howto/img_avatar.png"}
           gridArea="profileImage"
         />
 
         <div className="profile-info">
-          <h1 className="usernickname">{userState.nickname}</h1>
+          <h1 className="usernickname">{userState.nickName}</h1>
           <p className="user-id">회원번호: {userState.userNum}</p>
           <Btn text="프로필 편집"  height="30px" fontSize="0.7rem" padding="3px 10px"
            onClick={ProfileEdit}
@@ -77,7 +78,7 @@ const Profile = (userState) => {
       <div className="profile-section">
         <h1 className="profile-sub-title">자기 소개</h1>
         <div className="conversion-options">
-        <p>{userState.description}</p>
+        <p>{userState.shortDescription}</p>
 
         </div>
       </div>

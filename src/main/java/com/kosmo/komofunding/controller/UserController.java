@@ -43,7 +43,7 @@ public class UserController {
 
     // 프로필 조회
     @GetMapping("/{user_num}/my_info/profile")
-    public ResponseEntity<User> getUserProfile(@PathVariable("userNum") String userNum) {
+    public ResponseEntity<User> getUserProfile(@PathVariable("user_num") String userNum) {
         try {
             Long userNumLong = Long.parseLong(userNum);  // String -> Long 변환
 
@@ -58,28 +58,28 @@ public class UserController {
     }
 
     // 프로필 수정
-//    @PatchMapping("/{user_num}/my_info/profile")
-//    public ResponseEntity<Boolean> updateUserProfile(
-//            @PathVariable("userNum") Long userNum,
-//            @RequestBody UserProfileUpdateDTO request,  // 수정할 프로필 정보 받기
-//            @RequestParam String password  // 기존 비밀번호 받기
-//        ) {
-//        try {
-//            // 비밀번호 확인
-//            boolean isPasswordValid = userService.verifyPassword(String.valueOf(userNum), password);  // 비밀번호 검증
-//            if (!isPasswordValid) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
-//            }
-//
-//            // 프로필 업데이트
-//            boolean updatedProfile = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
-//
-//            // 수정된 프로필 반환
-//            return ResponseEntity.ok(updatedProfile); // 성공적으로 수정된 프로필 반환
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 예외 처리
-//        }
-//    }
+    @PatchMapping("/{user_num}/my_info/profile")
+    public ResponseEntity<Boolean> updateUserProfile(
+            @PathVariable("userNum") Long userNum,
+            @RequestBody UserProfileUpdateDTO request,  // 수정할 프로필 정보 받기
+            @RequestParam String password  // 기존 비밀번호 받기
+        ) {
+        try {
+            // 비밀번호 확인
+            boolean isPasswordValid = userService.verifyPassword(String.valueOf(userNum), password);  // 비밀번호 검증
+            if (!isPasswordValid) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
+            }
+
+            // 프로필 업데이트
+            boolean updatedProfile = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
+
+            // 수정된 프로필 반환
+            return ResponseEntity.ok(updatedProfile); // 성공적으로 수정된 프로필 반환
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 예외 처리
+        }
+    }
 
 //    @PostMapping("/{email}/myinfo/creator-switch")
 //    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(

@@ -8,7 +8,7 @@ import {
     CHANGE_PROFILE_IMG,
     CHANGE_USER_SHORT_DESCRIPTION,
     CHANGE_USER_ACTIVATED_STATUS,
-    CHANGE_USER_BANKNAME,
+    CHANGE_USER_BANK_NAME,
     CHANGE_USER_ACCOUNT_NUMBER,
     CHANGE_USER_ACCOUNT_HOLDER,
     CHANGE_USER_JOIN_DATE,
@@ -35,15 +35,15 @@ export const reducer = (state, action) => {
             return { ...state, name: action.payload };
         case CHANGE_NICKNAME:
             return { ...state, nickName: action.payload };
-        case CHANGE_PHONE:
+        case CHANGE_PHONE_NUMBER:
             return { ...state, phoneNumber: action.payload };
         case CHANGE_PROFILE_IMG:
             return { ...state, profileImg: action.payload };
-        case CHANGE_USER_DESCRIPTION:
+        case CHANGE_USER_SHORT_DESCRIPTION:
             return { ...state, shortDescription: action.payload };
         case CHANGE_USER_ACTIVATED_STATUS:
             return { ...state, activatedStatus: action.payload };
-        case CHANGE_USER_BANKNAME:
+        case CHANGE_USER_BANK_NAME:
             return { ...state, bankName: action.payload };
         case CHANGE_USER_ACCOUNT_NUMBER:
             return { ...state, accountNumber: action.payload };

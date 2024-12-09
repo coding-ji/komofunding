@@ -13,10 +13,10 @@ const apiClient = axios.create({
 export const getMyPageInfo = () => apiClient.get('/api/user/my_info');
 
 // 특정 사용자의 프로필 정보를 가져옴 (유저번호 기준)
-export const getUserProfile = (user_num) => apiClient.get(`/api/user/${user_num}/my_info/profile`);
+export const getUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/my_info/profile`);
 
 // 특정 사용자의 프로필을 업데이트
-export const updateUserProfile = (email, userInDTO) => apiClient.patch(`/api/user/${email}/my_info/profile`, userInDTO);
+export const updateUserProfile = (email, userProfileUpdateDTO) => apiClient.patch('/api/user/${email}/my_info/profile', userInDTO);
 
 // 특정 사용자가 제작자 전환을 신청함
 export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/my_info/creator-switch`, requestDTO);

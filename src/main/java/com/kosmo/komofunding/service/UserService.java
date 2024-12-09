@@ -271,43 +271,72 @@ public class UserService {
         userDetails.put("userNum", String.valueOf(user.getUserNum()));              // 유저 ID
         userDetails.put("nickName", user.getNickName());          // 유저 닉네임
         userDetails.put("userRole", user.getActivatedStatus().toString());  // 유저 역할 (후원자, 제작자 등)
-        userDetails.put("description", user.getShortDescription());  // 짧은 소개글
+        userDetails.put("shortDescription", user.getShortDescription());  // 짧은 소개글
 
         return userDetails;
     }
 
     public boolean verifyPassword(String userNum, String password) {
-        Optional<User> userOptional = userRepository.findByUserNum(Long.valueOf(userNum));
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return passwordEncoder.matches(password, user.getPassword());  // 비밀번호 검증
+        try {
+            Long userNumAsLong = Long.valueOf(userNum); // String을 Long으로 변환
+            return userRepository.findByUserNum(userNumAsLong)
+                    .map(user -> passwordEncoder.matches(password, user.getPassword())) // 비밀번호 검증
+                    .orElse(false); // 사용자 없으면 false 반환
+        } catch (NumberFormatException e) {
+            // userNum이 Long으로 변환 불가능한 경우 처리
+            throw new IllegalArgumentException("유효하지 않은 userNum 값입니다: " + userNum, e);
         }
-        return false;  // 사용자 없으면 false
+    }
+    // 프로필 페이지 수정 내용
+    // 비밀번호 검증
+    public boolean verifyPassword(Long userNum, String password) {
+        User user = userRepository.findById(String.valueOf(Long.parseLong(String.valueOf(userNum))))
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
-    // 프로필 페이지 수정 내용
-//    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
-//        Optional<User> userOptional = userRepository.findByUserNum(userNum);
-//        if (userOptional.isPresent()) {
-//            User user = userOptional.get();
-//
-//            // 요청에서 받은 값을 통해 프로필 정보 수정
-//            if (request.getNickName() != null) user.setNickName(request.getNickName());
-//            if (request.getShortDescription() != null) user.setShortDescription(request.getShortDescription());
-//            if (request.getPhoneNumber() != null) user.setPhoneNumber(request.getPhoneNumber());
-//            if (request.getBankName() != null) user.setBankName(request.getBankName());
-//            if (request.getAccountNumber() != null) user.setAccountNumber(request.getAccountNumber());
-//            if (request.getAccountHolder() != null) user.setAccountHolder(request.getAccountHolder());
-//            if (request.getCorporationName() != null) user.setCorporationName(request.getCorporationName());
-//            if (request.getCorporationTel() != null) user.setCorporationTel(request.getCorporationTel());
-//            if (request.getBSN() != null) user.setBSN(Long.valueOf(request.getBSN()));
-//            if (request.getProfileImage() != null) user.setProfileImage(request.getProfileImage());
-//
-//            // 수정된 사용자 저장
-//            userRepository.save(user);
-//        }
-//        return true;
-//    }
+    // 프로필 업데이트
+    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
+        User user = userRepository.findByUserNum(userNum)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 요청 데이터를 기반으로 사용자 프로필 업데이트
+        if (request.getProfileImage() != null) {
+            user.setProfileImg(request.getProfileImage());
+        }
+        if (request.getNickName() != null) {
+            user.setNickName(request.getNickName());
+        }
+        if (request.getShortDescription() != null) {
+            user.setShortDescription(request.getShortDescription());
+        }
+        if (request.getPhoneNumber() != null) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getBankName() != null) {
+            user.setBankName(request.getBankName()); // 수정 필요 시 반영
+        }
+        if (request.getAccountNumber() != null) {
+            user.setAccountNumber(request.getAccountNumber());
+        }
+        if (request.getAccountHolder() != null) {
+            user.setAccountHolder(request.getAccountHolder());
+        }
+        if (request.getCorporationName() != null) {
+            user.setCorporationName(request.getCorporationName());
+        }
+        if (request.getCorporationTel() != null) {
+            user.setCorporationTel(request.getCorporationTel());
+        }
+        if (request.getBSN() != null) {
+            user.setBSN(request.getBSN());
+        }
+
+        userRepository.save(user); // 업데이트된 정보 저장
+
+        return true; // 성공적으로 업데이트된 경우 true 반환
+    }
 
 //    // 제작자 전환 신청 처리
 //    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
