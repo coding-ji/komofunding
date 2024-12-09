@@ -39,7 +39,7 @@ export const RESET_STATE = "RESET_STATE";
 
 export const changeUserNum = (userNum) => ({type: CHANGE_USER_NUM, payload: userNum});
 export const changeEmail = (email) => ({type: CHANGE_EMAIL, payload: email});
-export const changePassword = (password) => ({type: CHANGE_PASSWORD, payload: password});
+export const changeUserPassword = (password) => ({type: CHANGE_PASSWORD, payload: password});
 export const changeName = (name) => ({type: CHANGE_NAME, payload: name});
 export const changeNickName = (nickName) => ({type: CHANGE_NICKNAME, payload: nickName});
 export const changePhoneNumber = (phoneNumber) => ({type: CHANGE_PHONE_NUMBER, payload: phoneNumber});
@@ -65,7 +65,7 @@ export const DELETE_USER = 'DELETE_USER';
 // axios 연동
 
 // 마이페이지 정보 가져오기
-export const fetchMyPageInfo = () = async (dispatch) => {
+export const fetchMyPageInfo = () => async(dispatch) => {
     try {
         const response = await getMyPageInfo();
         actions.updateAllFields(response.data); // 상태에 전체 데이터 업데이트
@@ -199,7 +199,7 @@ export const resetUserPassword = (email) => async(dispatch) => {
     }
 };
 
-export const changeUserPassword = (email, newPassword) => async(dispatch) => {
+export const changePasswordAsync = (email, newPassword) => async(dispatch) => {
     try {
         await changePassword(email, newPassword);
         console.log('비밀번호 변경 성공');
