@@ -21,6 +21,7 @@ import {
     CHANGE_PROGRESS_RATE,
     CHANGE_QNA_LIST,
     CHANGE_SUPPORTERS,
+    UPDATE_ALL_FIELDS,
     RESET_STATE,
     READ_PROJECT,
     CREATE_PROJECT,
@@ -29,42 +30,10 @@ import {
 } from "./action";
 
 // 초기 상태 정의
-export const initialState = {
-    // 사용자 관련 상태
-    userNickname: "",
-    email: "",
-    phoneNumber: "",
-    userShortDescription: "",
-
-    // 프로젝트 관련 상태
-    projectNum: "",
-    title: "",
-    projectCategory: "",
-    thumbnailImgs: [],
-    shortDescription: "",
-    description: "",
-    items: [
-        {
-            itemName: "",
-            itemPrice: "",
-            itemAmount: ""
-        }
-    ],
-    currentAmount: "",
-    totalAmount: "",
-    startDate: "",
-    endDate: "",
-    writtenDate: "",
-    approvalDate: "",
-    rejectionDate: "",
-    isHidden: false,
-    progressRate: 0,
-    qnaList: [],
-    supporters: [],
-};
+export const initialState = {};
 
 // 리듀서
-export const reducer = (state = initialState, action) => {
+export const reducer = (state, action) => {
     switch (action.type) {
         // 사용자 관련 상태 변경
         case CHANGE_USER_NICKNAME:
@@ -111,6 +80,8 @@ export const reducer = (state = initialState, action) => {
             return { ...state, qnaList: action.payload };
         case CHANGE_SUPPORTERS:
             return { ...state, supporters: action.payload };
+        case UPDATE_ALL_FIELDS:
+            return { ...state, ...action.payload };
 
         // 초기화
         case RESET_STATE:
