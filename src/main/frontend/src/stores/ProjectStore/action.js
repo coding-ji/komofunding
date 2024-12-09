@@ -182,6 +182,8 @@ export const readProjects = () => async (dispatch) => {
     }
 };
 
+
+
 // 특정 프로젝트 조회
 export const readProjectDetail = (projectNum) => async (dispatch) => {
     try {

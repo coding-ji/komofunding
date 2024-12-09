@@ -59,48 +59,58 @@ const cloudImages = [
 ];
 
 // 상위 페이지에서 props로 불러온 데이터 받음
-const TopSection = ({datas}) => {
+const TopSection = ({ datas }) => {
   const navigate = useNavigate();
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1200);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeProjects, setActiveProjects] = useState([]);
+
   const today = new Date();
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setDate(today.getDate() - 30);
 
-//화면 크기에 따른 상태 업데이트
-useEffect(() => {
+  // 화면 크기에 따른 상태 업데이트
+  useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 1200);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-}, []);
+  }, []);
 
-// 현재 진행 중인 프로젝트 필터링
-const activeProjects = datas.filter(
-  (item) =>
-    new Date(item.projectStartDate) <= today && new Date(item.projectEndDate) >= today
-);
+ 
+  // 프로젝트 데이터가 존재할 때만 필터링 실행
+  useEffect(() => {
+    if (datas && Array.isArray(datas) && datas.length > 0) {
+      console.log("datas가 정상적으로 전달되었습니다:", datas);
+  
+      const today = new Date(); // 오늘 날짜
+      const projectDatas = datas.filter(
+        (item) =>
+          new Date(item.projectStartDate) <= today &&
+          new Date(item.projectEndDate) >= today
+      );
+      setActiveProjects(projectDatas);
+    } else {
+      console.log("데이터가 없거나 null입니다.");
+    }
+  }, [datas]); // datas 변경 시에만 실행되도록
 
-// 사이드 메뉴 열고 & 닫기
-const toggleMenu = () => {
+  // 사이드 메뉴 열고 & 닫기
+  const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-
-// 1. `isNew` 플래그 추가
+  // 1. `isNew` 플래그 추가
   const projectsWithFlags = activeProjects.map((item) => ({
     ...item,
     isNew: new Date(item.projectStartDate) >= thirtyDaysAgo,
-  }
+  }));
 
-));
-
-// 2. `new`와 `popular` 프로젝트 고정 개수로 추출
+  // 2. `new`와 `popular` 프로젝트 고정 개수로 추출
   const selectedNewProjects = projectsWithFlags
-  .filter((item) => item.isNew) // `new` 조건
-  .slice(0, 6); // 최대 6개 고정
+    .filter((item) => item.isNew) // `new` 조건
+    .slice(0, 6); // 최대 6개 고정
 
-  
-const selectedPopularProjects = [...projectsWithFlags]
+  const selectedPopularProjects = [...projectsWithFlags]
     .sort(
       (a, b) =>
         b.currentAmount / b.totalAmount - a.currentAmount / a.totalAmount
@@ -108,15 +118,21 @@ const selectedPopularProjects = [...projectsWithFlags]
     .filter((item) => !selectedNewProjects.includes(item)) // `new` 제외
     .slice(0, 6); // 최대 6개 고정
 
-
-
-// 3. `displayedProjects` 생성 (new + popular)
-  const combinedProjects  = [
-    ...selectedNewProjects.map((item) => ({ ...item, isNew: true, isPopular: false })),
-    ...selectedPopularProjects.map((item) => ({ ...item, isNew: false, isPopular: true })),
+  // 3. `displayedProjects` 생성 (new + popular)
+  const combinedProjects = [
+    ...selectedNewProjects.map((item) => ({
+      ...item,
+      isNew: true,
+      isPopular: false,
+    })),
+    ...selectedPopularProjects.map((item) => ({
+      ...item,
+      isNew: false,
+      isPopular: true,
+    })),
   ];
-  
-// 4. 섞기 함수
+
+  // 4. 섞기 함수
   const shuffleArray = (array) => {
     return array
       .map((item) => ({ ...item, sort: Math.random() })) // 랜덤한 값 부여
@@ -124,7 +140,7 @@ const selectedPopularProjects = [...projectsWithFlags]
       .map(({ sort, ...rest }) => rest); // 정렬 후 불필요한 필드 제거
   };
 
-// 5. 카드 섞기
+  // 5. 카드 섞기
   const displayedProjects = shuffleArray(combinedProjects);
 
   return (
@@ -258,11 +274,9 @@ const selectedPopularProjects = [...projectsWithFlags]
               left: `${i * 10}%`,
               "--i": i + 1,
             }}
-
-    />
-  ))}
-</CloudsWrapper>
-
+          />
+        ))}
+      </CloudsWrapper>
     </div>
   );
 };

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,19 +34,21 @@ public class ProjectController {
     @Autowired
     ProjectConverter projectConverter;
 
-    // 전체 프로젝트 조회
+    // 현재 진행 중인 프로젝트 불러오기 (인기순으로 50개)
     @GetMapping("/posts")
     public ResponseEntity<List<ProjectOutDTO>> getAllProjects(){
-
         try {
             List<ProjectOutDTO> projects = projectService.getAllProjects();
+
             return ResponseEntity.ok(projects);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.emptyList());
         }
     }
+
 
     // 카테고리별 프로젝트 조회
     @GetMapping("/posts/main")
