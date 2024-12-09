@@ -1,6 +1,6 @@
 import Sidemenu from "../../components/SideMenu/SideMenu";
 import Profile from "../../container/Profile/Profile";
-import { updateUserProfile, getUserProfile } from "../../service/apiService";
+import { updateUserProfile } from "../../service/apiService";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -15,7 +15,6 @@ function ProfileView() {
     if (userNum) {
       const fetchUserProfileData = async () => {
         try {
-          const response = await getUserProfile(userNum);
           const userData = response.data;
           userActions.updateAllFields(userData);
         } catch (error) {

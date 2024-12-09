@@ -10,6 +10,7 @@ import ProfileImage from "../../components/ProfilePicture/ProfileImage";
 import Input from "../../components/input";
 import PasswordPopup from "./PasswordPopup";
 import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
+import { updateUserProfile, getUserProfile, uploadImg } from "../../service/apiService";
 
 
 const ProfileEdit = () => {
@@ -27,31 +28,25 @@ const ProfileEdit = () => {
 
     // 이미지 상태 관리
     const [newProfileImage, setNewProfileImage] = useState(null); // 새 이미지 파일
-    // const [previewImage, setPreviewImage] = useState(state.profileImg); // 미리보기 이미지
+    const [previewImage, setPreviewImage] = useState(null); // 미리보기 이미지
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`/api/users/${userNum}`);
+                getUserProfile(userNum); 
                 const userData = response.data;
+
                 if (userData) {
-                    actions.changeUserNum(userData.userNum);
-                    actions.changeEmail(userData.email);
-                    actions.changePassword(userData.password);
-                    actions.changeName(userData.name);
                     actions.changeNickName(userData.nickName);
                     actions.changePhoneNumber(userData.phoneNumber);
                     actions.changeProfileImg(userData.profileImg);
-                    actions.changeUserShortDescription(userData.shortDescription);
-                    actions.changeUserActivatedStatus(userData.activatedStatus);
+                    actions.changeUserShortDescription(userData.shortDescription)
                     actions.changeUserBankName(userData.bankName);
                     actions.changeUserAccountNumber(userData.accountNumber);
                     actions.changeUserAccountHolder(userData.accountHolder);
-                    actions.changeUserJoinDate(userData.joinDate);
                     actions.changeCorporationName(userData.corporationName);
                     actions.changeCorporationTel(userData.corporationTel);
                     actions.changeBSN(userData.BSN);
-                    setPreviewImage(userData.profileImg || defaultImage);
                 } else {
                     console.error("해당 유저를 찾을 수 없습니다.");
                 }
@@ -59,23 +54,21 @@ const ProfileEdit = () => {
                 console.error("데이터 로딩 실패", error);
             }
         };
-
         fetchUserData();
-    }, [userNum, actions]);
+    }, [userNum]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-
         // useStore의 actions를 사용하여 상태 업데이트
         switch (name) {
             case "nickName":
                 actions.changeNickName(value);
                 break;
             case "phone":
-                actions.changePhone(value);
+                actions.changePhoneNumber(value);
                 break;
             case "description":
-                actions.changeUserDescription(value);
+                actions.changeUserShortDescription(value);
                 break;
             case "bankName":
                 actions.changeUserBankName(value);
@@ -87,7 +80,10 @@ const ProfileEdit = () => {
                 actions.changeCorporationName(value);
                 break;
             case "representativeName":
-                actions.changeCorporationName(value); // 수정: 적절한 action 사용
+                actions.changeCorporationName(value);
+                break;
+            case "accountHolder": 
+                actions.changeUserAccountHolder(value);
                 break;
             default:
                 break;
@@ -96,6 +92,23 @@ const ProfileEdit = () => {
 
     const handleSaveProfile = async () => {
         try {
+            let uploadedImgUrl = state.profileImg; // 기존 이미지 URL 기본값
+    
+            // 새 이미지를 업로드한 경우 업로드 실행
+            if (newProfileImage) {
+                const formData = new FormData();
+                formData.append("file", newProfileImage);
+    
+                const response = await uploadImg(formData); // 이미지 업로드
+                if (response.status === 200) {
+                    uploadedImgUrl = response.data; // 업로드된 이미지 URL 설정
+                } else {
+                    alert("이미지 업로드 실패");
+                    return;
+                }
+            }
+    
+            // 업데이트 데이터 준비
             const updatedProfile = {
                 userNum: state.userNum,
                 email: state.email,
@@ -103,27 +116,25 @@ const ProfileEdit = () => {
                 name: state.name,
                 nickName: state.nickName,
                 phoneNumber: state.phoneNumber,
-                profileImg: previewImage, // 변경된 이미지 또는 기존 이미지
+                profileImg: uploadedImgUrl, // 업로드된 이미지 URL 저장
                 shortDescription: state.shortDescription,
                 activatedStatus: state.activatedStatus,
                 bankName: state.bankName,
                 accountNumber: state.accountNumber,
                 accountHolder: state.accountHolder,
-                joinDate: state.joinDate,
                 corporationName: state.corporationName,
                 corporationTel: state.corporationTel,
                 BSN: state.BSN,
             };
-
-            const response = await axios.patch(`/api/user/${state.userNum}/myinfo/profile`, updatedProfile, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (response.status === 200) {
+    
+            // 프로필 업데이트 API 호출
+            const updateResponse = await updateUserProfile(userNum, updatedProfile);
+    
+            if (updateResponse.status === 200) {
                 alert("수정이 완료되었습니다");
                 navigate(`/profile/${state.userNum}`);
+            } else {
+                throw new Error("프로필 업데이트 실패");
             }
         } catch (error) {
             console.error("프로필 저장 중 오류 발생:", error);
@@ -157,11 +168,12 @@ const ProfileEdit = () => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-        if (!file) return; // 선택된 파일이 없을 경우 처리하지 않음
-
+        if (!file) return;
+    
+        // 미리보기 생성
         const reader = new FileReader();
         reader.onload = () => {
-            setPreviewImage(reader.result); // 미리보기 이미지 업데이트
+            setPreviewImage(reader.result); // 미리보기용 이미지 업데이트
             setNewProfileImage(file); // 파일 저장
         };
         reader.readAsDataURL(file);
@@ -180,7 +192,7 @@ const ProfileEdit = () => {
                 <div className="profile-image-container">
                     <ProfileImage
                         size="200px"
-                        initialImageSrc={previewImage} // previewImage로 설정
+                        initialImageSrc={state.profileImg}
                     />
                     {/* 숨겨진 파일 업로드 */}
                     <input
@@ -266,6 +278,13 @@ const ProfileEdit = () => {
                             name="accountNumber"
                             onChange={handleInputChange}
                             placeholder="계좌번호"
+                        />
+                        <Input
+                            type="text"
+                            value={state.accountHolder}
+                            name="accountHolder"
+                            onChange={handleInputChange}
+                            placeholder="계좌주"
                         />
                     </div>
 

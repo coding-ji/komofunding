@@ -9,6 +9,7 @@ public class UserProfileUpdateDTO {
     private String profileImage;
     private String nickName;
     private String shortDescription;
+    private String password;
     private String phoneNumber;
     private String bankName;
     private String accountNumber;

@@ -80,7 +80,7 @@ export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) =>
 };
 
 
-// 개인 프로젝트 
+// 개인 프로젝트
 
 // 조회
 export const fetchUserProjects = (userNum) => apiClient.get(`/api/user/${userNum}}/myinfo/projects`);
@@ -113,5 +113,12 @@ export const updateComment = (commentId, updateData) => apiClient.put(`/api/comm
 // 특정 댓글을 삭제
 export const deleteComment = (commentId) => apiClient.delete(`/api/comments/${commentId}`);
 
+// 이미지 저장
+export const uploadImg = (img) => apiClient.post('/upload/image', img);
+
+export const fetchItems = () => apiClient.get('/items');
+export const createItem = (item) => apiClient.post('/items', item);
+export const updateItem = (item) => apiClient.put(`/items/${item.id}`, item);
+export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 
 export default apiClient;
