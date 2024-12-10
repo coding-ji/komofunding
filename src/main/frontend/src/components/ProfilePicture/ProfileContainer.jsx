@@ -8,6 +8,7 @@ const ProfileContainer = () => {
   };
 
   return (
+    <>
     <div className="profile-container">
       {/* 프로필 이미지 */}
       <ProfileImage size={150} />
@@ -17,6 +18,7 @@ const ProfileContainer = () => {
         이미지 등록
       </button>
     </div>
+    </>
   );
 };
 

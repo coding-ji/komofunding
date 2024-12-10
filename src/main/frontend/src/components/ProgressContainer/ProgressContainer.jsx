@@ -69,10 +69,6 @@ const ProgressContainer = () => {
 
   return (
     <div className={styles.container}>
-      {/* 기타 영역 */}
-      <div className={styles.OtherTextWrapper}>
-        <OtherText text="기타" />
-      </div>
 
 
       {/* 금액 정보 */}

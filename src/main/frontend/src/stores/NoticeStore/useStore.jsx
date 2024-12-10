@@ -46,6 +46,8 @@ export const useStore = () => {
             }
         },
 
+        readCommunityDetail: (projectNum) => readProjectDetail(projectNum)(dispatch),
+
         createNewCommunity: async (communityData) => {
             try {
                 await createNewCommunity(communityData)(dispatch);
@@ -54,19 +56,19 @@ export const useStore = () => {
             }
         },
 
-        updateExistingCommunity: async (communityId, updateData) => {
+        updateExistingCommunity: async (communityNumber, updateData) => {
             try {
-                await updateExistingCommunity(communityId, updateData)(dispatch);
+                await updateExistingCommunity(communityNumber, updateData)(dispatch);
             } catch (error) {
-                console.error(`Failed to update community ID: ${communityId}`, error);
+                console.error(`Failed to update community ID: ${communityNumber}`, error);
             }
         },
 
-        deleteExistingCommunity: async (communityId) => {
+        deleteExistingCommunity: async (communityNumber) => {
             try {
-                await deleteExistingCommunity(communityId)(dispatch);
+                await deleteExistingCommunity(communityNumber)(dispatch);
             } catch (error) {
-                console.error(`Failed to delete community ID: ${communityId}`, error);
+                console.error(`Failed to delete community ID: ${communityNumber}`, error);
             }
         },
     };

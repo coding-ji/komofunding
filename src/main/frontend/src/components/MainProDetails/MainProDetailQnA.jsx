@@ -26,8 +26,16 @@ const Btns = styled.div`
 `;
 
 const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
-  const [isQBoxVisible, setIsQBoxVisible] = useState(false); // QBox 표시 여부
-  const [inputValue, setInputValue] = useState(""); // Input 값 관리
+  const [isQBoxVisible, setIsQBoxVisible] = useState(false); // QBox 관리
+  const [inputValue, setInputValue] = useState(""); // Input -> 수정 / 답변
+
+  // 로그인된 사용자 정보 가져오기
+  const user = JSON.parse(localStorage.getItem('user')); // user 정보 가져오기   -> 로컬로 빼눈곤가 끄릉
+  const userId = user ? user.userId : "guest"; // 로그인된 사용자의 ID
+
+  // 관리자 정보 가져오기
+  const admin = JSON.parse(localStorage.getItem('admin')); // 관리자 정보
+  const answerUserId = admin ? admin.userId : "Admin123"; // 관리자 ID
 
   const handleInquiryClick = () => {
     setIsQBoxVisible(true); // QBox 보이기
@@ -38,7 +46,7 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
       // qnaList에 새 Q&A 추가
       const newQna = {
         qnaId: Date.now(),
-        userId: "User123", // 예시 유저 아이딘데 이거 어케 받아와야 하는겨..?
+        userId: userId, // 로그인된 사용자 ID 
         writtenDate: new Date().toISOString(),
         question_Comment: inputValue,
         answer: null,
@@ -55,6 +63,31 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
   const handleCancelClick = () => {
     setInputValue(""); // 입력 값 초기화
     setIsQBoxVisible(false); // QBox 숨기기
+  };
+
+  const handleUpdate = (qnaId, updatedQuestion) => {
+    setQnaList((prevList) =>
+      prevList.map((qna) =>
+        qna.qnaId === qnaId
+          ? { ...qna, question_Comment: updatedQuestion }
+          : qna
+      )
+    );
+  };
+  
+  const handleAnswer = (qnaId, answerText) => {
+    setQnaList((prevList) =>
+      prevList.map((qna) =>
+        qna.qnaId === qnaId
+          ? {
+              ...qna,
+              answer: answerText,
+              answerUserId: answerUserId, // 관리자 ID
+              answerWrittenDate: new Date().toISOString(),
+            }
+          : qna
+      )
+    );
   };
 
   return (
@@ -77,7 +110,7 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
           onClick={handleInquiryClick} // 클릭 시 QBox 표시
         />
       </Head>
-
+  
       <QBox visible={isQBoxVisible}>
         <Input
           placeholder="문의하고자 하는 내용을 입력해주세요."
@@ -86,31 +119,35 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
           height="50px"
           padding="0px 5px"
           size="small"
-          value={inputValue} // Input 값 바인딩
+          value={inputValue} // 문의 작성
           onChange={(e) => setInputValue(e.target.value)} // 입력 값 변경
         />
-
         <Btns>
           <ProductBtn1
             fontSize="0.7rem"
             padding="3px 0px"
             width="55px"
             text="확인"
-            onClick={handleConfirmClick} // 확인 버튼 클릭 핸들러
+            onClick={handleConfirmClick} 
           />
           <ProductBtn2
             fontSize="0.7rem"
             padding="3px 0px"
             width="55px"
             text="취소"
-            onClick={handleCancelClick} // 취소 버튼 클릭 핸들러
+            onClick={handleCancelClick} 
           />
         </Btns>
       </QBox>
-
+  
       {/* Q&A 리스트 */}
       {qnaList.map((qna) => (
-        <UserQnaBox key={qna.qnaId} qna={qna} />
+        <UserQnaBox
+          key={qna.qnaId}
+          qna={qna}
+          onUpdate={handleUpdate} // 수정 핸들러 전달
+          onAnswer={handleAnswer} // 답변 핸들러 전달
+        />
       ))}
     </div>
   );

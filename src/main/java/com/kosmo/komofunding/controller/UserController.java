@@ -43,44 +43,76 @@ public class UserController {
 
     // 프로필 조회
     @GetMapping("/{userNum}/my_info/profile")
-    public ResponseEntity<User> getUserProfile(@PathVariable("userNum") String userNum) {
+    public ResponseEntity<UserProfileUpdateDTO> getUserProfile(@PathVariable("userNum") Long userNum) {
         try {
-            Long userNumLong = Long.parseLong(userNum);  // String -> Long 변환
-
-            // 이메일로 사용자 정보 조회
-            User user = userService.getUserByUserNum(userNumLong)
+            User user = userService.getUserByUserNum(userNum)
                     .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
 
-            return ResponseEntity.ok(user); // 성공적으로 반환
+            // User 엔티티 -> UserProfileUpdateDTO로 변환
+            UserProfileUpdateDTO response = UserProfileUpdateDTO.builder()
+                    .profileImage(user.getProfileImg())
+                    .nickName(user.getNickName())
+                    .userNum(user.getUserNum())
+                    .shortDescription(user.getShortDescription())
+                    .phoneNumber(user.getPhoneNumber())
+                    .email(user.getEmail())  // 변경 불가 필드도 반환
+                    .name(user.getName())    // 변경 불가 필드도 반환
+                    .bankName(user.getBankName())  // 은행 이름
+                    .accountNumber(user.getAccountNumber())  // 계좌 번호
+                    .accountHolder(user.getAccountHolder())  // 계좌 주
+                    .BSN(user.getBSN())  // 사업자 등록 번호
+                    .password(user.getPassword())  // 비밀번호
+                    .build();
+
+            return ResponseEntity.ok(response);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 없으면 404 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
+
     // 프로필 수정
-    @PatchMapping("/{user_num}/my_info/profile")
-    public ResponseEntity<Boolean> updateUserProfile(
+    @PatchMapping("/{userNum}/my_info/profile")
+    public ResponseEntity<UserProfileUpdateDTO> updateUserProfile(
             @PathVariable("userNum") Long userNum,
             @RequestBody UserProfileUpdateDTO request  // 수정할 프로필 정보 받기
         ) {
         try {
             // 비밀번호 확인
-            boolean isPasswordValid = userService.verifyPassword(String.valueOf(userNum), request.getPassword());  // 비밀번호 검증
+            boolean isPasswordValid = userService.verifyPassword(Long.valueOf(String.valueOf(userNum)), request.getPassword());  // 비밀번호 검증
 
             if (!isPasswordValid) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
             }
 
             // 프로필 업데이트
-            boolean updatedProfile = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
+            User updatedUser = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
 
             // 수정된 프로필 반환
-            return ResponseEntity.ok(updatedProfile); // 성공적으로 수정된 프로필 반환
+            UserProfileUpdateDTO response = UserProfileUpdateDTO.builder()
+                    .profileImage(updatedUser.getProfileImg())
+                    .nickName(updatedUser.getNickName())
+                    .userNum(updatedUser.getUserNum())
+                    .shortDescription(updatedUser.getShortDescription())
+                    .phoneNumber(updatedUser.getPhoneNumber())
+                    .email(updatedUser.getEmail())
+                    .name(updatedUser.getName())
+                    .bankName(updatedUser.getBankName())  // 은행 이름
+                    .accountNumber(updatedUser.getAccountNumber())  // 계좌 번호
+                    .accountHolder(updatedUser.getAccountHolder())  // 계좌 주
+                    .BSN(updatedUser.getBSN())  // 사업자 등록 번호
+                    .password(updatedUser.getPassword())  // 비밀번호
+                    .build();
+
+            return ResponseEntity.ok(response); // 수정된 프로필 반환
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 사용자 없으면 404 반환
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 예외 처리
         }
     }
 
+    // 제작자 신청
 //    @PostMapping("/{email}/myinfo/creator-switch")
 //    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(
 //            @PathVariable String email,

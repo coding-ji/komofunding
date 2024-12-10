@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import TitleProduct from "../../components/TitleProduct";
-import DescriptionProduct from "../../components/DescriptionProduct";
 import MainProDetailsIntro from "../../components/MainProDetails/MainProDetailsIntro";
 import MainProDetailsImg from "../../components/MainProDetails/MainProDetailsImg";
 

@@ -1,105 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import "./ProfileEdit.css"; // CSS 파일 import
+// import axios from "axios";
+import "./ProfileEdit.css";
 import { Btn, WhiteBtn } from "../../components/MyBtn";
 import "../../index.css";
 import TitleBox from "../../components/TitleBox";
-import { useStore } from '../../stores/UserStore/useStore'
+import { useStore } from "../../stores/UserStore/useStore";
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
 import Input from "../../components/input";
 import PasswordPopup from "./PasswordPopup";
-import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
-import { updateUserProfile, getUserProfile, uploadImg } from "../../service/apiService";
-
+import { updateUserProfile, getUserProfile, changePassword, uploadProfileImage } from "../../service/apiService";
 
 const ProfileEdit = () => {
-    const { userNum } = useParams(); // URL 파라미터에서 userNum 추출
-    const { state, actions } = useStore();
+    const { userNum } = useParams();
+    const { state, dispatch } = useStore(); // dispatch로 상태 변경
     const navigate = useNavigate();
 
-    // 비밀번호 상태
-    const [currentPassword, setCurrentPassword] = useState(""); // 현재 비밀번호
-    const [currentPasswordCheck, setCurrentPasswordCheck] = useState(""); // 비밀번호 재확인
-    const [isPasswordCorrect, setIsPasswordCorrect] = useState(false); // 비밀번호 확인 여부
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [currentPasswordCheck, setCurrentPasswordCheck] = useState("");
+    const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
 
-    const [showModal, setShowModal] = useState(false); // 모달 상태
-    const [newPassword, setNewPassword] = useState(""); // 새로운 비밀번호
+    const [showModal, setShowModal] = useState(false);
+    const [newPassword, setNewPassword] = useState("");
 
-    // 이미지 상태 관리
-    const [newProfileImage, setNewProfileImage] = useState(null); // 새 이미지 파일
-    const [previewImage, setPreviewImage] = useState(null); // 미리보기 이미지
+    const [newProfileImage, setNewProfileImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
+    // 사용자 데이터 불러오기
+     useEffect(() => {
+        if (userNum) {
+          const fetchUserProfileData = async () => {
             try {
-                getUserProfile(userNum); 
-                const userData = response.data;
+              // API 호출해서 사용자 데이터 가져오기
+              const response = await getUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
+              const userData = response.data;
+              userActions.updateAllFields(userData);
 
-                if (userData) {
-                    actions.changeNickName(userData.nickName);
-                    actions.changePhoneNumber(userData.phoneNumber);
-                    actions.changeProfileImg(userData.profileImg);
-                    actions.changeUserShortDescription(userData.shortDescription)
-                    actions.changeUserBankName(userData.bankName);
-                    actions.changeUserAccountNumber(userData.accountNumber);
-                    actions.changeUserAccountHolder(userData.accountHolder);
-                    actions.changeCorporationName(userData.corporationName);
-                    actions.changeCorporationTel(userData.corporationTel);
-                    actions.changeBSN(userData.BSN);
-                } else {
-                    console.error("해당 유저를 찾을 수 없습니다.");
-                }
             } catch (error) {
-                console.error("데이터 로딩 실패", error);
+              console.error("프로필 정보 가져오기 실패:", error);
             }
-        };
-        fetchUserData();
-    }, [userNum]);
+          };
+
+          fetchUserProfileData();
+        } else {
+          console.error("userNum이 존재하지 않습니다.");
+        }
+      }, [userNum]); // userNum이 변경될 때마다 다시 API 호출
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        // useStore의 actions를 사용하여 상태 업데이트
-        switch (name) {
-            case "nickName":
-                actions.changeNickName(value);
-                break;
-            case "phone":
-                actions.changePhoneNumber(value);
-                break;
-            case "description":
-                actions.changeUserShortDescription(value);
-                break;
-            case "bankName":
-                actions.changeUserBankName(value);
-                break;
-            case "accountNumber":
-                actions.changeUserAccountNumber(value);
-                break;
-            case "corporationName":
-                actions.changeCorporationName(value);
-                break;
-            case "representativeName":
-                actions.changeCorporationName(value);
-                break;
-            case "accountHolder": 
-                actions.changeUserAccountHolder(value);
-                break;
-            default:
-                break;
-        }
+        // dispatch를 통해 상태 업데이트
+        dispatch({ type: "UPDATE_FIELD", field: name, value });
     };
 
+    // 프로필 저장
     const handleSaveProfile = async () => {
         try {
-            let uploadedImgUrl = state.profileImg; // 기존 이미지 URL 기본값
-    
-            // 새 이미지를 업로드한 경우 업로드 실행
+            let uploadedImgUrl = state.profileImage;
+
             if (newProfileImage) {
                 const formData = new FormData();
                 formData.append("file", newProfileImage);
-    
-                const response = await uploadImg(formData); // 이미지 업로드
+
+                const response = await uploadProfileImage(formData); // 이미지 업로드 API 호출
                 if (response.status === 200) {
                     uploadedImgUrl = response.data; // 업로드된 이미지 URL 설정
                 } else {
@@ -107,29 +70,26 @@ const ProfileEdit = () => {
                     return;
                 }
             }
-    
-            // 업데이트 데이터 준비
-            const updatedProfile = {
-                userNum: state.userNum,
-                email: state.email,
-                password: state.password,
-                name: state.name,
-                nickName: state.nickName,
-                phoneNumber: state.phoneNumber,
-                profileImg: uploadedImgUrl, // 업로드된 이미지 URL 저장
-                shortDescription: state.shortDescription,
-                activatedStatus: state.activatedStatus,
-                bankName: state.bankName,
-                accountNumber: state.accountNumber,
-                accountHolder: state.accountHolder,
-                corporationName: state.corporationName,
-                corporationTel: state.corporationTel,
-                BSN: state.BSN,
-            };
-    
+
+//             const updatedProfile = {
+//                 userNum: state.userNum,
+//                 email: state.email,
+//                 password: state.password,
+//                 name: state.name,
+//                 nickName: state.nickName,
+//                 phoneNumber: state.phoneNumber,
+//                 profileImage: uploadedImgUrl,
+//                 shortDescription: state.shortDescription,
+//                 activatedStatus: state.activatedStatus,
+//                 bankName: state.bankName,
+//                 accountNumber: state.accountNumber,
+//                 accountHolder: state.accountHolder,
+//                 BSN: state.BSN,
+//             };
+
+
             // 프로필 업데이트 API 호출
-            const updateResponse = await updateUserProfile(userNum, updatedProfile);
-    
+            const updateResponse = await updateProfile(userNum, updatedProfile); // API 호출
             if (updateResponse.status === 200) {
                 alert("수정이 완료되었습니다");
                 navigate(`/profile/${state.userNum}`);
@@ -146,7 +106,8 @@ const ProfileEdit = () => {
         navigate(`/profile/${state.userNum}`);
     };
 
-    const handlePasswordCheck = () => {
+    // 비밀번호 확인
+    const handlePasswordCheck = async () => {
         if (!currentPassword || !currentPasswordCheck) {
             alert("모든 필드를 입력해주세요.");
             return;
@@ -169,8 +130,7 @@ const ProfileEdit = () => {
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-    
-        // 미리보기 생성
+
         const reader = new FileReader();
         reader.onload = () => {
             setPreviewImage(reader.result); // 미리보기용 이미지 업데이트
@@ -181,8 +141,8 @@ const ProfileEdit = () => {
 
     const handlePasswordSave = (newPassword) => {
         console.log("새 비밀번호 저장:", newPassword);
-        // 비밀번호 저장 처리 로직 추가
-        actions.changePassword(newPassword);
+        // 비밀번호 저장 API 호출
+        changePassword(state.email, newPassword); // API 호출로 변경
     };
 
     return (
@@ -190,11 +150,7 @@ const ProfileEdit = () => {
             <TitleBox text="회원정보" />
             <div className="profile-edit-grid-box">
                 <div className="profile-image-container">
-                    <ProfileImage
-                        size="200px"
-                        initialImageSrc={state.profileImg}
-                    />
-                    {/* 숨겨진 파일 업로드 */}
+                    <ProfileImage size="200px" initialImageSrc={state.profileImage} />
                     <input
                         id="upload-profile-image"
                         type="file"
@@ -202,8 +158,6 @@ const ProfileEdit = () => {
                         style={{ display: "none" }}
                         onChange={handleImageChange}
                     />
-
-                    {/* WhiteBtn 클릭 시 파일 선택 창 열기 */}
                     <WhiteBtn
                         text="이미지 업로드"
                         height="30px"
@@ -270,7 +224,12 @@ const ProfileEdit = () => {
                             <option value="">은행 선택</option>
                             <option value="신한">신한</option>
                             <option value="우리">우리</option>
+                            <option value="하나">하나</option>
+                            <option value="카카오">카카오</option>
+                            <option value="농협">농협</option>
+                            <option value="기업">기업</option>
                             <option value="국민">국민</option>
+                            <option value="수협">수협</option>
                         </select>
                         <Input
                             type="text"
@@ -288,60 +247,41 @@ const ProfileEdit = () => {
                         />
                     </div>
 
-                    <div className="flex-row">
-                        <label>사업자 등록번호</label>
-                        <Input
-                            type="text"
-                            value={state.BSN}
-                            name="BSN"
-                            onChange={handleInputChange}
-                        />
-                    </div>
 
-                    {/* 비밀번호 확인 버튼 */}
+
                     <div className="flex-row">
-                        <label>비밀번호 확인</label>
+                        <label>비밀번호</label>
                         <input
                             type="password"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             placeholder="현재 비밀번호"
-                        />
+                    />
                         <input
                             type="password"
                             value={currentPasswordCheck}
-                            onChange={(e) => setCurrentPasswordCheck(e.target.value)}
-                            placeholder="비밀번호 재확인"
+                           onChange={(e) => setCurrentPasswordCheck(e.target.value)}
+                           placeholder="비밀번호 재확인"
+                    />
+                    <button onClick={handlePasswordCheck}>비밀번호 확인</button>
+                    </div>
+
+                    {showModal && (
+                        <PasswordPopup
+                            currentPassword={currentPassword}
+                            setCurrentPassword={setCurrentPassword}
+                            newPassword={newPassword}
+                            setNewPassword={setNewPassword}
+                            onSavePassword={handlePasswordSave}
                         />
-                        <button onClick={handlePasswordCheck}>비밀번호 확인</button>
+                    )}
+
+                    <div className="profile-edit-buttons">
+                        <Btn text="저장" onClick={handleSaveProfile} />
+                        <WhiteBtn text="취소" onClick={handleCancel} />
                     </div>
                 </div>
-                <div className="button-box">
-                    <Btn
-                        text="저장"
-                        height="40px"
-                        fontSize="1rem"
-                        padding="5px 15px"
-                        width="150px"
-                        onClick={handleSaveProfile}
-                    />
-                    <WhiteBtn
-                        text="취소"
-                        height="40px"
-                        fontSize="1rem"
-                        padding="5px 15px"
-                        width="150px"
-                        onClick={handleCancel}
-                    />
-                </div>
             </div>
-            {showModal && (
-                <PasswordPopup
-                    isOpen={showModal}
-                    onClose={() => setShowModal(false)}
-                    onSave={handlePasswordSave}
-                />
-            )}
         </div>
     );
 };

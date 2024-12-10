@@ -13,7 +13,7 @@ import { getMyPageInfo,
  deleteUser,
  findUserId,
  resetPassword,
-//  changePassword,
+ changePassword,
  verifyPassword,
  uploadImg} from '../../service/apiService';
 
@@ -39,7 +39,7 @@ export const RESET_STATE = "RESET_STATE";
 
 export const changeUserNum = (userNum) => ({type: CHANGE_USER_NUM, payload: userNum});
 export const changeEmail = (email) => ({type: CHANGE_EMAIL, payload: email});
-export const changePassword = (password) => ({type: CHANGE_PASSWORD, payload: password});
+export const setUserPassword = (password) => ({type: CHANGE_USER_PASSWORD, payload: password});
 export const changeName = (name) => ({type: CHANGE_NAME, payload: name});
 export const changeNickName = (nickName) => ({type: CHANGE_NICKNAME, payload: nickName});
 export const changePhoneNumber = (phoneNumber) => ({type: CHANGE_PHONE_NUMBER, payload: phoneNumber});
@@ -225,7 +225,7 @@ export const resetUserPassword = (email) => async(dispatch) => {
     }
 };
 
-export const changeUserPassword = (email, newPassword) => async(dispatch) => {
+export const updateUserPassword = (email, newPassword) => async(dispatch) => {
     try {
         await changeUserPassword(email, newPassword);
         console.log('비밀번호 변경 성공');
@@ -238,11 +238,7 @@ export const changeUserPassword = (email, newPassword) => async(dispatch) => {
 // 이미지 업로드
 export const uploadProfileImage = (file) => async(dispatch) => {
     try {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await uploadImg(formData);
-
+        await uploadProfileImage(file);
         dispatch({ type : 'UPDATE_USER', payload : response.data}); // 상태에 업로드된 이미지 URL 저장
         console.log('이미지 업로드 성공:', response.data.url);
     } catch (error) {
