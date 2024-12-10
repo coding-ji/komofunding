@@ -16,37 +16,52 @@ import {
     CHANGE_CORPORATION_TEL,
     UPDATE_ALL_FIELDS,
     CHANGE_BSN,
-    RESET_STATE
+    RESET_STATE,
+    READ_USER,
+    CREATE_USER,
+    UPDATE_USER,
+    DELETE_USER,
+    APPLY_CREATOR_SWITCH,
+    LOGIN_SUCCESS,
+    LOGOUT_USER,
+    SEND_REGISTER_EMAIL_SUCCESS,
+    SEND_EMAIL_VERIFICATION_SUCCESS,
+    VERIFY_EMAIL_SUCCESS,
+    FIND_EMAIL_SUCCESS,
+    RESET_PASSWORD_REQUEST_SUCCESS,
+    CHANGE_PASSWORD_SUCCESS,
+    UPLOAD_PROFILE_IMAGE_SUCCESS
+
 } from './action.js';
 
 // 초기 상태 정의
 export const initialState = {
-    userNum: null,
-    email: '',
-    password: '',
-    name: '',
-    nickname: '',
-    phoneNumber: '',
-    profileImg: '',
-    userShortDescription: '',
-    activatedStatus: false,
-    bankName: '',
-    accountNumber: '',
-    accountHolder: '',
-    joinDate: '',
-    corporationName: '',
-    corporationTel: '',
-    bsn: '',
+//    userNum: null,
+//    email: '',
+//    password: '',
+//    name: '',
+//    nickname: '',
+//    phoneNumber: '',
+//    profileImg: '',
+//    userShortDescription: '',
+//    activatedStatus: false,
+//    bankName: '',
+//    accountNumber: '',
+//    accountHolder: '',
+//    joinDate: '',
+//    corporationName: '',
+//    corporationTel: '',
+//    bsn: '',
 };
 
 // 동적 상태 업데이트 함수
-export const updateStateField = (state, field, value) => ({
-    ...state,
-    [field]: value,
-});
+//export const updateStateField = (state, field, value) => ({
+//    ...state,
+//    [field]: value,
+//});
 
 // 리듀서 함수
-export const reducer = (state = initialState, action) => {
+export const reducer = (state , action) => {
     switch (action.type) {
         case CHANGE_USER_NUM:
             return updateStateField(state, 'userNum', action.payload);
@@ -102,25 +117,25 @@ export const reducer = (state = initialState, action) => {
         case RESET_STATE:
             return { ...initialState };
 
-        case 'READ_USER':
-            return { ...state, user: action.payload, isLoading: false };
+        case READ_USER:
+            return { ...state, user: action.payload};
 
-        case 'CREATE_USER':
-            return { ...state, user: action.payload, isLoading: false };
+        case CREATE_USER:
+            return { ...state, user: action.payload};
 
-        case 'UPDATE_USER':
-            return {...state, user: action.payload, isLoading: false };
+        case UPDATE_USER:
+            return {...state, user: action.payload };
 
-        case 'DELETE_USER':
-            return { ...state, user: action.payload, isLoading: false  };
+        case DELETE_USER:
+            return { ...state, user: action.payload };
 
-        case 'USER_REQUEST_START':
+        case USER_REQUEST_START:
             return { ...state, isLoading: true, error: null };
 
-        case 'USER_REQUEST_FAIL':
+        case USER_REQUEST_FAIL:
             return { ...state, isLoading: false, error: action.payload };
 
-        case 'RESET_STATE':
+        case RESET_STATE:
             return initialState;
 
         default:
