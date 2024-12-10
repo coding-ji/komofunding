@@ -234,7 +234,7 @@ const SignupForm = () => {
             </motion.button>
 
             
-            {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
+
           </form>
         </section>
       </motion.div>
