@@ -4,10 +4,7 @@ import 'quill/dist/quill.snow.css'; // Quill 스타일을 임포트
 import axios from 'axios'; // axios 임포트
 import './EditorItem.css'; // CSS를 임포트
 
-const Editor = ({ editorContent, setEditorContent, quillRef }) => {
-  // const quillRef = useRef(null);   // 사용하는 부모 컴포넌트에서 사용해야하는 것
-  // const [editorContent, setEditorContent] = useState(""); // 사용하는 부모 컴포넌트에서 사용해야하는 것
-
+const EditorItem = ({ content, setContent, quillRef }) => {
   const editorRef = useRef(null); // Quill을 사용할 DOM 참조
   const [isQuillReady, setIsQuillReady] = useState(false); // Quill 초기화 완료 여부
 
@@ -65,13 +62,6 @@ const Editor = ({ editorContent, setEditorContent, quillRef }) => {
     },
   }), [toolbarOptions]);
 
-  // 스프링이랑 연결하면 위에 모듈 사용해야함
-  // const modules = useMemo(() => ({
-  //   toolbar: {
-  //     container: toolbarOptions,
-  //   },
-  // }), [toolbarOptions]);
-
   useEffect(() => {
     if (editorRef.current && !isQuillReady) {
       // Quill 초기화
@@ -82,20 +72,24 @@ const Editor = ({ editorContent, setEditorContent, quillRef }) => {
       quillRef.current = quillInstance; // Quill 인스턴스를 useRef에 할당
       setIsQuillReady(true); // Quill 초기화 완료
 
-      // 텍스트가 변경될 때마다 HTML 업데이트
+      // 에디터 내용이 변경될 때마다 부모 컴포넌트로 값 전달
       quillInstance.on('text-change', () => {
-        const html = quillInstance.root.innerHTML
-        setEditorContent(html);
+        const html = quillInstance.root.innerHTML;
+        setContent(html); // 부모로 값 전달
       });
+
+      // 초기 content를 Quill 에디터에 설정
+      if (content) {
+        quillInstance.root.innerHTML = content;
+      }
     }
 
-    // 언마운트 시에 editorRef null로 변경
     return () => {
       if (editorRef.current) {
         editorRef.current = null;
       }
     };
-  }, [modules, isQuillReady]);
+  }, [modules, isQuillReady, content]); // editorContent도 의존성에 추가
 
   return (
     <div>
@@ -104,4 +98,4 @@ const Editor = ({ editorContent, setEditorContent, quillRef }) => {
   );
 };
 
-export default Editor; 
+export default EditorItem;

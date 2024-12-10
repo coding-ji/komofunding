@@ -18,7 +18,7 @@ const Content = styled.main`
 function Main() {
   return (
     <Layout>
-      <Header />
+      <Header/>
       <Content>
         <Outlet />
       </Content>

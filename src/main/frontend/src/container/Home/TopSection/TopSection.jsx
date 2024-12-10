@@ -12,7 +12,6 @@ import cloud5 from "./img/cloud5.png";
 import MainMenu from "../../../components/MainMenu/MainMenu";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const animate = keyframes`
   0% {
@@ -59,67 +58,54 @@ const cloudImages = [
   { src: cloud5, index: 10 },
 ];
 
-const TopSection = () => {
+// 상위 페이지에서 props로 불러온 데이터 받음
+const TopSection = ({ datas }) => {
   const navigate = useNavigate();
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1200);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [projects, setProjects] = useState([]);
+  const [activeProjects, setActiveProjects] = useState([]);
+
   const today = new Date();
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setDate(today.getDate() - 30);
 
+  // 화면 크기에 따른 상태 업데이트
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 1200);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-// 필터링: 30일 이내 시작한 프로젝트
-const filteredProjects = projects.filter((project) => {
-  const startDate = new Date(project.startDate);
-  return startDate >= thirtyDaysAgo && startDate <= today;
-});
+ 
+  // 프로젝트 데이터가 존재할 때만 필터링 실행
+  useEffect(() => {
+    if (datas && Array.isArray(datas) && datas.length > 0) {
 
+      const today = new Date(); // 오늘 날짜
+      const projectDatas = datas.filter(
+        (item) =>
+          new Date(item.projectStartDate) <= today &&
+          new Date(item.projectEndDate) >= today
+      );
+      setActiveProjects(projectDatas);
+    }
+  }, [datas]); // datas 변경 시에만 실행되도록
 
-// 제한: 최대 6개만 가져오기
-const limitedProjects = filteredProjects.slice(0, 6);
-
-console.log(limitedProjects);
-
-
-useEffect(() => {
-  axios
-    .get("/data/projectData.json")
-    .then((response) => {
-      setProjects(response.data);
-    })
-    .catch((error) => {
-      console.error("데이터를 가져오는데 실패했습니다.", error);
-    });
-}, []);
-
-useEffect(() => {
-  const handleResize = () => setIsSmallScreen(window.innerWidth <= 1200);
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
-
-
+  // 사이드 메뉴 열고 & 닫기
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  // 현재 진행 중인 프로젝트 필터링
-  const activeProjects = projects.filter(
-    (item) =>
-      new Date(item.startDate) <= today && new Date(item.endDate) >= today
-  );
-
   // 1. `isNew` 플래그 추가
   const projectsWithFlags = activeProjects.map((item) => ({
     ...item,
-    isNew: new Date(item.startDate) >= thirtyDaysAgo,
+    isNew: new Date(item.projectStartDate) >= thirtyDaysAgo,
   }));
 
   // 2. `new`와 `popular` 프로젝트 고정 개수로 추출
   const selectedNewProjects = projectsWithFlags
-  .filter((item) => item.isNew) // `new` 조건
-  .slice(0, 6); // 최대 6개 고정
+    .filter((item) => item.isNew) // `new` 조건
+    .slice(0, 6); // 최대 6개 고정
 
   const selectedPopularProjects = [...projectsWithFlags]
     .sort(
@@ -130,12 +116,20 @@ useEffect(() => {
     .slice(0, 6); // 최대 6개 고정
 
   // 3. `displayedProjects` 생성 (new + popular)
-  const combinedProjects  = [
-    ...selectedNewProjects.map((item) => ({ ...item, isNew: true, isPopular: false })),
-    ...selectedPopularProjects.map((item) => ({ ...item, isNew: false, isPopular: true })),
+  const combinedProjects = [
+    ...selectedNewProjects.map((item) => ({
+      ...item,
+      isNew: true,
+      isPopular: false,
+    })),
+    ...selectedPopularProjects.map((item) => ({
+      ...item,
+      isNew: false,
+      isPopular: true,
+    })),
   ];
-  
-  // 5. 섞기 함수
+
+  // 4. 섞기 함수
   const shuffleArray = (array) => {
     return array
       .map((item) => ({ ...item, sort: Math.random() })) // 랜덤한 값 부여
@@ -143,9 +137,8 @@ useEffect(() => {
       .map(({ sort, ...rest }) => rest); // 정렬 후 불필요한 필드 제거
   };
 
-  // 6. 카드 섞기
+  // 5. 카드 섞기
   const displayedProjects = shuffleArray(combinedProjects);
-
 
   return (
     <div className={styles.gridWrapper}>
@@ -164,7 +157,7 @@ useEffect(() => {
           {displayedProjects.slice(0, 2).map((project) => (
             <MainProductHorizontal
               key={project.projectNum}
-              imgSrc={project.imgs[0]}
+              imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
               onClick={() => navigate(`/project/${project.projectNum}`)}
@@ -175,12 +168,12 @@ useEffect(() => {
           <TopSectionBtnCard
             text="HOME"
             color="white"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
           />
           {displayedProjects.slice(2, 4).map((project) => (
             <MainProductHorizontal
               key={project.projectNum}
-              imgSrc={project.imgs[0]}
+              imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
               onClick={() => navigate(`/project/${project.projectNum}`)}
@@ -195,7 +188,7 @@ useEffect(() => {
           {displayedProjects.slice(4, 6).map((project) => (
             <MainProductHorizontal
               key={project.projectNum}
-              imgSrc={project.imgs[0]}
+              imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
               onClick={() => navigate(`/project/${project.projectNum}`)}
@@ -206,12 +199,12 @@ useEffect(() => {
           <TopSectionBtnCard
             text="UPCOMING"
             color="gray"
-            onClick={() => navigate("/upcoming")}
+            onClick={() => navigate("/home/upcoming")}
           />
           {displayedProjects.slice(6, 8).map((project) => (
             <MainProductHorizontal
               key={project.projectNum}
-              imgSrc={project.imgs[0]}
+              imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
               onClick={() => navigate(`/project/${project.projectNum}`)}
@@ -226,7 +219,7 @@ useEffect(() => {
               {displayedProjects.slice(8, 10).map((project) => (
                 <MainProductHorizontal
                   key={project.projectNum}
-                  imgSrc={project.imgs[0]}
+                  imgSrc={project.thumbnailImgs[0]}
                   currentAmount={parseInt(project.currentAmount, 10)}
                   totalAmount={parseInt(project.totalAmount, 10)}
                   onClick={() => navigate(`/project/${project.projectNum}`)}
@@ -237,12 +230,12 @@ useEffect(() => {
               <TopSectionBtnCard
                 text="ACTIVE"
                 color="white"
-                onClick={() => navigate("/active")}
+                onClick={() => navigate("/home/active")}
               />
               {displayedProjects.slice(10, 12).map((project) => (
                 <MainProductHorizontal
                   key={project.projectNum}
-                  imgSrc={project.imgs[0]}
+                  imgSrc={project.thumbnailImgs[0]}
                   currentAmount={parseInt(project.currentAmount, 10)}
                   totalAmount={parseInt(project.totalAmount, 10)}
                   onClick={() => navigate(`/project/${project.projectNum}`)}
@@ -267,7 +260,7 @@ useEffect(() => {
         >
           CLOSE
         </motion.button>
-        <MainMenu />
+        <MainMenu setMenuOpen={setMenuOpen} />
       </div>
       <CloudsWrapper>
         {cloudImages.map((cloud, i) => (
@@ -278,11 +271,9 @@ useEffect(() => {
               left: `${i * 10}%`,
               "--i": i + 1,
             }}
-
-    />
-  ))}
-</CloudsWrapper>
-
+          />
+        ))}
+      </CloudsWrapper>
     </div>
   );
 };

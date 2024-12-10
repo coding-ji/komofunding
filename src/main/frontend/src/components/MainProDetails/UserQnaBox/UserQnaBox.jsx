@@ -3,60 +3,186 @@ import styles from "./UserQnaBox.module.css";
 import DescriptionProduct from "../../DescriptionProduct";
 import { ProductBtn1, ProductBtn2 } from "../../MyBtn";
 
-function UserQnaBox() {
+function UserQnaBox({ qna, onUpdate, onAnswer }) {
   const [isAnswerVisible, setAnswerVisible] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedQuestion, setEditedQuestion] = useState(qna.question_Comment);
+  const [answerText, setAnswerText] = useState(qna.answer || ""); // 답변 텍스트 상태 추가
+  const [isAnswering, setIsAnswering] = useState(false); // 답변 모드 활성화 상태
+  const [savedAnswer, setSavedAnswer] = useState(qna.answer); // 저장된 답변 상태
 
   const toggleAnswer = () => {
     setAnswerVisible(!isAnswerVisible);
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true); // 편집 모드 활성화
+  };
+
+  const handleSaveClick = () => {
+    setIsEditing(false); // 편집 모드 비활성화
+    onUpdate(qna.qnaId, editedQuestion); // 부모 컴포넌트에 업데이트 요청
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false); // 편집 모드 비활성화
+    setEditedQuestion(qna.question_Comment); // 수정 전 내용 복원
+  };
+
+  const handleAnswerClick = () => {
+    setIsAnswering(true); // 답변 모드 활성화
+  };
+
+  const handleAnswerSave = () => {
+    setIsAnswering(false); // 답변 모드 비활성화
+    onAnswer(qna.qnaId, answerText); // 부모 컴포넌트에 답변 요청
+    setSavedAnswer(answerText); // 저장된 답변 업데이트
+  };
+
   return (
     <div>
       {/* 유저 질문 부분 */}
-      <div className={styles.qnaBox} onClick={toggleAnswer}>
+      <div className={styles.qnaBox} onClick={!isEditing ? toggleAnswer : undefined}>
         <div className={styles.userInfo}>
-          <DescriptionProduct color="black" padding="0" fontWeight="bold" text="김꼬모" />
-        </div>
-
-        <div className={styles.dateInfo}>
-          <DescriptionProduct color="black" fontWeight="bold" padding="0" text="2024-11-08" />
-        </div>
-
-        <div className={styles.questionText}>
           <DescriptionProduct
             color="black"
-            padding="0px 0px 20px 0px"
-            text="저기 궁금한데, 이거 술 100%인가요?"
+            padding="0"
+            fontWeight="bold"
+            text={qna.userId}
           />
         </div>
 
-        <div className={styles.buttons}>
-          <ProductBtn1 width="60px" padding="0" fontSize="0.8rem" text="수정" />
-          <ProductBtn2 width="60px" padding="0" fontSize="0.8rem" text="삭제" />
+        <div className={styles.dateInfo}>
+          <DescriptionProduct
+            color="black"
+            fontWeight="bold"
+            padding="0"
+            text={new Date(qna.writtenDate).toLocaleDateString()}
+          />
         </div>
+
+        <div className={styles.questionText}>
+          {isEditing ? (
+            <textarea
+              value={editedQuestion}
+              onChange={(e) => setEditedQuestion(e.target.value)}
+              className={styles.editInput}
+            />
+          ) : (
+            <DescriptionProduct
+              color="black"
+              padding="12px 0px"
+              text={qna.question_Comment}
+            />
+          )}
+        </div>
+
+        {/* 수정 / 확인 / 취소 버튼 */}
+        {!qna.answer && (
+          <div className={styles.editButtons}>
+            {isEditing ? (
+              <>
+                <ProductBtn1
+                  fontSize="0.7rem"
+                  padding="3px 0px"
+                  width="55px"
+                  text="확인"
+                  onClick={handleSaveClick}
+                />
+                <ProductBtn2
+                  fontSize="0.7rem"
+                  padding="3px 0px"
+                  width="55px"
+                  text="취소"
+                  onClick={handleCancelClick}
+                />
+              </>
+            ) : (
+              <>
+                <ProductBtn1
+                  justifySelf="center"
+                  fontSize="0.7rem"
+                  padding="3px 0px"
+                  width="55px"
+                  height="23px"
+                  text="수정"
+                  onClick={handleEditClick}
+                />
+                <ProductBtn1
+                  justifySelf="center"
+                  fontSize="0.7rem"
+                  padding="3px 0px"
+                  width="55px"
+                  height="23px"
+                  text="답변"
+                  onClick={handleAnswerClick} // 답변 버튼 클릭 시 활성화
+                />
+              </>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* 제작자 답변 부분 */}
-      <div
-        className={`${styles.answerBox} ${
-          isAnswerVisible ? styles.show : styles.hide
-        }`}
-      >
-        <div className={styles.userInfo}>
-          <DescriptionProduct color="black" fontWeight="bold" padding="0" text="제작자" />
-        </div>
-
-        <div className={styles.dateInfo}>
-          <DescriptionProduct color="black" fontWeight="bold" padding="0" text="2024-11-09" />
-        </div>
-
-        <div className={styles.questionText}>
-          <DescriptionProduct
-            color="black"
-            padding="0px 0px 20px 0px"
-            text="안녕하세요! 이 술은 100%가 맞습니다. 추가 질문 있으시면 말씀해주세요!"
+      {/* 답변 작성 */}
+      {isAnswering && !qna.answer && (
+        <div className={styles.answerBox}>
+          <textarea
+            value={answerText}
+            onChange={(e) => setAnswerText(e.target.value)}
+            className={styles.editInput}
           />
+          <div className={styles.editButtons}>
+            <ProductBtn1
+              fontSize="0.7rem"
+              padding="3px 0px"
+              width="55px"
+              text="등록"
+              onClick={handleAnswerSave} // 답변 저장
+            />
+            <ProductBtn2
+              fontSize="0.7rem"
+              padding="3px 0px"
+              width="55px"
+              text="취소"
+              onClick={() => setIsAnswering(false)} // 답변 취소
+            />
+          </div>
         </div>
+      )}
+
+      {/* 제작자 답변 */}
+      <div
+        className={`${styles.answerBox} ${isAnswerVisible ? styles.show : styles.hide}`}
+      >
+        {isAnswerVisible && (savedAnswer || qna.answer) && (
+          <>
+            <div className={styles.userInfo}>
+              <DescriptionProduct
+                color="black"
+                fontWeight="bold"
+                padding="0"
+                text={qna.answerUserId}
+              />
+            </div>
+
+            <div className={styles.dateInfo}>
+              <DescriptionProduct
+                color="black"
+                fontWeight="bold"
+                padding="0"
+                text={new Date(qna.answerWrittenDate).toLocaleDateString()}
+              />
+            </div>
+
+            <div className={styles.questionText}>
+              <DescriptionProduct
+                color="black"
+                padding="12px 0px"
+                text={savedAnswer || qna.answer} //{/* 저장된 답변 또는 기존 답변 표시 */}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

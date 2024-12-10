@@ -8,7 +8,7 @@ const categories = [
   { name: "pet", content: "Pet Supplies" },
   { name: "accessory", content: "Accessories" },
   { name: "cosmetics", content: "Cosmetics" },
-  { name: "home deco", content: "Home Decoration" },
+  { name: "homedeco", content: "Home Decoration" },
   { name: "travel", content: "Travel" },
   { name: "food", content: "Food & Beverages" },
   { name: "book", content: "Books" },

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // useRef 추가
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
@@ -31,12 +31,13 @@ function SelectPrjThree() {
   const [startDate, setStartDate] = useState(""); // 시작일 상태
   const [endDate, setEndDate] = useState(""); // 종료일 상태
   const navigate = useNavigate();
+  const quillRef = useRef(null); // quillRef 정의
 
   useEffect(() => {
     // localStorage에서 데이터 불러오기
     const projectData = JSON.parse(localStorage.getItem("projectData")) || {};
     if (projectData.content) {
-      setContent(projectData.content);
+      setContent(projectData.content);  // content 불러오기
     }
     if (projectData.images) {
       setImages(projectData.images);
@@ -59,12 +60,14 @@ function SelectPrjThree() {
   };
 
   const handleCompleteClick = () => {
+    // 프로젝트 데이터 저장
     const projectData = JSON.parse(localStorage.getItem("projectData")) || {};
-    projectData.content = content;
+    projectData.content = content; // 에디터 내용 저장
     projectData.images = images;
     projectData.startDate = startDate;
     projectData.endDate = endDate;
-    localStorage.setItem("projectData", JSON.stringify(projectData));
+    localStorage.setItem("projectData", JSON.stringify(projectData)); // localStorage에 저장
+    
     navigate("/selectprj/prjall");
   };
 
@@ -91,7 +94,7 @@ function SelectPrjThree() {
         <div>
           <TitleProduct text="프로젝트 내용" />
           <DescriptionProduct text="프로젝트 상세 내용을 작성해주세요." />
-          <EditorItem content={content} setContent={setContent} />
+          <EditorItem content={content} setContent={setContent} quillRef={quillRef} /> {/* quillRef 전달 */}
         </div>
        
         <MyNavLine />

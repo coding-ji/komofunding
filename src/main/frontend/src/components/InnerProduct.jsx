@@ -34,7 +34,7 @@ function InnerProduct({src, currentAmount, totalAmount, isNew, isPopular }) {
                 {labelProps && <Label text={labelProps.text} color={labelProps.color} />}
             <Img src={src || "https://via.placeholder.com/450x450"} /> {/* 기본 이미지 처리 */}
             {/* <ProductImg src={"https://via.placeholder.com/450x450"}></ProductImg> */}
-            <Progress value={progressValue} max={100} color='var(--navy-color)'></Progress>
+            <Progress value={progressValue} max={100} color={isPopular? "var(--navy-color)" : "var(--darkgreen-color)"}></Progress>
         </StyledProduct>
     )
 }

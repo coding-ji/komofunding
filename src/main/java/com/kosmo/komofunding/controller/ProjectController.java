@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.controller;
 
+import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
@@ -10,17 +11,21 @@ import com.kosmo.komofunding.repository.ProjectRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/user/myinfo/projects")
 public class ProjectController {
     @Autowired
     ProjectService projectService;
@@ -31,8 +36,40 @@ public class ProjectController {
     @Autowired
     ProjectConverter projectConverter;
 
+    // 현재 진행 중인 프로젝트 불러오기 (인기순으로 50개)
+    @GetMapping("/posts")
+    public ResponseEntity<List<ProjectOutDTO>> getAllProjects(){
+        try {
+            List<ProjectOutDTO> projects = projectService.getAllProjects();
+
+            return ResponseEntity.ok(projects);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+
+
+    // 카테고리별 프로젝트 조회
+    @GetMapping("/posts/category")
+    public ResponseEntity<List<ProjectOutDTO>> getProjectsByCategory(
+            @RequestParam(name = "projectCategory") String projectCategory,
+            @RequestParam(name = "fundingStatus") String fundingStatus) {
+        try{
+            List<ProjectOutDTO> projects = projectService.getProjectsByCategoryAndStatus(projectCategory, fundingStatus);
+            return ResponseEntity.ok(projects);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+
+
     // 유저(uid)에 해당하는 프로젝트 조회
-    @GetMapping
+    @GetMapping("/api/user/myinfo/projects")
     public ResponseEntity<List<ProjectOutDTO>> getProjects(HttpSession session){
         // 세션에서 userId 가져오기
         String userId = (String) session.getAttribute("userId");
@@ -66,7 +103,7 @@ public class ProjectController {
 
 
     // 개인 프로젝트 생성
-    @PostMapping
+    @PostMapping("/api/user/myinfo/projects")
     public ResponseEntity<Map<String, String>> createProject(
             @RequestBody ProjectInDTO projectRequest,
             HttpSession session) {

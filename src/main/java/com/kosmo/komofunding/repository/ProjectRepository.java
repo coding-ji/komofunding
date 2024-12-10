@@ -3,6 +3,8 @@ package com.kosmo.komofunding.repository;
 import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -24,12 +26,28 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     // 시작과 끝 날짜에 프로젝트 끝나는 날짜가 포함되어있는 프로젝트 조회
     List<Project> findByProjectEndDateBetween(LocalDateTime startDate, LocalDateTime endDate);
     // 프로젝트 카테고리로 프로젝트 조회
-    List<Project> findByProjectCategory(ProjectCategory projectCategory);
+    List<Project> findByProjectCategory(ProjectCategory category);
     // 프로젝트 Id를 통해서 후원자 찾기
-    List<Project> findSupportersByProjectId(String projectId);
+    List<Project> findSupportersIdListByProjectId(String projectId);
     // 프로젝트 제목에서 포함된 단어 찾기
     List<Project> findByTitleContaining(String keyword);
     // 프로젝트 존재여부 확인
     Boolean existsByProjectNum(Long projectNum);
 
+    // 온고잉이면 진행되는 것들이 사이에 , upcoming이면 시작되는게 지금보다 뒤에 !!
+    @Query("SELECT p FROM Project p WHERE " +
+            "((:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
+            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now) " +
+            "OR (:fundingStatus = 'HOME')) " +
+            "AND (:projectCategory = 'ALL' OR p.projectCategory = :projectCategory)")
+    List<Project> findProjectsByCategoryAndFundingStatusAndDateRange(
+            @Param("projectCategory") ProjectCategory projectCategory,
+            @Param("fundingStatus") String fundingStatus,
+            @Param("now") LocalDateTime now);
+
+    @Query("SELECT p FROM Project p WHERE " +
+            "(:fundingStatus = 'HOME' OR " + // fundingStatus가 'HOME'일 경우 모든 프로젝트 반환
+            "(:fundingStatus = 'ONGOING' AND p.projectStartDate <= :now AND p.projectEndDate >= :now) " +
+            "OR (:fundingStatus = 'UPCOMING' AND p.projectStartDate > :now))")
+    List<Project> findProjectsByFundingStatus(@Param("fundingStatus") String fundingStatus, @Param("now") LocalDateTime now);
 }

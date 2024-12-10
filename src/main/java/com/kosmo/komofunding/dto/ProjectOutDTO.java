@@ -36,6 +36,7 @@ public class ProjectOutDTO {
     private LocalDateTime approvalDate;
     private LocalDateTime rejectionDate;
     private Boolean isHidden;
+    private Double progressRate; // 달성률
 
     //프로젝트 문의댓글
     private List<QnAOutDTO> qnaList;

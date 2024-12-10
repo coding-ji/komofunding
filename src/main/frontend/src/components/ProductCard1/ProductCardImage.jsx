@@ -48,7 +48,7 @@ function ProductCardImage({ data,animation }) {
   
 
 
-  const { imgs = [] } = data;
+  const { thumbnailImgs = [] } = data;
 
 
   const animations = [
@@ -84,7 +84,7 @@ function ProductCardImage({ data,animation }) {
     
     
     >
-      <StyledProductImg src={imgs[0] || "https://fakeimg.pl/600x600/?text=KOMO"} />
+      <StyledProductImg src={thumbnailImgs[0] || "https://fakeimg.pl/600x600/?text=KOMO"} />
       </CardContainer>
   );
 }

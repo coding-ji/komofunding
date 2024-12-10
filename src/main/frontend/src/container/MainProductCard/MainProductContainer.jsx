@@ -6,10 +6,14 @@ import ProductMoreBtn from "../../components/ProductMoreBtn";
 
 function MainProductContainer({ products }) {
   const [shuffledProducts, setShuffledProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   // 데이터를 랜덤으로 섞어서 표시
   useEffect(() => {
-    setShuffledProducts(shuffleArray(products || []));
+    if (products && products.length > 0) {
+      setShuffledProducts(shuffleArray(products));
+      setLoading(false); // 데이터 로딩이 완료되면 false로 설정
+    }
   }, [products]);
 
   const shuffleArray = (array) =>
@@ -23,6 +27,10 @@ function MainProductContainer({ products }) {
   const topSection = shuffledProducts.slice(0, 5); // 상단 섹션
   const middleSection = shuffledProducts[5]; // 중단 섹션
   const bottomSection = shuffledProducts.slice(6, 9); // 하단 섹션
+
+  if (loading) {
+    return <div>Loading...</div>; // 데이터 로딩 중 표시
+  }
 
   return (
     <div className={styles.mainGrid}>

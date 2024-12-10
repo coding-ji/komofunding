@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
-import { registerUser, sendEmailCode, verifyEmailCode } from "../../service/apiService";
+import { registerUser, sendRegisterEmailCode, verifyEmailCode } from "../../service/apiService";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
     name: "",
-    nickname: "",
+    nickName: "",
     email: "",
     password: "",
-    phone: "",
+    phoneNumber: "",
   });
   const [authCode, setAuthCode] = useState(""); // 이메일 인증 코드 입력값
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,8 +31,9 @@ const SignupForm = () => {
       setErrorMessage("이메일을 입력하세요.");
       return;
     }
+
     try {
-      await sendEmailCode(formData.email);
+      await sendRegisterEmailCode(formData.email);
       setEmailSent(true);
       setSuccessMessage("인증코드가 이메일로 전송되었습니다.");
     } catch (error) {
@@ -42,15 +43,21 @@ const SignupForm = () => {
 
   // 이메일 인증 코드 검증
   const handleVerifyEmail = async () => {
+    // 입력한 인증 코드의 앞뒤 공백을 제거
+    const trimmedAuthCode = authCode.trim();
+    
+    console.log("Email: ", formData.email);  // 이메일 값 확인
+    console.log("Auth Code: ", trimmedAuthCode);  // 공백 제거된 인증 코드 값 확인
+  
     try {
-      await verifyEmailCode(formData.email, authCode);
+      await verifyEmailCode(formData.email, trimmedAuthCode);  // 공백 제거된 코드 전송
       setEmailVerified(true);
       setSuccessMessage("이메일 인증 성공!");
     } catch (error) {
       setErrorMessage("인증코드가 일치하지 않습니다.");
     }
   };
-
+  
   // 회원가입 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +75,7 @@ const SignupForm = () => {
     try {
       await registerUser(formData);
       setSuccessMessage("회원가입이 완료되었습니다!");
-      setFormData({ name: "", nickname: "", email: "", password: "", phone: "" });
+      setFormData({ name: "", nickName: "", email: "", password: "", phoneNumber: "" });
       setAuthCode("");
       setConfirmPassword("");
       setEmailSent(false);
@@ -116,11 +123,11 @@ const SignupForm = () => {
               닉네임
             </label>
             <input
-              id="nickname"
+              id="nickName"
               type="text"
               placeholder="닉네임을 입력하세요"
               className={styles.input}
-              value={formData.nickname}
+              value={formData.nickName}
               onChange={handleInputChange}
               style={{ gridArea: "input7" }}
             />
@@ -207,11 +214,11 @@ const SignupForm = () => {
               휴대폰 번호
             </label>
             <input
-              id="phone"
+              id="phoneNumber"
               type="text"
               placeholder="010-0000-0000"
               className={styles.input}
-              value={formData.phone}
+              value={formData.phoneNumber}
               onChange={handleInputChange}
               style={{ gridArea: "input6" }}
             />

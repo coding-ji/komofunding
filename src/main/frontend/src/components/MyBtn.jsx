@@ -5,6 +5,11 @@ import React, { useState } from "react";
 
 
 const Button = styled(motion.button)`
+  display: flex; /* 플렉스 박스 사용 */
+  justify-content: center; /* 수평 중앙 정렬 */
+    justify-self: ${(props) => props.justifySelf || "auto"}; /* justify-self 추가 */
+
+  align-items: center; /* 수직 중앙 정렬 */
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "100%"};
   background-color: ${(props) => props.bgColor};
@@ -127,7 +132,7 @@ export const CancelBtn = ({text, width, height, onClick,fontSize,padding,fontFam
 
 
 // 상품 페이지 수정 / 문의하기 => 블랙
-export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontFamily, justifySelf}) => (
   <Button
   bgColor="black"
   borderColor="black"
@@ -140,6 +145,7 @@ export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontF
   fontSize={fontSize} /* 폰트 크기 프롭 전달 */
   padding={padding}
   fontFamily={fontFamily}
+  justifySelf={justifySelf}
   >
     {text}
   </Button>

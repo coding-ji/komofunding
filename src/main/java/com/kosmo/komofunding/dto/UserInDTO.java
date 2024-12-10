@@ -20,6 +20,7 @@ public class UserInDTO {
     private String password;
     private String name;
     private String nickName;
+    private Long userNum;
     private String phoneNumber;
     private String profileImg;
     private String shortDescription;

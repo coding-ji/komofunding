@@ -1,15 +1,40 @@
+import React from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import ImageCarousel from "../ImageCarousel/ImageCarousel";
+import DescriptionProduct from "../DescriptionProduct";
 
-const Imgs = styled.div `
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 20px;
 `;
 
-function MainProDetailsImg () {
-    return(
-        <Imgs></Imgs>
-    )
+const ProjectSection = styled.div`
+
+`;
+
+const ProjectTitle = styled.h2`
+  font-size: 18px;
+  margin-bottom: 16px;
+`;
+
+function MainProDetailsImg({ project }) {
+  if (!project) {
+    return <div>프로젝트 데이터가 없습니다.</div>;
+  }
+
+  return (
+    <Container>
+      <ProjectSection>
+        <ImageCarousel images={project.imgs} />
+        <ProjectTitle>{project.projectTitle} 상품 제목 불러올 거임</ProjectTitle>
+        <DescriptionProduct
+        padding="0px"
+        text={project.description}></DescriptionProduct>
+      </ProjectSection>
+    </Container>
+  );
 }
 
 export default MainProDetailsImg;
-
-// 프로젝트 스토리에 들어가는 이미지 => 데이터 부르기

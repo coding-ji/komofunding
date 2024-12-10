@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "status": "답변완료",
+    "replyDate": "2024-11-20",
+    "author": "관리자",
+    "title": "내일 혹시 학원..?",
+    "link": "/inquiry/1",
+    "content": "내일 혹시 학원 안나와도 될까요? 눈이 너무 많이와요",
+    "answer": "헛소리말고 나오세요~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+  },
+  {
+    "id": 2,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "수업자료 문의드립니다.",
+    "link": "/inquiry/2",
+    "content": "이번 주 수업자료는 언제 업로드 되나요?",
+    "answer": ""
+  },
+  {
+    "id": 3,
+    "status": "답변완료",
+    "replyDate": "2024-11-18",
+    "author": "관리자",
+    "title": "교재 관련 문의",
+    "link": "/inquiry/3",
+    "content": "교재를 분실했는데 어디서 다시 구매할 수 있을까요?",
+    "answer": "학원 데스크에서 재구매 가능합니다."
+  },
+  {
+    "id": 4,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "수업시간 변경 요청",
+    "link": "/inquiry/4",
+    "content": "수업시간을 조금 늦출 수 있나요?",
+    "answer": ""
+  },
+  {
+    "id": 5,
+    "status": "답변완료",
+    "replyDate": "2024-11-19",
+    "author": "관리자",
+    "title": "시험 일정 문의",
+    "link": "/inquiry/5",
+    "content": "이번 달 시험 일정 알려주세요.",
+    "answer": "시험은 2024년 11월 25일로 예정되어 있습니다."
+  },
+  {
+    "id": 6,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "강사님 변경 요청",
+    "link": "/inquiry/6",
+    "content": "현재 강사님 수업 스타일이 저랑 맞지 않아서 변경 가능할까요?",
+    "answer": ""
+  },
+  {
+    "id": 7,
+    "status": "답변완료",
+    "replyDate": "2024-11-15",
+    "author": "관리자",
+    "title": "수강료 납부 문의",
+    "link": "/inquiry/7",
+    "content": "수강료 납부 기한이 언제까지인가요?",
+    "answer": "2024년 11월 30일까지입니다."
+  },
+  {
+    "id": 8,
+    "status": "답변완료",
+    "replyDate": "2024-11-18",
+    "author": "관리자",
+    "title": "결석 처리 기준",
+    "link": "/inquiry/8",
+    "content": "결석 처리는 어떤 기준으로 이뤄지나요?",
+    "answer": "수업 시작 후 15분 이상 늦으면 결석으로 처리됩니다."
+  },
+  {
+    "id": 9,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "수업 녹화본 제공 여부",
+    "link": "/inquiry/9",
+    "content": "수업 녹화본을 제공받을 수 있을까요?",
+    "answer": ""
+  },
+  {
+    "id": 10,
+    "status": "답변완료",
+    "replyDate": "2024-11-17",
+    "author": "관리자",
+    "title": "다른 캠퍼스로 수강 가능 여부",
+    "link": "/inquiry/10",
+    "content": "다른 캠퍼스에서 동일한 수업을 들을 수 있나요?",
+    "answer": "사전 신청 시 가능합니다."
+  },
+  {
+    "id": 11,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "취소 환불 관련 문의",
+    "link": "/inquiry/11",
+    "content": "수강 취소 시 환불 규정은 어떻게 되나요?",
+    "answer": ""
+  },
+  {
+    "id": 12,
+    "status": "답변완료",
+    "replyDate": "2024-11-16",
+    "author": "관리자",
+    "title": "주차 지원 여부",
+    "link": "/inquiry/12",
+    "content": "학원에 주차 지원이 가능한가요?",
+    "answer": "수강생에게 무료 주차권을 제공합니다."
+  },
+  {
+    "id": 13,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "교실 온도 조절 가능 여부",
+    "link": "/inquiry/13",
+    "content": "교실 온도가 너무 낮아요. 온도 조절 가능한가요?",
+    "answer": ""
+  },
+  {
+    "id": 14,
+    "status": "답변완료",
+    "replyDate": "2024-11-20",
+    "author": "관리자",
+    "title": "학생증 재발급",
+    "link": "/inquiry/14",
+    "content": "학생증을 분실했는데 재발급 가능한가요?",
+    "answer": "재발급은 데스크에서 가능합니다."
+  },
+  {
+    "id": 15,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "강의실 위치 문의",
+    "link": "/inquiry/15",
+    "content": "이번 주 강의실이 변경되었나요?",
+    "answer": ""
+  },
+  {
+    "id": 16,
+    "status": "답변완료",
+    "replyDate": "2024-11-14",
+    "author": "관리자",
+    "title": "온라인 수업 전환 여부",
+    "link": "/inquiry/16",
+    "content": "이번 주 수업은 온라인으로 전환되나요?",
+    "answer": "해당 사항은 없습니다. 오프라인으로 진행됩니다."
+  },
+  {
+    "id": 17,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "수업 시간 연장 요청",
+    "link": "/inquiry/17",
+    "content": "수업 시간을 10분 정도 연장해 주실 수 있나요?",
+    "answer": ""
+  },
+  {
+    "id": 18,
+    "status": "답변완료",
+    "replyDate": "2024-11-13",
+    "author": "관리자",
+    "title": "공휴일 수업 여부",
+    "link": "/inquiry/18",
+    "content": "공휴일에도 수업이 진행되나요?",
+    "answer": "공휴일에는 휴강합니다."
+  },
+  {
+    "id": 19,
+    "status": "답변완료",
+    "replyDate": "2024-11-21",
+    "author": "관리자",
+    "title": "자습실 이용 시간",
+    "link": "/inquiry/19",
+    "content": "자습실은 몇 시까지 이용 가능한가요?",
+    "answer": "자습실은 밤 10시까지 이용 가능합니다."
+  },
+  {
+    "id": 20,
+    "status": "답변대기",
+    "replyDate": "",
+    "author": "관리자",
+    "title": "상담 예약 가능 여부",
+    "link": "/inquiry/20",
+    "content": "상담 예약을 하고 싶은데 가능할까요?",
+    "answer": ""
+  }
+]

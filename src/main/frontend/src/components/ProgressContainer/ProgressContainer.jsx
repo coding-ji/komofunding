@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from './MyBtn';
+import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from '../MyBtn';
 import styles from './ProgressContainer.module.css';
 import Progress from './Progress';
 import AmountInfo from './AmountInfo';
 import OtherText from './OtherText';
 import MyNavLine from './MyNavLine';
- 
+
 const ProgressContainer = () => {
   const [projectData, setProjectData] = useState([]); // JSON 데이터를 저장
   const [selectedProject, setSelectedProject] = useState(null); // 선택된 프로젝트 저장
   const [selectedItems, setSelectedItems] = useState([]); // 선택된 아이템들 저장
   const [isAccordionOpen, setIsAccordionOpen] = useState(false); // 아코디언 상태 관리
   const [totalSelectedPrice, setTotalSelectedPrice] = useState(0); // 선택된 아이템들의 총 금액
- 
+
   // 초기 JSON 데이터 로드
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -22,7 +22,7 @@ const ProgressContainer = () => {
     };
     fetchProjectData();
   }, []);
- 
+
   // 선택된 아이템들의 총 금액 계산
   useEffect(() => {
     const calculatedTotalPrice = selectedItems.reduce(
@@ -31,7 +31,7 @@ const ProgressContainer = () => {
     );
     setTotalSelectedPrice(calculatedTotalPrice);
   }, [selectedItems]);
- 
+
   const handleAddItem = (project, item) => {
     setSelectedProject(project); // 선택된 프로젝트 저장
     setSelectedItems((prevItems) => {
@@ -47,11 +47,11 @@ const ProgressContainer = () => {
     });
     setIsAccordionOpen(false);
   };
- 
+
   const handleRemoveItem = (index) => {
     setSelectedItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
- 
+
   const handleUpdateCount = (index, newCount) => {
     setSelectedItems((prevItems) => {
       const updatedItems = [...prevItems];
@@ -59,32 +59,32 @@ const ProgressContainer = () => {
       return updatedItems;
     });
   };
- 
+
   // JSON 데이터에서 현재금액 및 목표금액 가져오기
   const currentAmount = selectedProject ? parseInt(selectedProject.currentAmount, 10) : 0;
   const targetAmount = selectedProject ? parseInt(selectedProject.totalAmount, 10) : 0;
- 
+
   // 퍼센트 계산 로직 유지
   const percentage = targetAmount ? ((currentAmount / targetAmount) * 100).toFixed(2) : 0;
- 
+
   return (
     <div className={styles.container}>
       {/* 기타 영역 */}
       <div className={styles.OtherTextWrapper}>
         <OtherText text="기타" />
       </div>
- 
+
       {/* 버튼 영역 */}
       <div className={styles.buttonWrapper}>
         <ProductBtn2 text="수정" width="100px" height="40px" fontSize="1rem" padding="5px" />
         <ProductBtn1 text="삭제" width="100px" height="40px" fontSize="1rem" padding="5px" />
       </div>
- 
+
       {/* 금액 정보 */}
       <div className={styles.amountInfoWrapper}>
         <AmountInfo amount={currentAmount} percentage={percentage} />
       </div>
- 
+
       {/* Progress 영역 */}
       <div className={styles.progressWrapper}>
         <Progress color="#F5E6D6" value={currentAmount} max={targetAmount} />
@@ -93,7 +93,7 @@ const ProgressContainer = () => {
       <div>
         <MyNavLine />
       </div>
- 
+
       {/* 드롭다운(아코디언) */}
       <div className={styles.accordionWrapper}>
         <button
@@ -120,9 +120,6 @@ const ProgressContainer = () => {
         )}
       </div>
 
-      <ProductBtn1 text="ddd"></ProductBtn1>
-      <ProductBtn2 text="ddddd"></ProductBtn2>
- 
       {/* 선택된 아이템 상자 */}
       {selectedItems.map((item, index) => (
         <div key={item.itemName} className={styles.selectedItemBox}>
@@ -150,12 +147,12 @@ const ProgressContainer = () => {
           </div>
         </div>
       ))}
- 
+
       {/* 선택된 상품 총 금액 */}
       <div className={styles.totalPrice}>
         총 금액: {totalSelectedPrice.toLocaleString()} 원
       </div>
- 
+
       {/* 버튼 영역 */}
       <div className={styles.buttonContainer}>
         <Btn text="후원하기" width="78%" height="50px" fontSize="1.2rem" padding="10px" />
@@ -164,5 +161,5 @@ const ProgressContainer = () => {
     </div>
   );
 };
- 
+
 export default ProgressContainer;

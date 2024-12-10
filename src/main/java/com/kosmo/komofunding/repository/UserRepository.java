@@ -18,13 +18,12 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByEmail(String email);
     Optional<User> findByNameAndPhoneNumber(String name, String phoneNumber);
     Optional<User> findByUserNum(Long userNum);
-    // 만료된 인증 코드가 있는 사용자 조회
-    List<User> findByVerificationCodeExpirationBefore(LocalDateTime currentTime);
+
+
 
     // 만료된 인증 코드가 있는 사용자 삭제
     @Modifying
     @Query("DELETE FROM User u WHERE u.verificationCodeExpiration < :currentTime")
     void deleteExpiredVerificationCodes(@Param("currentTime") LocalDateTime currentTime);
 
-    User findByEmailAndPassword(String email, String password);
 }

@@ -2,40 +2,33 @@
 .answerBox {
   width: 100%;
   border-radius: 2px;
-  padding: 16px;
+  padding: 13px;
   display: grid;
   grid-template-areas:
     "user date"
-    "question buttons";
+    "text buttons";
   grid-template-columns: 1fr auto;
-  grid-row-gap: 4px;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .qnaBox {
   cursor: pointer; /* 질문 박스만 클릭 가능 표시 */
   border: 1px solid var(--line-color);
-
 }
 
 .answerBox {
-  overflow: hidden; /* 숨겨진 상태 */
-  transform: scaleY(0); /* 초기 상태: 높이 0 */
-  opacity: 0; /* 초기 상태: 투명 */
-  transform-origin: top; /* 위쪽 기준으로 확장/축소 */
-  transition: transform 0.6s ease-in-out, opacity 0.3s ease-in-out;
   background-color: #e4e4e4;
+  transition: height 0.6s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .answerBox.show {
-  transform: scaleY(1); /* 열림 상태: 원래 크기 */
-  opacity: 1; /* 열림 상태: 불투명 */
+  height: auto; /* 답변이 보일 때 높이를 자동으로 설정 */
+  opacity: 1; /* 불투명도 1로 설정 */
 }
 
 .answerBox.hide {
-  transform: scaleY(0); /* 닫힘 상태: 높이 0 */
-  opacity: 0; /* 닫힘 상태: 투명 */
-  padding: 0;
+  height: 0; /* 숨길 때 높이 0으로 설정 */
+  opacity: 0; /* 투명하게 설정 */
 }
 
 .userInfo {
@@ -48,8 +41,8 @@
 }
 
 .questionText {
-  grid-area: question;
-  text-align: center;
+  grid-area: text;
+  /* text-align: center; */
 }
 
 .buttons {
@@ -58,4 +51,23 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+}
+
+.answerText {
+  grid-area: text;
+  /* text-align: center; */
+}
+
+.editButtons {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+
+
+}
+
+.editInput {
+  width: 82vw;
+  margin-top: 4px;
+  height: 6.7vh;
 }

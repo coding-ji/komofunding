@@ -13,6 +13,7 @@ const MainHeader = () => {
   const [userNum, setUserNum] = useState(null); // 로그인한 유저의 userNum 관리
   const [searchValue, setSearchValue] = useState("");
 
+
     // 컴포넌트가 렌더링될 때 로그인 상태 확인
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user")); // localStorage에서 사용자 정보 가져오기
@@ -62,7 +63,7 @@ const handleKeyDown = (event) => {
       {/* 로고 및 메뉴 섹션 */}
       <div className={styles.logoAndMenu}>
         <motion.div whileHover={{ scale: 1.05 }}
-          onClick={() => navigate("/home")} // 홈으로 이동
+          onClick={() => navigate("/")} // 홈으로 이동
         >
           <div
             className={styles.logoImage}
@@ -75,18 +76,18 @@ const handleKeyDown = (event) => {
         </motion.div>
         <div className={styles.menuList}>
           <HeaderMenu name="HOME" 
-           onClick={() => navigate("/")}/>
+           onClick={() => navigate("/home")}/>
           <HeaderMenu
             name="UPCOMING"
-            onClick={() => navigate("/upcoming")} // Upcoming 경로로 이동
+            onClick={() => navigate("/home/upcoming")} // Upcoming 경로로 이동
           />
           <HeaderMenu
             name="ACTIVE"
-            onClick={() => navigate("/active")} // Active 경로로 이동
+            onClick={() => navigate("/home/active")} // Active 경로로 이동
           />
 
           <HeaderMenu name="MORE" 
-              onClick={() => navigate("/notice")}/>
+              onClick={() => navigate("/home/notice")}/>
         </div>
       </div>
 
@@ -120,7 +121,7 @@ const handleKeyDown = (event) => {
                 className={styles.button}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate(`/profile/${userNum}`)} // userNum으로 마이페이지로 이동
+                onClick={() => navigate(`/home/profile/${userNum}`)} // userNum으로 마이페이지로 이동
               >
                 My Page
               </motion.button>
@@ -132,7 +133,7 @@ const handleKeyDown = (event) => {
                 className={styles.button}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate("/login")} // 로그인 페이지로 이동
+                onClick={() => navigate("/home/login")} // 로그인 페이지로 이동
               >
                 Log In
               </motion.button>
@@ -142,7 +143,7 @@ const handleKeyDown = (event) => {
                 className={styles.button}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate("/SignupForm")} // 회원가입 페이지로 이동
+                onClick={() => navigate("/home/SignupForm")} // 회원가입 페이지로 이동
               >
                 Sign Up
               </motion.button>

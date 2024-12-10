@@ -37,33 +37,36 @@ import ProfileEdit from "./page/Profile/ProfileEdit";
 import Profile from "./container/Profile/Profile";
 import CreationGuide from './page/noticpage/CreationGuide'
 import DonateGuide from "./page/noticpage/DonateGuide";
+import ProfileView from "./page/Profile/ProfileView";
+import MainProDetails from "./page/MainProDetails/MainProDetails";
 
 
 const router = createBrowserRouter([
-  {path: "/", element: <Main/>, 
+  {path : "/", element:<HomePage/> },
+  {path: "/home", element: <Main/>,
     children: [
       {index: true, element: <Product/>},
       {path :"upcoming", element:<Product />},
       {path :"active", element:<Product/>},
-      {path: "/write-qna", element: <WriteQnA/>},
-      {path: "/login", element: <Login/>},
-      {path: "/FindAccount", element: <FindAccount/>},
-      {path: "/SignupForm", element: <SignupForm/>},
+      {path: "write-qna", element: <WriteQnA/>},
+      {path: "login", element: <Login/>},
+      {path: "FindAccount", element: <FindAccount/>},
+      {path: "SignupForm", element: <SignupForm/>},
       {
-        path: "/myqna",
+        path: "myqna",
         element: <MyQnA/>, // 부모 컴포넌트
         children: [
           { index: true, element: <QnAListPage /> }, // 기본 경로에 목록 표시
           { path: ":id", element: <QnAView /> }, // 상세 경로
         ],
       },
-      {path: "/notice", element: <NoticePage />
+      {path: "notice", element: <NoticePage />
       },
-      {path: "/announcement/:id",element: <Announcement />
+      {path: "announcement/:id",element: <Announcement />
       },
       // { path:"/productDetail", element:<ProductDetail/>},
       {
-        path: "/myfunding",
+        path: "myfunding",
         element: <MyFunding/>, // 부모 컴포넌트
         children: [
           { index:true, element: <Upcoming /> },
@@ -73,7 +76,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/selectPrj",
+        path: "selectPrj",
         element: <SelectPrj />, // 부모 컴포넌트
         children: [
           { index:true, element: <SelectPrjOne /> },
@@ -84,7 +87,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/userfunding",
+        path: "userfunding",
         element: <UserFunding />  , // 부모 컴포넌트
         children: [
           { index:true, element: <UserIng /> },
@@ -92,14 +95,16 @@ const router = createBrowserRouter([
 
         ],
       },
-      {path:"/create-apply", element:<CreatorApply/> },
-      {path:"profile/:userNum", element:<Profile/> },
+      {path:"create-apply", element:<CreatorApply/> },
+      {path:"profile/:userNum", element:<ProfileView/> },
       {path:"profile-edit/:userNum", element:<ProfileEdit/> },
 
       {path:"creation-guide", element:<CreationGuide/>},
-      {path:"donate-guide", element:<DonateGuide/>}
+      {path:"donate-guide", element:<DonateGuide/>},
+      {path :"product-details", element:<MainProDetails/> },
+
     ]},
-    {path : "/home", element:<HomePage/> },
+
 
 ])
 

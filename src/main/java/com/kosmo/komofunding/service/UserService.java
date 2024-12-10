@@ -1,16 +1,16 @@
 package com.kosmo.komofunding.service;
 
-import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.dto.*;
+import com.kosmo.komofunding.entity.Email;
 import com.kosmo.komofunding.entity.User;
+import com.kosmo.komofunding.repository.EmailRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,17 +32,42 @@ public class UserService {
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EmailRepository emailRepository;
+
 
     // 랜덤 인증 코드 생성
     private String generateVerificationCode() {
         return String.format("%06d", (int) (Math.random() * 1000000));
     }
 
+    // 이메일 인증 코드 발송 및 저장
+    private void sendVerificationEmail(String email) {
+        String verificationCode = generateVerificationCode();
+
+        // 인증 코드 데이터베이스에 저장
+        Email emailEntity = new Email();
+        emailEntity.setEmail(email);
+        emailEntity.setVerificationCode(verificationCode);
+        emailEntity.setCreatedAt(LocalDateTime.now());
+
+        emailRepository.save(emailEntity);
+    }
+
+    // 이메일 인증 코드 검증
+    public boolean verifyEmailCode(String email, String inputCode) {
+        Optional<Email> emailEntity = emailRepository.findByEmail(email);
+        if (emailEntity.isPresent()) {
+            String storedCode = emailEntity.get().getVerificationCode();
+            return storedCode.equals(inputCode);
+        }
+        return false;
+    }
+
     // 매일 자정에 만료된 인증 코드 삭제
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredVerificationCodes() {
         LocalDateTime currentTime = LocalDateTime.now();
-        userRepository.deleteExpiredVerificationCodes(currentTime);
+        emailRepository.deleteExpiredVerificationCodes(currentTime);
     }
 
     // 랜덤 비밀번호 생성
@@ -70,10 +95,14 @@ public class UserService {
 
         User user = new User();
         // userInDTO를 User 엔티티로 변환
+        user.setName(userInDTO.getName());
+        user.setNickName(userInDTO.getNickName());
         user.setEmail(userInDTO.getEmail());
         user.setPassword(userInDTO.getPassword());
-        user.setName(userInDTO.getName());
-        // 다른 필드들도 설정
+        user.setPhoneNumber(userInDTO.getPhoneNumber());
+
+        // 기본 프로필 이미지 URL 설정
+        user.setProfileImg("http://localhost:8080/images/defaultImg.png");
 
         userRepository.save(user);
 
@@ -98,38 +127,7 @@ public class UserService {
         return userOutDTO;
     }
 
-    // 인증 코드 전송
-    public boolean sendVerificationCode(String email) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
-        }
 
-        String verificationCode = generateVerificationCode();
-        User user = userOptional.get();
-        user.setVerificationCode(verificationCode);
-        userRepository.save(user);
-
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-            helper.setTo(email);
-            helper.setSubject("인증 코드");
-            helper.setText("인증 코드는 다음과 같습니다: " + verificationCode);
-            mailSender.send(message);
-            return true;
-        } catch (Exception e) {
-            log.error("이메일 전송 실패: {}", e.getMessage());
-            return false;
-        }
-    }
-
-    // 이메일 인증 코드 검증
-    public boolean verifyEmailCode(String email, String code) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        return user.getVerificationCode() != null && user.getVerificationCode().equals(code);
-    }
 
     // 로그인
     @Transactional
@@ -152,10 +150,12 @@ public class UserService {
         // 클라이언트로 반환할 데이터 준비
         Map<String, String> response = new HashMap<>();
         response.put("sessionId", sessionId); // 세션 ID
-        response.put("userName", user.getName()); // 예: 사용자 이름 추가
+        response.put("userNum", user.getUserNum().toString()); // 유저 번호 로컬스토리지에 저장
 
         return response; // 세션 ID 포함 응답
     }
+
+
 
     // 비밀번호 재설정
     public boolean resetPassword(String email) {
@@ -184,6 +184,13 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+
+            // 비밀번호 검증
+            if (!passwordEncoder.matches(password, user.getPassword())) {
+                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            }
+
+            // 상태를 비활성화로 변경
             user.setActivatedStatus(UserStatus.DEACTIVATED);
             userRepository.save(user);
             return true;
@@ -194,6 +201,11 @@ public class UserService {
     // 사용자 이메일로 조회
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);  // Optional 반환
+    }
+
+    // 사용자 번호로 조회
+    public Optional<User> getUserByUserNum(Long userNum){
+        return userRepository.findByUserNum(userNum);
     }
 
     // 이름과 전화번호로 이메일 찾기
@@ -260,60 +272,100 @@ public class UserService {
         userDetails.put("userNum", String.valueOf(user.getUserNum()));              // 유저 ID
         userDetails.put("nickName", user.getNickName());          // 유저 닉네임
         userDetails.put("userRole", user.getActivatedStatus().toString());  // 유저 역할 (후원자, 제작자 등)
-        userDetails.put("description", user.getShortDescription());  // 짧은 소개글
+        userDetails.put("shortDescription", user.getShortDescription());  // 짧은 소개글
 
         return userDetails;
     }
 
-    // 프로필 비밀번호 수정
-    public boolean updateUserPassword(String email, String newPassword) {
-        User user = userRepository.findByEmail(email)
+    public boolean verifyPassword(String userNum, String password) {
+        try {
+            Long userNumAsLong = Long.valueOf(userNum); // String을 Long으로 변환
+            return userRepository.findByUserNum(userNumAsLong)
+                    .map(user -> passwordEncoder.matches(password, user.getPassword())) // 비밀번호 검증
+                    .orElse(false); // 사용자 없으면 false 반환
+        } catch (NumberFormatException e) {
+            // userNum이 Long으로 변환 불가능한 경우 처리
+            throw new IllegalArgumentException("유효하지 않은 userNum 값입니다: " + userNum, e);
+        }
+    }
+    // 프로필 페이지 수정 내용
+    // 비밀번호 검증
+    public boolean verifyPassword(Long userNum, String password) {
+        try {
+            User user = userRepository.findById(String.valueOf(Long.parseLong(String.valueOf(userNum))))
+                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+            // 로그 추가
+            System.out.println("User found: " + user.getEmail());
+
+            return passwordEncoder.matches(password, user.getPassword());
+        } catch (IllegalArgumentException e) {
+            // 예외 로그
+            System.err.println("Error verifying password: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    // 프로필 업데이트
+    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
+        User user = userRepository.findByUserNum(userNum)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 새 비밀번호 유효성 검사
-        if (newPassword == null || newPassword.trim().isEmpty()) {
-            throw new IllegalArgumentException("비밀번호는 필수 항목입니다.");
+        // 요청 데이터를 기반으로 사용자 프로필 업데이트
+        if (request.getProfileImage() != null) {
+            user.setProfileImg(request.getProfileImage());
+        }
+        if (request.getNickName() != null) {
+            user.setNickName(request.getNickName());
+        }
+        if (request.getShortDescription() != null) {
+            user.setShortDescription(request.getShortDescription());
+        }
+        if (request.getPhoneNumber() != null) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getBankName() != null) {
+            user.setBankName(request.getBankName()); // 수정 필요 시 반영
+        }
+        if (request.getAccountNumber() != null) {
+            user.setAccountNumber(request.getAccountNumber());
+        }
+        if (request.getAccountHolder() != null) {
+            user.setAccountHolder(request.getAccountHolder());
+        }
+        if (request.getCorporationName() != null) {
+            user.setCorporationName(request.getCorporationName());
+        }
+        if (request.getCorporationTel() != null) {
+            user.setCorporationTel(request.getCorporationTel());
+        }
+        if (request.getBSN() != null) {
+            user.setBSN(request.getBSN());
         }
 
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-        return true;
+        userRepository.save(user); // 업데이트된 정보 저장
+
+        return true; // 성공적으로 업데이트된 경우 true 반환
     }
 
-    // 프로필 페이지 수정 내용
-    public boolean updateUserProfile(String email, UserInDTO userInDTO) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//    // 제작자 전환 신청 처리
+//    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
+//        // 이메일을 기준으로 사용자 조회
+//        User user = userRepository.findByEmail(requestDTO.getEmail())
+//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//
+//        // 제작자 전환 신청 상태 업데이트
+//        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
+//
+//        // 추가 필드들 설정
+//        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
+//        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
+//        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
+//
+//        // 변경된 사용자 정보 저장
+//        userRepository.save(user);
+//
+//        return new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
+//    }
 
-        if (userInDTO.getShortDescription() != null) user.setShortDescription(userInDTO.getShortDescription());
-        if (userInDTO.getBankName() != null) user.setBankName(userInDTO.getBankName());
-        if (userInDTO.getAccountNumber() != null) user.setAccountNumber(userInDTO.getAccountNumber());
-        if (userInDTO.getAccountHolder() != null) user.setAccountHolder(userInDTO.getAccountHolder());
-        if (userInDTO.getCorporationName() != null) user.setCorporationName(userInDTO.getCorporationName());
-        if (userInDTO.getCorporationTel() != null) user.setCorporationTel(userInDTO.getCorporationTel());
-        if (userInDTO.getBSN() != null) user.setBSN(userInDTO.getBSN());
-
-        userRepository.save(user);
-        return true;
     }
-
-    // 제작자 전환 신청 처리
-    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
-        // 이메일을 기준으로 사용자 조회
-        User user = userRepository.findByEmail(requestDTO.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-        // 제작자 전환 신청 상태 업데이트
-        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
-
-        // 추가 필드들 설정
-        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
-        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
-        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
-
-        // 변경된 사용자 정보 저장
-        userRepository.save(user);
-
-        return new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
-    }
-
-}

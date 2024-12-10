@@ -1,22 +1,23 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.entity.Project;
-import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.ProjectRepository;
 import com.kosmo.komofunding.repository.QnARepository;
 import com.kosmo.komofunding.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,6 +29,53 @@ public class ProjectService {
     private final UserRepository userRepository;
     private final QnARepository qnARepository;
 
+    // 전체 프로젝트 조회
+       public List<ProjectOutDTO> getAllProjects() {
+        try {
+            List<Project> allProjects = projectRepository.findAll();
+            LocalDateTime now = LocalDateTime.now();
+            return allProjects.stream()
+                    .map(project -> {
+                       return projectConverter.toOutDTO(project);
+                    })
+                    .filter(projectOutDTO -> {
+                       return projectOutDTO.getProjectEndDate().isAfter(now);
+                    })
+                    .sorted(Comparator.comparingDouble(ProjectOutDTO::getProgressRate).reversed())
+                    .limit(50)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.err.println("Error while fetching projects: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // 예외를 다시 던져 컨트롤러에서 처리
+        }
+    }
+
+    // 카테고리 및 상태별 프로젝트 조회
+// 카테고리 및 상태별 프로젝트 조회
+    public List<ProjectOutDTO> getProjectsByCategoryAndStatus(String projectCategory, String fundingStatus) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // projectCategory가 "all"일 경우, fundingStatus만 고려하여 조회
+        if ("all".equalsIgnoreCase(projectCategory)) {
+            return projectRepository.findProjectsByFundingStatus(fundingStatus, now)
+                    .stream()
+                    .map(project -> projectConverter.toOutDTO(project))
+                    .collect(Collectors.toList());
+        } else {
+            // "ALL"이 아닌 카테고리는 Enum으로 변환하여 조회
+            try {
+                ProjectCategory category = ProjectCategory.valueOf(projectCategory.toUpperCase());
+                return projectRepository.findProjectsByCategoryAndFundingStatusAndDateRange(category, fundingStatus, now)
+                        .stream()
+                        .map(project -> projectConverter.toOutDTO(project))
+                        .collect(Collectors.toList());
+            } catch (IllegalArgumentException e) {
+                // Enum 변환 실패 시 빈 리스트 반환
+                return Collections.emptyList();
+            }
+        }
+    }
 
     // 유저 uid로 프로젝트 조회
     public List<Project> getProjectsByUserId(String userId){
