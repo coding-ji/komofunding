@@ -1,76 +1,60 @@
 .container {
   width: 100%;
-  /* max-width: 500px; */
   height: 100%;
-  /* margin: 20px auto; */
-  /* border: 2px solid #ddd; */
   border-radius: 2px;
   background-color: #f8f8f8;
   display: grid;
-  grid-template-rows: auto auto 1fr auto auto;
-  position: relative;
+  grid-template-rows: auto auto auto 1fr auto auto;
+  gap: 10px;
+  padding: 10px; /* 좌우 간격을 추가하기 위해 패딩 설정 */
 }
 
-.OtherTextWrapper{
-  position: absolute;
-  top: 50px;
-  left: 0;
+.OtherTextWrapper {
   color: #c9c9c9;
   font-family: 'Noto Sans', sans-serif;
   font-size: 1.5rem;
 }
 
-.buttonWrapper {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
 .amountInfoWrapper {
-  display: grid;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  margin-top: 100px;
 }
 
 .progressWrapper {
-  margin-top: 15px;
+  margin: 0 10px; /* 좌우 여백 */
   text-align: center;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 .targetAmount {
-  display: grid;
-  justify-content: end;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 10px;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: #c9c9c9;
   font-family: 'Noto Sans', sans-serif;
-  font-size: 1.2rem;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 .buttonContainer {
   display: flex;
-  align-items: flex-end;
   gap: 10px;
-  white-space: nowrap
+  justify-content: center;
 }
 
-/* 기존 스타일 */
+.accordionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 아코디언 상자 간 간격 추가 */
+  margin: 10px 0;
+}
+
 .accordionToggle {
   background-color: #ffffff;
   border: 1px solid #ccc;
   padding: 10px;
   font-size: 1rem;
-  text-align: left;
   width: 100%;
   cursor: pointer;
   display: flex;
@@ -80,33 +64,26 @@
   transition: background-color 0.3s;
 }
 
-.accordionWrapper {
- margin: 10px 0;
-}
-
 .accordionToggle:hover {
   background-color: #e4e4e4;
 }
 
-/* 아코디언이 열린 상태일 때 */
 .accordionToggle.open {
   background-color: #ffffff;
 }
 
-/* 아코디언  */
 .dropdownContent {
   padding: 10px;
   background-color: #fffefc;
   border-top: 1px solid #ccc;
-  border-radius: 0 0 4px 4px;
-  margin-top: 5px;
-  max-height: 300px; /* 최대 높이 설정 */
-  overflow-y: auto; /* 내용이 넘치면 스크롤 표시 */
-  scrollbar-width: thin; /* 스크롤바를 얇게 설정 */
-  scrollbar-color: #888 #f8f8f8; /* 스크롤바 색상 */
+  border-radius: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0 10px; /* 좌우 여백 추가 */
+  display: grid;
+  gap: 10px; /* 상자 간의 간격 설정 */
 }
 
-/* 기본 스타일로 스크롤바추가 */
 .dropdownContent::-webkit-scrollbar {
   width: 8px;
 }
@@ -120,11 +97,10 @@
   background-color: #f8f8f8;
 }
 
-
 .dropdownItem {
   display: flex;
-  justify-content: space-between; /* 아이템 이름과 가격을 양쪽 끝에 배치 */
-  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: space-between;
+  align-items: center;
   padding: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -144,17 +120,18 @@
   border: 1px solid #ddd;
   border-radius: 2px;
   background-color: #fdfdfd;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 아이템 내부 간격 추가 */
 }
 
 .itemControls {
   display: flex;
-  justify-content: left;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
-.closeBtn{
+.closeBtn {
   text-align: right;
 }
 
@@ -172,7 +149,7 @@
   background-color: #e4e4e4;
 }
 
-.totalPrice{
-  padding: 5px;
+.totalPrice {
   text-align: right;
+  padding: 5px;
 }
