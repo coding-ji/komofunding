@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from './MyBtn';
+import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from '../MyBtn';
 import styles from './ProgressContainer.module.css';
 import Progress from './Progress';
 import AmountInfo from './AmountInfo';
