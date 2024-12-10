@@ -18,10 +18,10 @@ export const reducer = (state, action) => {
             return { ...state, img: action.payload };
 
         case CREATE_IMG:
-            return { ...state, img: action.payload }; // 이미지 업로드 후 상태 갱신
+            return { ...state, img: action.payload}; // 이미지 업로드 후 상태 갱신
 
         case UPDATE_IMG:
-            return { ...state, img: action.payload }; // 이미지 업데이트 후 상태 갱신
+            return { ...state, img: action.payload}; // 이미지 업데이트 후 상태 갱신
 
         case DELETE_IMG:
             return { ...state, img: null }; // 이미지 삭제 후 상태 갱신 (null로 설정)

@@ -7,14 +7,13 @@ const apiClient = axios.create({
     timeout: 10000, // 요청 타임아웃 설정 (10초)
 });
 
-
 // 파일 관련 API 
 export const fetchImg = (filename) => apiClient.get(`/images/${filename}`);
-export const createImg = (formData) => apiClient.post('/upload/image', formData);
-export const updateImg = (filename, updatedData) => apiClient.patch(`/images/${filename}`, updatedData); 
-export const deleteImg = (filename) => apiClient.delete(`/images/${filename}`);
+export const createImg = (formData) => apiClient.post(`/upload/image`, formData);
+export const updateImg = (filename, updatedData) => apiClient.patch(`/image/${filename}`, updatedData); 
+export const deleteImg = (filename) => apiClient.delete(`/image/${filename}`);
 
 export const fetchFile = (filename) => apiClient.get(`/files/${filename}`);
 export const createFile = (formData) => apiClient.post('/upload/file', formData);
-export const updateFile = (filename, updatedData) => apiClient.patch(`/files/${filename}`, updatedData);
-export const deleteFile = (filename) => apiClient.delete(`/files/${filename}`);
+export const updateFile = (filename, updatedData) => apiClient.patch(`/file/${filename}`, updatedData);
+export const deleteFile = (filename) => apiClient.delete(`/file/${filename}`);

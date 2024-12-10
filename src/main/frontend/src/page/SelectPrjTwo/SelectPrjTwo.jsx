@@ -45,7 +45,7 @@ function SelectPrjTwo() {
     if (savedState) {
       projectActions.updateAllFields(JSON.parse(savedState));
     }
-  }, [projectActions]);
+  }, []);
 
   const handleInputChange = (field) => (e) => {
     const value = e.target.value;
@@ -84,6 +84,11 @@ function SelectPrjTwo() {
     "상품 최소 수량을 작성해주세요 해당 란에는 숫자만 기입해야 합니다.",
   ];
 
+  // 이전 단계로 이동
+  const handleBeforeClick = () => {
+    navigate("/home/selectprj");
+    localStorage.setItem("projectState", JSON.stringify(projectState));
+  }
   // 다음 단계로 이동
   const handleNextClick = () => {
     navigate("/home/selectprj/prj-three");
@@ -134,7 +139,7 @@ function SelectPrjTwo() {
           fontSize="0.9rem"
           padding="8px 3px"
           text="이전"
-          onClick={() => navigate("/home/selectprj")}
+          onClick={handleBeforeClick}
         />
         <Btn
           width="80px"

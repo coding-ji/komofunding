@@ -81,21 +81,15 @@ public class FileController {
 
     // 이미지 저장하는 로직
     @PostMapping("/upload/image")
-    public ResponseEntity<List<String>> uploadImages(@RequestParam("files") List<MultipartFile> files) {
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            List<String> imagePaths = new ArrayList<>();
-
-            for (MultipartFile file : files) {
-                String imageFileName = fileService.uploadImg(file);  // 이미지 업로드 처리
-                imagePaths.add("http://localhost:8080/images/" + imageFileName);  // 파일 경로 리턴
-            }
-
-            return ResponseEntity.ok(imagePaths);  // 여러 파일 경로 반환
+            String imageFileName = fileService.uploadImg(file);  // 이미지 업로드 처리
+            String imagePath = "http://localhost:8080/images/" + imageFileName;  // 파일 경로 리턴
+            return ResponseEntity.ok(imagePath);  // 단일 파일 경로 반환
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Arrays.asList("이미지 업로드 실패: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패: " + e.getMessage());
         }
     }
-
     // 파일 저장하는 로직
     @PostMapping("/upload/file")
     public ResponseEntity<String> uploadHtmlFile(@RequestParam("file") MultipartFile file) {

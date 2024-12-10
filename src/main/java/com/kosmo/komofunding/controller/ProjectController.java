@@ -130,11 +130,10 @@ public class ProjectController {
         return ResponseEntity.status(201).body(response);
     }
 
-//
-//    // 프로젝트 생성 및 저장
-//    @PostMapping("/api/projects")
+    // 프로젝트 생성 및 저장
+//    @PostMapping("/api/user/${userNum}}/myinfo/projects")
 //    public ResponseEntity<Project> createProject(@RequestBody Project project) {
-//        Project savedProject = projectService.saveProject(project);
+//
 //        return ResponseEntity.ok(savedProject);
 //    }
 //

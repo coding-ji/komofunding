@@ -35,11 +35,11 @@ function SelectPrjOne() {
     if (savedState) {
       projectActions.updateAllFields(JSON.parse(savedState)); // ProjectStore에 복원
     }
-  }, [projectActions]);
+  }, []);
 
   const handleNextClick = () => {
-    navigate("/home/selectprj/prj-two");
     localStorage.setItem("projectState", JSON.stringify(projectState));
+    navigate("/home/selectprj/prj-two");
   };
 
   return (
