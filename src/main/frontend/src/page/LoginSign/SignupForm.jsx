@@ -16,7 +16,6 @@ const SignupForm = () => {
 
   const [emailSent, setEmailSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
 
   // 폼 데이터 업데이트
   const handleInputChange = (e) => {
@@ -34,7 +33,7 @@ const SignupForm = () => {
     try {
       await sendRegisterEmailCode(formData.email);
       setEmailSent(true);
-      setSuccessMessage("인증코드가 이메일로 전송되었습니다.");
+      alert("인증코드가 이메일로 전송되었습니다.");
     } catch (error) {
       alert("이메일 전송 중 오류가 발생했습니다.");
     }
@@ -47,7 +46,7 @@ const SignupForm = () => {
     try {
       await verifyEmailCode(formData.email, trimmedAuthCode);
       setEmailVerified(true);
-      setSuccessMessage("이메일 인증 성공!");
+      alert("이메일 인증 성공!");
     } catch (error) {
       alert("인증코드가 일치하지 않습니다.");
     }
@@ -69,7 +68,8 @@ const SignupForm = () => {
 
     try {
       await registerUser(formData);
-      setSuccessMessage("회원가입이 완료되었습니다!");
+      alert("회원가입이 완료되었습니다!");
+      // 폼 초기화
       setFormData({ name: "", nickName: "", email: "", password: "", phoneNumber: "" });
       setAuthCode("");
       setConfirmPassword("");
@@ -232,9 +232,6 @@ const SignupForm = () => {
             >
               약관 동의 후 회원가입
             </motion.button>
-
-            
-
           </form>
         </section>
       </motion.div>
