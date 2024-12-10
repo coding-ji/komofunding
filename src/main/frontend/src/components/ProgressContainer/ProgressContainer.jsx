@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Btn, ProductBtn1, ProductBtn2, WhiteBtn } from '../MyBtn';
 import styles from './ProgressContainer.module.css';
-import Progress from './Progress';
+import Progress from '../Progress';
 import AmountInfo from './AmountInfo';
 import OtherText from './OtherText';
-import MyNavLine from './MyNavLine';
+import MyNavLine from '../MyNavLine';
 
 const ProgressContainer = () => {
   const [projectData, setProjectData] = useState([]); // JSON 데이터를 저장
