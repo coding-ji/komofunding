@@ -8,7 +8,7 @@ import TitleProduct from "../TitleProduct";
 import MainProDetailQnA from "./MainProDetailQnA";
 import RefundPolicy from "./RefundPolicy";
 import UserQnaBox from "./UserQnaBox/UserQnaBox";
-
+ 
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,8 +48,12 @@ function MainProDetailsIntro({ project, qnaList, setQnaList }) {
   
     return (
       <IntroBox>
-        {/* 소개 */}
-        <TitleProduct text="프로젝트 스토리" />
+        {/* 나 들어가유 */}
+        <div>
+        <TitleProduct 
+        fontSize = "1.5rem"
+        padding = "5px 0px "
+        text="프로젝트 스토리" />
         <PrjCategory
           sectionRefs={[
             introRef,
@@ -59,13 +63,21 @@ function MainProDetailsIntro({ project, qnaList, setQnaList }) {
             inquiryRef,
           ]}
         />
+        </div>
   
         {/* 소개 - 이미지 */}
-        <ImageContainer ref={introRef}>
+        <TitleBox text="소개" ref={introRef} />
+        <DescriptionProduct
+        fontSize= "1rem"
+        color = "rgb(0,0,0)"
+        text = {project.description}
+         />
+        
+        {/* <ImageContainer ref={introRef}>
           {project.imgs.map((img, index) => (
             <img key={index} src={img} alt={`${index + 1}`} />
           ))}
-        </ImageContainer>
+        </ImageContainer> */}
   
         {/* 일정 */}
         <TitleBox text="일정" ref={scheduleRef} />

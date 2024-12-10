@@ -6,6 +6,8 @@ import React, { useState } from "react";
 const TapBtns = styled.div`
   display: flex;
   gap: 10px; /* 버튼 간격 조정 */
+  width: 100%;
+  height : 40px;
 `;
 
 function PrjCategory({ sectionRefs }) {
@@ -26,7 +28,7 @@ function PrjCategory({ sectionRefs }) {
         <TapBtn
         minWidth="95px"
         fontFamily="var(--kr-font)"
-        fontSize="1.0625rem"
+        fontSize= "1em"
         padding="0.5rem"
           key={index}
           text={text}

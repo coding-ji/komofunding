@@ -40,7 +40,7 @@ const RefundPolicy = forwardRef((props, ref) => {
                     text={`결제 취소 및 환불 안내`}
                 />
                 <DescriptionProduct
-                                    minWidth="50vw"
+                    // minWidth="50vw"
 
                     color="black"
                     fontSize="1.0rem"
@@ -67,7 +67,7 @@ const RefundPolicy = forwardRef((props, ref) => {
                     text={`공통 환불 불가 유형`}
                 />
                 <DescriptionProduct
-                                    minWidth="50vw"
+                // minWidth="50vw"
 
                     color="black"
                     fontSize="1.0rem"
@@ -94,7 +94,7 @@ const RefundPolicy = forwardRef((props, ref) => {
                     text={`리워드 특성상 환불이 불가한 경우`}
                 />
                 <DescriptionProduct
-                    minWidth="50vw"
+                    // minWidth="50vw"
                     color="black"
                     fontSize="1.0rem"
                     lineHeight="1.9rem"
