@@ -32,6 +32,13 @@ public class CommunityService {
                 .collect(Collectors.toList());
     }
 
+
+    public List<CommunityOutDTO> getAllCommunities() { // 모든 커뮤니티 데이터 가져오기 추가
+        return communityRepository.findAll().stream()
+                .map(this::convertToOutDTO)
+                .collect(Collectors.toList());
+    }
+
     public void createCommunity(CommunityInDTO communityInDTO) {
         // communityNumber 자동 증가 처리
         Integer maxCommunityNumber = communityRepository.findMaxCommunityNumber();

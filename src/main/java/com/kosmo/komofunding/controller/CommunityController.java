@@ -19,18 +19,27 @@ import java.util.List;
 
         private final CommunityService communityService;
 
-        @GetMapping("/category/{category}")
+        @GetMapping // 모든 커뮤니티 가져오기 (React에서 테스트용 추가)
+        public ResponseEntity<List<CommunityOutDTO>> getAllCommunities() {
+            List<CommunityOutDTO> communities = communityService.getAllCommunities();
+            return ResponseEntity.ok(communities);
+        }
+
+        @GetMapping("/api/category/{category}")
         public ResponseEntity<List<CommunityOutDTO>> getCommunitiesByCategory(@PathVariable String category) {
             CommunityCategory communityCategory = parseCategory(category);
             List<CommunityOutDTO> communities = communityService.getCommunitiesByCategory(communityCategory);
             return ResponseEntity.ok(communities);
         }
 
-        @GetMapping("/{id}")
+
+        @GetMapping("/api/id/{id}")
         public ResponseEntity<CommunityOutDTO> getCommunityById(@PathVariable String id) {
             CommunityOutDTO community = communityService.getCommunityById(id);
             return ResponseEntity.ok(community);
         }
+
+
 
         @PostMapping
         public ResponseEntity<String> createCommunity(@RequestBody CommunityInDTO communityInDTO) {
@@ -38,13 +47,13 @@ import java.util.List;
             return ResponseEntity.ok("Community created successfully");
         }
 
-        @PutMapping("/{id}")
+        @PutMapping("/api/{id}")
         public ResponseEntity<String> updateCommunity(@PathVariable String id, @RequestBody CommunityInDTO communityInDTO) {
             communityService.updateCommunity(id, communityInDTO);
             return ResponseEntity.ok("Community updated successfully");
         }
 
-        @DeleteMapping("/{id}")
+        @DeleteMapping("/api/{id}")
         public ResponseEntity<String> deleteCommunity(@PathVariable String id) {
             communityService.deleteCommunity(id);
             return ResponseEntity.ok("Community deleted successfully");

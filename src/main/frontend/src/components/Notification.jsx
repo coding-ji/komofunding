@@ -74,7 +74,7 @@ const NoteTitle = styled.h1`
   }
 `;
 
-const Notification = ({ props }) => {
+const Notification = ({ category, date_author, title  }) => {
   return (
     <motion.div
       whileHover={{
@@ -94,10 +94,10 @@ const Notification = ({ props }) => {
             justifyContent: "space-between",
           }}
         >
-          <Notep>{props.category}</Notep>
-          <Notep>{props.date_author}</Notep>
+          <Notep>{category}</Notep>
+          <Notep>{date_author}</Notep>
         </div>
-        <NoteTitle>{props.title}</NoteTitle>
+        <NoteTitle>{title}</NoteTitle>
       </Note>
     </motion.div>
   );

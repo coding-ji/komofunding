@@ -121,4 +121,27 @@ export const createItem = (item) => apiClient.post('/items', item);
 export const updateItem = (item) => apiClient.put(`/items/${item.id}`, item);
 export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 
+
+// 커뮤니티 API
+
+// 커뮤니티 목록 가져오기
+export const fetchAllCommunities = () => apiClient.get("/posts/community");
+
+// 특정 커뮤니티 가져오기 (ID로 검색)
+export const fetchCommunityById = (communityId) =>
+  apiClient.get(`/api/posts/community/${communityId}`);
+
+// 새로운 커뮤니티 생성
+export const createCommunity = (communityData) =>
+  apiClient.post("/api/posts/community", communityData);
+
+// 특정 커뮤니티 수정
+export const updateCommunity = (communityId, updateData) =>
+  apiClient.put(`/api/posts/community/${communityId}`, updateData);
+
+// 특정 커뮤니티 삭제
+export const deleteCommunity = (communityId) =>
+  apiClient.delete(`/api/posts/community/${communityId}`);
+
+
 export default apiClient;

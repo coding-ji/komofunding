@@ -1,64 +1,60 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useEffect, useRef, useLayoutEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Notification from "../../components/Notification"; // 공지사항 표시 컴포넌트
 import styles from "./NoticePage.module.css";
 import Pagination from "../MyPage/Pagination";
+import { useStore as NoticeStore } from "../../stores/NoticeStore/useStore";
+import {fetchAllCommunities} from "../../service/apiService"
 
 
-const categories = [
-  { name: "전체", content: "전체 페이지" },
-  { name: "공지", content: "공지" },
-  { name: "이벤트", content: "이벤트 페이지" },
-  { name: "자주 묻는 질문", content: "자주 묻는 질문 페이지" },
-];
 
 const ITEMS_PER_PAGE = 5; // 한 페이지에 표시할 공지사항 수
 
+const categories = [
+  { name: "전체", content: "전체 페이지" },
+  { name: "NOTICE", content: "공지" },
+  { name: "EVENT", content: "이벤트" },
+  { name: "FAQ", content: "자주 묻는 질문" },
+];
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`; // YYYY-MM-DD 형식으로 반환
+  }
+
 const NoticePage = () => {
-  const [notificationsData, setNotificationsData] = useState({
-    전체: [],
-    공지: [],
-    이벤트: [],
-    "자주 묻는 질문": [],
-  });
-  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const { state, actions } = NoticeStore(); // useStore에서 상태와 액션 가져오기
+  const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState({ name: "전체" });
   const [currentPage, setCurrentPage] = useState(1);
   const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
   const itemRefs = useRef([]);
-  const navigate = useNavigate();
 
-  // JSON 데이터를 불러오기
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => { 
       try {
-        const response = await axios.get("/data/notifications.json");
-        const allNotifications = response.data;
+        // 백엔드 API 호출
+        const response = await fetchAllCommunities();
+        const communities = response.data;
+        console.log(communities)
 
-        // 카테고리별로 데이터 분류
-        const categorizedData = {
-          전체: allNotifications,
-          공지: allNotifications.filter((item) => item.category === "공지"),
-          이벤트: allNotifications.filter((item) => item.category === "이벤트"),
-          "자주 묻는 질문": allNotifications.filter(
-            (item) => item.category === "자주 묻는 질문"
-          ),
-        };
-
-        setNotificationsData(categorizedData);
+        // 상태 업데이트
+        actions.changeCommunities(communities);
       } catch (error) {
-        console.error("데이터를 불러오는 중 오류가 발생했습니다.", error);
+        console.error("공지사항 데이터를 불러오지 못했습니다.", error);
       }
     };
 
     fetchData();
   }, []);
 
+  // 밑줄 위치 업데이트
   const updateUnderlinePosition = () => {
-    const activeIndex = categories.findIndex(
-      (cat) => cat.name === activeCategory.name
-    );
+    const activeIndex = categories.findIndex((cat) => cat.name === activeCategory.name);
     const activeItem = itemRefs.current[activeIndex];
     if (activeItem) {
       const { offsetLeft, offsetWidth } = activeItem;
@@ -74,15 +70,25 @@ const NoticePage = () => {
     };
   }, [activeCategory]);
 
-  // 현재 선택된 카테고리에서 페이지별 데이터를 계산
-  const currentNotifications = notificationsData[activeCategory.name]?.slice(
+
+ 
+  const filteredNotifications =
+  activeCategory.name === "전체"
+    ? state.communities
+    : state.communities?.filter(
+        (item) => item.communityCategory === activeCategory.name
+      );
+
+
+  const currentNotifications = filteredNotifications?.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const totalPages = Math.ceil(
-    notificationsData[activeCategory.name]?.length / ITEMS_PER_PAGE
-  );
+
+  const totalPages = Math.ceil(state.communities?.length / ITEMS_PER_PAGE);
+
+
 
   return (
     <div className={styles.pageContainer}>
@@ -140,14 +146,13 @@ const NoticePage = () => {
         {currentNotifications?.map((item, index) => (
           <div
             key={index}
-            onClick={() => navigate(`/announcement/${item.id}`)} // 상세 페이지로 이동
+            onClick={() => navigate(`/announcement/${item.communityNumber}`)} // 상세 페이지로 이동
           >
             <Notification
-              props={{
-                category: item.category,
-                date_author: `${item.date} | ${item.author}`,
-                title: item.title,
-              }}
+                category={item.communityCategory}
+                date_author={ `${formatDate(item.writeDate)}| ${item.author}`}
+                title= {item.communityTitle}
+          
             />
           </div>
         ))}
