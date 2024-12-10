@@ -5,6 +5,7 @@ import {
     CHANGE_PHONE_NUMBER,
     CHANGE_USER_SHORT_DESCRIPTION,
     CHANGE_PROJECT_NUM,
+    CHANGE_TITLE,
     CHANGE_PROJECT_CATEGORY,
     CHANGE_PROJECT_THUMBNAIL_IMGS,
     CHANGE_PROJECT_SHORT_DESCRIPTION,
@@ -43,13 +44,15 @@ export const reducer = (state, action) => {
         case CHANGE_PHONE_NUMBER:
             return { ...state, phoneNumber: action.payload };
         case CHANGE_USER_SHORT_DESCRIPTION:
-            return { ...state, userShortDescription: action.payload };
+            return { ...state, shortDescription: action.payload };
 
         // 프로젝트 관련 상태 변경
         case CHANGE_PROJECT_NUM:
             return { ...state, projectNum: action.payload };
+        case CHANGE_TITLE:
+            return { ...state, title: action.payload };
         case CHANGE_PROJECT_CATEGORY:
-            return { ...state, projectCategory: action.payload };
+            return { ...state, category: action.payload };
         case CHANGE_PROJECT_THUMBNAIL_IMGS:
             return { ...state, thumbnailImgs: action.payload };
         case CHANGE_PROJECT_SHORT_DESCRIPTION:

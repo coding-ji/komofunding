@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -78,14 +81,18 @@ public class FileController {
 
     // 이미지 저장하는 로직
     @PostMapping("/upload/image")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<List<String>> uploadImages(@RequestParam("files") List<MultipartFile> files) {
         try {
-            String imageFileName = fileService.uploadImg(file);  // 이미지 업로드 처리
+            List<String> imagePaths = new ArrayList<>();
 
-            // 응답으로 저장된 파일 경로 또는 파일명 전달
-            return ResponseEntity.ok("http://localhost:8080/images/" + imageFileName);  // 파일 경로 리턴
+            for (MultipartFile file : files) {
+                String imageFileName = fileService.uploadImg(file);  // 이미지 업로드 처리
+                imagePaths.add("http://localhost:8080/images/" + imageFileName);  // 파일 경로 리턴
+            }
+
+            return ResponseEntity.ok(imagePaths);  // 여러 파일 경로 반환
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Arrays.asList("이미지 업로드 실패: " + e.getMessage()));
         }
     }
 

@@ -35,6 +35,7 @@ export const CHANGE_QNA_LIST = "CHANGE_QNA_LIST";
 export const CHANGE_SUPPORTERS = "CHANGE_SUPPORTERS";
 export const UPDATE_ALL_FIELDS = 'UPDATE_ALL_FIELDS';
 
+
 // 초기화 
 export const RESET_STATE = "RESET_STATE";
 

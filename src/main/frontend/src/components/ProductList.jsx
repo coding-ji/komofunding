@@ -17,7 +17,7 @@ const ProductDetails = styled.div`
 function ProductList({ products }) {
   return (
     <>
-      {products.length > 0 && (
+      {products && (
         <ProductDetails>
           {products.map((product, index) => (
             <ProductItem key={index} product={product} />

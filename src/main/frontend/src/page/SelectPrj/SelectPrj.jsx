@@ -18,7 +18,7 @@ function SelectPrj() {
   // 새로고침 감지
   const handleBeforeUnload = (event) => {
     event.preventDefault(); // 기본 새로고침 동작 차단
-    return ''; 
+    event.returnValue = '';
   };
 
   // 컴포넌트가 마운트되면 이벤트 리스너 등록

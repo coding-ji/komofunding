@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
@@ -27,40 +28,66 @@ const EnrollButton = styled.div`
 `;
 
 function SelectPrjTwo() {
-  const [productName, setProductName] = useState(""); 
-  const [productPrice, setProductPrice] = useState("");
-  const [productQuantity, setProductQuantity] = useState("");
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(""); 
+  const { state: projectState, actions: projectActions } = ProjectStore();
+  const items = projectState.items || [];
+   
+  // 개별 상품 정보 상태 관리
+  const [itemName, setItemName] = useState(null);
+  const [itemPrice, setItemPrice] = useState(null);
+  const [itemAmount, setItemAmount] = useState(null);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const handleInputChange = (setter) => (e) => setter(e.target.value);
+  useEffect(() => {
+    // localStorage에서 상태 복원
+    const savedState = localStorage.getItem("projectState");
+    if (savedState) {
+      projectActions.updateAllFields(JSON.parse(savedState));
+    }
+  }, [projectActions]);
+
+  const handleInputChange = (field) => (e) => {
+    const value = e.target.value;
+    if (field === "itemName") {
+      setItemName(value);
+    } else if (field === "itemPrice") {
+      setItemPrice(value);
+    } else if (field === "itemAmount") {
+      setItemAmount(value);
+    }
+  };
 
   const handleSubmit = () => {
-    if (!productName || !productPrice || !productQuantity) {
+    if (!itemName || !itemPrice || !itemAmount) {
       setError("모든 항목을 입력해 주세요.");
       return;
     }
 
-    setProducts([...products, { name: productName, price: productPrice, quantity: productQuantity }]);
-    setProductName("");
-    setProductPrice("");
-    setProductQuantity("");
-    setError("");
+    // 새로운 상품 정보
+    const newProduct = { itemName, itemPrice, itemAmount };
+
+    // 프로젝트의 아이템 정보 업데이트
+    projectActions.changeItems([...items, newProduct]);
+
+    // 입력 필드 초기화
+    setItemName("");
+    setItemPrice("");
+    setItemAmount("");
+    setError(""); // 에러 메시지 초기화
   };
 
+  // 설명 텍스트
   const descriptions = [
     "등록하고자 하는 상품의 이름을 작성해 주세요.",
     "상품의 개당 가격을 작성해 주세요. 해당 란에는 숫자만 기입해야 합니다.",
-    "상품 최소 수량을 작성해주세요 해당 란에는 숫자만 기입해야 합니다."
+    "상품 최소 수량을 작성해주세요 해당 란에는 숫자만 기입해야 합니다.",
   ];
 
+  // 다음 단계로 이동
   const handleNextClick = () => {
-    const projectData = JSON.parse(localStorage.getItem("projectData")) || {};
-    projectData.products = products;
-    localStorage.setItem("projectData", JSON.stringify(projectData));
-    navigate("/selectprj/prj-three"); 
+    navigate("/home/selectprj/prj-three");
+    localStorage.setItem("projectState", JSON.stringify(projectState));
   };
 
   return (
@@ -72,13 +99,22 @@ function SelectPrjTwo() {
           <DescriptionProduct text={descriptions[index]} />
           <Input
             size="small"
-            value={index === 0 ? productName : index === 1 ? productPrice : productQuantity}
-            onChange={handleInputChange(index === 0 ? setProductName : index === 1 ? setProductPrice : setProductQuantity)}
+            value={
+              index === 0 ? itemName : index === 1 ? itemPrice : itemAmount
+            }
+            onChange={handleInputChange(
+              index === 0
+                ? "itemName"
+                : index === 1
+                ? "itemPrice"
+                : "itemAmount"
+            )}
             type={index === 1 || index === 2 ? "number" : "text"}
           />
         </div>
       ))}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <EnrollButton>
         <WhiteBtn
           width="80px"
@@ -90,7 +126,7 @@ function SelectPrjTwo() {
       </EnrollButton>
       <MyNavLine />
       <TitleBox text="등록한 상품" />
-      <ProductList products={products} />
+      <ProductList products={projectState.items} />
       <MyNavLine />
       <PrjFooter>
         <WhiteBtn
@@ -98,7 +134,7 @@ function SelectPrjTwo() {
           fontSize="0.9rem"
           padding="8px 3px"
           text="이전"
-          onClick={() => navigate("/selectprj")}
+          onClick={() => navigate("/home/selectprj")}
         />
         <Btn
           width="80px"

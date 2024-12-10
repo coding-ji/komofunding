@@ -77,7 +77,7 @@ const Navbar = ({  setSubCategory, activeCategory }) => {
             <motion.div
               key={activeCategory.name}
               className={styles.underline}
-              style={{ width: underlineProps.width, left: underlineProps.left }}
+              style={{ width: underlineProps.width, left: underlineProps.left}}
               layoutId="underline"
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             />

@@ -29,7 +29,7 @@ export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api
 export const registerUser = (userInDTO) => apiClient.post('/api/auth/register', userInDTO);
 
 // 회원가입 이메일 인증 요청 
-export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck', {email});
+export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck', { email });
 
 // 이메일 인증 코드 발송 요청
 export const sendEmailCode = (email) => apiClient.post('/api/auth/emailcheck', { email });
@@ -65,14 +65,9 @@ export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/p
 // 특정 사용자의 로그인 정지 상태 확인
 export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`);
 
-
-
-
-
 // 프로젝트 관련 API
-
 // 전체 게시물 조회
-export const fetchPosts  = () => apiClient.get('/posts');
+export const fetchPosts = () => apiClient.get('/posts');
 
 // 상세 게시물 조회
 export const fetchDetailPost = () => apiClient.get(`/posts/${projectNum}`)
@@ -96,7 +91,6 @@ export const updateProject = (userNum, updateData) => apiClient.patch(`/api/user
 
 // 삭제
 export const deleteProject = (userNum, projectNum) => apiClient.delete(`/api/user/${userNum}}/myinfo/projects`, projectNum);
-
 
 
 
