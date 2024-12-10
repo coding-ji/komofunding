@@ -46,6 +46,7 @@ function ImageUploader({ onImagesChange, images }) {
   };
 
   return (
+    <>
     <ImageUploaderWrapper>
       <input type="file" accept="image/*" multiple onChange={handleImageUpload} />
       {localImages.length > 0 && (
@@ -56,7 +57,7 @@ function ImageUploader({ onImagesChange, images }) {
         </ImagePreview>
       )}
     </ImageUploaderWrapper>
-  );
-}
-
+</>
+  )
+};
 export default ImageUploader;

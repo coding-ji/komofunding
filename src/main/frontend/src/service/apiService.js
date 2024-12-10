@@ -18,6 +18,9 @@ export const getUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/m
 // 특정 사용자의 프로필을 업데이트
 export const updateUserProfile = (email, userProfileUpdateDTO) => apiClient.patch('/api/user/${email}/my_info/profile', userInDTO);
 
+// 이미지 업로드?
+export const uploadProfileImage = (file) => apiClient.patch(`/api/user/{userNum}/my_info/profile`);
+
 // 특정 사용자가 제작자 전환을 신청함
 export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/my_info/creator-switch`, requestDTO);
 

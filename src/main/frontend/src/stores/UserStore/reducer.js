@@ -36,29 +36,29 @@ import {
 
 // 초기 상태 정의
 export const initialState = {
-//    userNum: null,
-//    email: '',
-//    password: '',
-//    name: '',
-//    nickname: '',
-//    phoneNumber: '',
-//    profileImg: '',
-//    userShortDescription: '',
-//    activatedStatus: false,
-//    bankName: '',
-//    accountNumber: '',
-//    accountHolder: '',
-//    joinDate: '',
-//    corporationName: '',
-//    corporationTel: '',
-//    bsn: '',
+    userNum: null,
+    email: '',
+    password: '',
+    name: '',
+    nickname: '',
+    phoneNumber: '',
+    profileImg: '',
+    userShortDescription: '',
+    activatedStatus: false,
+    bankName: '',
+    accountNumber: '',
+    accountHolder: '',
+    joinDate: '',
+    corporationName: '',
+    corporationTel: '',
+    bsn: '',
 };
 
 // 동적 상태 업데이트 함수
-//export const updateStateField = (state, field, value) => ({
-//    ...state,
-//    [field]: value,
-//});
+export const updateStateField = (state, field, value) => ({
+    ...state,
+    [field]: value,
+});
 
 // 리듀서 함수
 export const reducer = (state , action) => {

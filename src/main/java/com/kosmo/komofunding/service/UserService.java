@@ -266,28 +266,25 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다"));
 
+
         // 반환할 사용자 정보 Map에 저장
         Map<String, String> userDetails = new HashMap<>();
         userDetails.put("profileImage", user.getProfileImg());    // 프로필 이미지 URL
-        userDetails.put("userNum", String.valueOf(user.getUserNum()));              // 유저 ID
+        userDetails.put("userNum", String.valueOf(user.getUserNum()));              // 유저 Num
         userDetails.put("nickName", user.getNickName());          // 유저 닉네임
         userDetails.put("userRole", user.getActivatedStatus().toString());  // 유저 역할 (후원자, 제작자 등)
-        userDetails.put("shortDescription", user.getShortDescription());  // 짧은 소개글
+        userDetails.put("shortDescription", user.getShortDescription()); // 짧은 소개글
+        userDetails.put("name", user.getName());
+        userDetails.put("phoneNumber", user.getPhoneNumber());
+        userDetails.put("bankName", user.getBankName());
+        userDetails.put("accountNumber", user.getAccountNumber());
+        userDetails.put("accountHolder", user.getAccountHolder());
+        userDetails.put("BSN", String.valueOf(user.getBSN()));
+        userDetails.put("password", user.getPassword());
 
         return userDetails;
     }
 
-    public boolean verifyPassword(String userNum, String password) {
-        try {
-            Long userNumAsLong = Long.valueOf(userNum); // String을 Long으로 변환
-            return userRepository.findByUserNum(userNumAsLong)
-                    .map(user -> passwordEncoder.matches(password, user.getPassword())) // 비밀번호 검증
-                    .orElse(false); // 사용자 없으면 false 반환
-        } catch (NumberFormatException e) {
-            // userNum이 Long으로 변환 불가능한 경우 처리
-            throw new IllegalArgumentException("유효하지 않은 userNum 값입니다: " + userNum, e);
-        }
-    }
     // 프로필 페이지 수정 내용
     // 비밀번호 검증
     public boolean verifyPassword(Long userNum, String password) {
@@ -307,9 +304,16 @@ public class UserService {
     }
 
     // 프로필 업데이트
-    public boolean updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
+    public User updateUserProfile(Long userNum, UserProfileUpdateDTO request) {
         User user = userRepository.findByUserNum(userNum)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 비밀번호 검증 (비밀번호가 변경되는 경우)
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
+        }
 
         // 요청 데이터를 기반으로 사용자 프로필 업데이트
         if (request.getProfileImage() != null) {
@@ -345,7 +349,7 @@ public class UserService {
 
         userRepository.save(user); // 업데이트된 정보 저장
 
-        return true; // 성공적으로 업데이트된 경우 true 반환
+        return user; // 수정된 사용자 객체 반환
     }
 
 //    // 제작자 전환 신청 처리

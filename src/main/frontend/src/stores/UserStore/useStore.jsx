@@ -32,7 +32,7 @@ import {
     removeUser,
     findEmail,
     resetUserPassword,
-    changeUserPassword,
+    updatePassword,
     uploadProfileImage
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.
 
@@ -77,7 +77,7 @@ export const useStore = () => {
         removeUser: (userNum) => removeUser(userNum)(dispatch),
         findEmail: (name, phoneNumber) => findEmail(name, phoneNumber)(dispatch),
         resetUserPassword: (email) => resetUserPassword(email)(dispatch),
-        changePassword: (email, newPassword) => changePassword(email, newPassword)(dispatch),
+        updateUserPassword: (email, newPassword) => updateUserPassword(email, newPassword)(dispatch),
         uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
      };
     return { state, actions };

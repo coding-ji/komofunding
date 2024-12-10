@@ -16,6 +16,7 @@ const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
   };
 
   return (
+    <>
     <div
       className="profile-image-wrapper"
       style={{
@@ -51,6 +52,7 @@ const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
         onChange={handleImageChange}
       />
     </div>
+    </>
   );
 };
 
