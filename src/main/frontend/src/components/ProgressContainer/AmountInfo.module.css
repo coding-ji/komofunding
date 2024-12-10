@@ -17,6 +17,7 @@
 
 .amountstyle {
   color: #165F83;
+    text-align: right;
 }
 
 .percentwrapper {
@@ -40,6 +41,10 @@
   font-size: 2.5rem;
   margin: 30px 0;
   font-weight: bold;
+}
+
+.numberstyle{
+  text-align: right;
 }
 
 .percentAmount {

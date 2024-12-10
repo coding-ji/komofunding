@@ -6,7 +6,7 @@ const AmountInfo = ({ amount, percentage }) => {
     <div className={styles.amountWrapper}>
       <p className={styles.coin}>
         <span>모인금액</span>
-        <span>
+        <span className={styles.numberstyle}>
           <span className={styles.amountstyle}>{amount.toLocaleString()}</span> 원
         </span>
       </p>

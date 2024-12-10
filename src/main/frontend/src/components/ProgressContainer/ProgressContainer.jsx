@@ -14,14 +14,14 @@ const ProgressContainer = () => {
   const [totalSelectedPrice, setTotalSelectedPrice] = useState(0); // 선택된 아이템들의 총 금액
 
   // 초기 JSON 데이터 로드
-  useEffect(() => {
-    const fetchProjectData = async () => {
-      const response = await fetch('/data/projectData.json'); // JSON 경로
-      const data = await response.json();
-      setProjectData(data);
-    };
-    fetchProjectData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchProjectData = async () => {
+  //     const response = await fetch('/data/projectData.json'); // JSON 경로
+  //     const data = await response.json();
+  //     setProjectData(data);
+  //   };
+  //   fetchProjectData();
+  // }, []);
 
   // 선택된 아이템들의 총 금액 계산
   useEffect(() => {
@@ -76,7 +76,6 @@ const ProgressContainer = () => {
 
       {/* 버튼 영역 */}
       <div className={styles.buttonWrapper}>
-        <ProductBtn2 text="수정" width="100px" height="40px" fontSize="1rem" padding="5px" />
         <ProductBtn1 text="삭제" width="100px" height="40px" fontSize="1rem" padding="5px" />
       </div>
 
