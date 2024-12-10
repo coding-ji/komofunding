@@ -77,7 +77,7 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 communities: state.communities.map((community) =>
-                    community.communityId === action.payload.communityId ? action.payload : community
+                    community.communityNumber === action.payload.communityNumber ? action.payload : community
                 ),
                 community: action.payload,
             };
@@ -86,10 +86,10 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 communities: state.communities.filter(
-                    (community) => community.communityId !== action.payload
+                    (community) => community.communityNumber !== action.payload
                 ),
                 community:
-                    state.community.communityId === action.payload
+                    state.community.communityNumber === action.payload
                         ? initialState.community
                         : state.community,
             };

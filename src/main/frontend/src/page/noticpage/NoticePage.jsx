@@ -12,7 +12,7 @@ import {fetchAllCommunities} from "../../service/apiService"
 const ITEMS_PER_PAGE = 5; // 한 페이지에 표시할 공지사항 수
 
 const categories = [
-  { name: "전체", content: "전체 페이지" },
+  { name: "전체", content: "전체" },
   { name: "NOTICE", content: "공지" },
   { name: "EVENT", content: "이벤트" },
   { name: "FAQ", content: "자주 묻는 질문" },
@@ -121,7 +121,7 @@ const NoticePage = () => {
               }}
               ref={(el) => (itemRefs.current[index] = el)}
             >
-              {category.name}
+              {category.content}
             </button>
           ))}
         </div>
@@ -146,7 +146,11 @@ const NoticePage = () => {
         {currentNotifications?.map((item, index) => (
           <div
             key={index}
-            onClick={() => navigate(`/announcement/${item.communityNumber}`)} // 상세 페이지로 이동
+            onClick={() => 
+                navigate(`/home/announcement/${item.communityNumber}`, {
+                  state: { announcement: item },
+                }
+              )} // 상세 페이지로 이동
           >
             <Notification
                 category={item.communityCategory}

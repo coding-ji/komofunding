@@ -106,15 +106,15 @@ export const readAllCommunities = () => async (dispatch) => {
 
 
 // 특정 커뮤니티 조회
-export const readCommunityById = (communityId) => async (dispatch) => {
+export const readCommunityById = (communityNumber) => async (dispatch) => {
     try {
-        const response = await fetchCommunityById(communityId);
+        const response = await fetchCommunityById(communityNumber);
         dispatch({
             type: READ_COMMUNITY,
             payload: response.data 
         });
     } catch (error) {
-        console.error(`ID: ${communityId} 커뮤니티 데이터를 가져올 수 없습니다.`, error);
+        console.error(`ID: ${communityNumber} 커뮤니티 데이터를 가져올 수 없습니다.`, error);
     }
 };
 
@@ -133,9 +133,9 @@ export const createNewCommunity = (communityData) => async (dispatch) => {
 };
 
 // 커뮤니티 수정
-export const updateExistingCommunity = (communityId, updateData) => async (dispatch) => {
+export const updateExistingCommunity = (communityNumber, updateData) => async (dispatch) => {
     try {
-        const response = await updateCommunity(communityId, updateData);
+        const response = await updateCommunity(communityNumber, updateData);
         dispatch({
             type: UPDATE_COMMUNITY,
             payload: response.data,
@@ -146,12 +146,12 @@ export const updateExistingCommunity = (communityId, updateData) => async (dispa
 };
 
 // 커뮤니티 삭제
-export const deleteExistingCommunity = (communityId) => async (dispatch) => {
+export const deleteExistingCommunity = (communityNumber) => async (dispatch) => {
     try {
-        await deleteCommunity(communityId);
+        await deleteCommunity(communityNumber);
         dispatch({
             type: DELETE_COMMUNITY,
-            payload: communityId,
+            payload: communityNumber,
         });
     } catch (error) {
         console.error("글을 삭제할 수 없습니다.", error);
