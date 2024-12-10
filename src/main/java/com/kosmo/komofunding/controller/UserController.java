@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserService userService
 
     public UserController(UserService userService){
         this.userService = userService;
