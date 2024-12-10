@@ -16,7 +16,6 @@ const SignupForm = () => {
 
   const [emailSent, setEmailSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   // 폼 데이터 업데이트
@@ -28,7 +27,7 @@ const SignupForm = () => {
   // 이메일 인증 코드 발송
   const handleSendEmail = async () => {
     if (!formData.email) {
-      setErrorMessage("이메일을 입력하세요.");
+      alert("이메일을 입력하세요.");
       return;
     }
 
@@ -37,38 +36,34 @@ const SignupForm = () => {
       setEmailSent(true);
       setSuccessMessage("인증코드가 이메일로 전송되었습니다.");
     } catch (error) {
-      setErrorMessage("이메일 전송 중 오류가 발생했습니다.");
+      alert("이메일 전송 중 오류가 발생했습니다.");
     }
   };
 
   // 이메일 인증 코드 검증
   const handleVerifyEmail = async () => {
-    // 입력한 인증 코드의 앞뒤 공백을 제거
     const trimmedAuthCode = authCode.trim();
-    
-    console.log("Email: ", formData.email);  // 이메일 값 확인
-    console.log("Auth Code: ", trimmedAuthCode);  // 공백 제거된 인증 코드 값 확인
-  
+
     try {
-      await verifyEmailCode(formData.email, trimmedAuthCode);  // 공백 제거된 코드 전송
+      await verifyEmailCode(formData.email, trimmedAuthCode);
       setEmailVerified(true);
       setSuccessMessage("이메일 인증 성공!");
     } catch (error) {
-      setErrorMessage("인증코드가 일치하지 않습니다.");
+      alert("인증코드가 일치하지 않습니다.");
     }
   };
-  
+
   // 회원가입 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== confirmPassword) {
-      setErrorMessage("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     }
 
     if (!emailVerified) {
-      setErrorMessage("이메일 인증을 완료해주세요.");
+      alert("이메일 인증을 완료해주세요.");
       return;
     }
 
@@ -81,7 +76,7 @@ const SignupForm = () => {
       setEmailSent(false);
       setEmailVerified(false);
     } catch (error) {
-      setErrorMessage("회원가입 중 오류가 발생했습니다.");
+      alert("회원가입 중 오류가 발생했습니다.");
     }
   };
 
@@ -238,8 +233,7 @@ const SignupForm = () => {
               약관 동의 후 회원가입
             </motion.button>
 
-            {/* 오류 및 성공 메시지 */}
-            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+            {/* 성공 메시지 */}
             {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
           </form>
         </section>
