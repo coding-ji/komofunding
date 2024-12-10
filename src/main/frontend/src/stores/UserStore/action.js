@@ -70,6 +70,7 @@ export const VERIFY_EMAIL_SUCCESS = 'VERIFY_EMAIL_SUCCESS'; // 이메일 인증 
 export const FIND_EMAIL_SUCCESS = 'FIND_EMAIL_SUCCESS'; // 이메일 찾기 성공
 export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS'; // 비밀번호 재설정 요청 성공
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'; // 비밀번호 변경 성공
+export const VERIFY_PASSWORD = 'VERIFY_PASSWORD' // 비밀번호 검증
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = 'UPLOAD_PROFILE_IMAGE_SUCCESS'; // 프로필 이미지 업로드 성공
 
 
@@ -84,6 +85,18 @@ export const fetchMyPageInfo = () => async(dispatch) => {
         }); // 상태에 전체 데이터 업데이트
     } catch (error) {
         console.error('마이페이지 정보 가져오기 실패:', error);
+    }
+};
+
+export const apiVerifyPassword = (userNum, password) => async(dispatch) => {
+    try {
+        const response = await verifyPassword(userNum, password);
+        dispatch({
+            type : UPDATE_USER,
+            payload: response.data
+        });
+    }catch (error) {
+        console.error('비밀번호 검증 실패:', error);
     }
 };
 
@@ -225,9 +238,9 @@ export const resetUserPassword = (email) => async(dispatch) => {
     }
 };
 
-export const updateUserPassword = (email, newPassword) => async(dispatch) => {
+export const updateUserPassword = (newPassword) => async(dispatch) => {
     try {
-        await changeUserPassword(email, newPassword);
+        await changeUserPassword( newPassword );
         console.log('비밀번호 변경 성공');
         dispatch({ type: 'CHANGE_PASSWORD_SUCCESS' });
     } catch (error) {
@@ -245,3 +258,4 @@ export const uploadProfileImage = (file) => async(dispatch) => {
         console.error('이미지 업로드 실패:', error);
     }
 };
+

@@ -30,7 +30,8 @@ import {
     FIND_EMAIL_SUCCESS,
     RESET_PASSWORD_REQUEST_SUCCESS,
     CHANGE_PASSWORD_SUCCESS,
-    UPLOAD_PROFILE_IMAGE_SUCCESS
+    UPLOAD_PROFILE_IMAGE_SUCCESS,
+    VERIFY_PASSWORD
 
 } from './action.js';
 
@@ -134,6 +135,9 @@ export const reducer = (state , action) => {
 
         case USER_REQUEST_FAIL:
             return { ...state, isLoading: false, error: action.payload };
+
+        case SET_ALL_FIELDS:
+            return { ...state, ...action.payload};
 
         case RESET_STATE:
             return initialState;

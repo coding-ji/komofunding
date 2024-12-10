@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getUserProfile } from "../../service/apiService"; // 해당 함수가 API를 호출하는 부분임
 import Sidemenu from "../../components/SideMenu/SideMenu";
 import Profile from "../../container/Profile/Profile";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
@@ -16,9 +15,9 @@ function ProfileView() {
       const fetchUserProfileData = async () => {
         try {
           // API 호출해서 사용자 데이터 가져오기
-          const response = await getUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
-          const userData = response.data;
-          userActions.updateAllFields(userData);
+          const response = await userActions.fetchUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
+          console.log("response" + response)
+          userActions.updateAllFields(response);
 
         } catch (error) {
           console.error("프로필 정보 가져오기 실패:", error);
@@ -34,6 +33,7 @@ function ProfileView() {
   return (
     <div className="ProfileViewPosition">
       <Sidemenu />
+      {console.log(userState)}
       {userState ? (
         <Profile profileData={userState} userNum={userNum}/> // Profile 컴포넌트에 데이터 전달
       ) : (

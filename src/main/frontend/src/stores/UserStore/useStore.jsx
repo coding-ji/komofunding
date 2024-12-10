@@ -77,8 +77,9 @@ export const useStore = () => {
         removeUser: (userNum) => removeUser(userNum)(dispatch),
         findEmail: (name, phoneNumber) => findEmail(name, phoneNumber)(dispatch),
         resetUserPassword: (email) => resetUserPassword(email)(dispatch),
-        updateUserPassword: (email, newPassword) => updateUserPassword(email, newPassword)(dispatch),
+        updateUserPassword: (newPassword) => updateUserPassword(newPassword)(dispatch),
         uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
+        apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch)
      };
     return { state, actions };
 };

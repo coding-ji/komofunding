@@ -9,14 +9,14 @@ import { useStore } from "../../stores/UserStore/useStore";
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
 import Input from "../../components/input";
 import PasswordPopup from "./PasswordPopup";
-import { updateUserProfile, getUserProfile, changePassword, uploadProfileImage } from "../../service/apiService";
 
 const ProfileEdit = () => {
     const { userNum } = useParams();
-    const { state, dispatch } = useStore(); // dispatch로 상태 변경
+    const { state, actions } = useStore(); // dispatch로 상태 변경
     const navigate = useNavigate();
 
     const [currentPassword, setCurrentPassword] = useState("");
+
     const [currentPasswordCheck, setCurrentPasswordCheck] = useState("");
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
 
@@ -26,31 +26,33 @@ const ProfileEdit = () => {
     const [newProfileImage, setNewProfileImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
 
+
     // 사용자 데이터 불러오기
-     useEffect(() => {
+    useEffect(() => {
         if (userNum) {
-          const fetchUserProfileData = async () => {
-            try {
-              // API 호출해서 사용자 데이터 가져오기
-              const response = await getUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
-              const userData = response.data;
-              userActions.updateAllFields(userData);
+            const fetchUserProfileData = async () => {
+                try {
+                    const response = await actions.fetchUserProfileData(userNum);
+                   // 상태 업데이트
+                    actions.updateAllFields(response); // 변경된 부분
+                } catch (error) {
+                    console.error("프로필 정보 가져오기 실패:", error);
+                }
+            };
 
-            } catch (error) {
-              console.error("프로필 정보 가져오기 실패:", error);
-            }
-          };
-
-          fetchUserProfileData();
+            fetchUserProfileData();
         } else {
-          console.error("userNum이 존재하지 않습니다.");
+            console.error("userNum이 존재하지 않습니다.");
         }
-      }, [userNum]); // userNum이 변경될 때마다 다시 API 호출
+    }, [userNum]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        // dispatch를 통해 상태 업데이트
-        dispatch({ type: "UPDATE_FIELD", field: name, value });
+        
+        // 상태 업데이트를 위해 updateAllFields 호출
+        actions.updateAllFields({
+            [name]: value,  // name 속성(예: "nickName")에 해당하는 값을 value로 업데이트
+        });
     };
 
     // 프로필 저장
@@ -62,7 +64,7 @@ const ProfileEdit = () => {
                 const formData = new FormData();
                 formData.append("file", newProfileImage);
 
-                const response = await uploadProfileImage(formData); // 이미지 업로드 API 호출
+                const response = await actions.uploadProfileImage(formData); // 이미지 업로드 API 호출
                 if (response.status === 200) {
                     uploadedImgUrl = response.data; // 업로드된 이미지 URL 설정
                 } else {
@@ -71,21 +73,21 @@ const ProfileEdit = () => {
                 }
             }
 
-//             const updatedProfile = {
-//                 userNum: state.userNum,
-//                 email: state.email,
-//                 password: state.password,
-//                 name: state.name,
-//                 nickName: state.nickName,
-//                 phoneNumber: state.phoneNumber,
-//                 profileImage: uploadedImgUrl,
-//                 shortDescription: state.shortDescription,
-//                 activatedStatus: state.activatedStatus,
-//                 bankName: state.bankName,
-//                 accountNumber: state.accountNumber,
-//                 accountHolder: state.accountHolder,
-//                 BSN: state.BSN,
-//             };
+            //             const updatedProfile = {
+            //                 userNum: state.userNum,
+            //                 email: state.email,
+            //                 password: state.password,
+            //                 name: state.name,
+            //                 nickName: state.nickName,
+            //                 phoneNumber: state.phoneNumber,
+            //                 profileImage: uploadedImgUrl,
+            //                 shortDescription: state.shortDescription,
+            //                 activatedStatus: state.activatedStatus,
+            //                 bankName: state.bankName,
+            //                 accountNumber: state.accountNumber,
+            //                 accountHolder: state.accountHolder,
+            //                 BSN: state.BSN,
+            //             };
 
 
             // 프로필 업데이트 API 호출
@@ -106,26 +108,27 @@ const ProfileEdit = () => {
         navigate(`/profile/${state.userNum}`);
     };
 
-    // 비밀번호 확인
-    const handlePasswordCheck = async () => {
-        if (!currentPassword || !currentPasswordCheck) {
-            alert("모든 필드를 입력해주세요.");
-            return;
-        }
+// 비밀번호 확인
+const handlePasswordCheck = async () => {
+    try {
+        if (password && currentPassword === password) {
+            // 비밀번호 확인 API 호출
+            const response = await actions.apiVerifyPassword(state.userNum, currentPassword);
 
-        if (currentPassword !== currentPasswordCheck) {
-            alert("비밀번호가 서로 일치하지 않습니다.");
-            return;
-        }
-
-        if (state.password && currentPassword === state.password) {
-            alert("비밀번호 확인 성공");
-            setIsPasswordCorrect(true);
-            setShowModal(true); // 모달 열기
+            if (response.success) {  // API 호출 성공 시
+                alert("비밀번호 확인 성공");
+                setShowModal(true); // 모달 열기
+            } else {
+                alert("비밀번호 확인 실패");
+            }
         } else {
             alert("현재 비밀번호가 올바르지 않습니다.");
         }
-    };
+    } catch (error) {
+        console.error("비밀번호 확인 중 오류 발생:", error);
+        alert("비밀번호 확인 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
+};
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -256,14 +259,14 @@ const ProfileEdit = () => {
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             placeholder="현재 비밀번호"
-                    />
+                        />
                         <input
                             type="password"
                             value={currentPasswordCheck}
-                           onChange={(e) => setCurrentPasswordCheck(e.target.value)}
-                           placeholder="비밀번호 재확인"
-                    />
-                    <button onClick={handlePasswordCheck}>비밀번호 확인</button>
+                            onChange={(e) => setCurrentPasswordCheck(e.target.value)}
+                            placeholder="비밀번호 재확인"
+                        />
+                        <button onClick={handlePasswordCheck}>비밀번호 확인</button>
                     </div>
 
                     {showModal && (

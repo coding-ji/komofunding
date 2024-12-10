@@ -78,12 +78,12 @@ public class UserController {
             @RequestBody UserProfileUpdateDTO request  // 수정할 프로필 정보 받기
         ) {
         try {
-            // 비밀번호 확인
-            boolean isPasswordValid = userService.verifyPassword(Long.valueOf(String.valueOf(userNum)), request.getPassword());  // 비밀번호 검증
-
-            if (!isPasswordValid) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
-            }
+//            // 비밀번호 확인
+//            boolean isPasswordValid = userService.verifyPassword(Long.valueOf(String.valueOf(userNum)), request.getPassword());  // 비밀번호 검증
+//
+//            if (!isPasswordValid) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
+//            }
 
             // 프로필 업데이트
             User updatedUser = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
