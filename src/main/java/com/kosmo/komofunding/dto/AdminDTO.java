@@ -15,5 +15,4 @@ public class AdminDTO {
         private String adminPw;          // 관리자 비밀번호
         private LocalDateTime adminJoinDate; // 관리자 생성 날짜
         private List<String> noticeIdList;   // 관리자가 작성한 공지/이벤트 글 ID 목록
-
 }

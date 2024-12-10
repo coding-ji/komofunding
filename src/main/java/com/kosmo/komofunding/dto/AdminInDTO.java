@@ -23,5 +23,5 @@ public class AdminInDTO {
     @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력하세요.")
     private String adminPw; // 관리자 비밀번호
 
-    private List<String> noticeIdList; // 관리자 작성 글 ID 리스트 (옵션)
+    private List<String> noticeIdList; // 관리자 작성 글 ID 리스트
 }
