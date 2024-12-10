@@ -1,9 +1,9 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { updateUserProfile, getUserProfile, uploadImg  } from "../../service/apiService"; // 해당 함수가 API를 호출하는 부분임
 import Sidemenu from "../../components/SideMenu/SideMenu";
 import Profile from "../../container/Profile/Profile";
-import { updateUserProfile } from "../../service/apiService";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 import "./ProfileView.css";
 
 function ProfileView() {
@@ -15,18 +15,22 @@ function ProfileView() {
     if (userNum) {
       const fetchUserProfileData = async () => {
         try {
+          // API 호출해서 사용자 데이터 가져오기
+          const response = await getUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
           const userData = response.data;
+
+          // 상태에 사용자 데이터 업데이트
           userActions.updateAllFields(userData);
         } catch (error) {
           console.error("프로필 정보 가져오기 실패:", error);
         }
       };
-  
+
       fetchUserProfileData();
     } else {
       console.error("userNum이 존재하지 않습니다.");
     }
-  }, [userNum]);
+  }, [userNum, userActions]); // userNum이 변경될 때마다 다시 API 호출
 
   return (
     <div className="ProfileViewPosition">

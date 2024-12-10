@@ -101,7 +101,8 @@ public class UserService {
         user.setPassword(userInDTO.getPassword());
         user.setPhoneNumber(userInDTO.getPhoneNumber());
 
-        // 다른 필드들도 설정
+        // 기본 프로필 이미지 URL 설정
+        user.setProfileImg("http://localhost:8080/images/defaultImg.png");
 
         userRepository.save(user);
 
@@ -290,10 +291,19 @@ public class UserService {
     // 프로필 페이지 수정 내용
     // 비밀번호 검증
     public boolean verifyPassword(Long userNum, String password) {
-        User user = userRepository.findById(String.valueOf(Long.parseLong(String.valueOf(userNum))))
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        try {
+            User user = userRepository.findById(String.valueOf(Long.parseLong(String.valueOf(userNum))))
+                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        return passwordEncoder.matches(password, user.getPassword());
+            // 로그 추가
+            System.out.println("User found: " + user.getEmail());
+
+            return passwordEncoder.matches(password, user.getPassword());
+        } catch (IllegalArgumentException e) {
+            // 예외 로그
+            System.err.println("Error verifying password: " + e.getMessage());
+            throw e;
+        }
     }
 
     // 프로필 업데이트

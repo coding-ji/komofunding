@@ -5,7 +5,6 @@ import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -122,6 +121,7 @@ public class User {
         return 100000L + random.nextInt(900000); // 100000~999999 사이의 랜덤 숫자 생성
     }
 
+
     // 엔티티가 저장되기 전에 값 설정
     @PrePersist
     public void setUserDefaults() {
@@ -157,5 +157,6 @@ public class User {
         this.verificationCode = verificationCode;
         this.verificationCodeExpiration = LocalDateTime.now().plusMinutes(5); // 예시: 5분 후 만료
     }
+
 
 }

@@ -190,7 +190,7 @@ export const readProjectDetail = (projectNum) => async (dispatch) => {
         const response = await fetchDetailPost(projectNum);
         dispatch({
             type: READ_PROJECT,
-            payload: response.data 
+            payload: response.data
         });
     } catch (error) {
         console.error("프로젝트 상세 정보를 불러올 수 없습니다.", error);
@@ -203,7 +203,7 @@ export const readProjectsByCategoryAndStatus = (projectCategory, fundingStatus) 
         const response = await fetchPostsByCategoryAndStatus(projectCategory, fundingStatus);  // 조건에 맞는 프로젝트 목록 API 호출
         dispatch({
             type: READ_PROJECT,
-            payload: response.data  
+            payload: response.data
         });
     } catch (error) {
         console.error("카테고리 및 상태별 프로젝트를 불러올 수 없습니다.", error);
@@ -239,7 +239,7 @@ export const createNewProject = (userNum, projectData) => async (dispatch) => {
 // 프로젝트 업데이트 (UPDATE) ** updateData에 projectNum으로 수정
 export const updateExistingProject = (userNum, updateData) => async (dispatch) => {
     try {
-        const response = await updateProject(userNum, updateData);  
+        const response = await updateProject(userNum, updateData);
         dispatch({
             type: UPDATE_PROJECT,
             payload: response.data  // 업데이트된 프로젝트 데이터
