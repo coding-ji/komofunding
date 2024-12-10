@@ -233,7 +233,7 @@ const SignupForm = () => {
               약관 동의 후 회원가입
             </motion.button>
 
-            {/* 성공 메시지 */}
+            
             {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
           </form>
         </section>
