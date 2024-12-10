@@ -91,57 +91,59 @@ const ProgressContainer = () => {
 
       {/* 드롭다운(아코디언) */}
       <div className={styles.accordionWrapper}>
-        <button
-          className={`${styles.accordionToggle} ${isAccordionOpen ? styles.open : ''}`}
-          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-        >
-          상품을 선택해주세요
-        </button>
-        {isAccordionOpen && (
-          <div className={styles.dropdownContent}>
-            {projectData.map((project) =>
-              project.items.map((item) => (
-                <div
-                  key={item.itemName}
-                  className={styles.dropdownItem}
-                  onClick={() => handleAddItem(project, item)}
-                >
-                  <span>{item.itemName}</span>
-                  <span className={styles.itemPrice}>{item.itemPrice.toLocaleString()} 원</span>
-                </div>
-              ))
-            )}
+  <button
+    className={`${styles.accordionToggle} ${isAccordionOpen ? styles.open : ''}`}
+    onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+  >
+    상품을 선택해주세요
+  </button>
+  {isAccordionOpen && (
+    <div className={styles.dropdownContent}>
+      {projectData.map((project) =>
+        project.items.map((item) => (
+          <div
+            key={item.itemName}
+            className={styles.dropdownItem}
+            onClick={() => handleAddItem(project, item)}
+          >
+            <span>{item.itemName}</span>
+            <span className={styles.itemPrice}>{item.itemPrice.toLocaleString()} 원</span>
           </div>
-        )}
-      </div>
+        ))
+      )}
+    </div>
+  )}
+</div>
 
-      {/* 선택된 아이템 상자 */}
-      {selectedItems.map((item, index) => (
-        <div key={item.itemName} className={styles.selectedItemBox}>
-          <div className={styles.closeBtn} onClick={() => handleRemoveItem(index)}>
-            x
-          </div>
-          <p className={styles.itemName}>{item.itemName}</p>
-          <div className={styles.itemControls}>
-            <button
-              onClick={() => handleUpdateCount(index, Math.max(1, item.count - 1))}
-              className={styles.controlBtn}
-            >
-              -
-            </button>
-            <span>{item.count}</span>
-            <button
-              onClick={() => handleUpdateCount(index, item.count + 1)}
-              className={styles.controlBtn}
-            >
-              +
-            </button>
-            <span className={styles.itemPrice}>
-              {(item.itemPrice * item.count).toLocaleString()} 원
-            </span>
-          </div>
-        </div>
-      ))}
+{/* 선택된 아이템 상자 */}
+<div className={styles.selectedItemsContainer}>
+  {selectedItems.map((item, index) => (
+    <div key={item.itemName} className={styles.selectedItemBox}>
+      <div className={styles.closeBtn} onClick={() => handleRemoveItem(index)}>
+        x
+      </div>
+      <p className={styles.itemName}>{item.itemName}</p>
+      <div className={styles.itemControls}>
+        <button
+          onClick={() => handleUpdateCount(index, Math.max(1, item.count - 1))}
+          className={styles.controlBtn}
+        >
+          -
+        </button>
+        <span>{item.count}</span>
+        <button
+          onClick={() => handleUpdateCount(index, item.count + 1)}
+          className={styles.controlBtn}
+        >
+          +
+        </button>
+        <span className={styles.itemPrice}>
+          {(item.itemPrice * item.count).toLocaleString()} 원
+        </span>
+      </div>
+    </div>
+  ))}
+</div>
 
       {/* 선택된 상품 총 금액 */}
       <div className={styles.totalPrice}>
