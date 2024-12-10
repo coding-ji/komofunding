@@ -151,7 +151,7 @@ const SignupForm = () => {
               </button>
             </div>
 
-            {/* 인증번호 */}
+
             <label className={styles.label} style={{ gridArea: "label3" }}>
               인증번호
             </label>
