@@ -40,6 +40,7 @@ import CreationGuide from "./page/noticpage/CreationGuide";
 import DonateGuide from "./page/noticpage/DonateGuide";
 import ProfileView from "./page/Profile/ProfileView";
 import MainProDetails from "./page/MainProDetails/MainProDetails";
+import OrderTable from "./page/OrderTable/OrderTable";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -72,6 +73,7 @@ const router = createBrowserRouter([
           { index: true, element: <Upcoming /> },
           { path: "ongoing", element: <Ongoing /> },
           { path: "completed", element: <Completed /> },
+            
         ],
       },
 
@@ -101,6 +103,8 @@ const router = createBrowserRouter([
       { path: "creation-guide", element: <CreationGuide /> },
       { path: "donate-guide", element: <DonateGuide /> },
       { path: "product-details", element: <MainProDetails /> },
+      { path: "ordertable", element: <OrderTable /> },
+
     ],
   },
 ]);

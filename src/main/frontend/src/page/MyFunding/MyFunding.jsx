@@ -19,7 +19,7 @@ function MyFunding() {
                 <TitleText title="나의 프로젝트" />
             </div>
             <div className={styles.nav}>
-                <MyNav navItems={navItems} basePath="/myfunding"/>
+                <MyNav navItems={navItems} basePath="/home/myfunding"/>
             </div>
             <div className={styles.line}>
                 <MyNavLine />

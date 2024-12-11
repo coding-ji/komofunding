@@ -1,8 +1,5 @@
 import React from 'react';
-import TitleText from '../../components/TitleText';
-import MyNavLine from '../../components/MyNavLine';
 import MyContainers from '../../components/MyContainers';
-import MyNav from '../../components/MyNav';
 
 function UserIng() {
 

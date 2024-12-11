@@ -18,7 +18,7 @@ function UserFunding() {
                 <TitleText title="나의 후원" />
             </div>
             <div className={styles.nav}>
-                <MyNav navItems={navItems} basePath="/userfunding"/>
+                <MyNav navItems={navItems} basePath="/home/userfunding"/>
             </div>
             <div className={styles.line}>
                 <MyNavLine />

@@ -1,39 +1,37 @@
 import React from "react";
 import "./PopupInquiry.css";
-import {Btn} from "../../../components/MyBtn";
-import '../../../index.css'
+import { Btn } from "../../../components/MyBtn";
+import '../../../index.css';
 import { useNavigate } from "react-router-dom";
 
-function PopupInquiry({ message, onClose,navigateTo}) {
+function PopupInquiry({ message, onClose, handleButtonClick, navigateTo, text = "확인" }) { // text 기본값 설정
 
   const navigate = useNavigate(); // useNavigate 훅 사용
 
-  const handleButtonClick = () => {
+  const handleButtonClickWrapper = () => {
     if (navigateTo) {
       navigate(navigateTo); // 전달된 경로로 이동
     }
+    handleButtonClick(); // 전달된 삭제 처리 함수 실행
     onClose(); // 팝업 닫기
   };
-
 
   return (
     <div className="popup-overlay">
       <div className="popup-content">
         {/* 상단 검은색 헤더 */}
         <div className="popup-header"></div>
-        <br/>
+        <br />
         <p>{message}</p>
         <div className="popup-button-container">
           <Btn 
-         onClick={handleButtonClick} // 버튼 클릭 이벤트
-          text="확인"
-          width = "100px"
-          padding="2px 2px"
-          fontSize = "1rem"
-          height = "30px" 
-            >
-         
-          </Btn>
+            onClick={handleButtonClickWrapper} // 버튼 클릭 이벤트
+            text={text} // 전달된 텍스트 사용
+            width="100px"
+            padding="2px 2px"
+            fontSize="1rem"
+            height="30px" 
+          />
         </div>
       </div>
     </div>

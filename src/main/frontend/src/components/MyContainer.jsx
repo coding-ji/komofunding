@@ -8,32 +8,36 @@ import { Btn } from "./MyBtn";
 
 const Styleddiv = styled(motion.div)`
   display: grid;
-  grid-template-rows: 3fr 0.3fr 0.3fr 0.3fr;  /* 각 항목의 비율을 조정 */
+  grid-template-rows: 3fr 0.3fr 0.3fr 0.3fr; /* 각 항목의 비율을 조정 */
   width: 100%;
-  height: 100%;  /* 부모 컨테이너 높이에 맞게 확장 */
+  height: 100%; /* 부모 컨테이너 높이에 맞게 확장 */
   border-radius: 2px;
 `;
 
-function MyContainer({title, description, text}) {
-    return (
-        <Styleddiv
-        whileHover={{ scale: 1.02, boxShadow: '10px 10px 15px rgba(0, 0, 0, 0.3)' }}
-        transition={{ type: "spring", stiffness: 100, transition: .1 }} 
-        >
-            <motion.div>
-                <ProductImg></ProductImg>
-            </motion.div>
-            <motion.div>
-                <ProductTitle title={title} fontFamily="var(--kr-font)" />
-            </motion.div>
-            <motion.div >
-                <ProductDescription description={description} />
-            </motion.div>
-            <motion.div>
-                <Btn text={text} fontFamily="var(--eng-font)"></Btn>
-            </motion.div>
-        </Styleddiv>
-    );
+function MyContainer({ title, description, text, onDelete, onEdit }) { 
+  return (
+    <Styleddiv
+      whileHover={{ scale: 1.02, boxShadow: '10px 10px 15px rgba(0, 0, 0, 0.3)' }}
+      transition={{ type: "spring", stiffness: 100, transition: 0.1 }}
+    >
+      <motion.div>
+        <ProductImg />
+      </motion.div>
+      <motion.div>
+        <ProductTitle title={title} fontFamily="var(--kr-font)" />
+      </motion.div>
+      <motion.div>
+        <ProductDescription description={description} />
+      </motion.div>
+      <motion.div>
+        <Btn 
+          text={text} 
+          fontFamily="var(--eng-font)" 
+          onClick={text === "EDIT" || text === "LIST" ? onEdit : onDelete} // text가 "EDIT"일 때 onEdit 실행, 아니면 onDelete 실행
+        />
+      </motion.div>
+    </Styleddiv>
+  );
 }
 
 export default MyContainer;
