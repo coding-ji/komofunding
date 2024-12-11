@@ -30,31 +30,32 @@ const Button = styled(motion.button)`
   transition: all 0.13s ease; /* 부드러운 전환 효과 */
 `;
 
+// 화이트 블랙 rgb로 수정했습니다.
 
 const hoverEffects = {
   Btn : {
-    backgroundColor: "white",  
-    color: "var(--darkblue-color)", 
+    backgroundColor: "rgb(255,255,255)",
+    color: "var(--darkblue-color)",
     borderColor: "var(--darkblue-color)",
   },
 
   Cancel : {
-    backgroundColor: "var(--darkblue-color)",  
-    color: "white", 
+    backgroundColor: "var(--darkblue-color)",
+    color: "rgb(255,255,255)",
     borderColor: "var(--darkblue-color)",
 
   },
 
   White : {
-    backgroundColor: "white",  
-    color: "black", 
-    borderColor: "black",
+    backgroundColor: "white",
+    color: "rgb(0,0,0)",
+    borderColor: "rgb(0,0,0)",
   },
 
   Black : {
-    backgroundColor: "Black",  
-    color: "white", 
-    borderColor: "black",
+    backgroundColor: "rgb(0,0,0)",
+    color: "rgb(255,255,255)",
+    borderColor: "rgb(0,0,0)",
   }
 
 }
