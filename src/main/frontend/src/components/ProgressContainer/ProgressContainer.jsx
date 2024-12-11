@@ -69,6 +69,10 @@ const ProgressContainer = () => {
 
   return (
     <div className={styles.container}>
+      {/* 기타 영역 */}
+      <div className={styles.OtherTextWrapper}>
+        <OtherText text="기타" />
+      </div>
 
 
       {/* 금액 정보 */}
@@ -93,8 +97,23 @@ const ProgressContainer = () => {
   >
     상품을 선택해주세요
   </button>
-  {isAccordionOpen && (
+  {/* {isAccordionOpen && (
     <div className={styles.dropdownContent}>
+      {projectData.map((project) =>
+         project.items.map((item) => (
+          <div
+            key={item.itemName}
+            className={styles.dropdownItem}
+            onClick={() => handleAddItem(project, item)}
+          >
+            <span>{item.itemName}</span>
+            <span className={styles.itemPrice}>{item.itemPrice.toLocaleString()} 원</span>
+          </div>
+        ))
+      )}
+    </div>
+  )} */}
+  <div className={styles.dropdownContent} style={{visibility : (isAccordionOpen ? "visible" : "hidden")}}>
       {projectData.map((project) =>
         project.items.map((item) => (
           <div
@@ -108,7 +127,6 @@ const ProgressContainer = () => {
         ))
       )}
     </div>
-  )}
 </div>
 
 {/* 선택된 아이템 상자 */}
