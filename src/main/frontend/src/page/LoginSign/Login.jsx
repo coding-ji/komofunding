@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TitleText from "../../components/TitleText";
 import { Btn } from "../../components/MyBtn";
 import Input from "../../components/input";
@@ -8,28 +8,63 @@ import { loginUser } from "../../service/apiService";
 import styles from "./Login.module.css";
 import axios from "axios";
 
+
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(""); // 성공 메시지 상태
   const [error, setError] = useState(""); // 에러 메시지 상태fFff
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //     // 로그인 성공 시
+  //     await loginUser(email, password)
+  //     .then(response => {
+  //       setMessage("로그인 성공!");
+  //       const userInfo = response.data; // 백엔드에서 반환된 사용자 정보
+  //       console.log(userInfo);
+  //       localStorage.setItem("user", JSON.stringify(userInfo));
+  //       window.location.href = "/"; // 메인 페이지로 리디렉션
+  //     })
+  //     .catch(error => {
+  //       console.error("로그인 실패", error);
+  //       setError("로그인 실패");
+  //     });
+  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-      // 로그인 성공 시
-      await loginUser(email, password)
-      .then(response => {
-        setMessage("로그인 성공!");
-        const userInfo = response.data; // 백엔드에서 반환된 사용자 정보
-        console.log(userInfo);
-        localStorage.setItem("user", JSON.stringify(userInfo));
-        window.location.href = "/"; // 메인 페이지로 리디렉션
-      })
-      .catch(error => {
-        console.error("로그인 실패", error);
-        setError("로그인 실패");
-      });
-  }
+    setError(""); // 기존 에러 메시지 초기화
+    setMessage(""); // 기존 성공 메시지 초기화
+  
+    try {
+      const response = await loginUser(email, password);
+      const userInfo = response.data; // 서버에서 반환된 데이터 (role, sessionId 등)
+      
+      // 성공 메시지 출력
+      setMessage("로그인 성공!");
+      console.log("로그인 정보:", userInfo);
+  
+      // 로컬 스토리지에 사용자 정보 저장
+      localStorage.setItem("user", JSON.stringify(userInfo));
+  
+      // 역할에 따라 리디렉션
+      if (userInfo.role === "admin") {
+        navigate("/write"); // 관리자 페이지
+      } else if (userInfo.role === "user") {
+        navigate("/");
+      } else {
+        throw new Error("알 수 없는 역할");
+      }
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      setError("로그인 실패: " + (error.response?.data?.error || "서버와 통신할 수 없습니다."));
+    }
+  };
+
+  
+
 
   return (
     <div className={styles.container}>
