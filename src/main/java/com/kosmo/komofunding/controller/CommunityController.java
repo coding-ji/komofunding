@@ -5,18 +5,21 @@ import com.kosmo.komofunding.dto.CommunityInDTO;
 import com.kosmo.komofunding.dto.CommunityOutDTO;
 import com.kosmo.komofunding.service.CommunityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
-
-    @RestController
+@RestController
     @RequestMapping("/posts/community")
     @RequiredArgsConstructor
     public class CommunityController{
 
+        @Autowired
         private final CommunityService communityService;
 
         @GetMapping // 모든 커뮤니티 가져오기 (React에서 테스트용 추가)
@@ -42,10 +45,17 @@ import java.util.List;
 
 
         @PostMapping
-        public ResponseEntity<String> createCommunity(@RequestBody CommunityInDTO communityInDTO) {
+        public ResponseEntity<Map<String, String>> createCommunity(@RequestBody CommunityInDTO communityInDTO) {
             communityService.createCommunity(communityInDTO);
-            return ResponseEntity.ok("Community created successfully");
+            System.out.println("Received request: " + communityInDTO);
+
+            // JSON 형식의 응답 반환
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Community created successfully");
+            return ResponseEntity.ok(response);
         }
+
+
 
         @PutMapping("/api/{id}")
         public ResponseEntity<String> updateCommunity(@PathVariable String id, @RequestBody CommunityInDTO communityInDTO) {

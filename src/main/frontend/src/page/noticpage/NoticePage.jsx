@@ -5,7 +5,6 @@ import Notification from "../../components/Notification"; // 공지사항 표시
 import styles from "./NoticePage.module.css";
 import Pagination from "../MyPage/Pagination";
 import { useStore as NoticeStore } from "../../stores/NoticeStore/useStore";
-import {fetchAllCommunities} from "../../service/apiService"
 
 
 
@@ -35,21 +34,7 @@ const NoticePage = () => {
   const itemRefs = useRef([]);
 
   useEffect(() => {
-    const fetchData = async () => { 
-      try {
-        // 백엔드 API 호출
-        const response = await fetchAllCommunities();
-        const communities = response.data;
-        console.log(communities)
-
-        // 상태 업데이트
-        actions.changeCommunities(communities);
-      } catch (error) {
-        console.error("공지사항 데이터를 불러오지 못했습니다.", error);
-      }
-    };
-
-    fetchData();
+    actions.readAllCommunities();
   }, []);
 
   // 밑줄 위치 업데이트
