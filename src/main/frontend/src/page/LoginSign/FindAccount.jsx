@@ -76,8 +76,9 @@ const FindAccount = () => {
               className={styles.input}
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+            />      <div></div>
             <label className={styles.label}>휴대폰번호</label>
+
             <input
               type="text"
               placeholder="휴대폰번호를 입력하세요"
