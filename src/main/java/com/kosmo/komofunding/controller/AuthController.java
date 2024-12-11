@@ -4,6 +4,7 @@ import com.kosmo.komofunding.dto.EmailRequestDTO;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.User;
+import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.EmailService;
 import com.kosmo.komofunding.service.UserService;
@@ -31,6 +32,7 @@ public class AuthController {
     private final EmailService emailService;
     @Autowired
     private JavaMailSender mailSender;
+    private AdminRepository adminRepository;
 
     // 회원 가입
     @PostMapping("/register")

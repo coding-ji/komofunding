@@ -3,7 +3,9 @@ package com.kosmo.komofunding.service;
 import com.kosmo.komofunding.common.enums.CommunityCategory;
 import com.kosmo.komofunding.dto.CommunityInDTO;
 import com.kosmo.komofunding.dto.CommunityOutDTO;
+import com.kosmo.komofunding.entity.Admin;
 import com.kosmo.komofunding.entity.Community;
+import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
+    private final AdminRepository adminRepository; // AdminRepository 추가
+
 
     public CommunityOutDTO getCommunityById(String communityId) {
         Community community = communityRepository.findById(communityId)
@@ -44,6 +48,10 @@ public class CommunityService {
         Integer maxCommunityNumber = communityRepository.findMaxCommunityNumber();
         int nextCommunityNumber = (maxCommunityNumber != null ? maxCommunityNumber : 0) + 1;
 
+        // Admin 조회 (adminId는 String 타입)
+        Admin admin = adminRepository.findById(communityInDTO.getAdminId())
+                .orElseThrow(() -> new RuntimeException("Admin 정보를 찾을 수 없습니다."));
+
         Community community = Community.builder()
                 .communityNumber(nextCommunityNumber)
                 .communityCategory(communityInDTO.getCommunityCategory())
@@ -51,7 +59,8 @@ public class CommunityService {
                 .communityContent(communityInDTO.getCommunityContent())
                 .writeDate(LocalDateTime.now())
                 .updatedDate(LocalDateTime.now())
-                .author(communityInDTO.getAuthor())
+                .author(admin.getAdminNickname()) // Admin의 닉네임 설정
+                .admin(admin) // Admin 매핑
                 .isHidden(communityInDTO.isHidden())
                 .endDate(communityInDTO.getEndDate())
                 .build();
@@ -86,7 +95,7 @@ public class CommunityService {
                 .writeDate(community.getWriteDate())
                 .updatedDate(community.getUpdatedDate())
                 .endDate(community.getEndDate())
-                .author(community.getAuthor())
+                .author(community.getAdmin().getAdminNickname()) // Admin 닉네임 반환
                 .isHidden(community.getIsHidden())
                 .url("/posts/community/" + community.getCommunityId())
                 .build();

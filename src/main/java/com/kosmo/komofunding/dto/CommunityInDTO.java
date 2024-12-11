@@ -16,8 +16,9 @@ public class CommunityInDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endDate; // 종료일
     private boolean isHidden = false; // 기본값 false로 설정
-    private String author; // 작성자
 
+    private String author; // 작성자 (닉네임)
+    private String adminId; // Admin의 UUID (String 타입)
 
 }
 

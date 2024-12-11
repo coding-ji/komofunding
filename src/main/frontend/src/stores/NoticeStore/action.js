@@ -122,33 +122,15 @@ export const readCommunityById = (communityNumber) => async (dispatch) => {
 // 커뮤니티 생성
 export const createNewCommunity = (communityData) => async (dispatch) => {
     try {
-        const response = await fetch('/posts/community', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(communityData),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Server error response:', errorText);
-            throw new Error('Failed to create community');
-        }
-
-        const createdCommunity = await response.json();
+        const response = await createCommunity(communityData);
         dispatch({
             type: CREATE_COMMUNITY,
-            payload: createdCommunity,
+            payload: response.data,
         });
-
-        return response; // 여기서 반환
     } catch (error) {
-        console.error('Error creating community:', error);
-        throw error;
+        console.error("글을 생성할 수 없습니다.", error);
     }
 };
-
-
-  
 
 // 커뮤니티 수정
 export const updateExistingCommunity = (communityNumber, updateData) => async (dispatch) => {

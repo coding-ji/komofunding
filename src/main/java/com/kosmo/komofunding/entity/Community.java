@@ -49,6 +49,14 @@ public class Community {
     @Column(name = "is_hidden", nullable = false)
     private Boolean isHidden; // 숨김 여부
 
+    // 추가: Admin과의 연관 관계
+    @ManyToOne
+    @JoinColumn(name = "admin_id", nullable = false) // admin_id가 FK로 설정됨
+    private Admin admin;
+
+
+
+
     @PrePersist
     public void prePersist() {
         if (this.writeDate == null) {

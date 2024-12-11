@@ -44,17 +44,26 @@ import java.util.Map;
 
 
 
-        @PostMapping
-        public ResponseEntity<Map<String, String>> createCommunity(@RequestBody CommunityInDTO communityInDTO) {
-            communityService.createCommunity(communityInDTO);
-            System.out.println("Received request: " + communityInDTO);
+//        @PostMapping
+//        public ResponseEntity<Map<String, String>> createCommunity(@RequestBody CommunityInDTO communityInDTO) {
+//            communityService.createCommunity(communityInDTO);
+//            System.out.println("Received request: " + communityInDTO);
+//
+//            // JSON 형식의 응답 반환
+//            Map<String, String> response = new HashMap<>();
+//            response.put("message", "Community created successfully");
+//            return ResponseEntity.ok(response);
+//        }
 
-            // JSON 형식의 응답 반환
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Community created successfully");
-            return ResponseEntity.ok(response);
-        }
+    @PostMapping
+    public ResponseEntity<Map<String, String>> createCommunity(@RequestBody CommunityInDTO communityInDTO) {
+        communityService.createCommunity(communityInDTO);
 
+        // JSON 형식의 응답 반환
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Community created successfully");
+        return ResponseEntity.ok(response);
+    }
 
 
         @PutMapping("/api/{id}")

@@ -4,8 +4,10 @@ import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.dto.*;
+import com.kosmo.komofunding.entity.Admin;
 import com.kosmo.komofunding.entity.Email;
 import com.kosmo.komofunding.entity.User;
+import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.repository.EmailRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
@@ -33,6 +35,7 @@ public class UserService {
     private final JavaMailSender mailSender;
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailRepository emailRepository;
+    private final AdminRepository adminRepository;
 
 
     // 랜덤 인증 코드 생성
@@ -132,7 +135,25 @@ public class UserService {
     // 로그인
     @Transactional
     public Map<String, String> login(String email, String password, HttpSession session) {
-        // 이메일로 사용자 조회
+        // Admin에서 먼저 검색
+        Admin admin = adminRepository.findByAdminEmail(email);
+        if (admin != null) {
+            // Admin 로그인 로직
+            if (password == admin.getAdminPw()) {
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
+
+            // 세션에 Admin ID 저장
+            session.setAttribute("adminId", admin.getAdminId());
+
+            // 응답 생성
+            Map<String, String> response = new HashMap<>();
+            response.put("sessionId", session.getId());
+            response.put("role", "admin");
+            return response;
+        }
+
+        // Admin에서 찾지 못하면 User에서 검색
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
@@ -150,10 +171,12 @@ public class UserService {
         // 클라이언트로 반환할 데이터 준비
         Map<String, String> response = new HashMap<>();
         response.put("sessionId", sessionId); // 세션 ID
+        response.put("role", "user");
         response.put("userNum", user.getUserNum().toString()); // 유저 번호 로컬스토리지에 저장
 
         return response; // 세션 ID 포함 응답
     }
+
 
 
 

@@ -3,7 +3,7 @@ import { reducer, initialState } from "./reducer";
 import {
     changeUserNum,
     changeEmail,
-    changePassword,
+    // changePassword,
     changeName,
     changeNickName,
     changePhoneNumber,
@@ -32,7 +32,7 @@ import {
     removeUser,
     findEmail,
     resetUserPassword,
-    updatePassword,
+    // updatePassword,
     uploadProfileImage,
     apiVerifyPassword
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.

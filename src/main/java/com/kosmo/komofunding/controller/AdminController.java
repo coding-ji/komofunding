@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,6 +24,13 @@ public class AdminController {
         Admin savedAdmin = adminService.saveAdmin(admin);
         return ResponseEntity.ok(savedAdmin);
     }
+
+    @GetMapping("/admins")
+    public ResponseEntity<List<Admin>> getAllAdmins() {
+        List<Admin> admins = adminService.findAllAdmins();
+        return ResponseEntity.ok(admins);
+    }
+
 
     @GetMapping("/admin/{adminId}")
     public ResponseEntity<Admin> findByAdminId(@PathVariable("adminId") String adminId){
