@@ -16,7 +16,7 @@ export const getMyPageInfo = () => apiClient.get('/api/user/my_info');
 export const getUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/my_info/profile`);
 
 // 특정 사용자의 프로필을 업데이트
-export const updateUserProfile = (email, userProfileUpdateDTO) => apiClient.patch('/api/user/${email}/my_info/profile', userInDTO);
+export const updateUserProfile = (userNum, userProfileUpdateDTO) => apiClient.patch('/api/user/${email}/my_info/profile', userInDTO);
 
 // 이미지 업로드?
 export const uploadProfileImage = (file) => apiClient.patch(`/api/user/{userNum}/my_info/profile`);
@@ -57,13 +57,13 @@ export const findUserId = (name, phoneNumber) => apiClient.post('/api/auth/id', 
 export const resetPassword = (email) => apiClient.post('/api/auth/pw', { email });
 
 // 비밀번호 변경 요청
-export const changePassword = (email, newPassword) => apiClient.patch(`/api/auth/setting/pw`, { email, newPassword });
+export const changePassword = (email, newPassword) => apiClient.patch('/api/auth/setting/pw', { email, newPassword });
 
 // 비밀번호 검증 요청
-export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/pw/${userNum}`, { password });
+export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/pw/${userNum}`, { userNum, password });
 
 // 특정 사용자의 로그인 정지 상태 확인
-export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`);
+export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`, {userNum});
 
 // 프로젝트 관련 API
 // 전체 게시물 조회

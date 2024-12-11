@@ -136,11 +136,26 @@ public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginReq
     }
 
     // 회원 탈퇴
-    @DeleteMapping("/delete/{usernum}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userNum) {
-        return userService.deleteUser(String.valueOf(userNum))
-                ? ResponseEntity.noContent().build() // 204 No Content
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+    @DeleteMapping("/delete/{userNum}")
+    public ResponseEntity<Map<String, String>> deleteUser(
+            @RequestBody UserInDTO userInDTO) {
+        try {
+            boolean isDeleted = userService.deleteUser(userInDTO.getEmail(), userInDTO.getPassword());
+            if (!isDeleted) {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("message", "이메일 또는 비밀번호가 올바르지 않습니다.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+
+            // 성공 메시지 포함 응답
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "회원 탈퇴가 완료되었습니다.");
+            return ResponseEntity.ok(response); // 200 OK
+        } catch (IllegalArgumentException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 
     // 아이디 찾기 (이메일 찾기)
@@ -180,10 +195,20 @@ public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginReq
     }
 
     // 비밀번호 인증
-    @PostMapping("/pw/{usernum}")
-    public ResponseEntity<String> verifyPassword(@PathVariable Long userNum, @RequestBody String password, HttpSession session) {
+    @PostMapping("/pw/{userNum}")
+    public ResponseEntity<String> verifyPassword(
+            @PathVariable(name = "userNum") Long userNum,
+            @RequestBody Map<String, String> request) {
+        System.out.println("Received userNum: " + userNum);
+        System.out.println("Received password: " + request);
+        String password = request.get("password");
+
+        if (password == null || password.isEmpty()) {
+            return ResponseEntity.status(400).body("비밀번호를 입력하세요."); // Bad Request
+        }
+
         try {
-            userService.verifyPassword(session, password);
+            userService.verifyPassword(userNum, password);
             return ResponseEntity.ok("비밀번호 인증 성공");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body("비밀번호가 일치하지 않습니다."); // Unauthorized
@@ -191,8 +216,8 @@ public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginReq
     }
 
     // 로그인 정지 상태 확인
-    @GetMapping("/login/status/{usernum}")
-    public ResponseEntity<String> checkSuspension(@PathVariable Long userNum) {
+    @GetMapping("/login/status/{userNum}")
+    public ResponseEntity<String> checkSuspension(@PathVariable("userNum") Long userNum) {
         String suspensionReason = userService.getSuspensionReason(String.valueOf(userNum));
         if (suspensionReason != null) {
             return ResponseEntity.status(403).body(suspensionReason); // Forbidden

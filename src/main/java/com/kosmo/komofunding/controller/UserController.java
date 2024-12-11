@@ -114,6 +114,29 @@ public class UserController {
         }
     }
 
+//    // 비밀번호 확인 API
+//    @PostMapping("/{userNum}/verify_password")
+//    public ResponseEntity<String> verifyPassword(
+//            @PathVariable("userNum") Long userNum,
+//            @RequestBody UserInDTO request) {
+//        try {
+//            // 비밀번호 검증
+//            boolean isPasswordValid = userService.verifyPassword(userNum, request.getPassword());
+//
+//            if (isPasswordValid) {
+//                return ResponseEntity.ok("비밀번호가 올바릅니다.");
+//            } else {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 올바르지 않습니다.");
+//            }
+//        } catch (IllegalArgumentException e) {
+//            // 사용자 찾기 실패 또는 다른 예외 처리
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+//        } catch (Exception e) {
+//            // 기타 예외 처리
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+//        }
+//    }
+
     // 제작자 신청
 //    @PostMapping("/{email}/myinfo/creator-switch")
 //    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(

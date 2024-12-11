@@ -180,7 +180,7 @@ public class UserService {
     }
 
     // 회원 탈퇴
-    public boolean deleteUser(String email) {
+    public boolean deleteUser(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -190,7 +190,7 @@ public class UserService {
                 throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
             }
 
-            // 상태를 비활성화로 변경
+            // 상태를 비활성화로 변경 (회원 탈퇴 처리)
             user.setActivatedStatus(UserStatus.DEACTIVATED);
             userRepository.save(user);
             return true;
@@ -224,21 +224,25 @@ public class UserService {
         return true;
     }
 
-    // 비밀번호 인증
-    public void verifyPassword(HttpSession session, String password) {
-        // 세션에서 사용자 ID를 가져옵니다
-        Long userNum = (Long) session.getAttribute("userNum");
+    // 비밀 번호 검증
+    public boolean verifyPassword(Long userNum, String password) {
+        // userNum이 null인지 확인
         if (userNum == null) {
-            throw new IllegalArgumentException("로그인된 사용자가 없습니다.");
+            throw new IllegalArgumentException("사용자가 지정되지 않았습니다.");
         }
 
+        // 사용자 조회
         User user = userRepository.findByUserNum(userNum)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
 
-        // 비밀번호 비교
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        // 비밀번호 검증
+        if (password == null || !passwordEncoder.matches(password, user.getPassword())) {
+            System.out.println("userNum: " + userNum);
+            System.out.println("password: " + password);
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
+        return true;
     }
 
     // 로그인 정지 상태 확인
@@ -293,21 +297,21 @@ public class UserService {
 
     // 프로필 페이지 수정 내용
     // 비밀번호 검증
-    public boolean verifyPassword(Long userNum, String password) {
-        try {
-            User user = userRepository.findById(String.valueOf(Long.parseLong(String.valueOf(userNum))))
-                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-            // 로그 추가
-            System.out.println("User found: " + user.getEmail());
-
-            return passwordEncoder.matches(password, user.getPassword());
-        } catch (IllegalArgumentException e) {
-            // 예외 로그
-            System.err.println("Error verifying password: " + e.getMessage());
-            throw e;
-        }
-    }
+//    public boolean verifyPassword(Long userNum, String password) {
+//        try {
+//            User user = userRepository.findByUserNum(userNum)
+//                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//
+//            // 로그 추가
+//            System.out.println("User found: " + user.getEmail());
+//
+//            return passwordEncoder.matches(password, user.getPassword());
+//        } catch (IllegalArgumentException e) {
+//            // 예외 로그
+//            System.err.println("Error verifying password: " + e.getMessage());
+//            throw e;
+//        }
+//    }
 
     // 프로필 업데이트
     public User updateUserProfile(Long userNum, UserProfileUpdateDTO request) {

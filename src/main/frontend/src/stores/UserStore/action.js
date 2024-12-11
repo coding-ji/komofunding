@@ -39,7 +39,7 @@ export const RESET_STATE = "RESET_STATE";
 
 export const changeUserNum = (userNum) => ({type: CHANGE_USER_NUM, payload: userNum});
 export const changeEmail = (email) => ({type: CHANGE_EMAIL, payload: email});
-export const setUserPassword = (password) => ({type: CHANGE_USER_PASSWORD, payload: password});
+export const updatePassword = (password) => ({type: CHANGE_PASSWORD, payload: password});
 export const changeName = (name) => ({type: CHANGE_NAME, payload: name});
 export const changeNickName = (nickName) => ({type: CHANGE_NICKNAME, payload: nickName});
 export const changePhoneNumber = (phoneNumber) => ({type: CHANGE_PHONE_NUMBER, payload: phoneNumber});
@@ -90,9 +90,9 @@ export const fetchMyPageInfo = () => async(dispatch) => {
 
 export const apiVerifyPassword = (userNum, password) => async(dispatch) => {
     try {
-        const response = await verifyPassword(userNum, password);
+        const response = await verifyPassword(password);
         dispatch({
-            type : UPDATE_USER,
+            type : VERIFY_PASSWORD,
             payload: response.data
         });
     }catch (error) {
@@ -240,7 +240,7 @@ export const resetUserPassword = (email) => async(dispatch) => {
 
 export const updateUserPassword = (newPassword) => async(dispatch) => {
     try {
-        await changeUserPassword( newPassword );
+        await changePassword( newPassword );
         console.log('비밀번호 변경 성공');
         dispatch({ type: 'CHANGE_PASSWORD_SUCCESS' });
     } catch (error) {
@@ -249,13 +249,13 @@ export const updateUserPassword = (newPassword) => async(dispatch) => {
 };
 
 // 이미지 업로드
-export const uploadProfileImage = (file) => async(dispatch) => {
-    try {
-        await uploadProfileImage(file);
-        dispatch({ type : 'UPDATE_USER', payload : response.data}); // 상태에 업로드된 이미지 URL 저장
-        console.log('이미지 업로드 성공:', response.data.url);
-    } catch (error) {
-        console.error('이미지 업로드 실패:', error);
-    }
-};
+//export const uploadProfileImage = (file) => async(dispatch) => {
+//    try {
+//        await uploadProfileImage(file);
+//        dispatch({ type : 'UPDATE_USER', payload : response.data}); // 상태에 업로드된 이미지 URL 저장
+//        console.log('이미지 업로드 성공:', response.data.url);
+//    } catch (error) {
+//        console.error('이미지 업로드 실패:', error);
+//    }
+//};
 
