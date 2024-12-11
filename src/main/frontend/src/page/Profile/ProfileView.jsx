@@ -15,9 +15,7 @@ function ProfileView() {
       const fetchUserProfileData = async () => {
         try {
           // API 호출해서 사용자 데이터 가져오기
-          const response = await userActions.fetchUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
-          console.log("response" + response)
-          userActions.updateAllFields(response);
+          await userActions.fetchUserProfile(userNum);  // getUserProfile을 사용하여 API 요청
 
         } catch (error) {
           console.error("프로필 정보 가져오기 실패:", error);
@@ -33,9 +31,8 @@ function ProfileView() {
   return (
     <div className="ProfileViewPosition">
       <Sidemenu />
-      {console.log(userState)}
-      {userState ? (
-        <Profile profileData={userState} userNum={userNum}/> // Profile 컴포넌트에 데이터 전달
+      {userState.user ? (
+        <Profile profileData={userState.user} userNum={userNum}/> // Profile 컴포넌트에 데이터 전달
       ) : (
         <div>로딩 중...</div> // 프로필 데이터 로딩 중이면 표시할 내용
       )}

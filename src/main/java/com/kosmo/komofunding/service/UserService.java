@@ -260,10 +260,16 @@ public class UserService {
         return null; // 정상 로그인
     }
 
-    // 사용자 정보 조회
-    public Map<String, String> getMyPageInfo(String email) {
+    public User getUserInfoByEmail(String email) {
         // 이메일로 사용자 조회
-        User user = userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다"));
+    }
+
+    // 사용자 정보 조회
+    public Map<String, String> getUserProfile(Long userNum) {
+        // 이메일로 사용자 조회
+        User user = userRepository.findByUserNum(userNum)
                 .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다"));
 
 

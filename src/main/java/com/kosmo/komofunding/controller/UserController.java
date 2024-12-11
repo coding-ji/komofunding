@@ -25,21 +25,23 @@ public class UserController {
     }
 
     @GetMapping("/my_info")
-    public ResponseEntity<Map<String, String>> getMyPageInfo(HttpSession session){
+    public ResponseEntity<User> getMyPageInfo(HttpSession session) {
         // 세션에서 사용자 이메일 가져오기
         String email = (String) session.getAttribute("userEmail");
-        if (email == null ){
+        if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             // 세션에 이메일이 없으면 401 반환
         }
+
         try {
-            // 사용자 세부 정보를 가져와 응답
-            Map<String, String> userDetails = userService.getMyPageInfo(email);
-            return ResponseEntity.ok(userDetails);
+            // 사용자 정보를 가져와 응답
+            User user = userService.getUserInfoByEmail(email);
+            return ResponseEntity.ok(user);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 사용자가 없으면 404 반환
         }
     }
+
 
     // 프로필 조회
     @GetMapping("/{userNum}/my_info/profile")

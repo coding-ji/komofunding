@@ -53,7 +53,7 @@ export const changeUserJoinDate = (joinDate) => ({type: CHANGE_USER_JOIN_DATE, p
 export const changeCorporationName = (corporationName) => ({type: CHANGE_CORPORATION_NAME, payload: corporationName});
 export const changeCorporationTel = (corporationTel) => ({type: CHANGE_CORPORATION_TEL, payload: corporationTel});
 export const updateAllFields = (fields) => ({ type: UPDATE_ALL_FIELDS, payload: fields });
-export const changeBSN = (bsn) => ({type: CHANGE_BSN, payload: bsn});
+export const changeBSN = (BSN) => ({type: CHANGE_BSN, payload: BSN});
 export const resetState = () => ({type: RESET_STATE});
 
 // 유저 CRUD

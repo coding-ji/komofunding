@@ -37,22 +37,22 @@ import {
 
 // 초기 상태 정의
 export const initialState = {
-    userNum: null,
-    email: '',
-    password: '',
-    name: '',
-    nickname: '',
-    phoneNumber: '',
-    profileImg: '',
-    userShortDescription: '',
-    activatedStatus: false,
-    bankName: '',
-    accountNumber: '',
-    accountHolder: '',
-    joinDate: '',
-    corporationName: '',
-    corporationTel: '',
-    bsn: '',
+//    userNum: null,
+//    email: '',
+//    password: '',
+//    name: '',
+//    nickname: '',
+//    phoneNumber: '',
+//    profileImg: '',
+//    userShortDescription: '',
+//    activatedStatus: false,
+//    bankName: '',
+//    accountNumber: '',
+//    accountHolder: '',
+//    joinDate: '',
+//    corporationName: '',
+//    corporationTel: '',
+//    bsn: '',
 };
 
 // 동적 상태 업데이트 함수
@@ -77,13 +77,13 @@ export const reducer = (state , action) => {
             return updateStateField(state, 'name', action.payload );
 
         case CHANGE_NICKNAME:
-            return updateStateField(state, 'nickname', action.payload);
+            return updateStateField(state, 'nickName', action.payload);
 
         case CHANGE_PHONE_NUMBER:
             return updateStateField(state, 'phoneNumber', action.payload);
 
         case CHANGE_PROFILE_IMG:
-            return updateStateField(state, 'profileImg', action.payload);
+            return updateStateField(state, 'profileImage', action.payload);
 
         case CHANGE_USER_SHORT_DESCRIPTION:
             return updateStateField(state, 'userShortDescription', action.payload);
@@ -110,7 +110,7 @@ export const reducer = (state , action) => {
             return updateStateField(state, 'corporationTel', action.payload);
 
         case CHANGE_BSN:
-            return updateStateField(state, 'bsn', action.payload);
+            return updateStateField(state, 'BSN', action.payload);
 
         case UPDATE_ALL_FIELDS:
             return { ...state, ...action.payload };

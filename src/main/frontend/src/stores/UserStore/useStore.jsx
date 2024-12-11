@@ -45,9 +45,9 @@ export const useStore = () => {
         changeEmail: (email) => dispatch(changeEmail(email)),
         changeUserPassword: (password) => dispatch(changeUserPassword(password)),
         changeName: (name) => dispatch(changeName(name)),
-        changeNickname: (nickname) => dispatch(changeNickname(nickname)),
+        changeNickname: (nickName) => dispatch(changeNickname(nickName)),
         changePhoneNumber: (phoneNumber) => dispatch(changePhoneNumber(phoneNumber)),
-        changeProfileImg: (profileImg) => dispatch(changeProfileImg(profileImg)),
+        changeProfileImg: (profileImage) => dispatch(changeProfileImg(profileImage)),
         changeUserShortDescription: (userShortDescription) => dispatch(changeUserShortDescription(userShortDescription)),
         changeUserActivatedStatus: (activatedStatus) => dispatch(changeUserActivatedStatus(activatedStatus)),
         changeUserBankName: (bankName) => dispatch(changeUserBankName(bankName)),
@@ -56,7 +56,7 @@ export const useStore = () => {
         changeUserJoinDate: (joinDate) => dispatch(changeUserJoinDate(joinDate)),
         changeCorporationName: (corporationName) => dispatch(changeCorporationName(corporationName)),
         changeCorporationTel: (corporationTel) => dispatch(changeCorporationTel(corporationTel)),
-        changeBsn: (bsn) => dispatch(changeBsn(bsn)),
+        changeBSN: (BSN) => dispatch(changeBsn(BSN)),
 
         // 모든 필드를 한 번에 업데이트하는 액션
         updateAllFields: (fields) => dispatch(updateAllFields(fields)),
