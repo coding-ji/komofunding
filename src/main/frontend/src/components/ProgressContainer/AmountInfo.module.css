@@ -1,7 +1,6 @@
 .amountWrapper {
   display: grid;
-  flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   gap: 5px;
   font-family: 'Noto Sans', sans-serif;
@@ -11,7 +10,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   font-family: 'Noto Sans', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: bold;
 }
 
@@ -23,6 +22,9 @@
 .percentwrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 2.3rem;
+  font-weight: bold;
 }
 
 .percentinfo {
@@ -30,15 +32,16 @@
   justify-content: space-between; /* 양쪽 끝으로 배치 */
   align-items: center; /* 세로로 가운데 정렬 */
   font-family: 'Noto Sans', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   margin: 30px 0;
   font-weight: bold;
+  letter-spacing: 0.3rem;
 }
 
 .percent {
   text-align: right; /* 오른쪽 정렬 */
   font-family: 'Noto Sans', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   margin: 30px 0;
   font-weight: bold;
 }

@@ -35,7 +35,7 @@ const ProgressContainerWrapper = styled.div`
 
 display: flex;
 flex-direction : column;
-gap : 22px;
+gap : 15px;
 flex: 1; /* 1의 비율 */
 `;
 
@@ -59,6 +59,7 @@ function MainProDetailsImg({ project }) {
           <DescriptionProduct
             fontSize="1.4rem"
             fontWeight="bold"
+            padding="0"
             text={project.projectCategory} />
 
           <ProjectSection>

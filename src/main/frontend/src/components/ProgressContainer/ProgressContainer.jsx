@@ -69,12 +69,6 @@ const ProgressContainer = () => {
 
   return (
     <div className={styles.container}>
-      {/* 기타 영역 */}
-      <div className={styles.OtherTextWrapper}>
-        <OtherText text="기타" />
-      </div>
-
-
       {/* 금액 정보 */}
       <div className={styles.amountInfoWrapper}>
         <AmountInfo amount={currentAmount} percentage={percentage} />
@@ -133,10 +127,12 @@ const ProgressContainer = () => {
 <div className={styles.selectedItemsContainer}>
   {selectedItems.map((item, index) => (
     <div key={item.itemName} className={styles.selectedItemBox}>
+      <div className={styles.itemBtnName}>
+      <p className={styles.itemName}>{item.itemName}</p>
       <div className={styles.closeBtn} onClick={() => handleRemoveItem(index)}>
         x
       </div>
-      <p className={styles.itemName}>{item.itemName}</p>
+      </div>
       <div className={styles.itemControls}>
         <button
           onClick={() => handleUpdateCount(index, Math.max(1, item.count - 1))}
