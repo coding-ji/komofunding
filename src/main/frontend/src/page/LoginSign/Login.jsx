@@ -51,7 +51,7 @@ const Login = () => {
   
       // 역할에 따라 리디렉션
       if (userInfo.role === "admin") {
-        navigate("/write"); // 관리자 페이지
+        navigate("/admin"); // 관리자 페이지
       } else if (userInfo.role === "user") {
         navigate("/");
       } else {

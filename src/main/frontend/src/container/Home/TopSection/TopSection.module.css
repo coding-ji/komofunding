@@ -186,7 +186,7 @@
     transform: translateX(100%); /* 화면 왼쪽으로 사라짐 */
   }
   
-  .closeButton {
+  .mainCloseButton {
 
     font-family: var(--eng-font);
     font-size: 2.3rem;

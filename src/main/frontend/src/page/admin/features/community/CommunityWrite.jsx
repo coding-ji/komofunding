@@ -29,7 +29,7 @@ function CommunityWrite() {
         const communityData = state.community;
         const response = await actions.createNewCommunity(communityData); // response를 반환받음
 
-        if (response) { // response.ok로 상태 확인
+        if (response) { 
             const responseData = await response.json();
             console.log("응답 데이터:", responseData);
             alert(responseData.message || "글이 성공적으로 작성되었습니다.");

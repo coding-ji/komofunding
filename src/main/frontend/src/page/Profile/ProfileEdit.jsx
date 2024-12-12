@@ -56,22 +56,22 @@ const ProfileEdit = () => {
     };
 
     // 프로필 저장
-    const handleSaveProfile = async () => {
-        try {
-            let uploadedImgUrl = state.profileImage;
+    // const handleSaveProfile = async () => {
+    //     try {
+    //         let uploadedImgUrl = state.profileImage;
 
-            if (newProfileImage) {
-                const formData = new FormData();
-                formData.append("file", newProfileImage);
+    //         if (newProfileImage) {
+    //             const formData = new FormData();
+    //             formData.append("file", newProfileImage);
 
-                const response = await actions.uploadProfileImage(formData); // 이미지 업로드 API 호출
-                if (response.status === 200) {
-                    uploadedImgUrl = response.data; // 업로드된 이미지 URL 설정
-                } else {
-                    alert("이미지 업로드 실패");
-                    return;
-                }
-            }
+    //             const response = await actions.uploadProfileImage(formData); // 이미지 업로드 API 호출
+    //             if (response.status === 200) {
+    //                 uploadedImgUrl = response.data; // 업로드된 이미지 URL 설정
+    //             } else {
+    //                 alert("이미지 업로드 실패");
+    //                 return;
+    //             }
+    //         }
 
             //             const updatedProfile = {
             //                 userNum: state.userNum,
@@ -90,19 +90,19 @@ const ProfileEdit = () => {
             //             };
 
 
-            // 프로필 업데이트 API 호출
-            const updateResponse = await updateProfile(userNum, updatedProfile); // API 호출
-            if (updateResponse.status === 200) {
-                alert("수정이 완료되었습니다");
-                navigate(`/profile/${state.userNum}`);
-            } else {
-                throw new Error("프로필 업데이트 실패");
-            }
-        } catch (error) {
-            console.error("프로필 저장 중 오류 발생:", error);
-            alert("프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-    };
+    //         // 프로필 업데이트 API 호출
+    //         const updateResponse = await updateProfile(userNum, updatedProfile); // API 호출
+    //         if (updateResponse.status === 200) {
+    //             alert("수정이 완료되었습니다");
+    //             navigate(`/profile/${state.userNum}`);
+    //         } else {
+    //             throw new Error("프로필 업데이트 실패");
+    //         }
+    //     } catch (error) {
+    //         console.error("프로필 저장 중 오류 발생:", error);
+    //         alert("프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    //     }
+    // };
 
     const handleCancel = () => {
         navigate(`/profile/${state.userNum}`);

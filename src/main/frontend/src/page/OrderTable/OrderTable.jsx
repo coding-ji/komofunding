@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./OrderTable.module.css";
+import TitleText from "../../components/TitleText";
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([
@@ -141,7 +142,7 @@ const OrderTable = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>후원자 내역</h1>
+      <TitleText title="후원자 내역"/>
 
       <div className={styles.buttonWrapper} >
         <div className={styles.printBtn}>

@@ -261,4 +261,3 @@ export const TapBtn = ({
         onClick={onTap}>{text}</Button>
       )
 }
-

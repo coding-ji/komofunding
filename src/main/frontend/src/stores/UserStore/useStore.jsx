@@ -33,7 +33,7 @@ import {
     findEmail,
     resetUserPassword,
     // updatePassword,
-    uploadProfileImage,
+    // uploadProfileImage,
     apiVerifyPassword
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.
 

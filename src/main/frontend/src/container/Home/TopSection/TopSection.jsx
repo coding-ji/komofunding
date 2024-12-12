@@ -253,7 +253,7 @@ const TopSection = ({ datas }) => {
         }`}
       >
         <motion.button
-          className={styles.closeButton}
+          className={styles.mainCloseButton}
           onClick={toggleMenu}
           whileHover={{ scale: 1.04 }}
           transition={{ duration: 0.3 }}

@@ -1,0 +1,79 @@
+.sidebar {
+  background-color: var(--darkgreen-color);
+  color: white;
+  padding: 20px;
+  width: 250px;
+  height: 100vh;
+}
+
+.logo {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.email {
+  font-size: 14px;
+  color: #b8c5c1;
+  margin-bottom: 30px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sectionDivider {
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+
+  padding: 15px 0 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 15px;
+
+  border-bottom: 2px solid #b8c5c1;
+}
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 8px 0;
+  font-size: 20px;
+  gap: 8px;
+}
+
+.menuHeader img {
+  width: 15px;
+  height: 15px;
+}
+
+.subMenu {
+  padding-left: 20px;
+  list-style: disc;
+  color: #b8c5c1;
+}
+
+.subMenu li {
+  list-style: disc;
+}
+
+.subMenu a {
+  display: block;
+  color: #b8c5c1;
+  text-decoration: none;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.subMenu a:hover {
+  color: white;
+}
+
+/* 첫 번째 sectionDivider의 상단 보더 제거 */
+.menu > li:first-child .sectionDivider {
+  border-top: none;
+  margin-top: 0;
+}
