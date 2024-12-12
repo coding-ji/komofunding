@@ -38,7 +38,7 @@ const MainContent = styled.main`
   text-align: center;
   border: 1px solid #ddd;
   border-radius: 2px;
-  padding: 40px;
+  padding: 20px 40px;
   max-width: 1043px;
   width: 100%;
   box-sizing: border-box;
@@ -123,19 +123,21 @@ const DonateGuide = () => {
         }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <TitleText title="후원가이드" />
+        <TitleText title="후원 가이드" />
       </Header>
 
       <Divider />
 
       <MainContent>
         <TextBox>
-
+        {/* <h2 style={{ color: '#256e91', fontWeight: 'bold', fontSize: '24px' }}>
+            제목 입력..
+          </h2> */}
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              marginTop: '10px',
+              marginTop: '10x',
               fontSize: '14px',
               color: '#888',
             }}
@@ -177,7 +179,7 @@ const DonateGuide = () => {
         </TextBox>
       </MainContent>
 
-      <BackButton href="/">홈으로</BackButton>
+      <BackButton href="/home">홈으로</BackButton>
     </PageWrapper>
   );
 };

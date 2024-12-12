@@ -52,14 +52,25 @@ const TextBox = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
   text-align: left;
-  line-height: 1.6;
+  line-height: 1.8;
 
   p {
-    color: #555;
-    line-height: 1.5;
-    margin: 10px 0;
+    color: #444;
+    line-height: 1.8;
+    margin: 12px 0;
+    font-weight: 400;
+    word-break: keep-all; /* 긴 텍스트도 보기 좋게 줄바꿈 */
+  }
+
+  p::first-line {
+    font-weight: bold; /* 첫 줄 강조 */
+  }
+
+  p + p {
+    margin-top: 16px; /* 문단 간격 추가 */
   }
 `;
+
 
 const StepsWrapper = styled.div`
   display: flex;
@@ -100,7 +111,7 @@ const BackButton = styled.a`
   }
 `;
 
-const CreationGuide = () => {
+const ChargePolicy = () => {
   return (
     <PageWrapper>
       <Header
@@ -112,16 +123,14 @@ const CreationGuide = () => {
         }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <TitleText title="창작 가이드"/>
+        <TitleText title="이용 약관" />
       </Header>
 
       <Divider />
 
       <MainContent>
         <TextBox>
-          {/* <h2 style={{ color: '#256e91', fontWeight: 'bold', fontSize: '24px' }}>
-            코모는 프로젝트를 위한 크라우드펀딩 서비스를 제공합니다.
-          </h2> */}
+
           <div
             style={{
               display: 'flex',
@@ -137,38 +146,43 @@ const CreationGuide = () => {
           <Divider />
 
           <p>
-            디자인, 예술, 출판 등 다양한 분야에 대한 제작자의 창조적인 시도를 실현시키고,
-            후원을 통해 제작 예산을 해결하여 독창적으로 프로젝트를 진행할 수 있도록 하였습니다.
+            제1조 (목적)
+            <br />
+            본 약관은 KOMO Funding이 운영하는 크라우드펀딩 플랫폼에서 메이커와 회사 간의 권리 및 의무를 규정하는 것을 목적으로 합니다.
           </p>
           <p>
-            제작자는 '마이페이지'에서 제작자 신청을 통해 프로젝트를 등록할 수 있으며,
-            프로젝트 계획 후 등록 등의 목표를 세우고 구체적인 편집을 준비하세요.
+            제2조 (정의)
+            <br />
+            1. 서비스: 회사가 제공하는 플랫폼.<br />
+            2. 메이커: 프로젝트를 개설하고 펀딩을 모집하는 개인 또는 법인.<br />
+            3. 서포터: 프로젝트에 참여해 펀딩하는 자.<br />
+            4. 리워드: 펀딩에 대한 대가로 제공되는 제품 또는 서비스.
           </p>
+          <p>
+            제3조 (약관 개정)
+            <br />
+            회사는 필요시 약관을 개정할 수 있으며, 개정 내용은 시행일 7일 전 공지합니다. 불리한 변경 시 30일 전 공지합니다.
+          </p>
+          <p>
+            제4조 (서비스 이용)
+            <br />
+            메이커는 회사의 승인을 통해 프로젝트를 개설하며, 정확한 정보를 제공해야 합니다.
+          </p>
+          <p>
+  제5조 (프로젝트 관리)<br />
+  1. 메이커는 서포터에게 명시된 리워드 제공 일정을 준수해야 합니다.<br />
+  2. 리워드 제공과 관련된 모든 책임은 메이커에게 있으며, 서포터와의 분쟁은 메이커가 직접 해결해야 합니다.<br />
+  3. 프로젝트 변경 사항(리워드 제공 일정 등)이 발생할 경우, 메이커는 즉시 서포터에게 공지해야 합니다.<br />
+  4. 메이커는 회사가 제공하는 관리 도구를 사용하여 프로젝트 상태를 최신화해야 합니다.<br />
+  5. 리워드 제공 지연 시 사전에 공지하지 않으면, 서포터는 환불을 요청할 수 있습니다.
+</p>
 
-          <StepsWrapper>
-            {['프로젝트 등록', '심사', '편집', '결제', '정산', '배송'].map((step) => (
-              <StepButton key={step}>{step}</StepButton>
-            ))}
-          </StepsWrapper>
-
-          <p>
-            프로젝트 등록 후에는 심사를 진행하게 됩니다. 심사를 거쳐 승인이 나면 편집이
-            시작됩니다.
-          </p>
-          <p>
-            심사는 보통 영업일 기준 3일 이내로 안됩니다. 만약 프로젝트가 잘 작성되었다면
-            더 빠르게 승인될 수 있으며, 승인 후에는 편집 및 다른 단계가 진행됩니다.
-          </p>
-          <p>
-            만약 프로젝트가 승인되지 않으면, 기한 연장을 요청하거나 수정 요청을 할 수
-            있습니다.
-          </p>
         </TextBox>
       </MainContent>
 
-      <BackButton href="/home">홈으로</BackButton>
+      <BackButton href="/">홈으로</BackButton>
     </PageWrapper>
   );
 };
 
-export default CreationGuide;
+export default ChargePolicy;

@@ -38,7 +38,7 @@ const MainContent = styled.main`
   text-align: center;
   border: 1px solid #ddd;
   border-radius: 2px;
-  padding: 20px 40px;
+  padding: 40px;
   max-width: 1043px;
   width: 100%;
   box-sizing: border-box;
@@ -52,14 +52,25 @@ const TextBox = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
   text-align: left;
-  line-height: 1.6;
+  line-height: 1.8;
 
   p {
-    color: #555;
-    line-height: 1.5;
-    margin: 10px 0;
+    color: #444;
+    line-height: 1.8;
+    margin: 12px 0;
+    font-weight: 400;
+    word-break: keep-all; /* 긴 텍스트도 보기 좋게 줄바꿈 */
+  }
+
+  p::first-line {
+    font-weight: bold; /* 첫 줄 강조 */
+  }
+
+  p + p {
+    margin-top: 16px; /* 문단 간격 추가 */
   }
 `;
+
 
 const StepsWrapper = styled.div`
   display: flex;
@@ -100,7 +111,7 @@ const BackButton = styled.a`
   }
 `;
 
-const CreationGuide = () => {
+const ServiceReward = () => {
   return (
     <PageWrapper>
       <Header
@@ -112,16 +123,16 @@ const CreationGuide = () => {
         }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <TitleText title="창작 가이드"/>
+        <TitleText title="수수료 정책" />
       </Header>
 
       <Divider />
 
       <MainContent>
         <TextBox>
-          {/* <h2 style={{ color: '#256e91', fontWeight: 'bold', fontSize: '24px' }}>
+        <h2 style={{ color: '#256e91', fontWeight: 'bold', fontSize: '24px' }}>
             코모는 프로젝트를 위한 크라우드펀딩 서비스를 제공합니다.
-          </h2> */}
+          </h2>
           <div
             style={{
               display: 'flex',
@@ -137,38 +148,40 @@ const CreationGuide = () => {
           <Divider />
 
           <p>
-            디자인, 예술, 출판 등 다양한 분야에 대한 제작자의 창조적인 시도를 실현시키고,
-            후원을 통해 제작 예산을 해결하여 독창적으로 프로젝트를 진행할 수 있도록 하였습니다.
-          </p>
-          <p>
-            제작자는 '마이페이지'에서 제작자 신청을 통해 프로젝트를 등록할 수 있으며,
-            프로젝트 계획 후 등록 등의 목표를 세우고 구체적인 편집을 준비하세요.
-          </p>
+            코모 펀딩을 이용하는 후원자 분들께 꼭 알아야 할 사항을 몇 가지 사항을 안내드리겠습니다.
+            <br />
+            <br />
 
-          <StepsWrapper>
-            {['프로젝트 등록', '심사', '편집', '결제', '정산', '배송'].map((step) => (
-              <StepButton key={step}>{step}</StepButton>
-            ))}
-          </StepsWrapper>
+            코모 펀딩이란? <br />
+            제작자의 창의적인 프로젝트를 발견하고 일정 금액을 후원할 경우,
 
-          <p>
-            프로젝트 등록 후에는 심사를 진행하게 됩니다. 심사를 거쳐 승인이 나면 편집이
-            시작됩니다.
-          </p>
-          <p>
-            심사는 보통 영업일 기준 3일 이내로 안됩니다. 만약 프로젝트가 잘 작성되었다면
-            더 빠르게 승인될 수 있으며, 승인 후에는 편집 및 다른 단계가 진행됩니다.
-          </p>
-          <p>
-            만약 프로젝트가 승인되지 않으면, 기한 연장을 요청하거나 수정 요청을 할 수
-            있습니다.
+            특별한 경험을 선물받을 수 있는 공간입니다.
+            <br />
+            <br />
+
+            프로젝트란?<br />
+
+            프로젝트는 제작자만의 새로운 제품 혹은 독립적인 콘텐츠에 대한 기획서입니다.
+            <br />
+            자신이 원하는 카테고리에 맞게 후원자 분들이 원하는 제품을 만나볼 수 있습니다.
+            <br />
+            <br />
+            후원이란?
+            후원은 제작자의 프로젝트 제작 비용을 지원하는 것으로 제작자가 선정한 목표 금액을 달성할 경우, 해당 제품을 선물받을 수 있습니다.
+            <br />
+
+            <br />
+            KOMO FUNDING 을 여행할 준비 되었나요?
+            그럼 즐거운 시간 되시길 바랍니다 :)
+
+
           </p>
         </TextBox>
       </MainContent>
 
-      <BackButton href="/home">홈으로</BackButton>
+      <BackButton href="/">홈으로</BackButton>
     </PageWrapper>
   );
 };
 
-export default CreationGuide;
+export default ServiceReward;

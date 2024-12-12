@@ -52,14 +52,25 @@ const TextBox = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
   text-align: left;
-  line-height: 1.6;
+  line-height: 1.8;
 
   p {
-    color: #555;
-    line-height: 1.5;
-    margin: 10px 0;
+    color: #444;
+    line-height: 1.8;
+    margin: 12px 0;
+    font-weight: 400;
+    word-break: keep-all; /* 긴 텍스트도 보기 좋게 줄바꿈 */
+  }
+
+  p::first-line {
+    font-weight: bold; /* 첫 줄 강조 */
+  }
+
+  p + p {
+    margin-top: 16px; /* 문단 간격 추가 */
   }
 `;
+
 
 const StepsWrapper = styled.div`
   display: flex;
@@ -100,7 +111,7 @@ const BackButton = styled.a`
   }
 `;
 
-const CreationGuide = () => {
+const PrivacyPolicy = () => {
   return (
     <PageWrapper>
       <Header
@@ -112,16 +123,14 @@ const CreationGuide = () => {
         }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <TitleText title="창작 가이드"/>
+        <TitleText title="개인정보처리방침" />
       </Header>
 
       <Divider />
 
       <MainContent>
         <TextBox>
-          {/* <h2 style={{ color: '#256e91', fontWeight: 'bold', fontSize: '24px' }}>
-            코모는 프로젝트를 위한 크라우드펀딩 서비스를 제공합니다.
-          </h2> */}
+
           <div
             style={{
               display: 'flex',
@@ -137,38 +146,41 @@ const CreationGuide = () => {
           <Divider />
 
           <p>
-            디자인, 예술, 출판 등 다양한 분야에 대한 제작자의 창조적인 시도를 실현시키고,
-            후원을 통해 제작 예산을 해결하여 독창적으로 프로젝트를 진행할 수 있도록 하였습니다.
+            제1조 (개인정보의 수집 목적)
+            <br />
+            KOMO Funding은 안전한 거래를 위해 최소한의 개인정보를 수집합니다.
           </p>
           <p>
-            제작자는 '마이페이지'에서 제작자 신청을 통해 프로젝트를 등록할 수 있으며,
-            프로젝트 계획 후 등록 등의 목표를 세우고 구체적인 편집을 준비하세요.
-          </p>
-
-          <StepsWrapper>
-            {['프로젝트 등록', '심사', '편집', '결제', '정산', '배송'].map((step) => (
-              <StepButton key={step}>{step}</StepButton>
-            ))}
-          </StepsWrapper>
-
-          <p>
-            프로젝트 등록 후에는 심사를 진행하게 됩니다. 심사를 거쳐 승인이 나면 편집이
-            시작됩니다.
+            제2조 (수집하는 개인정보 항목)
+            <br />
+            - 필수 항목: 이름, 이메일, 연락처<br />
+            - 선택 항목: 주소, 배송 정보
           </p>
           <p>
-            심사는 보통 영업일 기준 3일 이내로 안됩니다. 만약 프로젝트가 잘 작성되었다면
-            더 빠르게 승인될 수 있으며, 승인 후에는 편집 및 다른 단계가 진행됩니다.
+            제3조 (보유 및 이용 기간)
+            <br />
+            개인정보는 목적 달성 시 파기되며, 법령에 따라 일정 기간 보관될 수 있습니다.
           </p>
           <p>
-            만약 프로젝트가 승인되지 않으면, 기한 연장을 요청하거나 수정 요청을 할 수
-            있습니다.
-          </p>
+  제4조 (개인정보의 제3자 제공)<br />
+  KOMO Funding은 원칙적으로 이용자의 개인정보를 외부에 제공하지 않습니다. 다만, 다음의 경우에는 예외로 합니다.<br />
+  - 법령에 의해 요구되는 경우<br />
+  - 서비스 제공을 위해 필요한 최소한의 범위 내에서 배송업체 등 제3자에게 제공하는 경우<br />
+  - 이용자의 사전 동의를 받은 경우<br />
+</p>
+<p>
+  제5조 (개인정보 보호를 위한 기술적 대책)<br />
+  회사는 개인정보의 안전성을 확보하기 위해 다음과 같은 조치를 시행합니다.<br />
+  - 개인정보 접근 권한의 제한<br />
+  - 데이터 암호화<br />
+  - 정기적인 보안 점검 및 모니터링<br />
+</p>
         </TextBox>
       </MainContent>
 
-      <BackButton href="/home">홈으로</BackButton>
+      <BackButton href="/">홈으로</BackButton>
     </PageWrapper>
   );
 };
 
-export default CreationGuide;
+export default PrivacyPolicy;

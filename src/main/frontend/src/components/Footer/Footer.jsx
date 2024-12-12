@@ -10,18 +10,18 @@ const Footer = () => {
                 <div className={styles.menu1}>
                     <div className={{ fontSize: "20px", fontWeight: "bold" }}>이용 안내</div>
                     <ul className={{ fontSize: "15px"}}>
-                            <li className={styles.li}><Link to="/notice" className={styles.linkcss}>공지사항</Link></li>
-                            <li className={styles.li}><Link to="/write-qna" className={styles.linkcss}>문의등록</Link></li>
-                            <li className={styles.li}><Link to="/creation-guide" className={styles.linkcss}>창작 가이드</Link></li>
-                            <li className={styles.li}><Link to="/donate-guide" className={styles.linkcss}>후원 가이드</Link></li>
+                            <li className={styles.li}><Link to="/home/notice" className={styles.linkcss}>공지사항</Link></li>
+                            <li className={styles.li}><Link to="/home/write-qna" className={styles.linkcss}>문의등록</Link></li>
+                            <li className={styles.li}><Link to="/home/creation-guide" className={styles.linkcss}>창작 가이드</Link></li>
+                            <li className={styles.li}><Link to="/home/donate-guide" className={styles.linkcss}>후원 가이드</Link></li>
                     </ul>
                 </div>
                 <div className={styles.menu2}>
                     <div className={{ fontSize: "20px", fontWeight: "bold" }}>정책</div>
                     <ul className={{ fontSize: "15px" }}>
-                        <li className={styles.li}><Link to="/useterms" className={styles.linkcss}>이용약관</Link></li>
-                        <li className={styles.li}><Link to="/privacypolicy" className={styles.linkcss}>개인정보처리방침</Link></li>
-                        <li className={styles.li}><Link to="/charge" className={styles.linkcss}>수수료 안내</Link></li>
+                        <li className={styles.li}><Link to="/home/useterms" className={styles.linkcss}>이용약관</Link></li>
+                        <li className={styles.li}><Link to="/home/privacypolicy" className={styles.linkcss}>개인정보처리방침</Link></li>
+                        <li className={styles.li}><Link to="/home/charge" className={styles.linkcss}>수수료 안내</Link></li>
                     </ul>
                 </div>
                 <div className={styles.text}>
