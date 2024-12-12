@@ -18,6 +18,7 @@ const AddressSearchModal = ({ onClose, onAddressSelect }) => {
     <div className={styles.modalBackdrop}>
       <div className={styles.modalContent}>
         <h2>주소 검색</h2>
+
       <div className={styles.addressSearch}>
         <input
           type="text"
@@ -25,9 +26,15 @@ const AddressSearchModal = ({ onClose, onAddressSelect }) => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
-        <button onClick={handleSearch}>검색</button>
+        <button 
+        className={styles.searchBtn}
+        onClick={handleSearch}>
+          검색</button>
       </div>
-        <button onClick={() => onClose()}>닫기</button>
+
+        <button 
+        className={styles.closeBtn}
+        onClick={() => onClose()}>닫기</button>
       </div>
     </div>
   );
