@@ -5,9 +5,12 @@ import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.entity.Project;
+import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.ProjectRepository;
 import com.kosmo.komofunding.repository.QnARepository;
 import com.kosmo.komofunding.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,7 +54,6 @@ public class ProjectService {
         }
     }
 
-    // 카테고리 및 상태별 프로젝트 조회
 // 카테고리 및 상태별 프로젝트 조회
     public List<ProjectOutDTO> getProjectsByCategoryAndStatus(String projectCategory, String fundingStatus) {
         LocalDateTime now = LocalDateTime.now();
@@ -82,10 +84,51 @@ public class ProjectService {
         return projectRepository.findByUserId(userId);
     }
 
-    // 프로젝트 저장 로직 (projectInDTO를 Entity로 저장)
-    public Project createProject(ProjectInDTO projectInDTO) {
-        Project project = toEntity(projectInDTO);
-        return projectRepository.save(project);
+    // 프로젝트 생성 로직
+    @Transactional
+    public ProjectOutDTO createProject(ProjectInDTO projectInDTO, HttpSession session) {
+        // 세션에서 userId 가져오기
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            throw new IllegalStateException("사용자 인증 정보가 없습니다.");
+        }
+
+        // userId로 User 객체 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 프로젝트 번호 생성
+        Long projectNum = generateProjectNum();
+
+        // 오늘 날짜
+        LocalDateTime now = LocalDateTime.now();
+
+        // Project 엔티티 생성
+        Project project = projectConverter.toEntity(projectInDTO, user);
+        project.setProjectNum(projectNum);
+        project.setWrittenDate(now);
+        project.setUpdatedDate(now);
+
+        // 프로젝트 저장
+        projectRepository.save(project);
+
+        // 유저의 projectIds 필드에 새로운 프로젝트 번호 추가
+        List<String> projectIds = user.getProjectIds();
+        if (projectIds == null) {
+            projectIds = new ArrayList<>();
+        } else {
+            // 불변 리스트일 경우 변경 가능한 리스트로 변환
+            projectIds = new ArrayList<>(projectIds);
+        }
+
+        projectIds.add(String.valueOf(projectNum));  // 새 프로젝트 번호 추가
+        user.setProjectIds(projectIds);
+
+        // 유저 업데이트
+        userRepository.save(user);
+
+        // 결과 반환
+        return projectConverter.toOutDTO(project);
     }
 
     // 특정 프로젝트 조회
@@ -94,31 +137,6 @@ public class ProjectService {
                 .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
 
         return projectConverter.toOutDTO(project);
-    }
-
-    // DTO를 엔티티로 변환하는 메서드
-    public Project toEntity(ProjectInDTO projectInDTO) {
-        // 현재시간 변수
-        LocalDateTime now = LocalDateTime.now();
-
-        Project project = Project.builder()
-                .userId(projectInDTO.getUserId())
-                .title(projectInDTO.getTitle())
-                .projectCategory(projectInDTO.getProjectCategory())
-                .thumbnailImgs(projectInDTO.getThumnailImgs())
-                .shortDescription(projectInDTO.getShortDescription())
-                .description(projectInDTO.getDescription())
-                .items(projectInDTO.getItems())
-                .totalAmount(projectInDTO.getTotalAmount())
-                .projectStartDate(projectInDTO.getProjectStartDate())
-                .projectEndDate(projectInDTO.getProjectEndDate())
-                .writtenDate(now)
-                .updatedDate(now)
-                .statusChangeReason("")  // 기본값 빈 문자열
-                .build();
-
-        project.setProjectNum(generateProjectNum());
-        return project;
     }
 
     // 6자리 랜덤 숫자 생성

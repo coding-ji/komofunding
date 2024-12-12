@@ -6,38 +6,46 @@ import {
     READ_FILE,
     CREATE_FILE,
     UPDATE_FILE,
-    DELETE_FILE
+    DELETE_FILE,
+    RESET_STATE
 } from "./action";
 
-export const initialState = {};
+export const initialState = "";
 
 export const reducer = (state, action) => {
     switch (action.type) {
         // 이미지 관련 액션 처리
         case READ_IMG:
-            return { ...state, img: action.payload };
+            return action.payload;  // 이미지 URL을 상태에 반영
+
 
         case CREATE_IMG:
-            return { ...state, img: action.payload}; // 이미지 업로드 후 상태 갱신
+            return action.payload;  // 이미지 URL을 상태에 반영
+
 
         case UPDATE_IMG:
-            return { ...state, img: action.payload}; // 이미지 업데이트 후 상태 갱신
+            return action.payload;   // 이미지 URL 업데이트 후 상태 갱신
+
 
         case DELETE_IMG:
-            return { ...state, img: null }; // 이미지 삭제 후 상태 갱신 (null로 설정)
+            return action.payload;  // 이미지 삭제 후 상태에서 URL 비우기
 
         // 파일 관련 액션 처리
         case READ_FILE:
-            return { ...state, file: action.payload };
+            return action.payload;
 
         case CREATE_FILE:
-            return { ...state, file: action.payload }; // 파일 업로드 후 상태 갱신
+            return action.payload;
 
         case UPDATE_FILE:
-            return { ...state, file: action.payload }; // 파일 업데이트 후 상태 갱신
+            return action.payload;
 
         case DELETE_FILE:
-            return { ...state, file: null }; // 파일 삭제 후 상태 갱신 (null로 설정)
+            return action.payload;
+
+        // 초기화
+        case RESET_STATE:
+            return initialState;
 
         default:
             return state;

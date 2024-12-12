@@ -79,14 +79,14 @@ export const changeTitle = (title) => ({
     payload: title,
 });
 
-export const changeProjectCategory = (category) => ({
+export const changeProjectCategory = (projectCategory) => ({
     type: CHANGE_PROJECT_CATEGORY,
-    payload: category,
+    payload: projectCategory,
 });
 
-export const changeProjectThumbnailImgs = (thumbnailImgs) => ({
+export const changeProjectThumbnailImgs = (thumnailImgs) => ({
     type: CHANGE_PROJECT_THUMBNAIL_IMGS,
-    payload: thumbnailImgs,
+    payload: thumnailImgs,
 });
 
 export const changeProjectShortDescription = (shortDescription) => ({
@@ -114,14 +114,14 @@ export const changeTotalAmount = (totalAmount) => ({
     payload: totalAmount,
 });
 
-export const changeProjectStartDate = (startDate) => ({
+export const changeProjectStartDate = (projectStartDate) => ({
     type: CHANGE_PROJECT_START_DATE,
-    payload: startDate,
+    payload: projectStartDate,
 });
 
-export const changeProjectEndDate = (endDate) => ({
+export const changeProjectEndDate = (projectEndDate) => ({
     type: CHANGE_PROJECT_END_DATE,
-    payload: endDate,
+    payload: projectEndDate,
 });
 
 export const changeWrittenDate = (writtenDate) => ({
@@ -212,9 +212,9 @@ export const readProjectsByCategoryAndStatus = (projectCategory, fundingStatus) 
 };
 
 // 사용자 프로젝트 조회
-export const readUserProjects = (userNum) => async (dispatch) => {
+export const readUserProjects = () => async (dispatch) => {
     try {
-        const response = await fetchUserProjects(userNum);  // 특정 사용자의 프로젝트 목록 API 호출
+        const response = await fetchUserProjects();  // 특정 사용자의 프로젝트 목록 API 호출
         dispatch({
             type: READ_PROJECT,
             payload: response.data  // 사용자 프로젝트 목록
@@ -225,9 +225,9 @@ export const readUserProjects = (userNum) => async (dispatch) => {
 };
 
 // 새로운 프로젝트 생성 (CREATE)
-export const createNewProject = (userNum, projectData) => async (dispatch) => {
+export const createNewProject = (projectData) => async (dispatch) => {
     try {
-        const response = await createProject(userNum, projectData);  // 새로운 프로젝트 생성 API 호출
+        const response = await createProject(projectData);  // 새로운 프로젝트 생성 API 호출
         dispatch({
             type: CREATE_PROJECT,
             payload: response.data  // 생성된 프로젝트 데이터
@@ -238,9 +238,9 @@ export const createNewProject = (userNum, projectData) => async (dispatch) => {
 };
 
 // 프로젝트 업데이트 (UPDATE) ** updateData에 projectNum으로 수정
-export const updateExistingProject = (userNum, updateData) => async (dispatch) => {
+export const updateExistingProject = (updateData) => async (dispatch) => {
     try {
-        const response = await updateProject(userNum, updateData);
+        const response = await updateProject(updateData);
         dispatch({
             type: UPDATE_PROJECT,
             payload: response.data  // 업데이트된 프로젝트 데이터
@@ -251,9 +251,9 @@ export const updateExistingProject = (userNum, updateData) => async (dispatch) =
 };
 
 // 프로젝트 삭제 (DELETE)
-export const deleteExistingProject = (userNum, projectNum) => async (dispatch) => {
+export const deleteExistingProject = (projectNum) => async (dispatch) => {
     try {
-        const response = await deleteProject(userNum, projectNum);  // 특정 프로젝트 삭제 API 호출
+        const response = await deleteProject(projectNum);  // 특정 프로젝트 삭제 API 호출
         dispatch({
             type: DELETE_PROJECT,
             payload: projectNum  // 삭제된 프로젝트의 ID를 전달

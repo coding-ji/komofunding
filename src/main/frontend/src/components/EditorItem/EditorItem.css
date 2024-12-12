@@ -83,4 +83,12 @@
 .button-container>button:hover{
   background-color: #dddddd;
   color: #272727;
-} 
+}
+
+/* EditorItem.css 파일에 추가 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
+}

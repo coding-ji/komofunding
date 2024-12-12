@@ -9,6 +9,7 @@ import {
   createFileData,
   updateFileData,
   deleteFileData,
+  resetState
 } from "./action";
 
 export const useStore = () => {
@@ -17,13 +18,17 @@ export const useStore = () => {
   const actions = {
     readImgData: (filename) => readImgData(filename)(dispatch),
     createImgData: (formData) => createImgData(formData)(dispatch),
-    updateImgData: (filename, updatedData) => updateImgData(filename, updatedData)(dispatch),
+    updateImgData: (filename, id) => updateImgData(filename, id)(dispatch),
     deleteImgData: (filename) => deleteImgData(filename)(dispatch),
-    
+
     readFileData: (filename) => readFileData(filename)(dispatch),
     createFileData: (formData) => createFileData(formData)(dispatch),
-    updateFileData: (filename, updatedData) => updateFileData(filename, updatedData)(dispatch),
+    updateFileData: (filename, updatedData) =>
+    updateFileData(filename, updatedData)(dispatch),
     deleteFileData: (filename) => deleteFileData(filename)(dispatch),
+
+    // 초기화
+    resetState: () => dispatch(resetState())
   };
 
   return { state, actions };

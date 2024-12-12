@@ -48,6 +48,7 @@ function SelectPrj() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: "-30%", opacity: 0 }}
           transition={{ duration: 0.3 }}
+          
         >
           <div className={styles.Children}>
             <Outlet />

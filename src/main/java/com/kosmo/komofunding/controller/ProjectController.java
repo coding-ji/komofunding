@@ -108,19 +108,8 @@ public class ProjectController {
             @RequestBody ProjectInDTO projectRequest,
             HttpSession session) {
 
-        // 세션에서 userId 가져오기
-        String userId = (String) session.getAttribute("userId");
-
-        if (userId == null) {
-            // 인증되지 않은 사용자가 인증을 요구
-           throw new UnauthorizedException("인증되지 않은 사용자입니다.");
-        }
-
-        // 세션에서 가져온 userId를 ProjectInDTO에 설정
-        projectRequest.setUserId(userId);
-
-        // Project 생성
-        projectService.createProject(projectRequest);
+        // Project 생성 요청 시 session전달
+        projectService.createProject(projectRequest, session);
 
         // 성공 메시지 설정
         Map<String, String> response = new HashMap<>();
@@ -130,12 +119,7 @@ public class ProjectController {
         return ResponseEntity.status(201).body(response);
     }
 
-    // 프로젝트 생성 및 저장
-//    @PostMapping("/api/user/${userNum}}/myinfo/projects")
-//    public ResponseEntity<Project> createProject(@RequestBody Project project) {
-//
-//        return ResponseEntity.ok(savedProject);
-//    }
+
 //
 //    @GetMapping("/api/projects/{projectId}")
 //    public ResponseEntity<Project> getProjectById(@PathVariable("projectId") String projectId) {

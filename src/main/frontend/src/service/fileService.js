@@ -17,3 +17,4 @@ export const fetchFile = (filename) => apiClient.get(`/files/${filename}`);
 export const createFile = (formData) => apiClient.post('/upload/file', formData);
 export const updateFile = (filename, updatedData) => apiClient.patch(`/file/${filename}`, updatedData);
 export const deleteFile = (filename) => apiClient.delete(`/file/${filename}`);
+

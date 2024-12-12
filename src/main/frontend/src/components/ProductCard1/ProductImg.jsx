@@ -70,9 +70,6 @@ const ImgBox = styled(motion.div)`
 `;
 
 function ProductImg({ src, width, height}) {
-
-  
-  console.log(src);
   return (
 
     <ImgBox width={width} height={height}>

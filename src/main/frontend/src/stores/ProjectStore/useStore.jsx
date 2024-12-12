@@ -47,15 +47,15 @@ export const useStore = () => {
         // 프로젝트 관련
         changeProjectNum: (projectNum) => dispatch(changeProjectNum(projectNum)),
         changeTitle: (title) => dispatch(changeTitle(title)),
-        changeProjectCategory: (category) => dispatch(changeProjectCategory(category)),
-        changeProjectThumbnailImgs: (thumbnailImgs) => dispatch(changeProjectThumbnailImgs(thumbnailImgs)),
+        changeProjectCategory: (projectCategory) => dispatch(changeProjectCategory(projectCategory)),
+        changeProjectThumbnailImgs: (thumnailImgs) => dispatch(changeProjectThumbnailImgs(thumnailImgs)),
         changeProjectShortDescription: (shortDescription) => dispatch(changeProjectShortDescription(shortDescription)),
         changeDescription: (description) => dispatch(changeDescription(description)),
         changeItems: (items) => dispatch(changeItems(items)),
         changeCurrentAmount: (currentAmount) => dispatch(changeCurrentAmount(currentAmount)),
         changeTotalAmount: (totalAmount) => dispatch(changeTotalAmount(totalAmount)),
-        changeProjectStartDate: (startDate) => dispatch(changeProjectStartDate(startDate)),
-        changeProjectEndDate: (endDate) => dispatch(changeProjectEndDate(endDate)),
+        changeProjectStartDate: (projectStartDate) => dispatch(changeProjectStartDate(projectStartDate)),
+        changeProjectEndDate: (projectEndDate) => dispatch(changeProjectEndDate(projectEndDate)),
         changeWrittenDate: (writtenDate) => dispatch(changeWrittenDate(writtenDate)),
         changeApprovalDate: (approvalDate) => dispatch(changeApprovalDate(approvalDate)),
         changeRejectionDate: (rejectionDate) => dispatch(changeRejectionDate(rejectionDate)),
@@ -73,7 +73,7 @@ export const useStore = () => {
         readProjectDetail: (projectNum) => readProjectDetail(projectNum)(dispatch),
         readProjectsByCategoryAndStatus: (projectCategory, fundingStatus) => readProjectsByCategoryAndStatus(projectCategory, fundingStatus)(dispatch),
         readUserProjects: (userNum) => readUserProjects(userNum)(dispatch),
-        createNewProject: (userNum, projectData) => createNewProject(userNum, projectData)(dispatch),
+        createNewProject: (projectData) => createNewProject(projectData)(dispatch),
         updateExistingProject: (userNum, updateData) => updateExistingProject(userNum, updateData)(dispatch),
         deleteExistingProject: (userNum, projectNum) => deleteExistingProject(userNum, projectNum)(dispatch)
     };

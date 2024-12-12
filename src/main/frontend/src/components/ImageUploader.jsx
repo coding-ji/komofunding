@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useStore } from "../stores/FileStore/useStore";
 
 const ImagePreview = styled.div`
   display: flex;
@@ -22,56 +23,54 @@ const ImageUploaderWrapper = styled.div`
   padding: 2px 5px;
 `;
 
-function ImageUploader({ onImagesChange, images }) {
-  const [localImages, setLocalImages] = useState(images || []); // 초기값 설정
-  const [base64Images, setBase64Images] = useState([]); // Base64 이미지 저장할 배열
+function ImageUploader({ setThumbnailImgs }) {
+  const { state, actions } = useStore();
+  const [localImages, setLocalImages] = useState([]); // 로컬 이미지 Blob 상태
+  const [isLoaded, setIsLoaded] = useState(false); // 이미지 업로드 완료 상태
 
-  // 이미지 업로드 처리
-  const handleImageUpload = async (event) => {
-    const files = Array.from(event.target.files);
-    
-    // 파일을 base64로 변환
-    const base64Promises = files.map((file) =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      })
-    );
+  // 파일 선택 시 Blob URL 생성 및 상태 업데이트
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    const newLocalImages = files.map((file) => URL.createObjectURL(file));
+  
+    // 로컬 이미지 상태 업데이트 (미리보기)
+    setLocalImages((prev) => [...prev, ...newLocalImages]);
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append("file", file));
 
     try {
-      const base64Results = await Promise.all(base64Promises); // 모든 파일을 base64로 변환
-      setBase64Images((prev) => [...prev, ...base64Results]);
-      setLocalImages((prev) => [...prev, ...files]);
-
-      // base64 이미지 상태가 변경되면 onImagesChange를 통해 부모에게 전달
-      if (onImagesChange) {
-        onImagesChange([...localImages, ...base64Results]);
-      }
-
-      // base64 이미지를 localStorage에 저장
-      localStorage.setItem("thumbnailImgs64", JSON.stringify([...base64Results]));
+      // 이미지 저장 요청 보내기
+      await actions.createImgData(formData);  // 서버에 이미지 업로드
+      setIsLoaded(true);  // 업로드 완료 상태 설정
     } catch (error) {
-      console.error("이미지 변환 실패:", error);
+      console.error("이미지 업로드 실패", error);
     }
   };
 
-  // 컴포넌트가 마운트될 때 localStorage에서 이미지를 불러오기
+  // 서버에서 이미지 URL을 받아서 상위 컴포넌트로 전달
   useEffect(() => {
-    const savedBase64Images = localStorage.getItem("base64Images");
-    if (savedBase64Images) {
-      setBase64Images(JSON.parse(savedBase64Images));
+    if (state && isLoaded) {
+      setThumbnailImgs((prev) => [...prev, state]);
+      setIsLoaded(false); // 상태 초기화
     }
-  }, []);
+    actions.resetState();
+  }, [state]);
 
   return (
     <ImageUploaderWrapper>
-      <input type="file" accept="image/*" multiple onChange={handleImageUpload} />
-      {base64Images.length > 0 && (
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageUpload}
+      />
+      {localImages.length > 0 && (
         <ImagePreview>
-          {base64Images.map((base64Image, index) => (
-            <img key={index} src={base64Image} alt={`첨부된 이미지 ${index + 1}`} />
+          {localImages.map((blobUrl, index) => (
+            <div key={index}>
+              <img src={blobUrl} alt={`첨부된 이미지 ${index + 1}`} />
+            </div>
           ))}
         </ImagePreview>
       )}

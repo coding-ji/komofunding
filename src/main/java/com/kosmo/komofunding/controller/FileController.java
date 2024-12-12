@@ -89,6 +89,8 @@ public class FileController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패: " + e.getMessage());
         }
+
+
     }
     // 파일 저장하는 로직
     @PostMapping("/upload/file")

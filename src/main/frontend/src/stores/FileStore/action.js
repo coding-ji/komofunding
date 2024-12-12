@@ -22,6 +22,10 @@ export const CREATE_FILE = 'CREATE_FILE';
 export const UPDATE_FILE = 'UPDATE_FILE';
 export const DELETE_FILE = 'DELETE_FILE';
 
+// state 초기화
+export const RESET_STATE = "RESET_STATE";
+
+
 
 // 이미지 불러오기
 export const readImgData = (filename) => async (dispatch) => {
@@ -33,7 +37,7 @@ export const readImgData = (filename) => async (dispatch) => {
         });
     } catch (error) {
         console.error("이미지를 불러올 수 없습니다.", error);
-    }
+    };
 };
 
 // 이미지 업로드
@@ -47,7 +51,9 @@ export const createImgData = (formData) => async (dispatch) => {
     } catch (error) {
         console.error("이미지 업로드 실패", error);
     }
+
 };
+
 
 // 이미지 업데이트
 export const updateImgData = (filename, updatedData) => async (dispatch) => {
@@ -126,3 +132,10 @@ export const deleteFileData = (filename) => async (dispatch) => {
         console.error("파일 삭제 실패", error);
     }
 };
+
+//초기화
+
+// 초기화
+export const resetState = () => ({
+    type: RESET_STATE,
+});

@@ -52,9 +52,9 @@ export const reducer = (state, action) => {
         case CHANGE_TITLE:
             return { ...state, title: action.payload };
         case CHANGE_PROJECT_CATEGORY:
-            return { ...state, category: action.payload };
+            return { ...state, projectCategory: action.payload };
         case CHANGE_PROJECT_THUMBNAIL_IMGS:
-            return { ...state, thumbnailImgs: action.payload };
+            return { ...state, thumnailImgs: action.payload };
         case CHANGE_PROJECT_SHORT_DESCRIPTION:
             return { ...state, shortDescription: action.payload };
         case CHANGE_DESCRIPTION:
@@ -66,9 +66,9 @@ export const reducer = (state, action) => {
         case CHANGE_TOTAL_AMOUNT:
             return { ...state, totalAmount: action.payload };
         case CHANGE_PROJECT_START_DATE:
-            return { ...state, startDate: action.payload };
+            return { ...state, projectStartDate: action.payload };
         case CHANGE_PROJECT_END_DATE:
-            return { ...state, endDate: action.payload };
+            return { ...state, projectEndDate: action.payload };
         case CHANGE_WRITTEN_DATE:
             return { ...state, writtenDate: action.payload };
         case CHANGE_APPROVAL_DATE:

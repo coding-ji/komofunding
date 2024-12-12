@@ -84,7 +84,6 @@ const router = createBrowserRouter([
           { index: true, element: <SelectPrjOne /> },
           { path: "prj-two", element: <SelectPrjTwo /> },
           { path: "prj-three", element: <SelectPrjThree /> },
-          { path: "prjall", element: <PrjAll /> },
         ],
       },
 
@@ -115,8 +114,6 @@ function App() {
     if (!location.pathname.startsWith("/home/selectprj")) {
       // "selectPrj" 경로가 포함되지 않으면 localStorage 지우기
       localStorage.removeItem("projectState");
-      localStorage.removeItem("editorItem64");
-      localStorage.removeItem("thumbnailImgs64");
     }
   }, [location]);
 

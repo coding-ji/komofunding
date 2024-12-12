@@ -81,16 +81,16 @@ export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) =>
 // 개인 프로젝트
 
 // 조회
-export const fetchUserProjects = (userNum) => apiClient.get(`/api/user/${userNum}}/myinfo/projects`);
+export const fetchUserProjects = () => apiClient.get(`/api/user/myinfo/projects`);
 
 // 생성
-export const createProject = (userNum, projectData) => apiClient.put(`/api/user/${userNum}}/myinfo/projects`, projectData);
+export const createProject = (projectData) => apiClient.post(`/api/user/myinfo/projects`, projectData);
 
 // 업데이트
-export const updateProject = (userNum, updateData) => apiClient.patch(`/api/user/${userNum}}/myinfo/projects`, updateData);
+export const updateProject = (updateData) => apiClient.patch(`/api/user/myinfo/projects`, updateData);
 
 // 삭제
-export const deleteProject = (userNum, projectNum) => apiClient.delete(`/api/user/${userNum}}/myinfo/projects`, projectNum);
+export const deleteProject = (projectNum) => apiClient.delete(`/api/user/myinfo/projects`, projectNum);
 
 
 

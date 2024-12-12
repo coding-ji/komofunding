@@ -124,10 +124,10 @@ function SideMenu() {
                         style={{ overflow: "hidden" }}
                     >
                         <ul>
-                            <li>새 프로젝트 작성</li>
-                            <li>진행 예정 프로젝트</li>
-                            <li>진행 중 프로젝트</li>
-                            <li>마감된 프로젝트</li>
+                            <Link to="/home/selecPrj"><li>새 프로젝트 작성</li></Link>
+                            <Link to="/home/myfunding"><li>진행 예정 프로젝트</li></Link>
+                            <Link to="/home/myfunding/ongoing"><li>진행 중 프로젝트</li></Link>
+                            <Link to="/home/myfunding/completed"><li>마감된 프로젝트</li></Link>
                         </ul>
                     </motion.div>
                 </div>

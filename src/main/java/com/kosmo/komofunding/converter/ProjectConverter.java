@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.converter;
 
+import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.dto.QnAOutDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
@@ -72,6 +73,28 @@ public class ProjectConverter {
                 .qnaList(qnaList)
                 .supporters(supporters)
                 .progressRate(progressRate)
+                .build();
+    }
+
+    // Entity로 변환
+    public Project toEntity(ProjectInDTO projectInDTO, User user){
+
+        // totalAmount 계산
+        Long totalAmount = projectInDTO.getItems().
+                stream().mapToLong(item -> item.itemPrice() * item.itemAmount())
+                .sum();
+
+        return Project.builder()
+                .userId(user.getUserId())
+                .title(projectInDTO.getTitle())
+                .projectCategory(projectInDTO.getProjectCategory())
+                .thumbnailImgs(projectInDTO.getThumnailImgs())
+                .shortDescription(projectInDTO.getShortDescription())
+                .description(projectInDTO.getDescription())
+                .items(projectInDTO.getItems())
+                .totalAmount(totalAmount)
+                .projectStartDate(projectInDTO.getProjectStartDate())
+                .projectEndDate(projectInDTO.getProjectEndDate())
                 .build();
     }
 }

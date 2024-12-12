@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import MyContainers from '../../components/MyContainers';
 import PopupInquiry from '../MyPage/writeQnA/PopupInquiry';
+import { useOutletContext } from "react-router-dom";
+
 
 function Upcoming() {
-    // 초기 데이터
-    const initialProducts = [
-        { id: 1, title: "Product 1", description: "Description for product 1", text: "DELETE" },
-        { id: 2, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 3, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 4, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 5, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 6, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 7, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 8, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 9, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-    ];
+    const state = useOutletContext();
+
+
 
     const [products, setProducts] = useState(initialProducts); // 상태로 데이터 관리
     const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 상태
@@ -30,7 +23,7 @@ function Upcoming() {
     const handleConfirmDelete = () => {
         if (productToDelete) {
             // id로 비교하여 삭제
-            setProducts(products.filter((p) => p.id !== productToDelete.id)); 
+            setProducts(products.filter((p) => p.id !== productToDelete.id));
         }
         setIsPopupOpen(false); // 팝업 닫기
         setProductToDelete(null); // 초기화
@@ -47,6 +40,7 @@ function Upcoming() {
                     text="삭제"
                 />
             )}
+            {console.log(state)}
 
             {/* 데이터 전달 */}
             <MyContainers
