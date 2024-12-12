@@ -1,0 +1,182 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .title {
+    margin: 50px 0;
+    font-size: 2.5rem;
+  }
+  
+  .buttonWrapper {
+    width: 63%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  /* .printBtn {
+    position: sticky;
+    top: 0;
+    right: 77%;
+    z-index: 10;
+    background-color: white;
+  } */
+  
+  .printButton {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: #436446;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .tableWrapper {
+    margin: 20px auto;
+    max-width: 1200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table thead {
+    background-color: #436446;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .table th,
+  .table td {
+    padding: 20px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+  }
+  
+  .table th {
+    background-color: #436446;
+    color: white;
+    font-weight: bold;
+    border: 1px solid white;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  .table th:nth-child(3),
+  .table td:nth-child(3) {
+      width: 3rem;
+  }
+  .table th:nth-child(6),
+  .table td:nth-child(6) {
+      width: 7rem;
+  }
+
+  .table th:nth-child(7),
+  .table td:nth-child(7) {
+      width: 2rem;
+  }
+
+
+
+  .table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .checkbox {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .table td {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .selected {
+    display: table-row !important;
+  }
+
+@media print {
+    /* 기본적으로 모든 행을 숨김 */
+    tr {
+        display: none; /* 모든 tr는 기본적으로 숨김 */
+    }
+
+    /* 체크된 항목만 표시 */
+    tr input[type="checkbox"]:checked {
+        display: table-row !important; /* 체크된 항목만 보이도록 */
+    }
+
+    /* 테이블 헤더(thead)는 항상 보이도록 설정 */
+    .table thead {
+        display: table-header-group !important; /* 헤더는 항상 보이도록 설정 */
+    }
+
+    /* thead의 체크박스와 그 행을 항상 보이도록 설정 */
+    .table thead tr {
+        display: table-row !important; /* thead의 행들은 항상 보이게 설정 */
+    }
+    .buttonWrapper {
+        display: none;
+    }
+    .table th,
+    .table td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid black; /* 테이블 경계선 추가 */
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        width: 80px;
+    }
+
+    .table th:nth-child(6),
+    .table td:nth-child(6) {
+        width: 100px;
+    }
+    .table th:nth-child(7),
+    .table td:nth-child(7) {
+        width: 50px;
+    }
+    /* thead의 th가 항상 보이게 설정 */
+    .table th {
+        display: table-cell !important;
+        visibility: visible !important;
+        color: black;
+    }
+    .table td{
+        display: table-cell !important;
+        visibility: visible !important;
+        color: black;
+    }
+
+    /* 체크박스를 제외한 테이블 부분만 보이게 하기 */
+    .tableWrapper input[type="checkbox"] {
+        display: none; /* 체크박스는 프린트 시 보이지 않게 처리 */
+    }
+
+    /* 페이지 여백을 없애기 위한 조정 */
+    @page {
+        margin: 0;
+        padding: 0;
+    }
+}
