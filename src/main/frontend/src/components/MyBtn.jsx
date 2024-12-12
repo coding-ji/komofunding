@@ -153,7 +153,7 @@ export const ProductBtn1 = ({text, width, height, onClick,fontSize,padding,fontF
 );
 
 // 상품 페이지 삭제 / 답변 달기 버튼 => 화이트
-export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontFamily}) => (
+export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontFamily, margin}) => (
   <Button
   bgColor="white"
   borderColor="black"
@@ -166,6 +166,7 @@ export const ProductBtn2 = ({text, width, height, onClick,fontSize,padding,fontF
   fontSize={fontSize} /* 폰트 크기 프롭 전달 */
   padding={padding}
   fontFamily={fontFamily}
+  margin ={margin}
   >
     {text}
   </Button>

@@ -41,6 +41,7 @@ import DonateGuide from "./page/noticpage/DonateGuide";
 import ProfileView from "./page/Profile/ProfileView";
 import MainProDetails from "./page/MainProDetails/MainProDetails";
 import OrderTable from "./page/OrderTable/OrderTable";
+import RefundPage from "./page/RefundPage/RefundPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -103,6 +104,8 @@ const router = createBrowserRouter([
       { path: "donate-guide", element: <DonateGuide /> },
       { path: "product-details", element: <MainProDetails /> },
       { path: "ordertable", element: <OrderTable /> },
+      { path: "refund", element: <RefundPage />},
+      // { path: "investment", element: <Investment />}
 
     ],
   },

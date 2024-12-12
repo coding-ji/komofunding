@@ -1,0 +1,171 @@
+* {
+  font-family: "Noto Sans KR", Helvetica;
+}
+
+/* 전체 컨테이너 */
+.refundContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 1.875rem 10vw; /* 10vw는 화면 너비의 10% */
+  /* width: 80%;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  color: #333; */
+}
+
+/* 타이틀 */
+/* .title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+} */
+
+.fundingInfo, .transInfos, .refundInfo, .payInfos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-areas:
+    "sender input"
+    "recipient input"
+    "phone input"
+    "address input"
+    "detailAddress input";
+    grid-template-columns: 150px 1fr;
+    margin-left: 5px;
+    gap: 20px;
+    align-items: center;
+}
+
+.sender {
+  grid-area: sender;
+  font-family: "Noto Sans KR", Helvetica;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.recipient {
+  grid-area: recipient;
+  font-family: "Noto Sans KR", Helvetica;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.phone {
+  grid-area: phone;
+  font-family: "Noto Sans KR", Helvetica;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.address {
+  grid-area: address;
+  font-family: "Noto Sans KR", Helvetica;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.detailAddress {
+  grid-area: detailAddress;
+  font-family: "Noto Sans KR", Helvetica;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.addressInput {
+  display: flex;
+  gap: 15px;
+}
+
+.inputField {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.refundGrid{
+  display: grid;
+  grid-template-areas: 
+  "bank option"
+  "num input"
+  "name input";
+  grid-template-columns: 150px 1fr;
+  margin-left: 5px;
+  align-items: center;
+  gap: 20px;
+}
+
+.bank {
+  grid-area: bank;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.num {
+  grid-area: num;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.name {
+  grid-area: name;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.payInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+
+.selectField {
+  width: 15%; /* 크기를 20%로 줄이기 */
+  padding: 8px;
+  margin-top: 5px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.productName {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.boldText {
+  font-weight: normal;
+
+}
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.boldTextCenter {
+  font-weight: bold;
+  text-align: center; /* 텍스트를 가운데 정렬 */
+  margin-bottom: 10px; /* 간격 조정 */
+  font-size: 2em;
+}
+
+.btns{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+
+}

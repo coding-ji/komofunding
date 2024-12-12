@@ -6,7 +6,7 @@ const RefundPolicy = () => {
     backgroundColor: "#f9f9f9",
     border: "1px solid #ddd",
     borderRadius: "2px",
-    width: "70%",
+    width: "100%",
     textAlign: "center",
     margin: "0 auto", // 수평 중앙 정렬
     display: "block", // 블록 레벨로 설정

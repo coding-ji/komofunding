@@ -1,7 +1,7 @@
 .dropdown {
     position: relative;
     user-select: none;
-    font-size: 14px;
+    font-size: 0.9rem;
     display: inline-block;
     min-width: fit-content;
   
@@ -12,7 +12,8 @@
     text-wrap: nowrap;
     background: white;
     display: flex;
-    justify-content: space-between;
+    gap: 15px;
+    /* justify-content: space-between; */
     align-items: center;
     cursor: pointer;
   }

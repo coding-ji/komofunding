@@ -142,7 +142,9 @@ const OrderTable = () => {
 
   return (
     <div className={styles.wrapper}>
-      <TitleText title="후원자 내역"/>
+      <TitleText
+      height = "150px"
+      title ="후원자 내역" />
 
       <div className={styles.buttonWrapper} >
         <div className={styles.printBtn}>

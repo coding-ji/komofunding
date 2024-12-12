@@ -1,5 +1,7 @@
 /* ModalStyles.module.css */
-
+* {
+  font-family: sans-serif;
+}
 /* 모달 배경: 전체 화면을 덮도록 설정 */
 .modalBackdrop {
   position: fixed;
@@ -7,38 +9,35 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* 회색 배경 */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* 다른 콘텐츠보다 위에 오도록 설정 */
+  z-index: 1000;
 }
 
 /* 모달 콘텐츠 */
 .modalContent {
   background-color: #fff; /* 흰색 배경 */
   padding: 20px;
-  border-radius: 8px; /* 모서리 둥글게 */
+  border-radius: 2px; /* 모서리 둥글게 */
   width: 400px; /* 고정된 너비 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  z-index: 1001; /* 배경 위에 올리기 */
+  /* z-index: 1001; 배경 위에 올리기 */
   display: flex;
+  gap: 15px;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* 수평, 수직 중앙 정렬 */
 }
 
 /* 모달 제목 */
 .modalContent h2 {
-  text-align: center;
-  margin-bottom: 20px; /* 제목과 입력창 간격 증가 */
+  text-align: start;
 }
 
 /* 모달 안의 입력창 */
 .modalContent input {
-  width: 80%; /* 입력창 너비를 줄여서 중앙에 오도록 */
-  padding: 8px;
-  margin-bottom: 15px;
+  width: 100%; /* 입력창 너비를 줄여서 중앙에 오도록 */
+  height: 30px;
   border: 1px solid #ddd;
   border-radius: 2px;
   text-align: center; /* 입력창 텍스트 중앙 정렬 */
@@ -47,26 +46,32 @@
 /* 모달 버튼 */
 .modalContent button {
   padding: 10px 15px;
-  background-color: black;
+  background-color: #436446;
   color: white;
-  border: none;
+  border: 2px solid #436336;
   border-radius: 2px;
   cursor: pointer;
   width: 100%;
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
 }
 
 .modalContent button:hover {
-  background-color: #256E91;
+  background-color: #ffffff;
+  color: #436336
 }
 
 /* 닫기 버튼 */
 .modalContent button:last-child {
   background-color: white;
-  color: black;
+  color: #436336
 }
 
 .modalContent button:last-child:hover {
-  background-color: #256E91;
+  background-color: #436446;
+  color: white;
+}
+
+.addressSearch {
+  display: flex;
 }
