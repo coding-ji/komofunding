@@ -7,8 +7,7 @@ import React, { useState } from "react";
 const Button = styled(motion.button)`
   display: flex; /* 플렉스 박스 사용 */
   justify-content: center; /* 수평 중앙 정렬 */
-    justify-self: ${(props) => props.justifySelf || "auto"}; /* justify-self 추가 */
-
+  justify-self: ${(props) => props.justifySelf || "auto"}; /* justify-self 추가 */
   align-items: center; /* 수직 중앙 정렬 */
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "100%"};
@@ -56,6 +55,17 @@ const hoverEffects = {
     backgroundColor: "rgb(0,0,0)",
     color: "rgb(255,255,255)",
     borderColor: "rgb(0,0,0)",
+  },
+
+  Green : {
+    backgroundColor: "#436446",
+    color : "white",
+    borderColor :"#436446",
+  },
+
+  adminWhite : {
+    backgroundColor : "white",
+    color: "#436446"
   }
 
 }
@@ -262,3 +272,45 @@ export const TapBtn = ({
         onClick={onTap}>{text}</Button>
       )
 }
+
+// 관리자 버튼 => 기본 : 초록색
+
+export const AdminBtn1 =  ({text, width, height, onClick,fontSize,padding,fontFamily, margin}) => (
+  <Button
+  bgColor="#436446"
+  borderColor="#436446"
+  textColor= "white"
+  whileHover={hoverEffects.adminWhite}
+  borderRadius = "2px"
+  onClick={onClick}
+  width={width}
+  height={height}
+  fontSize={fontSize} /* 폰트 크기 프롭 전달 */
+  padding={padding}
+  fontFamily={fontFamily}
+  margin ={margin}
+  >
+    {text}
+  </Button>
+);
+
+// 관리자 버튼 => 기본 : 하얀색
+
+export const AdminBtn2 =  ({text, width, height, onClick,fontSize,padding,fontFamily, margin}) => (
+  <Button
+  bgColor="white"
+  borderColor="#436336"
+  textColor= "#436446"
+  whileHover={hoverEffects.Green}
+  borderRadius = "2px"
+  onClick={onClick}
+  width={width}
+  height={height}
+  fontSize={fontSize} /* 폰트 크기 프롭 전달 */
+  padding={padding}
+  fontFamily={fontFamily}
+  margin ={margin}
+  >
+    {text}
+  </Button>
+);
