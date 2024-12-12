@@ -11,6 +11,7 @@ import com.kosmo.komofunding.repository.ProjectRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
+import org.apache.coyote.Response;
 import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -119,6 +120,21 @@ public class ProjectController {
         return ResponseEntity.status(201).body(response);
     }
 
+    @DeleteMapping("/api/user/myinfo/projects/{projectNum}")
+    public ResponseEntity<Map<String, String>> deleteProject(@PathVariable("projectNum") String projectNum) {
+        // 프로젝트 삭제 처리
+        Boolean isDeleted = projectService.deleteProjectByNum(projectNum);
+
+        Map<String, String> response = new HashMap<>();
+        if (isDeleted) {
+            response.put("message", "프로젝트가 성공적으로 삭제되었습니다.");
+            response.put("projectNum", projectNum);  // 삭제된 프로젝트 번호를 응답에 포함
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "프로젝트 삭제에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
 //
 //    @GetMapping("/api/projects/{projectId}")

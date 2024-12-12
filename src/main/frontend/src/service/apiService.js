@@ -87,10 +87,10 @@ export const fetchUserProjects = () => apiClient.get(`/api/user/myinfo/projects`
 export const createProject = (projectData) => apiClient.post(`/api/user/myinfo/projects`, projectData);
 
 // 업데이트
-export const updateProject = (updateData) => apiClient.patch(`/api/user/myinfo/projects`, updateData);
+export const updateProject = (projectNum, updateData) => apiClient.patch(`/api/user/myinfo/projects/${projectNum}`, updateData);
 
 // 삭제
-export const deleteProject = (projectNum) => apiClient.delete(`/api/user/myinfo/projects`, projectNum);
+export const deleteProject = (projectNum) => apiClient.delete(`/api/user/myinfo/projects/${projectNum}`);
 
 
 

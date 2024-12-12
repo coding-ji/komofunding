@@ -32,7 +32,7 @@ const WrapperMenu = styled.div`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: #000;
+  color: #fff;
 `
 
 function SideMenu() {

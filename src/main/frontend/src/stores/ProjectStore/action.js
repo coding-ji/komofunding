@@ -42,8 +42,8 @@ export const RESET_STATE = "RESET_STATE";
 // 프로젝트 CRUD
 export const READ_PROJECT = "READ_PROJECT";
 export const CREATE_PROJECT = 'CREATE_PROJECT';
-export const UPDATE_PROJECT = 'UPDATE_PROJECT'; 
-export const DELETE_PROJECT = 'DELETE_PROJECT'; 
+export const UPDATE_PROJECT = 'UPDATE_PROJECT';
+export const DELETE_PROJECT = 'DELETE_PROJECT';
 
 
 
@@ -159,9 +159,9 @@ export const changeSupporters = (supporters) => ({
     payload: supporters,
 });
 
-export const updateAllFields = (fields) => ({ 
-    type: UPDATE_ALL_FIELDS, 
-    payload: fields 
+export const updateAllFields = (fields) => ({
+    type: UPDATE_ALL_FIELDS,
+    payload: fields
 });
 
 // 초기화
@@ -214,15 +214,28 @@ export const readProjectsByCategoryAndStatus = (projectCategory, fundingStatus) 
 // 사용자 프로젝트 조회
 export const readUserProjects = () => async (dispatch) => {
     try {
-        const response = await fetchUserProjects();  // 특정 사용자의 프로젝트 목록 API 호출
-        dispatch({
-            type: READ_PROJECT,
-            payload: response.data  // 사용자 프로젝트 목록
-        });
+        const response = await fetchUserProjects(); // 특정 사용자의 프로젝트 목록 API 호출
+
+        if (response.status === 200) {
+            // 성공 상태
+            dispatch({
+                type: READ_PROJECT,
+                payload: response.data, // 사용자 프로젝트 목록
+            });
+            return response.data; // 성공 시 데이터 반환
+        }
     } catch (error) {
-        console.error("사용자 프로젝트를 불러올 수 없습니다.", error);
+        if (error.response) {
+            if (error.response.status === 401) {
+                console.error("비밀번호 검증 실패: 잘못된 비밀번호");
+                return "fail"; // 비밀번호 검증 실패
+            }
+        }
+        console.error("사용자 프로젝트 조회 실패: 알 수 없는 오류", error);
+        return "error"; // 기타 오류
     }
 };
+
 
 // 새로운 프로젝트 생성 (CREATE)
 export const createNewProject = (projectData) => async (dispatch) => {
@@ -254,11 +267,23 @@ export const updateExistingProject = (updateData) => async (dispatch) => {
 export const deleteExistingProject = (projectNum) => async (dispatch) => {
     try {
         const response = await deleteProject(projectNum);  // 특정 프로젝트 삭제 API 호출
-        dispatch({
-            type: DELETE_PROJECT,
-            payload: projectNum  // 삭제된 프로젝트의 ID를 전달
-        });
+
+        if (response.data === 200) {
+            dispatch({
+                type: DELETE_PROJECT,
+                payload: response.data  // 삭제된 프로젝트의 ID를 전달
+            });
+
+            return response.data;
+        }
     } catch (error) {
-        console.error("프로젝트를 삭제할 수 없습니다.", error);
+        if (error.response) {
+            if (error.response.status === 401) {
+                console.error("삭제 실패");
+                return "fail";
+            }
+        }
+        console.error("사용자 프로젝트 조회 실패: 알 수 없는 오류", error);
+        return "error";
     }
 };

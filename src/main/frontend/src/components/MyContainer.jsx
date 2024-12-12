@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import '../index.css';
+import "../index.css";
 import ProductImg from "./ProductCard1/ProductImg";
 import ProductTitle from "./ProductCard1/ProductTitle";
 import ProductDescription from "./ProductCard1/ProductDescription";
@@ -14,26 +14,29 @@ const Styleddiv = styled(motion.div)`
   border-radius: 2px;
 `;
 
-function MyContainer({ title, description, text, onDelete, onEdit }) { 
+function MyContainer({ product, onDelete, onEdit }) {
   return (
     <Styleddiv
-      whileHover={{ scale: 1.02, boxShadow: '10px 10px 15px rgba(0, 0, 0, 0.3)' }}
+      whileHover={{
+        scale: 1.02,
+        boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.3)",
+      }}
       transition={{ type: "spring", stiffness: 100, transition: 0.1 }}
     >
       <motion.div>
-        <ProductImg />
+        <ProductImg src={product.thumbnailImgs[0]} />
       </motion.div>
       <motion.div>
-        <ProductTitle title={title} fontFamily="var(--kr-font)" />
+        <ProductTitle title={product.title} fontFamily="var(--kr-font)" />
       </motion.div>
       <motion.div>
-        <ProductDescription description={description} />
+        <ProductDescription description={product.projectShortDescription} />
       </motion.div>
       <motion.div>
-        <Btn 
-          text={text} 
-          fontFamily="var(--eng-font)" 
-          onClick={text === "EDIT" || text === "LIST" ? onEdit : onDelete} // text가 "EDIT"일 때 onEdit 실행, 아니면 onDelete 실행
+        <Btn
+          text="삭제"
+          fontFamily="var(--eng-font)"
+          onClick={onDelete} 
         />
       </motion.div>
     </Styleddiv>

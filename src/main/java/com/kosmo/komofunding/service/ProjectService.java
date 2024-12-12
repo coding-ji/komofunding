@@ -16,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -112,6 +109,9 @@ public class ProjectService {
         // 프로젝트 저장
         projectRepository.save(project);
 
+        // 저장된 프로젝트의 UUID 가져오기
+        String projectId = project.getProjectId();
+
         // 유저의 projectIds 필드에 새로운 프로젝트 번호 추가
         List<String> projectIds = user.getProjectIds();
         if (projectIds == null) {
@@ -121,7 +121,7 @@ public class ProjectService {
             projectIds = new ArrayList<>(projectIds);
         }
 
-        projectIds.add(String.valueOf(projectNum));  // 새 프로젝트 번호 추가
+        projectIds.add(projectId);  // 새 프로젝트 번호 추가
         user.setProjectIds(projectIds);
 
         // 유저 업데이트
@@ -138,6 +138,30 @@ public class ProjectService {
 
         return projectConverter.toOutDTO(project);
     }
+
+    @Transactional
+    public Boolean deleteProjectByNum(String projectNum) {
+        // 프로젝트 찾기: 없으면 예외 던짐
+        Project project = projectRepository.findByProjectNum(Long.valueOf(projectNum))
+                .orElseThrow(() -> new IllegalArgumentException("프로젝트가 존재하지 않습니다."));
+
+        // 프로젝트 삭제
+        projectRepository.delete(project);
+
+        // 유저의 프로젝트 리스트에서 해당 프로젝트 번호 제거
+        User user = userRepository.findById(project.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+
+        // 프로젝트 리스트에서 삭제
+        user.getProjectIds().remove(projectNum);
+
+        // 변경된 유저 정보 저장
+        userRepository.save(user);
+
+        return true;
+    }
+
+
 
     // 6자리 랜덤 숫자 생성
     private Long generateRandomProjectNum() {

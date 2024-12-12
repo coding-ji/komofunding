@@ -40,6 +40,7 @@
   
   .popup-button-container {
     display: flex;
+    gap: 10px;
     justify-content: center; /* 버튼 중앙 정렬 */
 
   }

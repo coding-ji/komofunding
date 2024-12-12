@@ -1,11 +1,10 @@
 import React from "react";
 import "./PopupInquiry.css";
 import { Btn } from "../../../components/MyBtn";
-import '../../../index.css';
+import "../../../index.css";
 import { useNavigate } from "react-router-dom";
 
-function PopupInquiry({ message, onClose, handleButtonClick, navigateTo, text = "확인" }) { // text 기본값 설정
-
+function PopupInquiry({ message, onClose, handleButtonClick, navigateTo }) {
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleButtonClickWrapper = () => {
@@ -24,13 +23,21 @@ function PopupInquiry({ message, onClose, handleButtonClick, navigateTo, text = 
         <br />
         <p>{message}</p>
         <div className="popup-button-container">
-          <Btn 
+          <Btn
             onClick={handleButtonClickWrapper} // 버튼 클릭 이벤트
-            text={text} // 전달된 텍스트 사용
+            text="삭제" // 전달된 텍스트 사용
             width="100px"
             padding="2px 2px"
             fontSize="1rem"
-            height="30px" 
+            height="30px"
+          />
+          <Btn
+            onClick={onClose} // 버튼 클릭 이벤트
+            text="닫기" // 전달된 텍스트 사용
+            width="100px"
+            padding="2px 2px"
+            fontSize="1rem"
+            height="30px"
           />
         </div>
       </div>
