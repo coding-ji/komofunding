@@ -34,7 +34,7 @@ public class PaymentController {
     @GetMapping("/list")
     public ResponseEntity<List<PaymentOutDTO>> getPaymentsByProjectNum(@RequestParam("projectNum") Long projectNum) {
         // 1. projectNum을 통해 Project 엔티티를 찾음
-        Project project = projectRepository.findByProjectNum(Long.valueOf(projectNum))
+        Project project = projectRepository.findByProjectNum(projectNum)
                 .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
 
         // 2. ProjectId를 이용해 Payment 목록을 가져옴

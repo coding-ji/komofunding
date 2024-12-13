@@ -7,7 +7,7 @@ import {
     RESET_STATE    
 } from "./action";
 
-export const initialState = {};
+export const initialState = { payment: []};
 
 export const reducer = (state, action) => {
     switch(action.type){

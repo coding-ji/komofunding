@@ -21,7 +21,7 @@ export const readDonorsByProjectNum = (projectNum) => async (dispatch) => {
             payload: response.data
         });
     } catch (error) {
-        console.error("정보 불러오기 실패 ");
+        console.error("정보 불러오기 실패", error);
     }
 }
 
@@ -33,6 +33,6 @@ export const createDonorByProject = (projectNum, payment) => async (dispatch) =>
             payload: response.data
         });
     } catch (error) {
-            console.error("결제실패");
+        console.error("결제 실패", error);
     }
 }

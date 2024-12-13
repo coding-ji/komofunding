@@ -43,6 +43,11 @@ public class PaymentService {
             project.setSupportersIdList(supporters);  // 후원자 목록 갱신
         }
 
+        // 프로젝트의 현재 금액(currentAmount)을 결제 금액만큼 증가시킴
+        Long paidAmount = paymentInDTO.getPaidAmount();  // 결제 금액을 가져옴
+        Long currentAmount = project.getCurrentAmount();
+        project.setCurrentAmount(currentAmount + paidAmount);  // currentAmount 갱신
+
         // 프로젝트를 DB에 저장
         projectRepository.save(project);
 

@@ -8,7 +8,7 @@ export const useStore = () => {
   const actions = {
     resetState: () => dispatch(resetState),
     updateAllFields: (data) => dispatch(updateAllFields(data)),
-    createDonorByProject: (projectNum, payment) => createDonorByProject(projectNum, payment)(dispatch),
+    createDonorByProject: (projectNum, payment) => createDonorByProject(projectNum, payment)(dispatch),  
     readDonorsByProjectNum: (projectNum) => readDonorsByProjectNum(projectNum)(dispatch)
   };
 
