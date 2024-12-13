@@ -46,9 +46,7 @@ export const logout = () => apiClient.post('/api/auth/logout');
 
 // 특정 사용자의 정보를 가져옴 (이메일 기반)
 export const getUserInfo = (email) => apiClient.get(`/api/auth/users?email=${email}`);
-// 사용자의 닉네임 중복 확인
-export const checkNickName = (nickName) => 
-  apiClient.post('/api/auth/nickname-check', { nickName });
+
 // 특정 사용자를 삭제 (회원 탈퇴)
 export const deleteUser = (userNum) => apiClient.delete(`/api/auth/delete/${userNum}`);
 
