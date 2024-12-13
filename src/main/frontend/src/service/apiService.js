@@ -46,7 +46,9 @@ export const logout = () => apiClient.post('/api/auth/logout');
 
 // 특정 사용자의 정보를 가져옴 (이메일 기반)
 export const getUserInfo = (email) => apiClient.get(`/api/auth/users?email=${email}`);
-
+// 사용자의 닉네임 중복 확인
+export const checkNickName = (nickName) => 
+  apiClient.post('/api/auth/nickname-check', { nickName });
 // 특정 사용자를 삭제 (회원 탈퇴)
 export const deleteUser = (userNum) => apiClient.delete(`/api/auth/delete/${userNum}`);
 
@@ -129,15 +131,15 @@ export const fetchCommunityById = (communityId) =>
   apiClient.get(`/api/posts/community/${communityId}`);
 
 // 새로운 커뮤니티 생성
-export const createCommunity = (communityData) =>
+ export const createCommunity = (communityData) =>
   apiClient.post("/api/posts/community", communityData);
 
 // 특정 커뮤니티 수정
-export const updateCommunity = (communityId, updateData) =>
+  export const updateCommunity = (communityId, updateData) =>
   apiClient.put(`/api/posts/community/${communityId}`, updateData);
 
 // 특정 커뮤니티 삭제
-export const deleteCommunity = (communityId) =>
+  export const deleteCommunity = (communityId) =>
   apiClient.delete(`/api/posts/community/${communityId}`);
 
 
