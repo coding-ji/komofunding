@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
-import { registerUser, sendRegisterEmailCode, verifyEmailCode, checkNickName } from "../../service/apiService";
+import { registerUser, sendRegisterEmailCode, verifyEmailCode } from "../../service/apiService";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -11,37 +11,16 @@ const SignupForm = () => {
     password: "",
     phoneNumber: "",
   });
-  const [authCode, setAuthCode] = useState("");
+  const [authCode, setAuthCode] = useState(""); // 이메일 인증 코드 입력값
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [emailSent, setEmailSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-  const [nickName, setNickName] = useState(null);
 
   // 폼 데이터 업데이트
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
-  };
-
-  // 닉네임 중복 확인
-  const handleCheckNickName = async () => {
-    if (!formData.nickName) {
-      alert("닉네임을 입력하세요.");
-      return;
-    }
-
-    try {
-      const isAvailable = await checkNickName(formData.nickName);
-      setNickName(isAvailable);
-      if (isAvailable) {
-        alert("사용 가능한 닉네임입니다.");
-      } else {
-        alert("이미 사용 중인 닉네임입니다.");
-      }
-    } catch (error) {
-      alert("닉네임 확인 중 오류가 발생했습니다.");
-    }
   };
 
   // 이메일 인증 코드 발송
@@ -87,11 +66,6 @@ const SignupForm = () => {
       return;
     }
 
-    if (nickNameAvailable === false) {
-      alert("닉네임 중복 확인을 완료해주세요.");
-      return;
-    }
-
     try {
       await registerUser(formData);
       alert("회원가입이 완료되었습니다!");
@@ -101,7 +75,6 @@ const SignupForm = () => {
       setConfirmPassword("");
       setEmailSent(false);
       setEmailVerified(false);
-      setNickNameAvailable(null);
     } catch (error) {
       alert("회원가입 중 오류가 발생했습니다.");
     }
@@ -153,15 +126,6 @@ const SignupForm = () => {
               onChange={handleInputChange}
               style={{ gridArea: "input7" }}
             />
-            <div style={{ gridArea: "nickbtn" }}>
-              <button
-                type="button"
-                className={styles.smallButton}
-                onClick={handleCheckNickName}
-              >
-                중복 확인
-              </button>
-            </div>
 
             {/* 이메일 */}
             <label className={styles.label} style={{ gridArea: "label2" }}>
@@ -186,6 +150,7 @@ const SignupForm = () => {
                 이메일 인증
               </button>
             </div>
+
 
             <label className={styles.label} style={{ gridArea: "label3" }}>
               인증번호
