@@ -24,8 +24,8 @@ public class Application {
     @Column(name = "user_id", nullable = false, updatable = false)
     private String userId; // 신청자 아이디
 
-    @Column(name = "attachment_path", nullable = false)
-    private String attachmentPath; // 첨부 파일 경로 (이미지, hwp 등)
+    @Column(name = "application_Img", nullable = false)
+    private String applicationImg; // 첨부 파일 경로 (이미지, hwp 등)
 
     @Column(name = "application_date", nullable = false, updatable = false)
     private LocalDateTime applicationDate; // 신청 날짜
@@ -36,8 +36,9 @@ public class Application {
     @Column(name = "rejected_date")
     private LocalDateTime rejectedDate; // 신청 거절 날짜
 
-    @Column(name = "is_hidden", nullable = false)
-    private boolean isHidden = false; // 숨김 처리 여부
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false; // 삭제 여부
+
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

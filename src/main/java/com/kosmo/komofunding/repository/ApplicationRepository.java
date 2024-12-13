@@ -19,6 +19,6 @@ public interface ApplicationRepository extends JpaRepository<Application, String
     // 특정 상태의 신청서 조회
     List<Application> findByStatus(Application.ApplicationStatus status);
 
-    // 숨김 처리되지 않은 신청서 조회
-    List<Application> findByIsHiddenFalse();
+    // 삭제되지 않은 신청서 조회
+    List<Application> findByIsDeletedFalse();
 }
