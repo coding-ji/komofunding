@@ -3,7 +3,7 @@ import { reducer, initialState } from "./reducer";
 import {
     changeUserNum,
     changeEmail,
-    // changePassword,
+    changePassword,
     changeName,
     changeNickName,
     changePhoneNumber,
@@ -32,8 +32,8 @@ import {
     removeUser,
     findEmail,
     resetUserPassword,
-    // updatePassword,
-    // uploadProfileImage,
+    updateUserPassword,
+    uploadProfileImage,
     apiVerifyPassword
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.
 
@@ -67,7 +67,7 @@ export const useStore = () => {
 
         fetchMyPageInfo: () => fetchMyPageInfo()(dispatch),
         fetchUserProfile: (userNum) => fetchUserProfile(userNum)(dispatch),
-        updateProfile:(userNum, profileData) => updateProfile(userNum, profileData)(dispatch),
+        updateProfile:(userNum, request) => updateProfile(userNum, request)(dispatch),
         applyCreatorSwitch: (email, requestDTO) => applyCreatorSwitch(email, requestDTO)(dispatch),
         register:(userInDTO) => register(userInDTO)(dispatch),
         sendEmailForRegister: (email) => sendEmailForRegister(email)(dispatch),
@@ -78,7 +78,7 @@ export const useStore = () => {
         removeUser: (userNum) => removeUser(userNum)(dispatch),
         findEmail: (name, phoneNumber) => findEmail(name, phoneNumber)(dispatch),
         resetUserPassword: (email) => resetUserPassword(email)(dispatch),
-        updateUserPassword: (newPassword) => updateUserPassword(newPassword)(dispatch),
+        updateUserPassword: (request) => updateUserPassword(request)(dispatch),
 //      uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
         apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch)
      };

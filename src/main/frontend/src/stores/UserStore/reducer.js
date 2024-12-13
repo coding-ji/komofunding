@@ -1,7 +1,7 @@
 import {
     CHANGE_USER_NUM,
     CHANGE_EMAIL,
-    CHANGE_PASSWORD,
+    CHANGE_PASSWORD_SUCCESS,
     CHANGE_NAME,
     CHANGE_NICKNAME,
     CHANGE_PHONE_NUMBER,
@@ -29,8 +29,9 @@ import {
     VERIFY_EMAIL_SUCCESS,
     FIND_EMAIL_SUCCESS,
     RESET_PASSWORD_REQUEST_SUCCESS,
-    CHANGE_PASSWORD_SUCCESS,
-    UPLOAD_PROFILE_IMAGE_SUCCESS,
+    UPDATE_USER_PROFILE,
+    // CHANGE_PASSWORD_SUCCESS,
+    // UPLOAD_PROFILE_IMAGE_SUCCESS,
     VERIFY_PASSWORD
 
 } from './action.js';
@@ -41,9 +42,9 @@ export const initialState = {
 //    email: '',
 //    password: '',
 //    name: '',
-//    nickname: '',
+//    nickName: '',
 //    phoneNumber: '',
-//    profileImg: '',
+//    profileImage: '',
 //    userShortDescription: '',
 //    activatedStatus: false,
 //    bankName: '',
@@ -52,7 +53,7 @@ export const initialState = {
 //    joinDate: '',
 //    corporationName: '',
 //    corporationTel: '',
-//    bsn: '',
+//    BSN: '',
 };
 
 // 동적 상태 업데이트 함수
@@ -67,11 +68,11 @@ export const reducer = (state , action) => {
         case CHANGE_USER_NUM:
             return updateStateField(state, 'userNum', action.payload);
 
-        case CHANGE_EMAIL:
+            case CHANGE_EMAIL:
             return updateStateField(state, 'email', action.payload);
 
-        case CHANGE_PASSWORD:
-            return updateStateField(state, 'password', action.payload);
+        // case UPDATE_USER_PASSWORD:
+        //     return updateStateField(state, 'password', action.payload);
 
         case CHANGE_NAME:
             return updateStateField(state, 'name', action.payload );
@@ -113,7 +114,7 @@ export const reducer = (state , action) => {
             return updateStateField(state, 'BSN', action.payload);
 
         case UPDATE_ALL_FIELDS:
-            return { ...state, ...action.payload };
+            return action.payload;
 
         case RESET_STATE:
             return { ...initialState };
@@ -130,17 +131,61 @@ export const reducer = (state , action) => {
         case DELETE_USER:
             return { ...state, user: action.payload };
 
-        case USER_REQUEST_START:
-            return { ...state, isLoading: true, error: null };
+        // case USER_REQUEST_START:
+        //     return { ...state, isLoading: true, error: null };
 
-        case USER_REQUEST_FAIL:
-            return { ...state, isLoading: false, error: action.payload };
+        // case USER_REQUEST_FAIL:
+        //     return { ...state, isLoading: false, error: action.payload };
 
-        case SET_ALL_FIELDS:
-            return { ...state, ...action.payload};
+        case VERIFY_PASSWORD:
+            return { ...state, message: action.payload };
+
+        case UPDATE_USER_PROFILE:
+            return { ...state, message: action.payload };
+        
+        case APPLY_CREATOR_SWITCH:
+            return {...state, message: action.payload};
+        
+        case  LOGIN_SUCCESS:
+            return {...state, message: action.payload};
+
+        case SEND_REGISTER_EMAIL_SUCCESS:
+            return {...state, message: action.payload};
+
+        case SEND_EMAIL_VERIFICATION_SUCCESS:
+            return {...state, message: action.payload};
+        
+        case VERIFY_EMAIL_SUCCESS:
+            return {...state, message: action.payload};
+        
+        case LOGIN_SUCCESS:
+            return {...state, message: action.payload};
+
+        case LOGOUT_USER:
+            return {...state, message: action.payload};
+        
+        case FIND_EMAIL_SUCCESS:
+            return {...state, message: action.payload};
+
+        case RESET_PASSWORD_REQUEST_SUCCESS:
+            return {...state, message: action.payload};
+
+
+        case CHANGE_PASSWORD_SUCCESS:
+            return {...state, message: action.payload};
 
         case RESET_STATE:
             return initialState;
+
+            
+        // case UPDATE_USER_PASSWORD:
+        //     // 비밀번호 업데이트 중 로직 처리 (예: 로딩 상태 변경)
+        //     return { ...state, isLoading: true };
+        
+        // case UPDATE_USER_PASSWORD_SUCCESS:
+        //     // 비밀번호 업데이트 성공 후 상태 변경
+        //     return { ...state, isLoading: false, passwordUpdated: true };  // 필요한 상태 추가
+        
 
         default:
             return state;

@@ -1,19 +1,7 @@
 import React, { useState } from "react";
 import "./ProfileImage.css";
 
-const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
-  
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageSrc(reader.result); // 이미지 미리보기
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+const ProfileImage = ({ initialImageSrc, size = "100px", gridArea, handleImageUpload }) => {
 
   return (
     <>
@@ -49,7 +37,7 @@ const ProfileImage = ({ initialImageSrc, size = "100px", gridArea  }) => {
         type="file"
         accept="image/*"
         style={{ display: "none" }}
-        onChange={handleImageChange}
+        onChange={handleImageUpload}
       />
     </div>
     </>

@@ -1,26 +1,28 @@
 
-import { getMyPageInfo,
- getUserProfile,
- updateUserProfile,
- applyForCreatorSwitch,
- registerUser,
- sendRegisterEmailCode,
- sendEmailCode,
- verifyEmailCode,
- loginUser,
- logout,
- getUserInfo,
- deleteUser,
- findUserId,
- resetPassword,
- changePassword,
- verifyPassword,
- uploadImg} from '../../service/apiService';
+import {
+    getMyPageInfo,
+    getUserProfile,
+    updateUserProfile,
+    applyForCreatorSwitch,
+    registerUser,
+    sendRegisterEmailCode,
+    sendEmailCode,
+    verifyEmailCode,
+    loginUser,
+    logout,
+    // getUserInfo,
+    deleteUser,
+    findUserId,
+    resetPassword,
+    changePassword,
+    verifyPassword,
+    // uploadImg
+} from '../../service/apiService';
 
-export const CHANGE_USER_NUM = "CHANGE_USER_NUM"; 
+export const CHANGE_USER_NUM = "CHANGE_USER_NUM";
 export const CHANGE_EMAIL = "CHANGE_EMAIL";
-export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
 export const CHANGE_NAME = "CHANGE_NAME";
+export const UPDATE_USER_PASSWORD = "UPDATE_USER_PASSWORD";
 export const CHANGE_NICKNAME = "CHANGE_NICKNAME";
 export const CHANGE_PHONE_NUMBER = "CHANGE_PHONE_NUMBER";
 export const CHANGE_PROFILE_IMG = "CHANGE_PROFILE_IMG";
@@ -30,31 +32,30 @@ export const CHANGE_USER_BANK_NAME = "CHANGE_USER_BANK_NAME";
 export const CHANGE_USER_ACCOUNT_NUMBER = "CHANGE_USER_ACCOUNT_NUMBER";
 export const CHANGE_USER_ACCOUNT_HOLDER = "CHANGE_USER_ACCOUNT_HOLDER";
 export const CHANGE_USER_JOIN_DATE = "CHANGE_USER_JOIN_DATE";
-export const CHANGE_CORPORATION_NAME = "CHANGE_CORPORATION_NAME" ;
+export const CHANGE_CORPORATION_NAME = "CHANGE_CORPORATION_NAME";
 export const CHANGE_CORPORATION_TEL = "CHANGE_CORPORATION_TEL";
 export const UPDATE_ALL_FIELDS = "UPDATE_ALL_FIELDS";
-export const CHANGE_BSN = "CHANGE_BSN"; 
+export const CHANGE_BSN = "CHANGE_BSN";
 export const RESET_STATE = "RESET_STATE";
 
 
-export const changeUserNum = (userNum) => ({type: CHANGE_USER_NUM, payload: userNum});
-export const changeEmail = (email) => ({type: CHANGE_EMAIL, payload: email});
-export const updatePassword = (password) => ({type: CHANGE_PASSWORD, payload: password});
-export const changeName = (name) => ({type: CHANGE_NAME, payload: name});
-export const changeNickName = (nickName) => ({type: CHANGE_NICKNAME, payload: nickName});
-export const changePhoneNumber = (phoneNumber) => ({type: CHANGE_PHONE_NUMBER, payload: phoneNumber});
-export const changeProfileImg = (profileImg) => ({type: CHANGE_PROFILE_IMG, payload: profileImg});
-export const changeUserShortDescription = (userShortDescription) => ({type: CHANGE_USER_SHORT_DESCRIPTION, payload: userShortDescription});
-export const changeUserActivatedStatus = (activatedStatus) => ({type: CHANGE_USER_ACTIVATED_STATUS, payload: activatedStatus});
-export const changeUserBankName = (bankName) => ({type: CHANGE_USER_BANK_NAME, payload: bankName});
-export const changeUserAccountNumber = (accountNumber) => ({type: CHANGE_USER_ACCOUNT_NUMBER, payload: accountNumber});
-export const changeUserAccountHolder = (accountHolder) => ({type: CHANGE_USER_ACCOUNT_HOLDER, payload: accountHolder});
-export const changeUserJoinDate = (joinDate) => ({type: CHANGE_USER_JOIN_DATE, payload: joinDate});
-export const changeCorporationName = (corporationName) => ({type: CHANGE_CORPORATION_NAME, payload: corporationName});
-export const changeCorporationTel = (corporationTel) => ({type: CHANGE_CORPORATION_TEL, payload: corporationTel});
+export const changeUserNum = (userNum) => ({ type: CHANGE_USER_NUM, payload: userNum });
+export const changeEmail = (email) => ({ type: CHANGE_EMAIL, payload: email });
+export const changeName = (name) => ({ type: CHANGE_NAME, payload: name });
+export const changeNickName = (nickName) => ({ type: CHANGE_NICKNAME, payload: nickName });
+export const changePhoneNumber = (phoneNumber) => ({ type: CHANGE_PHONE_NUMBER, payload: phoneNumber });
+export const changeProfileImg = (profileImg) => ({ type: CHANGE_PROFILE_IMG, payload: profileImg });
+export const changeUserShortDescription = (userShortDescription) => ({ type: CHANGE_USER_SHORT_DESCRIPTION, payload: userShortDescription });
+export const changeUserActivatedStatus = (activatedStatus) => ({ type: CHANGE_USER_ACTIVATED_STATUS, payload: activatedStatus });
+export const changeUserBankName = (bankName) => ({ type: CHANGE_USER_BANK_NAME, payload: bankName });
+export const changeUserAccountNumber = (accountNumber) => ({ type: CHANGE_USER_ACCOUNT_NUMBER, payload: accountNumber });
+export const changeUserAccountHolder = (accountHolder) => ({ type: CHANGE_USER_ACCOUNT_HOLDER, payload: accountHolder });
+export const changeUserJoinDate = (joinDate) => ({ type: CHANGE_USER_JOIN_DATE, payload: joinDate });
+export const changeCorporationName = (corporationName) => ({ type: CHANGE_CORPORATION_NAME, payload: corporationName });
+export const changeCorporationTel = (corporationTel) => ({ type: CHANGE_CORPORATION_TEL, payload: corporationTel });
 export const updateAllFields = (fields) => ({ type: UPDATE_ALL_FIELDS, payload: fields });
-export const changeBSN = (BSN) => ({type: CHANGE_BSN, payload: BSN});
-export const resetState = () => ({type: RESET_STATE});
+export const changeBSN = (BSN) => ({ type: CHANGE_BSN, payload: BSN });
+export const resetState = () => ({ type: RESET_STATE });
 
 // 유저 CRUD
 export const READ_USER = "READ_USER";
@@ -72,41 +73,52 @@ export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS'; 
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'; // 비밀번호 변경 성공
 export const VERIFY_PASSWORD = 'VERIFY_PASSWORD' // 비밀번호 검증
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = 'UPLOAD_PROFILE_IMAGE_SUCCESS'; // 프로필 이미지 업로드 성공
-
+export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';
 
 
 // 마이 페이지 정보 가져오기
-export const fetchMyPageInfo = () => async(dispatch) => {
+export const fetchMyPageInfo = () => async (dispatch) => {
     try {
         const response = await getMyPageInfo();
         dispatch({
-              type: READ_USER,
-              payload: response.data
+            type: READ_USER,
+            payload: response.data
         }); // 상태에 전체 데이터 업데이트
     } catch (error) {
         console.error('마이페이지 정보 가져오기 실패:', error);
     }
 };
 
-export const apiVerifyPassword = (userNum, password) => async(dispatch) => {
+
+export const apiVerifyPassword = (userNum, password) => async (dispatch) => {
     try {
-        const response = await verifyPassword(password);
-        dispatch({
-            type : VERIFY_PASSWORD,
-            payload: response.data
-        });
-    }catch (error) {
-        console.error('비밀번호 검증 실패:', error);
+        const response = await verifyPassword(userNum, password);
+
+        if (response.status === 200) {
+            dispatch({
+                type: VERIFY_PASSWORD,
+                payload: response.data,
+            });
+            return "ok"; // 비밀번호 검증 성공
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            console.error("비밀번호 검증 실패: 잘못된 비밀번호");
+            return "fail"; // 비밀번호 검증 실패
+        } else {
+            console.error("비밀번호 검증 실패: 알 수 없는 오류", error);
+            return "error"; // 기타 오류
+        }
     }
 };
 
 // 특정 사용자 프로필 가져오기
-export const fetchUserProfile = (userNum) => async(dispatch) => {
+export const fetchUserProfile = (userNum) => async (dispatch) => {
     try {
         const response = await getUserProfile(userNum);
         dispatch({
-              type: READ_USER,
-              payload: response.data
+            type: READ_USER,
+            payload: response.data
         });
     } catch (error) {
         console.error('사용자 프로필 가져오기 실패:', error);
@@ -114,25 +126,41 @@ export const fetchUserProfile = (userNum) => async(dispatch) => {
 };
 
 // 사용자 프로필 업데이트
-export const updateProfile = (userNum, profileData) => async(dispatch) => {
+export const updateProfile = (userNum, request) => async (dispatch) => {
     try {
-        const response = await updateUserProfile(userNum, profileData);
-        console.log('프로필 업데이트 성공:', response.data);
-        dispatch({
-                type: UPDATE_USER,
-                payload: response.data
-        }); // 업데이트 후 최신 정보 가져오기
+        const response = await updateUserProfile(userNum, request);
+        if (response.status === 200) { // 서버 응답 상태 코드 확인
+            console.log('프로필 업데이트 성공:', response.data);
+
+            // Redux 상태 업데이트
+            dispatch({
+                type: UPDATE_USER_PROFILE,
+                payload: response.data,
+            });
+
+            return "ok"; // 성공 응답 반환
+        } else {
+            console.error('프로필 업데이트 실패: 상태 코드', response.status);
+            return "fail"; // 실패 응답 반환
+        }
     } catch (error) {
         console.error('프로필 업데이트 실패:', error);
+
+        // 서버에서 반환된 에러 메시지 로그
+        if (error.response) {
+            console.error('서버 응답 에러:', error.response.data.message);
+        }
+
+        return "fail"; // 에러 발생 시 실패 응답 반환
     }
 };
 
 // 제작자 전환 신청
-export const applyCreatorSwitch = (email, requestDTO) => async(dispatch) => {
+export const applyCreatorSwitch = (email, requestDTO) => async (dispatch) => {
     try {
         const response = await applyForCreatorSwitch(email, requestDTO);
         console.log('제작자 전환 신청 성공:', response.data);
-        dispatch({ type: 'APPLY_CREATOR_SWITCH', payload: response.data });
+        dispatch({ type: APPLY_CREATOR_SWITCH, payload: response.data });
     } catch (error) {
         console.error('제작자 전환 신청 실패:', error);
     }
@@ -140,64 +168,64 @@ export const applyCreatorSwitch = (email, requestDTO) => async(dispatch) => {
 
 // 인증 관련 로직
 // 회원 가입
-export const register = (userInDTO) => async(dispatch) => {
+export const register = (userInDTO) => async (dispatch) => {
     try {
         const response = await registerUser(userInDTO);
         console.log('회원가입 성공:', response.data);
-        dispatch({ type: 'CREATE_USER', payload: response.data });
+        dispatch({ type: CREATE_USER, payload: response.data });
     } catch (error) {
         console.error('회원가입 실패:', error);
     }
 };
 
 // 회원가입 이메일 인증 요청
-export const sendEmailForRegister = (email) => async(dispatch) => {
+export const sendEmailForRegister = (email) => async (dispatch) => {
     try {
         const response = await sendRegisterEmailCode(email);
         console.log('이메일 인증 요청 성공:', response.data);
-        dispatch({ type: 'SEND_REGISTER_EMAIL_SUCCESS', payload: response.data });
+        dispatch({ type: SEND_REGISTER_EMAIL_SUCCESS, payload: response.data });
     } catch (error) {
         console.error('이메일 인증 요청 실패:', error);
     }
 };
 
 // 이메일 인증 코드 발송
-export const sendEmailVerificationCode = (email) => async(dispatch) => {
+export const sendEmailVerificationCode = (email) => async (dispatch) => {
     try {
         const response = await sendEmailCode(email);
         console.log('이메일 인증 코드 발송 성공:', response.data);
-        dispatch({ type: 'SEND_EMAIL_VERIFICATION_SUCCESS', payload: response.data });
+        dispatch({ type: SEND_EMAIL_VERIFICATION_SUCCESS, payload: response.data });
     } catch (error) {
         console.error('이메일 인증 코드 발송 실패:', error);
     }
 };
 
 // 이메일 인증 코드 검증
-export const verifyEmail = (email, code) => async(dispatch) => {
+export const verifyEmail = (email, code) => async (dispatch) => {
     try {
         const response = await verifyEmailCode(email, code);
         console.log('이메일 인증 성공:', response.data);
-        dispatch({ type: 'VERIFY_EMAIL_SUCCESS', payload: response.data });
+        dispatch({ type: VERIFY_EMAIL_SUCCESS, payload: response.data });
     } catch (error) {
         console.error('이메일 인증 실패:', error);
     }
 };
 
 // 로그인 및 로그 아웃
-export const login = (email, password) => async(dispatch) => {
+export const login = (email, password) => async (dispatch) => {
     try {
         const response = await loginUser(email, password);
-        dispatch({ type: 'LOGIN_SUCCESS', payload: response.data });
+        dispatch({ type: LOGIN_SUCCESS, payload: response.data });
         console.log('로그인 성공');
     } catch (error) {
         console.error('로그인 실패:', error);
     }
 };
 
-export const logoutUser = () => async(dispatch) => {
+export const logoutUser = () => async (dispatch) => {
     try {
         await logout();
-        dispatch({ type : 'LOGOUT_USER'}); // 상태 초기화
+        dispatch({ type: LOGOUT_USER }); // 상태 초기화
         console.log('로그아웃 성공');
     } catch (error) {
         console.error('로그아웃 실패:', error);
@@ -206,45 +234,53 @@ export const logoutUser = () => async(dispatch) => {
 
 // 사용자 관리 로직
 // 회원 탈퇴
-export const removeUser = (userNum) => async(dispatch) => {
+export const removeUser = (userNum) => async (dispatch) => {
     try {
         const response = await deleteUser(userNum);
         console.log('회원 탈퇴 성공');
-        dispatch({ type : 'DELETE_USER', payload : response.data}); // 상태 초기화
+        dispatch({ type: DELETE_USER, payload: response.data }); // 상태 초기화
     } catch (error) {
         console.error('회원 탈퇴 실패:', error);
     }
 };
 
 // 이름과 전화번호로 이메일 찾기
-export const findEmail = (name, phoneNumber) => async(dispatch) => {
+export const findEmail = (name, phoneNumber) => async (dispatch) => {
     try {
         const response = await findUserId(name, phoneNumber);
         console.log('이메일 찾기 성공:', response.data);
-        dispatch({ type: 'FIND_EMAIL_SUCCESS', payload: response.data });
+        dispatch({ type: FIND_EMAIL_SUCCESS, payload: response.data });
     } catch (error) {
         console.error('이메일 찾기 실패:', error);
     }
 };
 
 // 비밀번호 재설정 및 변경
-export const resetUserPassword = (email) => async(dispatch) => {
+export const resetUserPassword = (email) => async (dispatch) => {
     try {
         await resetPassword(email);
         console.log('비밀번호 재설정 요청 성공');
-        dispatch({ type: 'RESET_PASSWORD_REQUEST_SUCCESS' });
+        dispatch({ type: RESET_PASSWORD_REQUEST_SUCCESS });
     } catch (error) {
         console.error('비밀번호 재설정 요청 실패:', error);
     }
 };
 
-export const updateUserPassword = (newPassword) => async(dispatch) => {
+export const updateUserPassword = (request) => async (dispatch) => {
     try {
-        await changePassword( newPassword );
-        console.log('비밀번호 변경 성공');
-        dispatch({ type: 'CHANGE_PASSWORD_SUCCESS' });
+        const response = await changePassword(request);
+        if (response.status == 200) {
+            dispatch({ type: CHANGE_PASSWORD_SUCCESS, payload: response.data });
+            return "ok";
+        }
     } catch (error) {
-        console.error('비밀번호 변경 실패:', error);
+        if (error.response && error.response.status === 401) {
+            console.error("비밀번호 검증 실패: 잘못된 비밀번호");
+            return "fail"; // 비밀번호 검증 실패
+        } else {
+            console.error("비밀번호 검증 실패: 알 수 없는 오류", error);
+            return "error"; // 기타 오류
+        }
     }
 };
 

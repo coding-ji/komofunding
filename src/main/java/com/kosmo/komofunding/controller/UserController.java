@@ -75,17 +75,19 @@ public class UserController {
 
     // 프로필 수정
     @PatchMapping("/{userNum}/my_info/profile")
-    public ResponseEntity<UserProfileUpdateDTO> updateUserProfile(
-            @PathVariable("userNum") Long userNum,
+    public ResponseEntity<UserProfileUpdateDTO> updateUserProfile(@PathVariable("userNum") Long userNum,
             @RequestBody UserProfileUpdateDTO request  // 수정할 프로필 정보 받기
         ) {
         try {
-//            // 비밀번호 확인
-//            boolean isPasswordValid = userService.verifyPassword(Long.valueOf(String.valueOf(userNum)), request.getPassword());  // 비밀번호 검증
-//
-//            if (!isPasswordValid) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
-//            }
+            System.out.println("Request JSON: " + request);
+            System.out.println("userNum : " + userNum);
+
+            // 비밀번호 확인
+            boolean isPasswordValid = userService.verifyPassword(userNum, request.getPassword());  // 비밀번호 검증
+
+            if (!isPasswordValid) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 비밀번호 오류시 400
+            }
 
             // 프로필 업데이트
             User updatedUser = userService.updateUserProfile(userNum, request); // 프로필 정보 수정
@@ -107,50 +109,27 @@ public class UserController {
                     .build();
 
             return ResponseEntity.ok(response); // 수정된 프로필 반환
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 사용자 없으면 404 반환
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 예외 처리
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
-//    // 비밀번호 확인 API
-//    @PostMapping("/{userNum}/verify_password")
-//    public ResponseEntity<String> verifyPassword(
-//            @PathVariable("userNum") Long userNum,
-//            @RequestBody UserInDTO request) {
-//        try {
-//            // 비밀번호 검증
-//            boolean isPasswordValid = userService.verifyPassword(userNum, request.getPassword());
-//
-//            if (isPasswordValid) {
-//                return ResponseEntity.ok("비밀번호가 올바릅니다.");
-//            } else {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 올바르지 않습니다.");
-//            }
-//        } catch (IllegalArgumentException e) {
-//            // 사용자 찾기 실패 또는 다른 예외 처리
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
-//        } catch (Exception e) {
-//            // 기타 예외 처리
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
-//        }
-//    }
 
     // 제작자 신청
-//    @PostMapping("/{email}/myinfo/creator-switch")
-//    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(
-//            @PathVariable String email,
-//            @RequestBody CreatorSwitchRequestDTO requestDTO) {
-//
-//        // 이메일이 일치하는지 확인
-//        if (!requestDTO.getEmail().equals(email)) {
-//            return ResponseEntity.badRequest().body(new CreatorSwitchResponseDTO("이메일이 일치하지 않습니다."));
-//        }
-//
-//        // 제작자 전환 신청 처리
-//        CreatorSwitchResponseDTO responseDTO = userService.applyForCreatorSwitch(requestDTO);
-//        return ResponseEntity.ok(responseDTO);
-//    }
+    @PostMapping("/{email}/my_info/creator-switch")
+    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(
+            @PathVariable String email,
+            @RequestBody CreatorSwitchRequestDTO requestDTO) {
+
+        // 이메일이 일치하는지 확인
+        if (!requestDTO.getEmail().equals(email)) {
+            return ResponseEntity.badRequest().body(new CreatorSwitchResponseDTO("이메일이 일치하지 않습니다."));
+        }
+
+        // 제작자 전환 신청 처리
+        CreatorSwitchResponseDTO responseDTO = userService.applyForCreatorSwitch(requestDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
 
 }

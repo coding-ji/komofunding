@@ -1,12 +1,14 @@
 package com.kosmo.komofunding.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
+@Data
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserProfileUpdateDTO {
     private String profileImage;
     private String nickName;
@@ -23,20 +25,6 @@ public class UserProfileUpdateDTO {
     private String corporationTel;
     private Long BSN;
 
-
-    public String getCorporationTel() {
-        return null;
-    }
-
-    public String getShortDescription() {
-        return null;
-    }
-
-    public String getAccountNumber() {
-        return null;
-    }
-
-    public String getAccountHolder() {
-        return null;
-    }
+    private String newPassword;
+    private String confirmPassword;
 }

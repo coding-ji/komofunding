@@ -1,290 +1,395 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import axios from "axios";
 import "./ProfileEdit.css";
 import { Btn, WhiteBtn } from "../../components/MyBtn";
 import "../../index.css";
 import TitleBox from "../../components/TitleBox";
-import { useStore } from "../../stores/UserStore/useStore";
+import { useStore as UserStore } from "../../stores/UserStore/useStore";
+import { useStore as FileStore } from "../../stores/FileStore/useStore";
 import ProfileImage from "../../components/ProfilePicture/ProfileImage";
 import Input from "../../components/input";
 import PasswordPopup from "./PasswordPopup";
 
 const ProfileEdit = () => {
     const { userNum } = useParams();
-    const { state, actions } = useStore(); // dispatch로 상태 변경
+    // 유저정보
+    const { state: userState, actions: userActions } = UserStore();
+    // 프로필 이미지 정보
+    const { state: fileState, actions: fileActions } = FileStore();
+
     const navigate = useNavigate();
 
+    // 인풋에 작성된 패스워드 (1)
     const [currentPassword, setCurrentPassword] = useState("");
-
+    // 패스워드 확인(2)
     const [currentPasswordCheck, setCurrentPasswordCheck] = useState("");
-    const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
 
+    // 패스워드가 승인되었을 때 true로 변경
+    const [isValidated, setIsValidated] = useState(false);
+
+    // 새 비밀번호 모달
     const [showModal, setShowModal] = useState(false);
+
+    // 새 비밀번호 (1)
     const [newPassword, setNewPassword] = useState("");
+    // 새 비밀번호 확인(2)
+    const [newPasswordCheck, setNewPasswordCheck] = useState("");
 
+    // 새로 변경되는 profileImage
     const [newProfileImage, setNewProfileImage] = useState(null);
-    const [previewImage, setPreviewImage] = useState(null);
 
 
-    // 사용자 데이터 불러오기
+    // 프로필 불러오기
     useEffect(() => {
         if (userNum) {
-            const fetchUserProfileData = async () => {
+            const fetchData = async () => {
                 try {
-                    const response = await actions.fetchUserProfileData(userNum);
-                   // 상태 업데이트
-                    actions.updateAllFields(response); // 변경된 부분
+                    await userActions.fetchUserProfile(userNum);
                 } catch (error) {
                     console.error("프로필 정보 가져오기 실패:", error);
                 }
             };
-
-            fetchUserProfileData();
+            fetchData();
         } else {
             console.error("userNum이 존재하지 않습니다.");
         }
     }, [userNum]);
 
+    // 프로필불러와서 userState에 저장
+    useEffect(() => {
+        if (userState.user) {
+            userActions.updateAllFields(userState.user);
+        }
+    }, [userState.user]);
+
+    // 해당하는 인풋을 변경함
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        
-        // 상태 업데이트를 위해 updateAllFields 호출
-        actions.updateAllFields({
-            [name]: value,  // name 속성(예: "nickName")에 해당하는 값을 value로 업데이트
+        userActions.updateAllFields({
+            ...userState,
+            [name]: value,
         });
     };
 
-    // 프로필 저장
-    // const handleSaveProfile = async () => {
-    //     try {
-    //         let uploadedImgUrl = state.profileImage;
-
-    //         if (newProfileImage) {
-    //             const formData = new FormData();
-    //             formData.append("file", newProfileImage);
-
-    //             const response = await actions.uploadProfileImage(formData); // 이미지 업로드 API 호출
-    //             if (response.status === 200) {
-    //                 uploadedImgUrl = response.data; // 업로드된 이미지 URL 설정
-    //             } else {
-    //                 alert("이미지 업로드 실패");
-    //                 return;
-    //             }
-    //         }
-
-            //             const updatedProfile = {
-            //                 userNum: state.userNum,
-            //                 email: state.email,
-            //                 password: state.password,
-            //                 name: state.name,
-            //                 nickName: state.nickName,
-            //                 phoneNumber: state.phoneNumber,
-            //                 profileImage: uploadedImgUrl,
-            //                 shortDescription: state.shortDescription,
-            //                 activatedStatus: state.activatedStatus,
-            //                 bankName: state.bankName,
-            //                 accountNumber: state.accountNumber,
-            //                 accountHolder: state.accountHolder,
-            //                 BSN: state.BSN,
-            //             };
-
-
-    //         // 프로필 업데이트 API 호출
-    //         const updateResponse = await updateProfile(userNum, updatedProfile); // API 호출
-    //         if (updateResponse.status === 200) {
-    //             alert("수정이 완료되었습니다");
-    //             navigate(`/profile/${state.userNum}`);
-    //         } else {
-    //             throw new Error("프로필 업데이트 실패");
-    //         }
-    //     } catch (error) {
-    //         console.error("프로필 저장 중 오류 발생:", error);
-    //         alert("프로필 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    //     }
-    // };
-
-    const handleCancel = () => {
-        navigate(`/profile/${state.userNum}`);
-    };
-
-// 비밀번호 확인
-const handlePasswordCheck = async () => {
-    try {
-        if (password && currentPassword === password) {
-            // 비밀번호 확인 API 호출
-            const response = await actions.apiVerifyPassword(state.userNum, currentPassword);
-
-            if (response.success) {  // API 호출 성공 시
-                alert("비밀번호 확인 성공");
-                setShowModal(true); // 모달 열기
-            } else {
-                alert("비밀번호 확인 실패");
-            }
-        } else {
-            alert("현재 비밀번호가 올바르지 않습니다.");
+    // 이미지 변경하고 서버에 저장 후에 해당 url 가져오는 로직
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0]; // 업로드된 첫 번째 파일만 가져옴
+        if (!file) {
+            alert("파일을 선택해주세요.");
+            return;
         }
-    } catch (error) {
-        console.error("비밀번호 확인 중 오류 발생:", error);
-        alert("비밀번호 확인 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    }
-};
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
 
         const reader = new FileReader();
         reader.onload = () => {
-            setPreviewImage(reader.result); // 미리보기용 이미지 업데이트
-            setNewProfileImage(file); // 파일 저장
+            setNewProfileImage(file);
         };
         reader.readAsDataURL(file);
+
+        const localImage = URL.createObjectURL(file);
+
+        // 로컬 이미지 상태 업데이트 (미리보기)
+        setNewProfileImage(localImage);
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            // 이미지 저장 요청 보내기
+            await fileActions.createImgData(formData); // 서버에 이미지 업로드
+        } catch (error) {
+            console.error("이미지 업로드 실패", error);
+            alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
-    const handlePasswordSave = (newPassword) => {
-        console.log("새 비밀번호 저장:", newPassword);
-        // 비밀번호 저장 API 호출
-        changePassword(state.email, newPassword); // API 호출로 변경
+    // 서버에서 이미지 URL을 받아서 userState의 profile에 저장
+    useEffect(() => {
+        if (fileState) {
+            userActions.changeProfileImg(fileState);
+        }
+    }, [fileState]);
+
+    // const handlePasswordCheck = async () => {
+    //     try {
+    //         const result = await userActions.apiVerifyPassword(userNum, currentPassword);
+
+    //         if (result === "ok") {
+    //             alert("비밀번호 인증 성공");
+    //             setShowModal(true); // 비밀번호 변경 모달 열기
+    //         } else if (result === "fail") {
+    //             alert("비밀번호가 올바르지 않습니다.");
+    //         } else {
+    //             alert("오류가 발생했습니다. 다시 시도해주세요.");
+    //         }
+    //     } catch (error) {
+    //         console.error("비밀번호 검증 중 예외 발생:", error);
+    //         alert("알 수 없는 오류가 발생했습니다.");
+    //     }
+    // };
+
+    const handlePasswordCheck = async () => {
+        try {
+            const data = { ...userState, password: currentPassword }; // 새로운 객체 생성
+            const result = await userActions.apiVerifyPassword(userNum, data.password);
+    
+            if (result === "ok") {
+                alert("비밀번호 인증 성공");
+                setShowModal(true); // 비밀번호 변경 모달 열기
+            } else if (result === "fail") {
+                alert("비밀번호가 올바르지 않습니다.");
+            } else {
+                alert("오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("비밀번호 검증 중 예외 발생:", error);
+            alert("알 수 없는 오류가 발생했습니다.");
+        }
+    };
+
+
+    const handlePasswordSave = () => {
+        userActions.updateAllFields({
+            ...userState,
+            newPassword: newPasswordCheck
+
+        });
+
+        setIsValidated(true);
+    };
+
+    useEffect(() => {
+        if (isValidated) {
+            console.log(userState);
+            const result = userActions.updateUserPassword(userState);
+
+            if (result === "ok") {
+                alerts("비밀번호 업데이트 성공!");
+            }
+        }
+
+        setIsValidated(false);
+        setShowModal(false);
+    }, [isValidated])
+
+    // const handleProfileUpdate = async () => {
+    //     console.log(userState);
+
+    //     try {
+    //         if (!userNum || !userState) {
+    //             alert("유효하지 않은 사용자 정보입니다.");
+    //             return; // 유효하지 않은 상태에서는 더 이상 진행하지 않음
+    //         }
+
+    //         // 프로필 업데이트 실행
+    //         const result = await userActions.updateProfile(userNum, userState);
+
+    //         if (result === "ok") { // 업데이트 성공 여부를 판단
+    //             alert("저장 성공");
+    //             navigate(`/home/profileView/${userState.userNum}`);
+    //         } else {
+    //             alert("저장에 실패했습니다. 다시 시도해주세요.");
+    //         }
+    //     } catch (error) {
+    //         console.error("저장 실패:", error);
+    //         alert("저장에 실패했습니다. 다시 시도해주세요.");
+    //     }
+    // };
+
+    const handleProfileUpdate = async () => {
+        console.log(userState);
+    
+        try {
+            if (!userNum || !userState) {
+                alert("유효하지 않은 사용자 정보입니다.");
+                return; // 유효하지 않은 상태에서는 더 이상 진행하지 않음
+            }
+    
+            // 새로운 데이터 객체 생성
+            const data = {
+                ...userState,
+                password: currentPassword, // 사용자가 입력한 현재 비밀번호를 포함
+            };
+            
+            console.log(data);
+            // 프로필 업데이트 실행
+            const result = await userActions.updateProfile(userNum, data);
+    
+            if (result === "ok") { // 업데이트 성공 여부를 판단
+                alert("저장 성공");
+                navigate(`/home/profile/${userState.userNum}`);
+            } else {
+                alert("저장에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("저장 실패:", error);
+            alert("저장에 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
     return (
         <div className="profile-edit-container">
-            <TitleBox text="회원정보" />
-            <div className="profile-edit-grid-box">
-                <div className="profile-image-container">
-                    <ProfileImage size="200px" initialImageSrc={state.profileImage} />
-                    <input
-                        id="upload-profile-image"
-                        type="file"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={handleImageChange}
-                    />
-                    <WhiteBtn
-                        text="이미지 업로드"
-                        height="30px"
-                        fontSize="0.8rem"
-                        padding="5px 15px"
-                        width="200px"
-                        onClick={() => document.getElementById("upload-profile-image").click()}
-                    />
-                </div>
+            {userState ? (
+                <>
+                    <TitleBox text="회원정보" />
+                    <div className="profile-edit-grid-box">
+                        <div className="profile-image-container">
+                            <ProfileImage
+                                size="200px"
+                                initialImageSrc={userState.profileImage}
+                                handleImageUpload={handleImageUpload}
+                            />
+                            <input
+                                id="upload-profile-image"
+                                type="file"
+                                accept="image/*"
+                                style={{ display: "none" }}
+                                onChange={handleImageUpload}
+                            />
+                            <WhiteBtn
+                                text="이미지 업로드"
+                                height="30px"
+                                fontSize="0.8rem"
+                                padding="5px 15px"
+                                width="200px"
+                                onClick={() => document.getElementById("upload-profile-image").click()}
+                            />
+                        </div>
 
-                <div className="profile-edit-form">
-                    <div className="flex-row">
-                        <label>이름</label>
-                        <p>{state.name}</p>
+                        <div>
+                            <div className="profile-edit-form">
+                                <div className="flex-row">
+                                    <label>이름</label>
+                                    <p>{userState.name}</p>
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>닉네임</label>
+                                    <Input
+                                        type="text"
+                                        value={userState.nickName}
+                                        name="nickName"
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>이메일</label>
+                                    <p>{userState.email}</p>
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>회원번호</label>
+                                    <p>{userState.userNum}</p>
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>한줄 소개</label>
+                                    <Input
+                                        name="shortDescription"
+                                        type="text"
+                                        value={userState.shortDescription}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>휴대폰 번호</label>
+                                    <Input
+                                        type="text"
+                                        value={userState.phoneNumber}
+                                        name="phoneNumber"
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>계좌 정보</label>
+                                    <select
+                                        value={userState.bankName}
+                                        name="bankName"
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">은행 선택</option>
+                                        <option value="신한">신한</option>
+                                        <option value="우리">우리</option>
+                                        <option value="하나">하나</option>
+                                        <option value="카카오">카카오</option>
+                                        <option value="농협">농협</option>
+                                        <option value="기업">기업</option>
+                                        <option value="국민">국민</option>
+                                        <option value="수협">수협</option>
+                                    </select>
+                                    <Input
+                                        type="text"
+                                        value={userState.accountNumber}
+                                        name="accountNumber"
+                                        onChange={handleInputChange}
+                                        placeholder="계좌번호"
+                                    />
+                                    <Input
+                                        type="text"
+                                        value={userState.accountHolder}
+                                        name="accountHolder"
+                                        onChange={handleInputChange}
+                                        placeholder="계좌주"
+                                    />
+                                </div>
+
+                                <div className="flex-row">
+                                    <label>비밀번호</label>
+                                    <input
+                                        type="password"
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                        placeholder="현재 비밀번호"
+                                    />
+                                    <input
+                                        type="password"
+                                        value={currentPasswordCheck}
+                                        onChange={(e) => setCurrentPasswordCheck(e.target.value)}
+                                        placeholder="비밀번호 재확인"
+                                    />
+                                    <button type="button" onClick={handlePasswordCheck}>
+                                        비밀번호 확인
+                                    </button>
+                                </div>
+
+                                {showModal && (
+                                    <PasswordPopup
+                                        newPassword={newPassword}
+                                        setNewPassword={setNewPassword}
+                                        newPasswordCheck={newPasswordCheck}
+                                        setNewPasswordCheck={setNewPasswordCheck}
+                                        handlePasswordSave={handlePasswordSave}
+                                        onClose={() => setShowModal(false)}
+                                    />
+                                )}
+
+                                <div className="profile-edit-buttons">
+                                    <Btn
+                                        text="저장"
+                                        type="button"
+                                        onClick={handleProfileUpdate}
+                                    />
+                                    <WhiteBtn
+                                        text="취소"
+                                        onClick={() => {
+                                            if (userState.userNum) {
+                                                console.log("userState:", userState);
+                                                console.log("userNum:", userState.userNum);
+                                                navigate(`/home/profile/${userState.userNum}`);
+                                            } else {
+                                                alert("사용자 정보를 불러오지 못했습니다.");
+                                            }
+                                        }} />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="flex-row">
-                        <label>닉네임</label>
-                        <Input
-                            type="text"
-                            value={state.nickName}
-                            name="nickName"
-                            onChange={handleInputChange}
-                        />
-                    </div>
-
-                    <div className="flex-row">
-                        <label>이메일</label>
-                        <p>{state.email}</p>
-                    </div>
-
-                    <div className="flex-row">
-                        <label>회원번호</label>
-                        <p>{state.userNum}</p>
-                    </div>
-
-                    <div className="flex-row">
-                        <label>한줄 소개</label>
-                        <textarea
-                            name="description"
-                            rows="2"
-                            value={state.shortDescription}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-
-                    <div className="flex-row">
-                        <label>휴대폰 번호</label>
-                        <Input
-                            type="text"
-                            value={state.phoneNumber}
-                            name="phoneNumber"
-                            onChange={handleInputChange}
-                        />
-                    </div>
-
-                    <div className="flex-row">
-                        <label>계좌 정보</label>
-                        <select
-                            value={state.bankName}
-                            name="bankName"
-                            onChange={handleInputChange}
-                        >
-                            <option value="">은행 선택</option>
-                            <option value="신한">신한</option>
-                            <option value="우리">우리</option>
-                            <option value="하나">하나</option>
-                            <option value="카카오">카카오</option>
-                            <option value="농협">농협</option>
-                            <option value="기업">기업</option>
-                            <option value="국민">국민</option>
-                            <option value="수협">수협</option>
-                        </select>
-                        <Input
-                            type="text"
-                            value={state.accountNumber}
-                            name="accountNumber"
-                            onChange={handleInputChange}
-                            placeholder="계좌번호"
-                        />
-                        <Input
-                            type="text"
-                            value={state.accountHolder}
-                            name="accountHolder"
-                            onChange={handleInputChange}
-                            placeholder="계좌주"
-                        />
-                    </div>
-
-
-
-                    <div className="flex-row">
-                        <label>비밀번호</label>
-                        <input
-                            type="password"
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            placeholder="현재 비밀번호"
-                        />
-                        <input
-                            type="password"
-                            value={currentPasswordCheck}
-                            onChange={(e) => setCurrentPasswordCheck(e.target.value)}
-                            placeholder="비밀번호 재확인"
-                        />
-                        <button onClick={handlePasswordCheck}>비밀번호 확인</button>
-                    </div>
-
-                    {showModal && (
-                        <PasswordPopup
-                            currentPassword={currentPassword}
-                            setCurrentPassword={setCurrentPassword}
-                            newPassword={newPassword}
-                            setNewPassword={setNewPassword}
-                            onSavePassword={handlePasswordSave}
-                        />
-                    )}
-
-                    <div className="profile-edit-buttons">
-                        <Btn text="저장" onClick={handleSaveProfile} />
-                        <WhiteBtn text="취소" onClick={handleCancel} />
-                    </div>
-                </div>
-            </div>
+                </>
+            ) : (
+                <p>로딩 중입니다...</p>
+            )}
         </div>
     );
 };

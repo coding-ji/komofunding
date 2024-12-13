@@ -1,24 +1,27 @@
-import React, { useState } from "react";
 import './PasswordPopup.css'
 import { Btn, WhiteBtn } from "../../components/MyBtn";
 import "../../index.css";
 
 
-function PasswordPopup({ onClose, onSave }) {
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+function PasswordPopup({
+  newPassword,
+  setNewPassword,
+  newPasswordCheck,
+  setNewPasswordCheck,
+  handlePasswordSave,
+  onClose }) {
 
   const handleSave = () => {
-    if (!newPassword || !confirmPassword) {
+    if (!newPassword || !newPasswordCheck) {
       alert("모든 필드를 입력해주세요.");
       return;
     }
-    if (newPassword !== confirmPassword) {
+    if (newPassword !== newPasswordCheck) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-    onSave(newPassword); // 저장 함수 호출
-    onClose(); // 팝업 닫기
+
+    handlePasswordSave();
   };
 
   return (
@@ -41,8 +44,8 @@ function PasswordPopup({ onClose, onSave }) {
           <label>새 비밀번호 확인</label>
           <input
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={newPasswordCheck}
+            onChange={(e) => setNewPasswordCheck(e.target.value)}
             placeholder="새 비밀번호 확인"
           />
         </div>
@@ -55,7 +58,7 @@ function PasswordPopup({ onClose, onSave }) {
             padding="2px 2px"
             fontSize="1rem"
             height="30px"
-            margin ="5px"
+            margin="5px"
           />
           <WhiteBtn
             onClick={onClose}
@@ -64,7 +67,7 @@ function PasswordPopup({ onClose, onSave }) {
             padding="2px 2px"
             fontSize="1rem"
             height="30px"
-            margin ="5px"
+            margin="5px"
           />
         </div>
       </div>

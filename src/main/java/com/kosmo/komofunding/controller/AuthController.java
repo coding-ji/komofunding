@@ -3,6 +3,7 @@ package com.kosmo.komofunding.controller;
 import com.kosmo.komofunding.dto.EmailRequestDTO;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
+import com.kosmo.komofunding.dto.UserProfileUpdateDTO;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.repository.UserRepository;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -180,21 +182,48 @@ public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginReq
 
     // 비밀번호 변경
     @PatchMapping("/setting/pw")
-    public ResponseEntity<Map<String, String>> changePassword(@RequestBody String email, @RequestParam String newPassword) {
-        boolean isChanged = userService.updatePassword(email, newPassword);
+    public ResponseEntity<Map<String, String>> updatePassword(@RequestBody UserProfileUpdateDTO user) {
+        System.out.println("Received email: " + user.getEmail()); // 로그 추가
+        String password = user.getNewPassword();
 
-        if (!isChanged) {
-            // 비밀번호 변경 실패 시, 400 상태 코드와 함께 실패 메시지를 반환
+        try {
+            // 서비스 호출
+            userService.updatePassword(user, password);
+
+            // 성공 응답
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
+            return ResponseEntity.ok(response); // 200 OK
+        } catch (NoSuchElementException e) {
+            // 사용자 존재하지 않음
+            Map<String, String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(response); // 404 Not Found
+        } catch (Exception e) {
+            // 기타 오류
             Map<String, String> response = new HashMap<>();
             response.put("message", "비밀번호 변경에 실패했습니다.");
             return ResponseEntity.status(400).body(response); // 400 Bad Request
         }
-
-        // 비밀번호 변경 성공 시, 성공 메시지를 포함하여 200 상태 코드를 반환
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
-        return ResponseEntity.ok(response); // 200 OK
     }
+//    @PatchMapping("/setting/pw")
+//    public ResponseEntity<Map<String, String>> updatePassword(@RequestBody String email, String password) {
+//        Optional<User> user = userRepository.findByEmail(email);
+//
+//        userService.updatePassword(password);
+//
+//        if (!isChanged) {
+//            // 비밀번호 변경 실패 시, 400 상태 코드와 함께 실패 메시지를 반환
+//            Map<String, String> response = new HashMap<>();
+//            response.put("message", "비밀번호 변경에 실패했습니다.");
+//            return ResponseEntity.status(400).body(response); // 400 Bad Request
+//        }
+//
+//        // 비밀번호 변경 성공 시, 성공 메시지를 포함하여 200 상태 코드를 반환
+//        Map<String, String> response = new HashMap<>();
+//        response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
+//        return ResponseEntity.ok(response); // 200 OK
+//    }
 
     // 비밀번호 인증
     @PostMapping("/pw/{userNum}")

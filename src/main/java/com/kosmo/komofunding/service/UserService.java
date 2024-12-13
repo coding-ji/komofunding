@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.kosmo.komofunding.dto.Valid.email;
 import static com.kosmo.komofunding.dto.Valid.password;
 
 @Slf4j
@@ -54,6 +56,22 @@ public class UserService {
         emailEntity.setCreatedAt(LocalDateTime.now());
 
         emailRepository.save(emailEntity);
+    }
+
+    // 비밀번호 비교
+    public boolean verifyPassword(String password) {
+        Optional<User> userOptional = userRepository.findByEmailAndPassword(email, password);
+
+
+        // 사용자가 존재하지 않으면 false 반환
+        if (!userOptional.isPresent()) {
+            return false;
+        }
+        User user = userOptional.get();
+
+        // BCryptPasswordEncoder를 사용하여 비밀번호 비교
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(password, user.getPassword());  // 입력된 비밀번호와 저장된 비밀번호 비교
     }
 
     // 이메일 인증 코드 검증
@@ -239,12 +257,17 @@ public class UserService {
     }
 
     // 비밀번호 변경
-    public boolean updatePassword(String email, String newPassword) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-        return true;
+    public void  updatePassword(UserProfileUpdateDTO user, String newPassword)  {
+        // 사용자 조회
+        User selectedUser = userRepository.findByUserNum(user.getUserNum())
+                .orElseThrow(() -> new NoSuchElementException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
+
+        // 비밀번호 암호화
+        String encryptedPassword = passwordEncoder.encode(newPassword);
+
+        // 비밀번호 변경 및 저장
+        selectedUser.setPassword(encryptedPassword);
+        userRepository.save(selectedUser);
     }
 
     // 비밀 번호 검증
@@ -341,12 +364,12 @@ public class UserService {
         User user = userRepository.findByUserNum(userNum)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 비밀번호 검증 (비밀번호가 변경되는 경우)
-        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-            }
-        }
+//        // 비밀번호 검증 (비밀번호가 변경되는 경우)
+//        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+//            if (request.getPassword().equals(user.getPassword())) {
+//                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//            }
+//        }
 
         // 요청 데이터를 기반으로 사용자 프로필 업데이트
         if (request.getProfileImage() != null) {
@@ -385,24 +408,24 @@ public class UserService {
         return user; // 수정된 사용자 객체 반환
     }
 
-//    // 제작자 전환 신청 처리
-//    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
-//        // 이메일을 기준으로 사용자 조회
-//        User user = userRepository.findByEmail(requestDTO.getEmail())
-//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-//
-//        // 제작자 전환 신청 상태 업데이트
-//        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
-//
-//        // 추가 필드들 설정
-//        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
-//        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
-//        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
-//
-//        // 변경된 사용자 정보 저장
-//        userRepository.save(user);
-//
-//        return new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
-//    }
+    // 제작자 전환 신청 처리
+    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
+        // 이메일을 기준으로 사용자 조회
+        User user = userRepository.findByEmail(requestDTO.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 제작자 전환 신청 상태 업데이트
+        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
+
+        // 추가 필드들 설정
+        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
+        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
+        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
+
+        // 변경된 사용자 정보 저장
+        userRepository.save(user);
+
+        return new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
+    }
 
     }
