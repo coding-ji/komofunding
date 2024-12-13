@@ -82,9 +82,10 @@
   margin: 0;
 }
 
-input[type="text"] {
-  width: 100%; /* 입력 필드 크기를 100%로 설정 */
-}
+/* input[type="text"] {
+  width: 100%;  */
+  /* 입력 필드 크기를 100%로 설정 */
+/* } */
 
 /* 각 항목에 대한 스타일 (공통된 구조) */
 .usermanage_detail_inf_inf1, 

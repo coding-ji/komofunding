@@ -34,7 +34,7 @@
   grid-template-areas: 
     "sender input"
     "recipient input"
-    "phone input"
+    "phoneNumber input"
     "address input"
     "detailAddress input";
 }
@@ -51,11 +51,11 @@
     "email input1"
     "nickname input2"
     "memberId input3"
-    "phone input4";
+    "phoneNumber input4";
 }
 
-.sender, .recipient, .phone, .address, .detailAddress,
-.bank, .num, .name, .email, .nickname, .memberId, .userPhone {
+.sender, .recipient, .phoneNumber, .address, .detailAddress,
+.bank, .num, .name, .email, .nickname, .memberId, .userphoneNumber {
   font-weight: bold;
   font-size: 1.1rem;
 }

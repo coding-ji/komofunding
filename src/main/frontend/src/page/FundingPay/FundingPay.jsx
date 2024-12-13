@@ -12,17 +12,18 @@ import TitleProduct from "../../components/TitleProduct";
 import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
 
 const FundingPay = () => {
+  const [isFormValid, setIsFormValid] = useState(false); // isFormValid 상태 추가
   const [userInfo, setUserInfo] = useState({
     email: "",
     nickname: "",
     memberId: "",
-    phone: "",
+    phoneNumber: "",
   });
 
   const [FundingInfo, setFundingInfo] = useState({
     sender: "",
     recipient: "",
-    phone: "",
+    phoneNumber: "",
     address: "",
     detailAddress: "",
     accountNumber: "",
@@ -31,9 +32,8 @@ const FundingPay = () => {
 
   const [showPopup, setShowPopup] = useState(false); // 팝업 표시 여부
 
-
   const bankOptions = [
-    "신한은행", "국민은행", "우리은행", "카카오뱅크", "하나은행", "수협은행", "농협은행", "새마을금고",
+    "은행 선택", "신한은행", "국민은행", "우리은행", "카카오뱅크", "하나은행", "수협은행", "농협은행", "새마을금고",
   ];
 
   const handleBankSelect = (selectedBank) => {
@@ -48,12 +48,12 @@ const FundingPay = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
-    // phone 및 accountNumber 필드에서 숫자만 허용
-    if ((name === "phone" || name === "accountNumber") && !/^\d*$/.test(value)) {
+
+    // phoneNumber 및 accountNumber 필드에서 숫자만 허용
+    if ((name === "phoneNumber" || name === "accountNumber") && !/^\d*$/.test(value)) {
       return;
     }
-  
+
     setFundingInfo({ ...FundingInfo, [name]: value });
   };
 
@@ -77,80 +77,78 @@ const FundingPay = () => {
   const shippingCost = 2500; // 배송비는 2500원으로 고정인데 수정해야하면 바꾸겠습니다
 
   const handleSubmit = () => {
-    const isFormValid = Object.values(FundingInfo).every((field) => field.trim() !== "");
+    const isValid = Object.values(FundingInfo).every((field) => field.trim() !== "");
+    setIsFormValid(isValid); // isFormValid 상태 업데이트
 
-    if (isFormValid && products.length > 0) {
-      // 로컬 스토리지에 데이터 저장
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      localStorage.setItem("FundingInfo", JSON.stringify(FundingInfo));
-      localStorage.setItem("products", JSON.stringify(products));
+    if (isValid) {
+      // 로컬 스토리지에 데이터 저장 -> 저장할 경우 주석 풀기
+      // localStorage.setItem("FundingInfo", JSON.stringify(FundingInfo));
+      // localStorage.setItem("products", JSON.stringify(products));
 
       setShowPopup(true); // 팝업을 보여주기 위해 상태 변경
-
-      } else {
-      if (products.length === 0) {
-        alert("환불할 상품이 없습니다.");
-      } else {
-        alert("입력이 완료되지 않았습니다.");
-      }
+    } else {
+      setShowPopup(true); // 팝업을 보여주기 위해 상태 변경
     }
   };
 
   return (
     <div className={styles.refundContainer}>
-      
       <TitleText height="100px" title="후원하기" />
-      
+
       {products.length === 0 && <div className={styles.alert}></div>}
 
       <div className={styles.fundingInfos}>
         <TitleBox text="후원자 정보" />
         <div className={styles.fundingInfoGrid}>
-        <label htmlFor="email" className={styles.email}>이메일</label>
-        <input 
-        type="text" 
-        className={styles.inputField} 
-        id="email" 
-        name="email"
-        value={userInfo.email}
-        onChange={(e) =>
-          setUserInfo({ ...userInfo, email: e.target.value }) // 상태 업데이트
-        }
-        required />
-        <label htmlFor="nickname" className={styles.nickname}>닉네임</label>
-        <input 
-        type="text" 
-        className={styles.inputField} 
-        id="nickname" 
-        name="nickname"
-        value={userInfo.nickname}
-        onChange={(e) =>
-          setUserInfo({ ...userInfo, nickname: e.target.value }) // 상태 업데이트
-        }
-        required />
-        <label htmlFor="memberId" className={styles.memberId}>회원 번호</label>
-        <input 
-        type="text" 
-        className={styles.inputField} 
-        id="memberId" 
-        name="memberId"
-        value={userInfo.memberId}
-        onChange={(e) =>
-          setUserInfo({ ...userInfo, memberId: e.target.value }) // 상태 업데이트
-        }
-        required />
+          <label htmlFor="email" className={styles.email}>이메일</label>
+          <input 
+            type="text" 
+            className={styles.inputField} 
+            id="email" 
+            name="email"
+            value={userInfo.email}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, email: e.target.value }) // 상태 업데이트
+            }
+            required 
+          />
+          <label htmlFor="nickname" className={styles.nickname}>닉네임</label>
+          <input 
+            type="text" 
+            className={styles.inputField} 
+            id="nickname" 
+            name="nickname"
+            value={userInfo.nickname}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, nickname: e.target.value }) // 상태 업데이트
+            }
+            required 
+          />
+          <label htmlFor="memberId" className={styles.memberId}>회원 번호</label>
+          <input 
+            type="text" 
+            className={styles.inputField} 
+            id="memberId" 
+            name="memberId"
+            value={userInfo.memberId}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, memberId: e.target.value }) // 상태 업데이트
+            }
+            required 
+          />
 
-  <label htmlFor="phone" className={styles.userPhone}>휴대폰 번호</label>
-    <input 
-        type="text" 
-        className={styles.inputField} 
-        id="phone" 
-        name="phone"
-        value={userInfo.phone}
-        onChange={(e) =>
-          setUserInfo({ ...userInfo, phone: e.target.value }) // 상태 업데이트
-        }
-        required />
+          <label htmlFor="phoneNumber" className={styles.userphoneNumber}>휴대폰 번호</label>
+          <input 
+            type="text" 
+            className={styles.inputField} 
+            id="phoneNumber" 
+            name="phoneNumber"
+            value={userInfo.phoneNumber}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, phoneNumber: e.target.value }) // 상태 업데이트
+            }
+            required 
+          />
         </div>
       </div>
 
@@ -189,11 +187,11 @@ const FundingPay = () => {
               required
             />
 
-            <label htmlFor="phone" className={styles.phone}>휴대폰 번호</label>
+            <label htmlFor="phoneNumber" className={styles.phoneNumber}>휴대폰 번호</label>
             <input
-              id="phone"
-              name="phone"
-              value={FundingInfo.phone}
+              id="phoneNumber"
+              name="phoneNumber"
+              value={FundingInfo.phoneNumber}
               onChange={handleInputChange}
               className={styles.inputField}
               type="text"
@@ -309,11 +307,11 @@ const FundingPay = () => {
         <WhiteBtn text="취소" padding="5px 0px" width="80px" fontSize="1.1rem" />
       </div>
 
-   {/* PopupInquiry 팝업을 조건부로 렌더링 */}
-    {showPopup && <PopupInquiry message="후원이 완료되었습니다."
-                                onClose={() => window.location.reload()} 
-  />}
-
+      {/* PopupInquiry 팝업을 조건부로 렌더링 */}
+      {showPopup && <PopupInquiry 
+        message={isFormValid ? "후원이 완료되었습니다." : "입력이 완료되지 않았습니다."}
+        onClose={() => window.location.reload()} 
+      />}
     </div>
   );
 };
