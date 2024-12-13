@@ -36,7 +36,7 @@ public class ProjectController {
 
     // 현재 진행 중인 프로젝트 불러오기 (인기순으로 50개)
     @GetMapping("/posts")
-    public ResponseEntity<List<ProjectOutDTO>> getAllProjects(){
+    public ResponseEntity<List<ProjectOutDTO>> getAllProjects() {
         try {
             List<ProjectOutDTO> projects = projectService.getAllProjects();
 
@@ -54,10 +54,10 @@ public class ProjectController {
     public ResponseEntity<List<ProjectOutDTO>> getProjectsByCategory(
             @RequestParam(name = "projectCategory") String projectCategory,
             @RequestParam(name = "fundingStatus") String fundingStatus) {
-        try{
+        try {
             List<ProjectOutDTO> projects = projectService.getProjectsByCategoryAndStatus(projectCategory, fundingStatus);
             return ResponseEntity.ok(projects);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.emptyList());
@@ -67,7 +67,7 @@ public class ProjectController {
 
     // 유저(uid)에 해당하는 프로젝트 조회
     @GetMapping("/api/user/myinfo/projects")
-    public ResponseEntity<List<ProjectOutDTO>> getProjects(HttpSession session){
+    public ResponseEntity<List<ProjectOutDTO>> getProjects(HttpSession session) {
         // 세션에서 userId 가져오기
         String userId = (String) session.getAttribute("userId");
 
@@ -131,20 +131,5 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-
-    // 프로젝트 후원자 목록
-    @GetMapping("api/user/myinfo/projects/donors")
-    public ResponseEntity<List<UserOutDTO>> getProjectDonors(@RequestParam("projectNum") Long projectNum) {
-        // projectNum을 이용해 해당 프로젝트의 후원자 목록을 가져옵니다.
-        List<UserOutDTO> donors = projectService.getSupporters(projectNum);
-
-        return ResponseEntity.ok(donors); // 후원자 목록을 응답으로 반환
-    }
-
-//
-//    @GetMapping("/api/projects/{projectId}")
-//    public ResponseEntity<Project> getProjectById(@PathVariable("projectId") String projectId) {
-//        Optional<Project> project = projectService.getProjectById(projectId);
-//        return project.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
 }
+

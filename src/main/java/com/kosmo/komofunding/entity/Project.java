@@ -97,6 +97,6 @@ public class Project {
     @Convert(converter = StringListConverter.class)
     @Column(name = "supporters_id_list", columnDefinition = "LONGTEXT")
     @Builder.Default
-    private List<String> supportersIdList = null; // 프로젝트 후원자목록
+    private List<String> supportersIdList = new ArrayList<>(); // 프로젝트 후원자목록
 
 }

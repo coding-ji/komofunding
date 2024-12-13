@@ -78,8 +78,18 @@ export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) =>
     return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
 
-// 개인 프로젝트
 
+
+// 결제 
+// 프로젝트 후원자 조회 
+export const fetchDonorsByProjectNum = (projectNum) => apiClient.get(`/payment/list?projectNum=${projectNum}`);
+
+// 결제 저장 로직 
+export const createPayment = (projectNum, payment) => apiClient.post(`/payment/save?projectNum=${projectNum}`, payment);
+
+
+
+// 개인 프로젝트
 // 조회
 export const fetchUserProjects = () => apiClient.get(`/api/user/myinfo/projects`);
 
