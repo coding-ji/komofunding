@@ -90,6 +90,7 @@ export const reducer = (state, action) => {
         case RESET_STATE:
             return initialState;
 
+
         // 프로젝트 CRUD
         case READ_PROJECT:
             return { ...state, project: action.payload };

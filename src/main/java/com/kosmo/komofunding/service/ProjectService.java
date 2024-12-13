@@ -4,6 +4,7 @@ import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
+import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.Project;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.ProjectRepository;
@@ -161,6 +162,17 @@ public class ProjectService {
         return true;
     }
 
+//   해당 프로젝트의 후원자목록
+    public List<UserOutDTO> getSupporters(Long projectNum){
+        Project project = projectRepository.findByProjectNum(projectNum).orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
+        List<String> supportersIdList = project.getSupportersIdList();
+        List<User> supporters = userRepository.findByUserIdIn(supportersIdList);
+
+        List<UserOutDTO> supportersDTOs = supporters.stream().map(user -> new UserOutDTO(user)).collect(Collectors.toList());
+
+        return supportersDTOs;
+       }
 
 
     // 6자리 랜덤 숫자 생성

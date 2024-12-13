@@ -31,7 +31,8 @@ import {
     readUserProjects,
     createNewProject,
     updateExistingProject,
-    deleteExistingProject
+    deleteExistingProject,
+    readProjectDonors
 } from "./action";
 
 export const useStore = () => {
@@ -75,7 +76,8 @@ export const useStore = () => {
         readUserProjects: (userNum) => readUserProjects(userNum)(dispatch),
         createNewProject: (projectData) => createNewProject(projectData)(dispatch),
         updateExistingProject: (updateData) => updateExistingProject(updateData)(dispatch),
-        deleteExistingProject: (projectNum) => deleteExistingProject(projectNum)(dispatch)
+        deleteExistingProject: (projectNum) => deleteExistingProject(projectNum)(dispatch),
+        readProjectDonors: (projectNum) => readProjectDonors(projectNum)(dispatch)
     };
 
     return { state, actions };

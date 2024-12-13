@@ -1,8 +1,11 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.dto.ApplicationInDTO;
 import com.kosmo.komofunding.entity.Application;
+import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.ApplicationRepository;
-
+import com.kosmo.komofunding.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,44 +20,46 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ApplicationService {
+    private ApplicationRepository applicationRepository;
+    private UserRepository userRepository;
 
-    private final ApplicationRepository applicationRepository;
 
-    private static final String UPLOAD_DIR = "uploads/";
+    // 신청서 전환
+    public Application saveApplication(ApplicationInDTO applicationInDTO, HttpSession session) {
+        // 현재 날짜 가져오기
+        LocalDateTime now = LocalDateTime.now();
 
-    // 저장된 신청서 반환
-    public Application saveApplication(Application application) {
+        // 세션에서 userId 가져오기
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            throw new IllegalStateException("사용자 인증 정보가 없습니다.");
+        }
+
+        // userId로 User 객체 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // Application 엔티티 생성
+        Application application = Application.builder()
+                .applicationId(null) // 자동 생성
+                .applicationNum(generateApplicationNum()) // 서비스에서 6자리 숫자 생성
+                .userId(user.getUserId()) // 세션에서 가져온 사용자 ID
+                .applicationImg(applicationInDTO.getApplicationImage()) // 이미지 경로
+                .applicationDate(now) // 신청 날짜
+                .approvalDate(null) // 기본값: null
+                .rejectedDate(null) // 기본값: null
+                .isDeleted(false) // 기본값: false
+                .status(Application.ApplicationStatus.PENDING) // 기본값: PENDING
+                .build();
+
+        // 저장
         return applicationRepository.save(application);
     }
 
-    // 파일 저장 후 경로 반환
-    public String saveFile(MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 비어 있습니다.");
-        }
-
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        File destination = new File(UPLOAD_DIR + fileName);
-
-        if (!destination.getParentFile().exists()) {
-            destination.getParentFile().mkdirs();
-        }
-
-        file.transferTo(destination);
-        return destination.getAbsolutePath();
+    private Long generateApplicationNum() {
+        // 6자리 숫자 생성 (랜덤 예시)
+        return (long) (Math.random() * 900000) + 100000;
     }
-
-    // 신청서와 파일 저장
-    public Application saveApplicationWithFile(Application application, MultipartFile file) {
-        try {
-            String filePath = saveFile(file);
-            application.setApplicationImg(filePath);
-            return applicationRepository.save(application);
-        } catch (IOException e) {
-            throw new RuntimeException("파일 저장 실패: " + e.getMessage(), e);
-        }
-    }
-
     // 신청서 삭제
     public void deleteApplication(String applicationId) {
         Optional<Application> application = applicationRepository.findById(applicationId);
@@ -109,6 +114,19 @@ public class ApplicationService {
         throw new RuntimeException("Application not found with ID: " + applicationId);
     }
 
+    // userNum을 통해 신청 조회
+    public List<Application> getApplicationsByUserNum(String userNum) {
+        // userNum을 사용하여 User를 찾습니다
+        Optional<User> user = userRepository.findByUserNum(Long.valueOf(userNum));
+
+        // User가 존재할 경우 해당 User의 신청 내역을 반환
+        if (user.isPresent()) {
+            return applicationRepository.findByUserId(user.get().getUserId()); // UserId를 사용하여 신청 내역 조회
+        } else {
+            // User가 없으면 빈 리스트 반환
+            return List.of();
+        }
+    }
     // 신청서 거절 처리
     public Application rejectApplication(String applicationId) {
         Optional<Application> application = applicationRepository.findById(applicationId);

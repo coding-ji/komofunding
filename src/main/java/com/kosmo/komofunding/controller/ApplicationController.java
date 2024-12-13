@@ -30,14 +30,18 @@ public class ApplicationController {
         }
     }
 
-    // 특정 사용자 ID로 신청서 조회
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Application>> getApplicationsByUserId(@PathVariable("userId") String userId) {
+    /**
+     * 특정 사용자 ID로 신청서를 가져오는 메서드
+     * @param userNum 사용자의 ID
+     * @return 해당 사용자의 신청서 목록
+     */
+    @GetMapping("/user/{userNum}") // 특정 사용자 ID로 신청서를 찾음
+    public ResponseEntity<List<Application>> getApplicationsByUserId(@PathVariable("userNum") String userNum) {
         try {
-            List<Application> applications = applicationService.getApplicationsByUserId(userId);
-            return ResponseEntity.ok(applications);
+            List<Application> applications = applicationService.getApplicationsByUserNum(userNum); // 사용자 ID로 신청서를 가져옴
+            return ResponseEntity.ok(applications); // 신청서를 돌려줌
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Collections.emptyList());
+            return ResponseEntity.status(500).body(Collections.emptyList()); // 문제가 생기면 빈 목록을 돌려줌
         }
     }
 
@@ -54,15 +58,15 @@ public class ApplicationController {
     }
 
     // 새로운 신청서 생성
-    @PostMapping("/create")
-    public ResponseEntity<Application> createApplication(@RequestBody Application application) {
-        try {
-            Application savedApplication = applicationService.saveApplication(application);
-            return ResponseEntity.status(201).body(savedApplication);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<Application> createApplication(@RequestBody Application application) {
+//        try {
+//            Application savedApplication = applicationService.saveApplication(application);
+//            return ResponseEntity.status(201).body(savedApplication);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body(null);
+//        }
+//    }
 
     // 특정 신청서 조회
     @GetMapping("/{applicationId}")

@@ -4,6 +4,7 @@ import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
+import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.Project;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.exception.UnauthorizedException;
@@ -11,15 +12,11 @@ import com.kosmo.komofunding.repository.ProjectRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
-import org.apache.coyote.Response;
-import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +48,6 @@ public class ProjectController {
                     .body(Collections.emptyList());
         }
     }
-
 
     // 카테고리별 프로젝트 조회
     @GetMapping("/posts/category")
@@ -102,7 +98,6 @@ public class ProjectController {
         return ResponseEntity.ok(projectOutDTOs);
     }
 
-
     // 개인 프로젝트 생성
     @PostMapping("/api/user/myinfo/projects")
     public ResponseEntity<Map<String, String>> createProject(
@@ -120,6 +115,7 @@ public class ProjectController {
         return ResponseEntity.status(201).body(response);
     }
 
+    // 해당 프로젝트 삭제
     @DeleteMapping("/api/user/myinfo/projects/{projectNum}")
     public ResponseEntity<Map<String, String>> deleteProject(@PathVariable("projectNum") String projectNum) {
         // 프로젝트 삭제 처리
@@ -134,6 +130,15 @@ public class ProjectController {
             response.put("message", "프로젝트 삭제에 실패했습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+    }
+
+    // 프로젝트 후원자 목록
+    @GetMapping("api/user/myinfo/projects/donors")
+    public ResponseEntity<List<UserOutDTO>> getProjectDonors(@RequestParam("projectNum") Long projectNum) {
+        // projectNum을 이용해 해당 프로젝트의 후원자 목록을 가져옵니다.
+        List<UserOutDTO> donors = projectService.getSupporters(projectNum);
+
+        return ResponseEntity.ok(donors); // 후원자 목록을 응답으로 반환
     }
 
 //

@@ -17,8 +17,6 @@ public class ApplicationInDTO {
     private String applicationId; // 제작자 신청서 UID
     private Long applicationNum;
     private String userId; // 신청자 아이디
-    @Size(min = 1,  message = "첨부 파일 경로는 1자 이상 입력해야 합니다.")
-    private String attachmentPath; // 첨부 파일 경로 (이미지, hwp 등)
 
     @NotNull(message = "신청 날짜는 필수 입력 항목입니다.")
     @FutureOrPresent(message = "신청 날짜는 현재 시각이나 이후여야 합니다.")

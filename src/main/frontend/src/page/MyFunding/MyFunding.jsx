@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 function MyFunding() {
   const { state, actions } = useStore();
+  
   const [isDeleted, setIsDeleted] = useState(true);
   const user = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))

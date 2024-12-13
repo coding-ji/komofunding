@@ -1,33 +1,40 @@
-import React from 'react';
-import MyContainers from '../../components/MyContainers';
-import { useNavigate } from 'react-router-dom';
-
-// 샘플 데이터 정의
-const products = [
-  { id: 1, title: "진행중", description: "Description for product 1", text: "EDIT" },
-  { id: 2, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 3, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 4, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 5, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 6, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 7, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 8, title: "진행중", description: "얄루얄루", text: "EDIT" },
-  { id: 9, title: "진행중", description: "얄루얄루", text: "EDIT" },
-];
+import React, { useEffect, useState } from "react";
+import MyContainers from "../../components/MyContainers";
+import { useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 function Ongoing() {
+  const { state } = useOutletContext(); // 부모로부터 상태와 액션 가져옴
   const navigate = useNavigate(); // useNavigate 훅 사용
+  const [filteredData, setFilteredData] = useState([]);
 
   // 'EDIT' 클릭 시 이동 함수
   const handleEditClick = (productId) => {
     navigate(`/home/product-details/${productId}`); // 해당 제품 상세 페이지로 이동
   };
 
+  useEffect(() => {
+    if (Array.isArray(state.project) && state.project.length > 0) {
+      // 현재 날짜 기준으로 조건에 맞는 project 필터링
+      const filtered = state.project.filter((product) => {
+        const projectStartDate = new Date(product.projectStartDate); // 시작 날짜
+        const projectEndDate = new Date(product.projectEndDate); // 종료 날짜
+        const today = new Date(); // 오늘 날짜
+  
+        // 시작 날짜와 종료 날짜 조건 모두 확인
+        return projectStartDate < today && projectEndDate < today;
+      });
+  
+      setFilteredData(filtered); // 필터링된 데이터를 상태로 설정
+    }
+  }, [state.project]);
+
   return (
     <div>
-      <MyContainers 
-        products={products}
+      <MyContainers
+        products={filteredData}
         onEditClick={handleEditClick} // 클릭 핸들러 전달
+        text="수정"
       />
     </div>
   );

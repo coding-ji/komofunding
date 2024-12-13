@@ -1,14 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./CreatorApply.css";
 import TitleText from "../../../components/TitleText";
 import "../../../index.css";
 import MyNavLine from "../../../components/MyNavLine";
 import { Btn, WhiteBtn, ProductBtn1 } from "../../../components/MyBtn";
-import Alert from "../../../components/Alert/Alert";
 import PopupInquiry from "../writeQnA/PopupInquiry";
 import TermsPopup from "./TermsPopup";
-import { tr } from "date-fns/locale";
-
+import { useStore as FileStore } from "../../../stores/FileStore/useStore";
+import { useStore as ApplicationStore } from "../../../stores/Application/useStore";
 const CreatorApply = () => {
   const [type, setType] = useState("개인"); // 법인 또는 개인 선택 상태
   const [files, setFiles] = useState([]); // 업로드된 파일 목록
@@ -17,22 +16,54 @@ const CreatorApply = () => {
   const [isPopupOpen2, setIsPopupOpen2] = useState(false); // 취소 팝업
   const [isPopupOpen3, setIsPopupOpen3] = useState(false); // 이용약관 아니오 팝업
   const [isPopupOpen4, setIsPopupOpen4] = useState(false); // 이용약관 팝업
-  const [isPopupOpen5, setIsPopupOpen5] = useState(false); // 파일첨부 
+  const [isPopupOpen5, setIsPopupOpen5] = useState(false); // 파일첨부
   const fileInputRef = useRef(null); // 파일 input 참조
+  const [isLoaded, setIsLoaded] = useState(false); // 이미지 업로드 완료 상태
+  const [fileUrl, setFileUrl] = useState([]);
 
-  // 파일 추가 핸들러
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles([...files, ...selectedFiles]);
+  const { state: fileState, actions: fileActions } = FileStore();
+  const { state: applicationState, actions: applicationActions } = ApplicationStore();
+
+  // 파일버튼 눌렀을때
+  const handleFileChange = async (e) => {
+    e.preventDefault();
+    fileInputRef.current.click(); // 파일 선택 창 열기
   };
 
-  // 파일 업로드 버튼 클릭 핸들러
-  const handleClick = (e) => {
+  const handleImgChange = async (e) => {
     e.preventDefault();
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    const selectedFiles = e.target.files;
+    if (selectedFiles.length === 0) return;
+    try {
+      // 선택된 파일 배열
+      const uploadedFiles = [];
+
+      // 하나씩 파일을 업로드
+      for (const file of selectedFiles) {
+        const formData = new FormData();
+        formData.append("file", file, file.name); // 파일 이름을 명시적으로 추가
+
+        // 각 파일을 개별적으로 업로드
+        await fileActions.createImgData(formData);
+
+        // 파일 추가 후, 상태 업데이트
+        uploadedFiles.push(file);
+      }
+      // 업로드 완료 후 한 번에 상태 업데이트
+      setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
+      setIsLoaded(true); // 업로드 완료 상태
+    } catch (error) {
+      console.error("이미지 업로드 실패", error);
     }
   };
+
+  useEffect(() => {
+    if (fileState && isLoaded) {
+      setFileUrl((prevUrls) => [...prevUrls, fileState]); // 새로운 URL 추가
+      setIsLoaded(false);
+    }
+    fileActions.resetState();
+  }, [fileState]);
 
   // 드래그 앤 드롭 핸들러
   const handleDrop = (e) => {
@@ -47,33 +78,34 @@ const CreatorApply = () => {
   };
 
   // 파일 삭제 핸들러
-  const handleFileDelete = (index) => {
-    const updatedFiles = [...files];
-    updatedFiles.splice(index, 1);
+  const handleFileDelete = (index, e) => {
+    e.preventDefault();
+    // 파일 목록에서 해당 인덱스를 제외한 새로운 배열 생성
+    const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
   };
 
   // 데이터 제출 테스트
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!agree || agree !== "yes") {
-      setIsPopupOpen3(true)
+      setIsPopupOpen3(true);
       return;
     }
 
     if (files.length === 0) {
-      setIsPopupOpen5(true)
+      setIsPopupOpen5(true);
       return;
     }
 
-    const data = {
-      type,
-      files: files.map((file) => file.name), // 파일 이름만 저장
-      agree,
-    };
+    applicationActions.updateAllFields(
+      {
+        applicationImage : fileUrl
+      }
+    )
 
-    console.log("제출 데이터:", data);
+    await applicationActions.createUserApplication(); 
+
     setIsPopupOpen(true); // 성공 팝업 열기
   };
 
@@ -130,14 +162,16 @@ const CreatorApply = () => {
                   <ul className="list">
                     <li>제출 서류 : 신분증 사본</li>
                     <li>
-                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행 계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
+                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행
+                      계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
                     </li>
                   </ul>
                   <div className="BusinessType">개인 사업자</div>
                   <ul className="list">
                     <li>제출 서류 : 사업자 등록증</li>
                     <li>
-                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행 계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
+                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행
+                      계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
                     </li>
                   </ul>
                 </>
@@ -147,7 +181,8 @@ const CreatorApply = () => {
                   <ul className="list">
                     <li>제출 서류 : 사업자 등록증</li>
                     <li>
-                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행 계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
+                      추가요건 : 한국에 개설된 본인 명의의 입금 가능한 은행
+                      계좌, 연락 가능한 한국 통신사의 핸드폰 번호 등록
                     </li>
                   </ul>
                 </>
@@ -161,7 +196,7 @@ const CreatorApply = () => {
           <div className="section">
             <div className="submissionfile">
               <p className="pstyle">파일 첨부</p>
-              <button className="btn" onClick={handleClick}>
+              <button className="btn" onClick={handleFileChange}>
                 파일업로드
               </button>
 
@@ -170,7 +205,7 @@ const CreatorApply = () => {
                 type="file"
                 accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"
                 multiple
-                onChange={handleFileChange}
+                onChange={handleImgChange}
                 style={{ display: "none" }}
               />
             </div>
@@ -180,8 +215,7 @@ const CreatorApply = () => {
               onDragOver={handleDragOver}
             >
               <p className="filetext">
-                5MB 이하의 jpg, jpeg, png, zip, hwp 확장자 및 Word, Excel에서
-                작성된 문서만 가능합니다.
+                5MB 이하의 jpg, jpeg, png만 가능합니다.
               </p>
             </div>
             <div className="file-list">
@@ -191,7 +225,7 @@ const CreatorApply = () => {
                     {file.name}
                     <button
                       className="delete-button"
-                      onClick={() => handleFileDelete(index)}
+                      onClick={(e) => handleFileDelete(index, e)}
                     >
                       X
                     </button>
@@ -222,7 +256,9 @@ const CreatorApply = () => {
                 >
                   내용확인
                 </button>
-                {isPopupOpen4 && <TermsPopup onClose={() => setIsPopupOpen4(false)} />}
+                {isPopupOpen4 && (
+                  <TermsPopup onClose={() => setIsPopupOpen4(false)} />
+                )}
               </div>
               <div className="checkbox-container">
                 <label>
@@ -253,7 +289,8 @@ const CreatorApply = () => {
           </div>
 
           <p className="info-text">
-            승인까지 3일에서 5일 정도 소요되며 잘못된 정보를 요청하면 승인이 반려될 수 있습니다.
+            승인까지 3일에서 5일 정도 소요되며 잘못된 정보를 요청하면 승인이
+            반려될 수 있습니다.
           </p>
 
           {/* 버튼 */}
@@ -276,8 +313,6 @@ const CreatorApply = () => {
             />
           </div>
         </form>
-
-
       </div>
 
       {isPopupOpen && (
@@ -304,27 +339,20 @@ const CreatorApply = () => {
       {isPopupOpen3 && (
         <PopupInquiry
           message={
-            <>
-              개인정보 수집에 동의하지 않으시면 제작자 신청을 할 수 없습니다.
-            </>
+            <>개인정보 수집에 동의하지 않으시면 제작자 신청을 할 수 없습니다.</>
           }
           onClose={() => setIsPopupOpen3(false)}
           navigateTo="/create-apply"
         />
       )}
-      
+
       {isPopupOpen5 && (
         <PopupInquiry
-          message={
-            <>
-              파일을 첨부해주세요.
-            </>
-          }
+          message={<>파일을 첨부해주세요.</>}
           onClose={() => setIsPopupOpen5(false)}
           navigateTo="/create-apply"
         />
       )}
-      
     </div>
   );
 };

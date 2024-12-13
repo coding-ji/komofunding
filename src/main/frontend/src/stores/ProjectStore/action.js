@@ -5,7 +5,8 @@ import {
     fetchUserProjects,
     createProject,
     updateProject,
-    deleteProject
+    deleteProject,
+    fetchProjectDonors
 } from "../../service/apiService";
 
 // 프로젝트 유저
@@ -287,3 +288,27 @@ export const deleteExistingProject = (projectNum) => async (dispatch) => {
         return "error";
     }
 };
+
+// 프로젝트 후원자 조회
+export const readProjectDonors = (projectNum) => async (dispatch) => {
+    try {
+        const response = await fetchProjectDonors(projectNum);
+        if (response.data === 200) {
+            dispatch({
+                type: READ_PROJECT,
+                payload: response.data
+            });
+
+            return response.data;
+        }
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                console.error("조회 실패");
+                return "fail";
+            }
+        }
+        console.error("알 수 없는 오류", error);
+        return "error";
+    }
+}

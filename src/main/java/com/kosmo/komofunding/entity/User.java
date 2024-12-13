@@ -110,11 +110,6 @@ public class User {
     @Column(name = "privacy_agreement")
     private Boolean privacyAgreement = false; // 개인정보 동의 여부 (객체로 변경)
 
-    @Convert(converter = StringListConverter.class)
-    @Column(name = "supporters_id_list")
-    private List<String> supportedProjects; // 프로젝트 후원자목록
-
-
     // 6자리 랜덤 숫자 생성(회원번호) , Service 생성시에 save시에 넣기 !!!!!
     private Long generateRandomNumber() {
         Random random = new Random();

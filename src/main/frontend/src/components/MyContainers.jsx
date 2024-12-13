@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import "../index.css";
 import MyContainer from "./MyContainer";
-import { useEffect, useState } from "react";
 
 // 그리드 레이아웃을 위한 스타일링
 const StyledContainers = styled(motion.div)`
@@ -39,20 +38,30 @@ const itemVariants = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
-function MyContainers({ products, onDelete, onEditClick }) {
+function MyContainers({ text, products, onDelete, onEdit }) {
+    // 클릭 이벤트 처리
+    const handleButtonClick = (product) => {
+      if (onDelete) {
+        onDelete(product); // 삭제 핸들러 실행
+      } else if (onEdit) {
+        onEdit(product.projectNum); // 수정 핸들러 실행
+      }
+    };
+
+    
   return (
     <StyledContainers
       variants={containerVariants} // 부모 요소에 애니메이션 variants 추가
       initial="initial"
       animate="animate"
     >
-      {Array.isArray(products.project) &&
-        products.project.map((product, index) => (
+      {Array.isArray(products) &&
+        products.map((product, index) => (
           <motion.div key={index} variants={itemVariants}>
             <MyContainer
+              text={text}
               product={product}
-              onDelete={() => onDelete(product)} // 삭제 핸들러 전달
-              onEdit={() => onEditClick(product.projectNum)} // 수정 클릭 시 이동
+              onClick={() => handleButtonClick(product)}
             />
           </motion.div>
         ))}

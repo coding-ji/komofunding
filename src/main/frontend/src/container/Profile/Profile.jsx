@@ -18,7 +18,7 @@ const Profile = ({ profileData, userNum }) => {
   }
 
   function handleCreateApply() {
-    navigate(`/create-apply`)
+    navigate(`/home/create-apply`)
   }
 
   return (

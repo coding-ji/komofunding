@@ -66,6 +66,7 @@ export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/p
 export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`, userNum);
 
 // 프로젝트 관련 API
+
 // 전체 게시물 조회
 export const fetchPosts = () => apiClient.get('/posts');
 
@@ -76,7 +77,6 @@ export const fetchDetailPost = () => apiClient.get(`/posts/${projectNum}`)
 export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) => {
     return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
-
 
 // 개인 프로젝트
 
@@ -92,7 +92,8 @@ export const updateProject = (projectNum, updateData) => apiClient.patch(`/api/u
 // 삭제
 export const deleteProject = (projectNum) => apiClient.delete(`/api/user/myinfo/projects/${projectNum}`);
 
-
+// 프로젝트 후원자 조회
+export const fetchProjectDonors = (projectNum) => apiClient.get(`api/user/myinfo/projects/donors?projectNum=${projectNum}`)
 
 
 
@@ -139,6 +140,17 @@ export const fetchCommunityById = (communityId) =>
 // 특정 커뮤니티 삭제
   export const deleteCommunity = (communityId) =>
   apiClient.delete(`/api/posts/community/${communityId}`);
+
+
+// 신청서 목록 가져오기 
+export const fetchAllApplications = () => apiClient.get("/api/applications");
+
+// 신청서 신청
+export const createApplication = () => apiClient.post("/api/applications/create");
+
+// 특정 사용자 신청서 확인
+export const fetchApplicationByUserNum = (userNum) => apiClient.get(`/api/applications/user/${userNum}`);
+
 
 
 export default apiClient;

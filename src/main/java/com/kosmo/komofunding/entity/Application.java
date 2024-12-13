@@ -50,9 +50,6 @@ public class Application {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status = ApplicationStatus.PENDING; // 신청서 상태 (PENDING, APPROVED, REJECTED)
 
-    @Column(name = "application_image")
-    private String applicationImage; // 신청할 때 내야 되는 이미지?
-
     @PrePersist
     public void setDefaults() {
         if (this.applicationDate == null) {

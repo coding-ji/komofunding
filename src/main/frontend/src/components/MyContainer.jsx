@@ -14,7 +14,8 @@ const Styleddiv = styled(motion.div)`
   border-radius: 2px;
 `;
 
-function MyContainer({ product, onDelete, onEdit }) {
+function MyContainer({ text, product, onClick }) {
+
   return (
     <Styleddiv
       whileHover={{
@@ -34,9 +35,9 @@ function MyContainer({ product, onDelete, onEdit }) {
       </motion.div>
       <motion.div>
         <Btn
-          text="삭제"
+          text={text}
           fontFamily="var(--eng-font)"
-          onClick={onDelete} 
+          onClick={onClick}
         />
       </motion.div>
     </Styleddiv>

@@ -99,7 +99,8 @@ function SelectPrjThree() {
 
         try {
             await projectActions.createNewProject(projectData);
-            alert("프로젝트 심사까지는 3~5일 정도 소요됩니다.")
+            alert("프로젝트 심사까지는 3~5일 정도 소요됩니다.");
+            localStorage.removeItem("projectState");
             navigate("/home");
         } catch (error) {
           console.error("프로젝트 생성 실패:", error);
