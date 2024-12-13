@@ -30,5 +30,5 @@ public class ApplicationInDTO {
 
     private String status; // 신청서 상태 (PENDING, APPROVED, REJECTED)
 
-    private String applicationImage;
+    private String applicationImg;
 }
