@@ -9,9 +9,15 @@ function Completed() {
   const [filteredData, setFilteredData] = useState([]);
 
   // LIST 버튼 클릭 시 이동 함수
-  const handleMovement = (projectNum) => {
-    navigate(`/home/ordertable/${projectNum}`);
+  const handleMovement = (product) => {
+    // progressRate가 100% 이상일 경우에만 이동
+    if (product.progressRate >= 100) {
+      navigate(`/home/ordertable/${product.projectNum}`);
+    } else {
+      alert("후원이 100% 이상을 달성하지 못했습니다");
+    }
   };
+
   useEffect(() => {
     if (Array.isArray(state.project) && state.project.length > 0) {
       // 현재 날짜 기준으로 조건에 맞는 project 필터링

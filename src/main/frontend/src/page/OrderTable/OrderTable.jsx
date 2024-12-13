@@ -30,55 +30,65 @@ const OrderTable = () => {
     }
   }, [state.payment]);
 
-   // 전체 선택/해제
-   const handleSelectAll = () => {
+  // 전체 선택/해제
+  const handleSelectAll = () => {
     const newChecked = !allChecked;
     setAllChecked(newChecked);
     setOrderChecked(state.payment.map(() => newChecked)); // 모든 항목을 선택/해제
   };
- // 개별 행의 체크박스를 클릭할 때
- const handleCheckboxChange = (index) => {
-  const updatedChecked = [...orderChecked];
-  updatedChecked[index] = !updatedChecked[index]; // 해당 인덱스의 체크 상태를 반전
-  setOrderChecked(updatedChecked);
+  // 개별 행의 체크박스를 클릭할 때
+  const handleCheckboxChange = (index) => {
+    const updatedChecked = [...orderChecked];
+    updatedChecked[index] = !updatedChecked[index]; // 해당 인덱스의 체크 상태를 반전
+    setOrderChecked(updatedChecked);
 
-  // 전체 선택 체크 상태 업데이트
-  setAllChecked(updatedChecked.every((checked) => checked));
-};
+    // 전체 선택 체크 상태 업데이트
+    setAllChecked(updatedChecked.every((checked) => checked));
+  };
 
-// 프린트 출력 함수
-const handlePrint = () => {
-  // 선택된 항목 필터링
-  const selectedOrders = state.payment.filter((order, index) => orderChecked[index]);
-  
-  // 새로운 창에서 출력
-  const printWindow = window.open();
-  printWindow.document.write('<html><head><title>프린트</title></head><body>');
-  printWindow.document.write('<h1>후원자 내역</h1>');
-  printWindow.document.write('<table border="1">');
-  printWindow.document.write('<thead><tr><th>회원번호</th><th>이름</th><th>휴대폰</th><th>주문날짜</th><th>주문항목</th><th>수량</th><th>주소</th></tr></thead><tbody>');
-  
-  selectedOrders.forEach(order => {
-    // 각 주문 항목들을 하나의 문자열로 결합
-    const itemNames = order.items.map(item => item.itemName).join(", ");
-    const itemAmounts = order.items.map(item => formatCurrency(item.itemAmount)).join(", ");
-    
-    printWindow.document.write('<tr>');
-    printWindow.document.write(`<td>${order.userNum}</td>`);
-    printWindow.document.write(`<td>${order.name}</td>`);
-    printWindow.document.write(`<td>${order.phoneNumber}</td>`);
-    printWindow.document.write(`<td>${formattedMMDD(order.paymentDate)}</td>`);
-    printWindow.document.write(`<td>${itemNames}</td>`);
-    printWindow.document.write(`<td>${itemAmounts}</td>`);
-    printWindow.document.write(`<td>${order.shippingAddress}</td>`);
-    printWindow.document.write('</tr>');
-  });
+  // 프린트 출력 함수
+  const handlePrint = () => {
+    // 선택된 항목 필터링
+    const selectedOrders = state.payment.filter(
+      (order, index) => orderChecked[index]
+    );
 
-  printWindow.document.write('</tbody></table>');
-  printWindow.document.write('</body></html>');
-  printWindow.document.close();
-  printWindow.print();
-};
+    // 새로운 창에서 출력
+    const printWindow = window.open("", "", "height=500, width=800");
+    printWindow.document.write(
+      "<html><head><title>프린트</title></head><body>"
+    );
+    printWindow.document.write("<h1>후원자 내역</h1>");
+    printWindow.document.write('<table border="1">');
+    printWindow.document.write(
+      "<thead><tr><th>회원번호</th><th>이름</th><th>휴대폰</th><th>주문날짜</th><th>주문항목</th><th>수량</th><th>주소</th></tr></thead><tbody>"
+    );
+
+    selectedOrders.forEach((order) => {
+      // 각 주문 항목들을 하나의 문자열로 결합
+      const itemNames = order.items.map((item) => item.itemName).join("<br>");;
+      const itemAmounts = order.items
+        .map((item) => formatCurrency(item.itemAmount))
+        .join("<br>");
+
+      printWindow.document.write("<tr>");
+      printWindow.document.write(`<td>${order.userNum}</td>`);
+      printWindow.document.write(`<td>${order.name}</td>`);
+      printWindow.document.write(`<td>${order.phoneNumber}</td>`);
+      printWindow.document.write(
+        `<td>${formattedMMDD(order.paymentDate)}</td>`
+      );
+      printWindow.document.write(`<td>${itemNames}</td>`);
+      printWindow.document.write(`<td>${itemAmounts}</td>`);
+      printWindow.document.write(`<td>${order.shippingAddress}</td>`);
+      printWindow.document.write("</tr>");
+    });
+
+    printWindow.document.write("</tbody></table>");
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+  };
 
   return (
     <div className={styles.wrapper}>

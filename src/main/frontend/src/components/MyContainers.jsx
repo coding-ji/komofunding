@@ -44,7 +44,7 @@ function MyContainers({ text, products, onDelete, onEdit }) {
       if (onDelete) {
         onDelete(product); // 삭제 핸들러 실행
       } else if (onEdit) {
-        onEdit(product.projectNum); // 수정 핸들러 실행
+        onEdit(product); // 수정 핸들러 실행
       }
     };
 
