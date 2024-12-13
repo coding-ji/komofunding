@@ -115,21 +115,4 @@ public class UserController {
         }
     }
 
-
-//    // 제작자 신청
-//    @PostMapping("/{email}/my_info/creator-switch")
-//    public ResponseEntity<CreatorSwitchResponseDTO> applyForCreatorSwitch(
-//            @PathVariable String email,
-//            @RequestBody CreatorSwitchRequestDTO requestDTO) {
-//
-//        // 이메일이 일치하는지 확인
-//        if (!requestDTO.getEmail().equals(email)) {
-//            return ResponseEntity.badRequest().body(new CreatorSwitchResponseDTO("이메일이 일치하지 않습니다."));
-//        }
-//
-//        // 제작자 전환 신청 처리
-//        CreatorSwitchResponseDTO responseDTO = userService.applyForCreatorSwitch(requestDTO);
-//        return ResponseEntity.ok(responseDTO);
-//    }
-
 }

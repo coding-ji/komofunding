@@ -8,7 +8,7 @@ export const useStore = () => {
   const actions = {
     updateAllFields: (fields) => dispatch(updateAllFields(fields)),
     resetState: () => dispatch(resetState()),
-    createUserApplication: () => createUserApplication()(dispatch),
+    createUserApplication: (data) => createUserApplication(data)(dispatch),
   };
 
   return { state, actions };

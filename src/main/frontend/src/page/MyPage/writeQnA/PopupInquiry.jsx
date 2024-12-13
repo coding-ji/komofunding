@@ -11,7 +11,9 @@ function PopupInquiry({ message, onClose, handleButtonClick, navigateTo }) {
     if (navigateTo) {
       navigate(navigateTo); // 전달된 경로로 이동
     }
+    if (handleButtonClick){
     handleButtonClick(); // 전달된 삭제 처리 함수 실행
+    }
     onClose(); // 팝업 닫기
   };
 
@@ -25,7 +27,7 @@ function PopupInquiry({ message, onClose, handleButtonClick, navigateTo }) {
         <div className="popup-button-container">
           <Btn
             onClick={handleButtonClickWrapper} // 버튼 클릭 이벤트
-            text="삭제" // 전달된 텍스트 사용
+            text="등록" // 전달된 텍스트 사용
             width="100px"
             padding="2px 2px"
             fontSize="1rem"

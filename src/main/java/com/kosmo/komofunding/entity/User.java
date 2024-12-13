@@ -1,18 +1,17 @@
 package com.kosmo.komofunding.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
 @Entity
+@Builder
 @Table(name = "USER", // 명시적으로 테이블 이름을 USER로 지정
         indexes = {
                 @Index(name = "idx_user_num", columnList = "user_num"),
@@ -23,6 +22,8 @@ import java.util.Random;
                 @Index(name = "idx_activated_status", columnList = "activated_status")})
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -97,10 +98,6 @@ public class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalDateTime verificationCodeExpiration; // 인증 코드 만료 시간
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "creator_switch_status")
-    private CreatorSwitchStatus creatorSwitchStatus;  // 제작자 전환 신청 상태
-
     @Column(name = "request_image")
     private String requestImage;   // 신청 이미지 URL
 
@@ -153,5 +150,8 @@ public class User {
         this.verificationCodeExpiration = LocalDateTime.now().plusMinutes(5); // 예시: 5분 후 만료
     }
 
+    public void setUserStatus(UserStatus userStatus) {
+        this.activatedStatus = userStatus; // setUserStatus 메서드 예시
+    }
 
 }

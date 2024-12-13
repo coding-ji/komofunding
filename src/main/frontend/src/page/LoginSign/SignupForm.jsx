@@ -152,7 +152,6 @@ const handleCheckNickName = async () => {
     중복 확인
   </button>
 </div>
-<button>111111</button>
             {/* 이메일 */}
             <label className={styles.label} style={{ gridArea: "label2" }}>
               이메일

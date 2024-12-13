@@ -4,7 +4,7 @@ import Sidemenu from "../../components/SideMenu/SideMenu";
 import Profile from "../../container/Profile/Profile";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
 import "./ProfileView.css";
-import Popup from '../../components/Popupmodal/Popup'
+import PopupInquiry from "../../components/Popupmodal/Popup";
 
 function ProfileView() {
   // URL에서 userNum 가져오기
@@ -57,7 +57,7 @@ function ProfileView() {
       )}
 
 {isPopupOpen && (
-        <Popup
+        <PopupInquiry
           message="정말로 탈퇴하시겠습니까?"
           onClose={closePopup} // 팝업 닫기
           onConfirm={() => {

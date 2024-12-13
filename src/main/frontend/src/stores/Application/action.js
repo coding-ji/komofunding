@@ -17,9 +17,9 @@ export const updateAllFields = (fields) => ({
     payload: fields
 });
 
-export const createUserApplication = () => async (dispatch) => {
+export const createUserApplication = (data) => async (dispatch) => {
     try {
-        const response = await createApplication();
+        const response = await createApplication(data);
 
         if (response.status === 200) {
             dispatch({
@@ -29,11 +29,7 @@ export const createUserApplication = () => async (dispatch) => {
             return response.data;
         }
     } catch (error) {
-        if (error.response === 401) {
             console.error("신청 실패");
             return "fail";
-        }
     }
-    console.error("알 수 없는 오류", error);
-    return "error";
 }

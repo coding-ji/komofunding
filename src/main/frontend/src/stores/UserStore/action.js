@@ -3,7 +3,6 @@ import {
     getMyPageInfo,
     getUserProfile,
     updateUserProfile,
-    applyForCreatorSwitch,
     registerUser,
     sendRegisterEmailCode,
     sendEmailCode,
@@ -62,7 +61,6 @@ export const READ_USER = "READ_USER";
 export const CREATE_USER = 'CREATE_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
-export const APPLY_CREATOR_SWITCH = 'APPLY_CREATOR_SWITCH'; // 제작자 전환 신청
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'; // 로그인 성공
 export const LOGOUT_USER = 'LOGOUT_USER'; // 로그아웃
 export const SEND_REGISTER_EMAIL_SUCCESS = 'SEND_REGISTER_EMAIL_SUCCESS'; // 회원가입 이메일 인증 성공
@@ -152,17 +150,6 @@ export const updateProfile = (userNum, request) => async (dispatch) => {
         }
 
         return "fail"; // 에러 발생 시 실패 응답 반환
-    }
-};
-
-// 제작자 전환 신청
-export const applyCreatorSwitch = (email, requestDTO) => async (dispatch) => {
-    try {
-        const response = await applyForCreatorSwitch(email, requestDTO);
-        console.log('제작자 전환 신청 성공:', response.data);
-        dispatch({ type: APPLY_CREATOR_SWITCH, payload: response.data });
-    } catch (error) {
-        console.error('제작자 전환 신청 실패:', error);
     }
 };
 

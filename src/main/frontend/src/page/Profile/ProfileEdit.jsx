@@ -109,23 +109,6 @@ const ProfileEdit = () => {
         }
     }, [fileState]);
 
-    // const handlePasswordCheck = async () => {
-    //     try {
-    //         const result = await userActions.apiVerifyPassword(userNum, currentPassword);
-
-    //         if (result === "ok") {
-    //             alert("비밀번호 인증 성공");
-    //             setShowModal(true); // 비밀번호 변경 모달 열기
-    //         } else if (result === "fail") {
-    //             alert("비밀번호가 올바르지 않습니다.");
-    //         } else {
-    //             alert("오류가 발생했습니다. 다시 시도해주세요.");
-    //         }
-    //     } catch (error) {
-    //         console.error("비밀번호 검증 중 예외 발생:", error);
-    //         alert("알 수 없는 오류가 발생했습니다.");
-    //     }
-    // };
 
     const handlePasswordCheck = async () => {
         try {
@@ -171,29 +154,6 @@ const ProfileEdit = () => {
         setShowModal(false);
     }, [isValidated])
 
-    // const handleProfileUpdate = async () => {
-    //     console.log(userState);
-
-    //     try {
-    //         if (!userNum || !userState) {
-    //             alert("유효하지 않은 사용자 정보입니다.");
-    //             return; // 유효하지 않은 상태에서는 더 이상 진행하지 않음
-    //         }
-
-    //         // 프로필 업데이트 실행
-    //         const result = await userActions.updateProfile(userNum, userState);
-
-    //         if (result === "ok") { // 업데이트 성공 여부를 판단
-    //             alert("저장 성공");
-    //             navigate(`/home/profileView/${userState.userNum}`);
-    //         } else {
-    //             alert("저장에 실패했습니다. 다시 시도해주세요.");
-    //         }
-    //     } catch (error) {
-    //         console.error("저장 실패:", error);
-    //         alert("저장에 실패했습니다. 다시 시도해주세요.");
-    //     }
-    // };
 
     const handleProfileUpdate = async () => {
         console.log(userState);
@@ -264,12 +224,7 @@ const ProfileEdit = () => {
 
                                 <div className="flex-row">
                                     <label>닉네임</label>
-                                    <Input
-                                        type="text"
-                                        value={userState.nickName}
-                                        name="nickName"
-                                        onChange={handleInputChange}
-                                    />
+                                    <p>{userState.nickName}</p>
                                 </div>
 
                                 <div className="flex-row">

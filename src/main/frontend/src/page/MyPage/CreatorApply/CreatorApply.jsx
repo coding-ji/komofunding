@@ -98,14 +98,13 @@ const CreatorApply = () => {
       return;
     }
 
-    applicationActions.updateAllFields(
-      {
-        applicationImage : fileUrl
+    
+     const data =  {
+        applicationImg : fileUrl
       }
-    )
+    
 
-    await applicationActions.createUserApplication(); 
-
+    await applicationActions.createUserApplication(data);
     setIsPopupOpen(true); // 성공 팝업 열기
   };
 
@@ -325,6 +324,7 @@ const CreatorApply = () => {
           }
           onClose={handlePopupClose}
           navigateTo="/"
+          handleButtonClick={() => console.log("Button clicked!")}
         />
       )}
 

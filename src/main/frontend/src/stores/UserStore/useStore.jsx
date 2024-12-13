@@ -3,7 +3,6 @@ import { reducer, initialState } from "./reducer";
 import {
     changeUserNum,
     changeEmail,
-    // changePassword,
     changeName,
     changeNickName,
     changePhoneNumber,
@@ -41,7 +40,8 @@ export const useStore = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const actions = {
-        // 유저 정보 관련 액션들
+        // 액션 예시: 예를 들어, 상태를 업데이트하는 로직을 여기에 정의
+        // 각 액션이 호출될 때 해당 액션에 맞는 로직이 실행됨
         changeUserNum: (userNum) => dispatch(changeUserNum(userNum)),
         changeEmail: (email) => dispatch(changeEmail(email)),
         changeUserPassword: (password) => dispatch(changeUserPassword(password)),
@@ -68,7 +68,6 @@ export const useStore = () => {
         fetchMyPageInfo: () => fetchMyPageInfo()(dispatch),
         fetchUserProfile: (userNum) => fetchUserProfile(userNum)(dispatch),
         updateProfile:(userNum, request) => updateProfile(userNum, request)(dispatch),
-        applyCreatorSwitch: (email, requestDTO) => applyCreatorSwitch(email, requestDTO)(dispatch),
         register:(userInDTO) => register(userInDTO)(dispatch),
         sendEmailForRegister: (email) => sendEmailForRegister(email)(dispatch),
         sendEmailVerificationCode: (email) => sendEmailVerificationCode(email)(dispatch),
@@ -79,8 +78,11 @@ export const useStore = () => {
         findEmail: (name, phoneNumber) => findEmail(name, phoneNumber)(dispatch),
         resetUserPassword: (email) => resetUserPassword(email)(dispatch),
         updateUserPassword: (request) => updateUserPassword(request)(dispatch),
-        // uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
+//      uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
         apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch)
      };
     return { state, actions };
+        // state 상태 객체
+        // dispatch 상태를 업데이트할 수 있는 dispatch 함수
+        // actions 상태를 업데이트하는 액션들
 };

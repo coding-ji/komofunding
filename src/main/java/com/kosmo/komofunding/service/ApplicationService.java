@@ -1,5 +1,7 @@
 package com.kosmo.komofunding.service;
 
+import com.kosmo.komofunding.common.enums.UserStatus;
+import com.kosmo.komofunding.converter.ApplicationConverter;
 import com.kosmo.komofunding.dto.ApplicationInDTO;
 import com.kosmo.komofunding.entity.Application;
 import com.kosmo.komofunding.entity.User;
@@ -7,27 +9,29 @@ import com.kosmo.komofunding.repository.ApplicationRepository;
 import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class ApplicationService {
+    @Autowired
     private ApplicationRepository applicationRepository;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ApplicationConverter applicationConverter;
 
 
     // 신청서 전환
     public Application saveApplication(ApplicationInDTO applicationInDTO, HttpSession session) {
         // 현재 날짜 가져오기
         LocalDateTime now = LocalDateTime.now();
+        Long applicationNum = generateApplicationNum();
 
         // 세션에서 userId 가져오기
         String userId = (String) session.getAttribute("userId");
@@ -39,18 +43,24 @@ public class ApplicationService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
+
+
+        // User 상태 업데이트: CREATORPENDING으로 설정
+        if (user.getActivatedStatus() != UserStatus.CREATORPENDING) {
+            user.setActivatedStatus(UserStatus.CREATORPENDING);
+            userRepository.save(user); // 상태 업데이트 후 저장
+        }
+
         // Application 엔티티 생성
-        Application application = Application.builder()
-                .applicationId(null) // 자동 생성
-                .applicationNum(generateApplicationNum()) // 서비스에서 6자리 숫자 생성
-                .userId(user.getUserId()) // 세션에서 가져온 사용자 ID
-                .applicationImg(applicationInDTO.getApplicationImage()) // 이미지 경로
-                .applicationDate(now) // 신청 날짜
-                .approvalDate(null) // 기본값: null
-                .rejectedDate(null) // 기본값: null
-                .isDeleted(false) // 기본값: false
-                .status(Application.ApplicationStatus.PENDING) // 기본값: PENDING
-                .build();
+        Application application = applicationConverter.applyEntity(applicationInDTO, userId);
+
+        // isDeleted 값을 false로 설정 (숨김 여부를 false로 고정)
+
+        application.setApplicationDate(now);
+        application.setIsDeleted(false);
+        // applicationNum 자동생성된 6자리번호
+        application.setApplicationNum(applicationNum);
+        application.setActivatedStatus(UserStatus.CREATORPENDING);
 
         // 저장
         return applicationRepository.save(application);
@@ -60,12 +70,14 @@ public class ApplicationService {
         // 6자리 숫자 생성 (랜덤 예시)
         return (long) (Math.random() * 900000) + 100000;
     }
+
+    // 관리자
     // 신청서 삭제
     public void deleteApplication(String applicationId) {
         Optional<Application> application = applicationRepository.findById(applicationId);
         if (application.isPresent()) {
             Application app = application.get();
-            app.setDeleted(true);
+            app.setIsDeleted(true);
             applicationRepository.save(app);
         } else {
             throw new RuntimeException("Application not found with ID: " + applicationId);
@@ -93,8 +105,8 @@ public class ApplicationService {
     }
 
     // 상태로 신청서 조회
-    public List<Application> getApplicationsByStatus(Application.ApplicationStatus status) {
-        return applicationRepository.findByStatus(status);
+    public List<Application> getApplicationsByStatus(UserStatus user) {
+        return applicationRepository.findByActivatedStatus(user);
     }
 
     // 삭제되지 않은 신청서 조회
@@ -107,7 +119,7 @@ public class ApplicationService {
         Optional<Application> application = applicationRepository.findById(applicationId);
         if (application.isPresent()) {
             Application app = application.get();
-            app.setStatus(Application.ApplicationStatus.APPROVED);
+            app.setActivatedStatus(UserStatus.valueOf(UserStatus.CREATOR.name()));
             app.setApprovalDate(LocalDateTime.now());
             return applicationRepository.save(app);
         }
@@ -132,7 +144,7 @@ public class ApplicationService {
         Optional<Application> application = applicationRepository.findById(applicationId);
         if (application.isPresent()) {
             Application app = application.get();
-            app.setStatus(Application.ApplicationStatus.REJECTED);
+            app.setActivatedStatus(UserStatus.valueOf(UserStatus.REJECTED.name()));
             app.setRejectedDate(LocalDateTime.now());
             return applicationRepository.save(app);
         }

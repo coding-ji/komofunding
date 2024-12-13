@@ -1,10 +1,16 @@
 package com.kosmo.komofunding.controller;
 
+import com.kosmo.komofunding.dto.ApplicationInDTO;
+import com.kosmo.komofunding.dto.ApplicationOutDTO;
 import com.kosmo.komofunding.entity.Application;
+import com.kosmo.komofunding.repository.ApplicationRepository;
 import com.kosmo.komofunding.service.ApplicationService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,76 +23,25 @@ import java.util.Optional;
 @RequestMapping("/api/applications")
 public class ApplicationController {
 
+    @Autowired
     private final ApplicationService applicationService;
 
-    // 모든 신청서 조회
-    @GetMapping
-    public ResponseEntity<List<Application>> getAllApplications() {
+    @PostMapping("/create")
+    // 제작자 전환 신청 처리
+    public ResponseEntity<String> createApplication(@Validated @RequestBody ApplicationInDTO applicationInDTO,
+                                                    HttpSession session) {
         try {
-            List<Application> applications = applicationService.getAllApplications();
-            return ResponseEntity.ok(applications);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Collections.emptyList());
-        }
-    }
+            // ApplicationService를 호출하여 신청서 저장
+            Application savedApplication = applicationService.saveApplication(applicationInDTO, session);
 
-    /**
-     * 특정 사용자 ID로 신청서를 가져오는 메서드
-     * @param userNum 사용자의 ID
-     * @return 해당 사용자의 신청서 목록
-     */
-    @GetMapping("/user/{userNum}") // 특정 사용자 ID로 신청서를 찾음
-    public ResponseEntity<List<Application>> getApplicationsByUserId(@PathVariable("userNum") String userNum) {
-        try {
-            List<Application> applications = applicationService.getApplicationsByUserNum(userNum); // 사용자 ID로 신청서를 가져옴
-            return ResponseEntity.ok(applications); // 신청서를 돌려줌
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Collections.emptyList()); // 문제가 생기면 빈 목록을 돌려줌
-        }
-    }
-
-    // 특정 기간 동안의 신청서 조회
-    @GetMapping("/date")
-    public ResponseEntity<List<Application>> getApplicationsByDateRange(@RequestParam LocalDateTime startDate,
-                                                                        @RequestParam LocalDateTime endDate) {
-        try {
-            List<Application> applications = applicationService.getApplicationsByDateRange(startDate, endDate);
-            return ResponseEntity.ok(applications);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Collections.emptyList());
-        }
-    }
-
-    // 새로운 신청서 생성
-//    @PostMapping("/create")
-//    public ResponseEntity<Application> createApplication(@RequestBody Application application) {
-//        try {
-//            Application savedApplication = applicationService.saveApplication(application);
-//            return ResponseEntity.status(201).body(savedApplication);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).body(null);
-//        }
-//    }
-
-    // 특정 신청서 조회
-    @GetMapping("/{applicationId}")
-    public ResponseEntity<Application> getApplicationById(@PathVariable("applicationId") String applicationId) {
-        try {
-            Optional<Application> application = applicationService.findById(applicationId);
-            return application.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    // 신청서 삭제
-    @DeleteMapping("/{applicationId}")
-    public ResponseEntity<Void> deleteApplication(@PathVariable("applicationId") String applicationId) {
-        try {
-            applicationService.deleteApplication(applicationId);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            // 성공 응답 반환
+            return ResponseEntity.ok("신청서가 성공적으로 생성되었습니다. 신청서 ID: " + savedApplication.getApplicationId());
+        } catch (IllegalStateException e) {
+            // 사용자 인증 정보가 없을 경우의 예외 처리
+            return ResponseEntity.status(401).body("사용자 인증 정보가 없습니다.");
+        } catch (RuntimeException e) {
+            // 기타 예외 처리
+            return ResponseEntity.status(400).body("신청서 생성 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 }

@@ -1,11 +1,14 @@
 package com.kosmo.komofunding.entity;
 
+import com.kosmo.komofunding.common.enums.UserStatus;
+import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
@@ -17,7 +20,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Application {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "application_id", nullable = false, updatable = false)
@@ -31,35 +33,27 @@ public class Application {
     private String userId; // 신청자 아이디
 
     @Column(name = "application_Img", nullable = false)
-    private String applicationImg; // 첨부 파일 경로 (이미지, hwp 등)
+    @Convert(converter = StringListConverter.class)
+    private List<String> applicationImg; // 첨부 파일 경로 (이미지, hwp 등)
 
     @Column(name = "application_date", nullable = false, updatable = false)
     private LocalDateTime applicationDate; // 신청 날짜
 
     @Column(name = "approval_date")
-    private LocalDateTime approvalDate; // 신청 승인 날짜
+    @Builder.Default
+    private LocalDateTime approvalDate = null; // 신청 승인 날짜
 
     @Column(name = "rejected_date")
-    private LocalDateTime rejectedDate; // 신청 거절 날짜
+    @Builder.Default
+    private LocalDateTime rejectedDate = null; // 신청 거절 날짜
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted = false; // 삭제 여부
+    @Builder.Default
+    private Boolean isDeleted = false; // 삭제 여부
 
-
-    @Column(name = "status", nullable = false)
+    @Column(name = "activated_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ApplicationStatus status = ApplicationStatus.PENDING; // 신청서 상태 (PENDING, APPROVED, REJECTED)
+    private UserStatus activatedStatus; // 신청서 상태 (PENDING, APPROVED, REJECTED)
 
-    @PrePersist
-    public void setDefaults() {
-        if (this.applicationDate == null) {
-            this.applicationDate = LocalDateTime.now();
-        }
-    }
 
-    public enum ApplicationStatus {
-        PENDING, // 검토 중
-        APPROVED, // 승인됨
-        REJECTED // 거절됨
-    }
 }

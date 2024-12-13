@@ -19,10 +19,10 @@ export const getUserProfile = (userNum) => apiClient.get(`/api/user/${userNum}/m
 export const updateUserProfile = (userNum, request) => apiClient.patch(`/api/user/${userNum}/my_info/profile`, request);
 
 // 이미지 업로드?
-export const uploadProfileImage = (file) => apiClient.patch(`/api/user/{userNum}/my_info/profile`);
+// export const uploadProfileImage = (file) => apiClient.patch(`/api/user/{userNum}/my_info/profile`);
 
-// 특정 사용자가 제작자 전환을 신청함
-export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/my_info/creator-switch`, requestDTO);
+// // 특정 사용자가 제작자 전환을 신청함
+// export const applyForCreatorSwitch = (email, requestDTO) => apiClient.post(`/api/user/${email}/my_info/creator-switch`, requestDTO);
 
 // 인증 관련 API
 // 회원가입 요청
@@ -146,10 +146,10 @@ export const fetchCommunityById = (communityId) =>
 export const fetchAllApplications = () => apiClient.get("/api/applications");
 
 // 신청서 신청
-export const createApplication = () => apiClient.post("/api/applications/create");
+export const createApplication = (data) => apiClient.post("/api/applications/create", data);
 
 // 특정 사용자 신청서 확인
-export const fetchApplicationByUserNum = (userNum) => apiClient.get(`/api/applications/user/${userNum}`);
+export const fetchApplicationByUserNum = (userNum) => apiClient.post(`/api/applications/user/${userNum}`);
 
 
 
