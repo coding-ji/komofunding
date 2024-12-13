@@ -1,11 +1,11 @@
 /* 사이드 메뉴 전체 */
 .side-menu {
     width: clamp(300px, 30vw, 400px);
-    height: 100%;
+    height: auto;
     background-color: #436446; /* 배경 색상 */
     color: #fff;
     font-family: 'Noto Sans KR', sans-serif;
-    padding: 20px 20px 5rem 20px;
+    padding: 20px 20px 3rem 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -104,10 +104,10 @@
     cursor: pointer;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #e74c3c; /* 눈에 띄는 색상 */
+    color: #e7e7e7; /* 눈에 띄는 색상 */
     transition: color 0.3s;
 }
 
 .delete-account:hover {
-    color: #c0392b; /* 호버 시 색 변경 */
+    color: #f1c40f; /* 호버 시 색 변경 */
 }

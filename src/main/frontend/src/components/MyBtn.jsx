@@ -83,6 +83,7 @@ export const Btn = ({text, width, height, onClick, fontSize, padding, fontFamily
     fontSize={fontSize} /* 폰트 크기 프롭 전달 */
     padding={padding}
     fontFamily={fontFamily}
+    margin={margin}
   >{text}
   </Button>
 );

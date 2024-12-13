@@ -33,6 +33,11 @@ const WrapperMenu = styled.div`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #fff;
+
+  &:hover {
+    color: #f1c40f; }
+
+
 `
 
 function SideMenu({onDeleteAccount }) {
