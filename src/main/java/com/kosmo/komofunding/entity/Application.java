@@ -1,12 +1,14 @@
 package com.kosmo.komofunding.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
 @Table(name = "APPLICATION",
         indexes = {
                 @Index(name = "idx_user_id", columnList = "user_id"),
@@ -20,6 +22,10 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "application_id", nullable = false, updatable = false)
     private String applicationId; // 제작자 신청서 UID
+
+    @Column(name = "application_num", nullable = false, unique = true, updatable = false)
+    @Builder.Default
+    private Long applicationNum = null; // 프로젝트 번호 (자동 생성, 6자리)
 
     @Column(name = "user_id", nullable = false, updatable = false)
     private String userId; // 신청자 아이디
@@ -43,6 +49,9 @@ public class Application {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status = ApplicationStatus.PENDING; // 신청서 상태 (PENDING, APPROVED, REJECTED)
+
+    @Column(name = "application_image")
+    private String applicationImage; // 신청할 때 내야 되는 이미지?
 
     @PrePersist
     public void setDefaults() {
