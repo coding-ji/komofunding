@@ -109,12 +109,22 @@ public class AuthController {
 public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginRequest, HttpSession session) {
     String email = loginRequest.getEmail();
     String password = loginRequest.getPassword();
-
     try {
+        // 사용자 조회
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+
+        // 활성화 상태 확인
+        if (user.getActivatedStatus() == UserStatus.DEACTIVATED) {
+            throw new IllegalStateException("탈퇴한 회원입니다.");
+        }
+
+        // 로그인 로직 실행
         Map<String, String> response = userService.login(email, password, session);
         System.out.println("로그인 성공: " + response);
         return ResponseEntity.ok(response);
-    } catch (Exception e) {
+
+    }catch (Exception e) {
         System.err.println("로그인 실패: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
@@ -164,24 +174,28 @@ public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginReq
 //    }
     // 회원 탈퇴
     @DeleteMapping("/delete/{userNum}")
-    public ResponseEntity<Map<String, String>> deleteUser(
-            HttpSession session) {  // HttpSession을 통해 세션 정보 받아오기
+    public ResponseEntity<Map<String, String>> deleteUser(HttpSession session) {
         try {
-            User user = (User) session.getAttribute("loggedInUser");  // 세션에서 로그인된 사용자 정보 가져오기
-            if (user == null) {
+            String userId = (String) session.getAttribute("userId"); // 세션에서 userId 문자열로 가져오기
+            if (userId == null) {
                 Map<String, String> errorResponse = new HashMap<>();
                 errorResponse.put("message", "사용자가 로그인되지 않았습니다.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
 
+            // 데이터베이스에서 사용자 조회
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
             // 사용자의 상태를 비활성화로 변경 (회원 탈퇴 처리)
             user.setActivatedStatus(UserStatus.DEACTIVATED);
             userRepository.save(user);
 
-            session.invalidate();  // 세션 종료
+            session.invalidate(); // 세션 종료
+
             Map<String, String> response = new HashMap<>();
             response.put("message", "회원 탈퇴가 완료되었습니다.");
-            return ResponseEntity.ok(response);  // 200 OK
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("message", "서버 오류가 발생했습니다.");

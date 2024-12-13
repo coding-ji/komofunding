@@ -35,12 +35,13 @@ const StyledLink = styled(Link)`
   color: #fff;
 `
 
-function SideMenu() {
+function SideMenu({onDeleteAccount }) {
   const [activeMenu, setActiveMenu] = useState(null); // 현재 활성화된 메뉴 상태
 
   const toggleMenu = (menu) => {
     setActiveMenu(activeMenu === menu ? null : menu); // 클릭한 메뉴를 토글
   };
+
 
   return (
     <div className="side-menu">
@@ -176,6 +177,11 @@ function SideMenu() {
             </ul>
           </motion.div>
         </div>
+      </div>
+      <div className="delete-account"
+      onClick={onDeleteAccount}
+      >
+        회원탈퇴
       </div>
     </div>
   );

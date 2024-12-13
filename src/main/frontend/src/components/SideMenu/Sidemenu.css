@@ -1,7 +1,7 @@
 /* 사이드 메뉴 전체 */
 .side-menu {
     width: clamp(300px, 30vw, 400px);
-    height: auto;
+    height: 100%;
     background-color: #436446; /* 배경 색상 */
     color: #fff;
     font-family: 'Noto Sans KR', sans-serif;
@@ -97,3 +97,17 @@
     color: #f1c40f; /* 호버 시 강조 색 */
   }
   
+  .delete-account {
+    font-family: var(--kr-noto);
+    margin-top: auto; /* 사이드바 아래로 밀기 */
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e74c3c; /* 눈에 띄는 색상 */
+    transition: color 0.3s;
+}
+
+.delete-account:hover {
+    color: #c0392b; /* 호버 시 색 변경 */
+}

@@ -3,7 +3,7 @@ import { reducer, initialState } from "./reducer";
 import {
     changeUserNum,
     changeEmail,
-    changePassword,
+    // changePassword,
     changeName,
     changeNickName,
     changePhoneNumber,
@@ -33,7 +33,7 @@ import {
     findEmail,
     resetUserPassword,
     updateUserPassword,
-    uploadProfileImage,
+    // uploadProfileImage,
     apiVerifyPassword
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.
 
@@ -79,7 +79,7 @@ export const useStore = () => {
         findEmail: (name, phoneNumber) => findEmail(name, phoneNumber)(dispatch),
         resetUserPassword: (email) => resetUserPassword(email)(dispatch),
         updateUserPassword: (request) => updateUserPassword(request)(dispatch),
-//      uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
+        // uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
         apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch)
      };
     return { state, actions };

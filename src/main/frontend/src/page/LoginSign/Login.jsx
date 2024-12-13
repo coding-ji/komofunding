@@ -58,6 +58,7 @@ const Login = () => {
         throw new Error("알 수 없는 역할");
       }
     } catch (error) {
+      alert("로그인에 실패하셨습니다. ")
       console.error("로그인 실패:", error);
       setError("로그인 실패: " + (error.response?.data?.error || "서버와 통신할 수 없습니다."));
     }
