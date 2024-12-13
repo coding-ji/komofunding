@@ -1,5 +1,5 @@
-import Pagination from "@/page/MyPage/Pagination";
-import AdminTabs from "@/page/Admin/components/Tabs";
+import Pagination from "../../../../components/Pagination";
+import AdminTabs from "../../components/Tabs/AdminTabs";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const AdminPage = ({ title, tabs }) => {

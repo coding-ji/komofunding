@@ -1,0 +1,86 @@
+/* TableWrapper.module.css */
+
+.wrapper01{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    width: 100%;
+  }
+  
+  .tableContainer0 {
+    margin: 20px auto;
+    max-width: 1200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table0 {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table0 thead {
+    /* background-color: #436446; */
+    color: white;
+  }
+  
+  .table0 th,
+  .table0 td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+
+  .table0 th {
+    font-weight: bold;
+    background-color: #436446;
+  }
+  
+  .table0 tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .table0 tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table0 .checkbox {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+  }
+  
+  .table0 .actionButtons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .actionButton0 {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .actionButton0.primary {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .actionButton0.primary:hover {
+    background-color: #2980b9;
+  }
+  
+  .actionButton0.danger {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .actionButton0.danger:hover {
+    background-color: #c0392b;
+  }
+  

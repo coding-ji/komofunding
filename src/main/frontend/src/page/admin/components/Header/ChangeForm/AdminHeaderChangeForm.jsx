@@ -21,60 +21,63 @@ function AdminHeaderChangeForm({ onClose, onSave }) {
   };
 
   return (
-    <div className="password-popup-overlay">
-      <div className="password-popup">
-        <div className="password-popup-header">비밀번호 변경</div>
-        <div className="newPw-label-input">
-          <label>이전 비밀번호</label>
-          <input
-            className="password-popup-input"
-            type="password"
-            placeholder="이전 비밀번호 입력"
-          />
-        </div>
-        <div className="newPw-label-input">
-          <label>새 비밀번호</label>
-          <input
-            className="password-popup-input"
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="새 비밀번호 입력"
-          />
-        </div>
-        <div className="newPw-label-input">
-          <label>새 비밀번호 확인</label>
-          <input
-            className="password-popup-input"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="새 비밀번호 확인"
-          />
-        </div>
-        <div className="password-popup-buttons">
-          <Btn
-            onClick={handleSave}
-            text="확인"
-            width="100px"
-            padding="2px 2px"
-            fontSize="1rem"
-            height="30px"
-            margin="5px"
-          />
-          <WhiteBtn
-            onClick={onClose}
-            text="취소"
-            width="100px"
-            padding="2px 2px"
-            fontSize="1rem"
-            height="30px"
-            margin="5px"
-          />
-        </div>
+    <div className="password-popup-overlay1">
+    <div className="password-popup1">
+      <div className="popup-header1"/>
+      <div className="popup-pwinput-box">
+      <div className="password-popup-header1">비밀번호 변경</div>
+      <div className="newPw-label-input1">
+        <label>이전 비밀번호</label>
+        <input
+          className="password-popup-input1"
+          type="password"
+          placeholder="이전 비밀번호 입력"
+        />
+      </div>
+      <div className="newPw-label-input1">
+        <label>새 비밀번호</label>
+        <input
+          className="password-popup-input1"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          placeholder="새 비밀번호 입력"
+        />
+      </div>
+      <div className="newPw-label-input1">
+        <label>새 비밀번호 확인</label>
+        <input
+          className="password-popup-input1"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="새 비밀번호 확인"
+        />
+      </div>
+      <div className="password-popup-buttons1">
+        <Btn
+          onClick={handleSave}
+          text="확인"
+          width="120px"
+          padding="8px 16px"
+          fontSize="1rem"
+          height="40px"
+          margin="5px"
+        />
+        <WhiteBtn
+          onClick={onClose}
+          text="취소"
+          width="120px"
+          padding="8px 16px"
+          fontSize="1rem"
+          height="40px"
+          margin="5px"
+        />
       </div>
     </div>
-  );
+    </div>
+  </div>
+);
 }
 
 export default AdminHeaderChangeForm;

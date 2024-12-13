@@ -1,5 +1,5 @@
 /* 팝업 전체 화면을 덮는 배경 */
-.password-popup-overlay {
+.password-popup-overlay1 {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,28 +12,41 @@
   z-index: 1000;
 }
 
+.popup-pwinput-box{
+  width: 100%;
+  padding: 10px 20px 20px 20px;
+}
 /* 팝업 콘텐츠 */
-.password-popup {
+.password-popup1 {
   background: white;
   width: 400px;
   border-radius: 10px;
-  padding: 20px;
+
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
 
 /* 팝업 상단 헤더 (디자인에 따라 수정 가능) */
-.password-popup-header {
+.password-popup-header1 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: #000;
+}
+
+/* 팝업 상단 헤더 (검정색 바) */
+.popup-header1 {
+  background-color: #000;
+  height: 40px;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 /* 팝업 입력 필드 */
-.password-popup-input {
+.password-popup-input1 {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
@@ -41,14 +54,14 @@
 }
 
 /* 버튼 컨테이너 */
-.password-popup-buttons {
+.password-popup-buttons1 {
   display: flex;
   justify-content: space-between; /* 버튼 간격 조정 */
   margin-top: 20px;
 }
 
 /* 버튼 스타일 */
-.password-popup-button {
+.password-popup-button1 {
   padding: 10px 20px;
   font-size: 16px;
   border: none;
@@ -58,17 +71,17 @@
   margin: 0 5px; /* 버튼 간격 */
 }
 
-.password-popup-button.save {
+.password-popup-button.save1 {
   background-color: #007bff;
   color: white;
   transition: background-color 0.3s;
 }
 
-.password-popup-button.save:hover {
+.password-popup-button.save1:hover {
   background-color: #0056b3;
 }
 
-.password-popup-button.cancel {
+.password-popup-button.cancel1 {
   background-color: #6c757d;
   color: white;
   transition: background-color 0.3s;
