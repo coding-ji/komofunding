@@ -1,0 +1,68 @@
+.layoutContainerAdminLayout {
+  /* display: grid; */
+  /* grid-template-areas:
+    "header header header header"
+    "sidebar main main main"
+    "footer footer footer footer"; */
+  /* grid-template-rows: auto 1fr auto; 
+  grid-template-columns: 250px 1fr;  */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 화면 전체 높이를 채움 */
+  width: 100wv; /* 전체 너비 */
+}
+
+.adminSidebarandcontent{
+  display: flex;
+  flex-direction: row; /* 기본적으로 가로로 배치 */
+  flex: 1; /* 부모 컨테이너에서 가용 공간 채우기 */
+  width: 100%; /* 전체 너비를 유지 */
+}
+
+.headerAdminLayout {
+/* grid-area: header; */
+  width: 100%;
+}
+
+.sidebarAdminLayout {
+  width: 300px;
+  height: auto;
+ 
+}
+
+.mainAdminLayout {
+  flex : 1;
+  height: 100%;
+  /* width: 100%; */
+  overflow: auto; /* 스크롤 가능 */
+  grid-area: main;
+}
+
+.footerAdminLayout {
+  grid-area: footer;
+  width: 100%;
+  grid-area: footer;
+}
+
+@media (max-width: 760px) {
+  .layoutContainerAdminLayout {
+    flex-direction: column;
+  }
+
+  .sidebarAdminLayout {
+    width: 100%;
+    height: 600px;
+   
+  
+  }
+  .adminSidebarandcontent{
+    flex-direction: column;
+  }
+
+  .headerAdminLayout{
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+
+}
