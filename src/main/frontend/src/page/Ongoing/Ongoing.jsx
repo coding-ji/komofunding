@@ -9,8 +9,8 @@ function Ongoing() {
   const [filteredData, setFilteredData] = useState([]);
 
   // 'EDIT' 클릭 시 이동 함수
-  const handleEditClick = (productId) => {
-    navigate(`/home/product-details/${productId}`); // 해당 제품 상세 페이지로 이동
+  const handleEditClick = (projectNum) => {
+    navigate(`/home/product-details/${projectNum}`); // 해당 제품 상세 페이지로 이동
   };
 
   useEffect(() => {
@@ -28,6 +28,7 @@ function Ongoing() {
       setFilteredData(filtered); // 필터링된 데이터를 상태로 설정
     }
   }, [state.project]);
+  
 
   return (
     <div>

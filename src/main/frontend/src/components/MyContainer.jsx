@@ -14,7 +14,7 @@ const Styleddiv = styled(motion.div)`
   border-radius: 2px;
 `;
 
-function MyContainer({ text, product, onClick }) {
+function MyContainer({ onContainerClick, text, product, onClick }) {
 
   return (
     <Styleddiv
@@ -23,6 +23,7 @@ function MyContainer({ text, product, onClick }) {
         boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.3)",
       }}
       transition={{ type: "spring", stiffness: 100, transition: 0.1 }}
+      onClick={onContainerClick}
     >
       <motion.div>
         <ProductImg src={product.thumbnailImgs[0]} />

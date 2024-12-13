@@ -3,6 +3,8 @@ import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
 import TitleProduct from "../../components/TitleProduct";
+import { useParams } from "react-router-dom";
+import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
 
 const PrjAllBox = styled.div`
   display: flex;
@@ -26,57 +28,67 @@ const ImagePreview = styled.div`
 `;
 
 function PrjAll() {
-  const [projectData, setProjectData] = useState({
-    content: "",
-    images: [],
-    title: "",
-    shortDescription: "",
-    category: "카테고리가 선택되지 않았습니다.",
-    startDate: "",
-    endDate: "",
-    products: []
-  });
+  const { projectNum } = useParams();
+  const { state, actions } = ProjectStore();
 
   useEffect(() => {
-    const storedData = localStorage.getItem("projectData");
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setProjectData(parsedData); // 로컬 스토리지에서 데이터 가져오기
-    }
-  }, []);
+    const fetchData = async () => {
+      if (projectNum) {
+        await actions.readProjectDetail(projectNum);
+      }
+    };
 
-  // 데이터가 로드되지 않았을 때 로딩 화면을 표시
-  if (!projectData.title) {
-    return <div>Loading...</div>;
+    fetchData();
+  }, [projectNum]);
+
+  // 데이터가 없을 경우 로딩 상태 표시
+  if (!state || Object.keys(state).length === 0) {
+    return (
+      <PrjAllBox>
+        <TitleBox text="전체 프로젝트 정보" />
+        <DescriptionProduct text="데이터를 불러오는 중입니다..." />
+      </PrjAllBox>
+    );
   }
 
   return (
     <PrjAllBox>
       <TitleBox text="전체 프로젝트 정보" />
       <TitleProduct text="프로젝트 제목" />
-      <DescriptionProduct text={projectData.title || "제목이 없습니다."} />
+      <DescriptionProduct text={state.title || "제목이 없습니다."} />
       <TitleProduct text="짧은 소개 글" />
-      <DescriptionProduct text={projectData.shortDescription || "소개 글이 없습니다."} />
+      <DescriptionProduct
+        text={state.projectShortDescription || "소개 글이 없습니다."}
+      />
       <TitleProduct text="카테고리" />
-      <DescriptionProduct text={projectData.category || "카테고리가 선택되지 않았습니다."} />
+      <DescriptionProduct
+        text={state.projectCategory || "카테고리가 선택되지 않았습니다."}
+      />
       <TitleProduct text="프로젝트 기간" />
-      <DescriptionProduct text={`시작일: ${projectData.startDate || "시작일 없음"}, 종료일: ${projectData.endDate || "종료일 없음"}`} />
+      <DescriptionProduct
+        text={`시작일: ${state.projectStartDate || "시작일 없음"}, 종료일: ${
+          state.projectEndDate || "종료일 없음"
+        }`}
+      />
       <TitleProduct text="상품 정보" />
-      {projectData.products && projectData.products.length > 0 ? (
-        projectData.products.map((product, index) => (
-          <DescriptionProduct key={index} text={`${product.name} - ${product.price}원`} />
+      {state.items && state.items.length > 0 ? (
+        state.items.map((product, index) => (
+          <DescriptionProduct
+            key={index}
+            text={`${product.itemName} - ${product.itemPrice}원`}
+          />
         ))
       ) : (
         <DescriptionProduct text="등록된 상품이 없습니다." />
       )}
       <TitleProduct text="프로젝트 내용" />
-      <DescriptionProduct text={projectData.content || "프로젝트 내용이 없습니다."} /> {/* content 표시 */}
-      
-      {/* 이미지 출력 */}
+      <DescriptionProduct
+        text={state.description || "프로젝트 내용이 없습니다."}
+      />{" "}
       <TitleProduct text="첨부된 이미지" />
-      {projectData.images.length > 0 ? (
+      {Array.isArray(state.thumbnailImgs) && state.thumbnailImgs.length > 0 ? (
         <ImagePreview>
-          {projectData.images.map((image, index) => (
+          {state.thumbnailImgs.map((image, index) => (
             <img key={index} src={image} alt={`첨부된 이미지 ${index + 1}`} />
           ))}
         </ImagePreview>

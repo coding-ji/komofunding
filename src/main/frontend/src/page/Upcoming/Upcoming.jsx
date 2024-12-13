@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import MyContainers from "../../components/MyContainers";
 import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 function Upcoming() {
   const { state, actions, setIsDeleted } = useOutletContext(); // 부모로부터 상태와 액션 가져옴
   const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 상태 관리
   const [productToDelete, setProductToDelete] = useState(null); // 삭제할 항목 추적
   const [filteredData, setFilteredData] = useState([]);
+  const navigate = useNavigate();
+
+  const handleContainerClick = (projectNum) => {  
+    navigate(`/home/product-details/${projectNum}`);
+  };
 
   useEffect(() => {
     if (Array.isArray(state.project) && state.project.length > 0) {
@@ -53,6 +58,7 @@ function Upcoming() {
       <MyContainers
         products={filteredData} // 상태 전달
         onDelete={handleDeleteClick} // 삭제 핸들러 전달
+        onContainerClick={handleContainerClick}
         text="삭제"
       />
       {/* 팝업 */}

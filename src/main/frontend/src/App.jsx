@@ -101,7 +101,7 @@ const router = createBrowserRouter([
 
       { path: "creation-guide", element: <CreationGuide /> },
       { path: "donate-guide", element: <DonateGuide /> },
-      { path: "product-details", element: <MainProDetails /> },
+      { path: "product-details/:projectNum", element: <MainProDetails /> },
       { path: "ordertable/:projectNum", element: <OrderTable /> },
       { path: "fundingpay", element: <FundingPay /> },
       // { path: "investment", element: <Investment />}

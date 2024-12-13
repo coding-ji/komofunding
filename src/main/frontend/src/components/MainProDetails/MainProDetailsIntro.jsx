@@ -36,7 +36,7 @@ const ItemCard = styled.div`
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
 `;
-function MainProDetailsIntro({ project, qnaList, setQnaList }) {
+function MainProDetailsIntro({ project, qnaList, setQnaList,htmlContent }) {
     // 각 섹션에 대한 ref 생성
     const introRef = useRef(null);
     const scheduleRef = useRef(null);
@@ -44,7 +44,7 @@ function MainProDetailsIntro({ project, qnaList, setQnaList }) {
     const policyRef = useRef(null);
     const inquiryRef = useRef(null);
   
-    const dateText = `${project.startDate}\n~\n${project.endDate}`;
+    const dateText = `${project.projectStartDate}\n~\n${project.projectEndDate}`;
   
     return (
       <IntroBox>
@@ -70,7 +70,7 @@ function MainProDetailsIntro({ project, qnaList, setQnaList }) {
         <DescriptionProduct
         fontSize= "1rem"
         color = "rgb(0,0,0)"
-        text = {project.description}
+        text = {htmlContent}
          />
         
         {/* <ImageContainer ref={introRef}>
@@ -94,7 +94,7 @@ function MainProDetailsIntro({ project, qnaList, setQnaList }) {
   
         {/* 상품 정보 */}
         <TitleBox text="상품 정보" ref={productInfoRef} />
-        {project.items.map((item, index) => (
+        {Array.isArray(project.items)&&project.items.length>0 && project.items.map((item, index) => (
           <ItemCard key={index}>
             <DescriptionProduct
               color="#436446"

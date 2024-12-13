@@ -38,7 +38,7 @@ const itemVariants = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
-function MyContainers({ text, products, onDelete, onEdit }) {
+function MyContainers({ text, products, onDelete, onEdit, onContainerClick }) {
     // 클릭 이벤트 처리
     const handleButtonClick = (product) => {
       if (onDelete) {
@@ -62,6 +62,7 @@ function MyContainers({ text, products, onDelete, onEdit }) {
               text={text}
               product={product}
               onClick={() => handleButtonClick(product)}
+              onContainerClick={() => onContainerClick(product.projectNum)}
             />
           </motion.div>
         ))}

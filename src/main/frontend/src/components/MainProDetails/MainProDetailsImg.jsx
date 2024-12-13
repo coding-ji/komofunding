@@ -52,7 +52,7 @@ function MainProDetailsImg({ project }) {
     <BoxContainer>
       <Container>
         <ImageCarouselWrapper>
-          <ImageCarousel images={project.imgs} />
+          <ImageCarousel images={project.thumbnailImgs} />
         </ImageCarouselWrapper>
 
         <ProgressContainerWrapper>
@@ -67,12 +67,12 @@ function MainProDetailsImg({ project }) {
             <TitleProduct
               padding="0px"
               fontSize="3rem"
-              text={project.projectTitle} />
+              text={project.title} />
 
             <DescriptionProduct
               fontSize="0.98rem"
               padding="0px"
-              text={project.shortDescription} />
+              text={project.projectShortDescription} />
           </ProjectSection>
 
           <ProgressContainer />

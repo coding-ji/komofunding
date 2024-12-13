@@ -65,28 +65,19 @@ export const verifyPassword = (userNum, password) => apiClient.post(`/api/auth/p
 // 특정 사용자의 로그인 정지 상태 확인
 export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/status/${userNum}`, userNum);
 
+
 // 프로젝트 관련 API
 
 // 전체 게시물 조회
 export const fetchPosts = () => apiClient.get('/posts');
 
 // 상세 게시물 조회
-export const fetchDetailPost = () => apiClient.get(`/posts/${projectNum}`)
+export const fetchDetailPost = (projectNum) => apiClient.get(`/posts/${projectNum}`)
 
 // 전체 게시물 카테고리별 & 상태별(all, upcoming, active )
 export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) => {
     return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
-
-
-
-// 결제 
-// 프로젝트 후원자 조회 
-export const fetchDonorsByProjectNum = (projectNum) => apiClient.get(`/payment/list?projectNum=${projectNum}`);
-
-// 결제 저장 로직 
-export const createPayment = (projectNum, payment) => apiClient.post(`/payment/save?projectNum=${projectNum}`, payment);
-
 
 
 // 개인 프로젝트
@@ -106,6 +97,13 @@ export const deleteProject = (projectNum) => apiClient.delete(`/api/user/myinfo/
 export const fetchProjectDonors = (projectNum) => apiClient.get(`api/user/myinfo/projects/donors?projectNum=${projectNum}`)
 
 
+
+// 결제 
+// 프로젝트 후원자 조회 
+export const fetchDonorsByProjectNum = (projectNum) => apiClient.get(`/payment/list?projectNum=${projectNum}`);
+
+// 결제 저장 로직 
+export const createPayment = (projectNum, payment) => apiClient.post(`/payment/save?projectNum=${projectNum}`, payment);
 
 
 // 댓글 관련 API

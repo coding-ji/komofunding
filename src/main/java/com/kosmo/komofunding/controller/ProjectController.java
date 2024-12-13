@@ -1,10 +1,8 @@
 package com.kosmo.komofunding.controller;
 
-import com.kosmo.komofunding.common.enums.ProjectCategory;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectInDTO;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
-import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.Project;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.exception.UnauthorizedException;
@@ -17,10 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -96,6 +91,24 @@ public class ProjectController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(projectOutDTOs);
+    }
+
+    // 프로젝트 번호에 해당하는 프로젝트 조회
+    @GetMapping("/posts/{projectNum}")
+    public ResponseEntity<ProjectOutDTO> findProjectByProjectNumber(@PathVariable("projectNum") Long projectNum) {
+        // 프로젝트 번호로 조회
+        Optional<Project> project = projectRepository.findByProjectNum(projectNum);
+
+        // 프로젝트가 존재하지 않을 경우 404 응답 반환
+        if (project.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Project -> ProjectOutDTO 변환
+        ProjectOutDTO projectOutDTO = projectConverter.toOutDTO(project.get());
+
+        // 변환된 DTO를 200 OK로 반환
+        return ResponseEntity.ok(projectOutDTO);
     }
 
     // 개인 프로젝트 생성

@@ -79,7 +79,7 @@ public class ProjectService {
 
     // 유저 uid로 프로젝트 조회
     public List<Project> getProjectsByUserId(String userId){
-        return projectRepository.findByUserId(userId);
+           return projectRepository.findByUserId(userId);
     }
 
     // 프로젝트 생성 로직
