@@ -51,7 +51,24 @@ const SignupForm = () => {
       alert("인증코드가 일치하지 않습니다.");
     }
   };
+  //닉네임 중복확인
+const handleCheckNickName = async () => {
+  if (!formData.nickName) {
+    alert("닉네임을 입력하세요.");
+    return;
+  }
 
+  try {
+    const response = await checkNickName(formData.nickName); // 중복 확인 API 호출
+    if (response.data.isAvailable) {
+      alert("사용 가능한 닉네임입니다.");
+    } else {
+      alert("이미 사용 중인 닉네임입니다.");
+    }
+  } catch (error) {
+    alert("닉네임 확인 중 오류가 발생했습니다.");
+  }
+};
   // 회원가입 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,7 +143,16 @@ const SignupForm = () => {
               onChange={handleInputChange}
               style={{ gridArea: "input7" }}
             />
-
+<div style={{ gridArea: "nickbtn" }}>
+  <button
+    type="button"
+    className={styles.smallButton}
+    onClick={handleCheckNickName}
+  >
+    중복 확인
+  </button>
+</div>
+<button>111111</button>
             {/* 이메일 */}
             <label className={styles.label} style={{ gridArea: "label2" }}>
               이메일
