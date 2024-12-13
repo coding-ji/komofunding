@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.controller;
 
+import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.dto.EmailRequestDTO;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
@@ -140,25 +141,51 @@ public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginReq
     }
 
     // 회원 탈퇴
+//    @DeleteMapping("/delete/{userNum}")
+//    public ResponseEntity<Map<String, String>> deleteUser(
+//            @RequestBody UserInDTO userInDTO) {
+//        try {
+//            boolean isDeleted = userService.deleteUser(userInDTO.getEmail(), userInDTO.getPassword());
+//            if (!isDeleted) {
+//                Map<String, String> errorResponse = new HashMap<>();
+//                errorResponse.put("message", "이메일 또는 비밀번호가 올바르지 않습니다.");
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+//            }
+//
+//            // 성공 메시지 포함 응답
+//            Map<String, String> response = new HashMap<>();
+//            response.put("message", "회원 탈퇴가 완료되었습니다.");
+//            return ResponseEntity.ok(response); // 200 OK
+//        } catch (IllegalArgumentException e) {
+//            Map<String, String> errorResponse = new HashMap<>();
+//            errorResponse.put("message", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+//        }
+//    }
+    // 회원 탈퇴
     @DeleteMapping("/delete/{userNum}")
     public ResponseEntity<Map<String, String>> deleteUser(
-            @RequestBody UserInDTO userInDTO) {
+            HttpSession session) {  // HttpSession을 통해 세션 정보 받아오기
         try {
-            boolean isDeleted = userService.deleteUser(userInDTO.getEmail(), userInDTO.getPassword());
-            if (!isDeleted) {
+            User user = (User) session.getAttribute("loggedInUser");  // 세션에서 로그인된 사용자 정보 가져오기
+            if (user == null) {
                 Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("message", "이메일 또는 비밀번호가 올바르지 않습니다.");
+                errorResponse.put("message", "사용자가 로그인되지 않았습니다.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
 
-            // 성공 메시지 포함 응답
+            // 사용자의 상태를 비활성화로 변경 (회원 탈퇴 처리)
+            user.setActivatedStatus(UserStatus.DEACTIVATED);
+            userRepository.save(user);
+
+            session.invalidate();  // 세션 종료
             Map<String, String> response = new HashMap<>();
             response.put("message", "회원 탈퇴가 완료되었습니다.");
-            return ResponseEntity.ok(response); // 200 OK
-        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok(response);  // 200 OK
+        } catch (Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            errorResponse.put("message", "서버 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 

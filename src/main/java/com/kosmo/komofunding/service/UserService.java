@@ -1,6 +1,5 @@
 package com.kosmo.komofunding.service;
 
-import com.kosmo.komofunding.common.enums.CreatorSwitchStatus;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
@@ -221,21 +220,38 @@ public class UserService {
     }
 
     // 회원 탈퇴
-    public boolean deleteUser(String email, String password) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+//    public boolean deleteUser(String email, String password) {
+//        Optional<User> userOptional = userRepository.findByEmail(email);
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//
+//            // 비밀번호 검증
+//            if (!passwordEncoder.matches(password, user.getPassword())) {
+//                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+//            }
+//
+//            // 상태를 비활성화로 변경 (회원 탈퇴 처리)
+//            user.setActivatedStatus(UserStatus.DEACTIVATED);
+//            userRepository.save(user);
+//            return true;
+//        }
+//        return false;
+//    }
+    // 회원 탈퇴
+    public boolean deleteUser(HttpSession session) {
+        // 세션에서 로그인된 사용자 정보를 가져옴
+        User user = (User) session.getAttribute("loggedInUser");
 
-            // 비밀번호 검증
-            if (!passwordEncoder.matches(password, user.getPassword())) {
-                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-            }
-
-            // 상태를 비활성화로 변경 (회원 탈퇴 처리)
+        if (user != null) {
+            // 사용자 상태를 비활성화로 변경 (회원 탈퇴 처리)
             user.setActivatedStatus(UserStatus.DEACTIVATED);
             userRepository.save(user);
+            // 세션 종료
+            session.invalidate();
             return true;
         }
+
+        // 세션에 로그인된 사용자가 없으면 false 반환
         return false;
     }
 
@@ -409,23 +425,28 @@ public class UserService {
     }
 
     // 제작자 전환 신청 처리
-    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
-        // 이메일을 기준으로 사용자 조회
-        User user = userRepository.findByEmail(requestDTO.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-        // 제작자 전환 신청 상태 업데이트
-        user.setCreatorSwitchStatus(CreatorSwitchStatus.PENDING);  // 신청 상태를 PENDING으로 설정
-
-        // 추가 필드들 설정
-        user.setRequestImage(requestDTO.getRequestImage());  // 신청 이미지 URL
-        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());  // 개인정보 동의 여부
-        user.setApplicationDate(LocalDateTime.now());  // 신청일: 현재 시간으로 설정
-
-        // 변경된 사용자 정보 저장
-        userRepository.save(user);
-
-        return new CreatorSwitchResponseDTO("계정 전환 신청이 완료되었습니다.");
-    }
+//    public CreatorSwitchResponseDTO applyForCreatorSwitch(CreatorSwitchRequestDTO requestDTO) {
+//        // 이메일을 기준으로 사용자 조회
+//        User user = userRepository.findByEmail(requestDTO.getEmail())
+//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//
+//        // 기존 제작자 전환 요청 중복 확인
+//        if (user.getUserStatus() == UserStatus.CREATORPENDING) {
+//            throw new IllegalStateException("이미 제작자 전환 신청이 진행 중입니다.");
+//        }
+//
+//        // 제작자 전환 신청 데이터 설정
+//        user.setRequestRole(requestDTO.getRequestRole());
+//        user.setRequestImage(requestDTO.getRequestImage());
+//        user.setPrivacyAgreement(requestDTO.isPrivacyAgreement());
+//        user.setApplicationDate(LocalDateTime.now());
+//        user.setUserStatus(UserStatus.CREATORPENDING); // 신청 상태를 CREATORPENDING으로 설정
+//
+//        // 변경 사항 저장
+//        userRepository.save(user);
+//
+//        // 응답 메시지 생성
+//        return new CreatorSwitchResponseDTO("계정전환신청이 완료되었습니다.");
+//    }
 
     }
