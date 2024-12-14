@@ -56,7 +56,7 @@ export const reducer = (state, action) => {
         case CHANGE_PROJECT_THUMBNAIL_IMGS:
             return { ...state, thumnailImgs: action.payload };
         case CHANGE_PROJECT_SHORT_DESCRIPTION:
-            return { ...state, shortDescription: action.payload };
+            return { ...state, projectShortDescription: action.payload };
         case CHANGE_DESCRIPTION:
             return { ...state, description: action.payload };
         case CHANGE_ITEMS:

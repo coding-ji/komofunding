@@ -64,9 +64,9 @@ export const changePhoneNumber = (phoneNumber) => ({
     payload: phoneNumber,
 });
 
-export const changeUserShortDescription = (shortDescription) => ({
+export const changeUserShortDescription = (projectShortDescription) => ({
     type: CHANGE_USER_SHORT_DESCRIPTION,
-    payload: shortDescription,
+    payload: projectShortDescription,
 });
 
 // 프로젝트 관련

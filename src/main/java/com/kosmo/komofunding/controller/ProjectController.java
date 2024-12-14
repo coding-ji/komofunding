@@ -111,6 +111,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectOutDTO);
     }
 
+    // 개인 프로젝트 관련 Controller
     // 개인 프로젝트 생성
     @PostMapping("/api/user/myinfo/projects")
     public ResponseEntity<Map<String, String>> createProject(
@@ -127,8 +128,16 @@ public class ProjectController {
         // 201 Created 상태와 함께 메시지 반환
         return ResponseEntity.status(201).body(response);
     }
+//
+//    // 개인 프로젝트 수정
+//    @PatchMapping("/api/user/myinfo/projects/{projectNum}")
+//    public ResponseEntity<Map<String, String>> updateProject(
+//            @PathVariable("projectNum") String projectNum,
+//            @RequestBody ProjectInDTO projectInDTO){
+//
+//    }
 
-    // 해당 프로젝트 삭제
+    // 개인 프로젝트 삭제
     @DeleteMapping("/api/user/myinfo/projects/{projectNum}")
     public ResponseEntity<Map<String, String>> deleteProject(@PathVariable("projectNum") String projectNum) {
         // 프로젝트 삭제 처리

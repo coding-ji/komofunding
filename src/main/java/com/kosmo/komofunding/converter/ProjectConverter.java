@@ -60,6 +60,7 @@ public class ProjectConverter {
                 .title(project.getTitle())
                 .projectCategory(project.getProjectCategory())
                 .thumbnailImgs(project.getThumbnailImgs())
+                .projectShortDescription(project.getShortDescription())
                 .description(project.getDescription())
                 .items(project.getItems())
                 .currentAmount(project.getCurrentAmount())

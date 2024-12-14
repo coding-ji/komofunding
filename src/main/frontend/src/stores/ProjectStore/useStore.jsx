@@ -50,7 +50,7 @@ export const useStore = () => {
         changeTitle: (title) => dispatch(changeTitle(title)),
         changeProjectCategory: (projectCategory) => dispatch(changeProjectCategory(projectCategory)),
         changeProjectThumbnailImgs: (thumnailImgs) => dispatch(changeProjectThumbnailImgs(thumnailImgs)),
-        changeProjectShortDescription: (shortDescription) => dispatch(changeProjectShortDescription(shortDescription)),
+        changeProjectShortDescription: (projectShortDescription) => dispatch(changeProjectShortDescription(projectShortDescription)),
         changeDescription: (description) => dispatch(changeDescription(description)),
         changeItems: (items) => dispatch(changeItems(items)),
         changeCurrentAmount: (currentAmount) => dispatch(changeCurrentAmount(currentAmount)),

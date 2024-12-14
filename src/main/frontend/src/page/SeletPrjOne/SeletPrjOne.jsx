@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
@@ -8,6 +7,7 @@ import Input from "../../components/input";
 import Category from "../../components/Category";
 import MyNavLine from "../../components/MyNavLine";
 import { Btn } from "../../components/MyBtn";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
 
 const SelectBox = styled.div`
@@ -26,20 +26,38 @@ const PrjFooter = styled.div`
 `;
 
 function SelectPrjOne() {
-  const { state: projectState, actions: projectActions } = ProjectStore();
   const navigate = useNavigate();
+  const { data, projectNum } = useOutletContext();
+  const { state: projectState, actions: projectActions } = ProjectStore();
 
-  // 상태 복원: 로컬 스토리지에서 데이터 불러오기
+  // 데이터와 상태 복원
   useEffect(() => {
+    if (data) {
+      projectActions.resetState();
+      projectActions.updateAllFields(data); // data로 상태 업데이트
+    }
+  }, [data]);
+
+  // 데이터와 상태 복원
+  useEffect(() => {
+    // 로컬 스토리지에서 복원한 데이터가 있다면 상태에 반영
     const savedState = localStorage.getItem("projectState");
     if (savedState) {
-      projectActions.updateAllFields(JSON.parse(savedState)); // ProjectStore에 복원
+      projectActions.resetState();
+      projectActions.updateAllFields(JSON.parse(savedState)); // 로컬 스토리지에서 복원
     }
   }, []);
 
   const handleNextClick = () => {
+    // 상태를 로컬 스토리지에 저장
     localStorage.setItem("projectState", JSON.stringify(projectState));
-    navigate("/home/selectprj/prj-two");
+
+    // projectNum 여부에 따라 분기 처리
+    if (projectNum) {
+      navigate(`/home/selectprj/edit/${projectNum}/prj-two`);
+    } else {
+      navigate("/home/selectprj/prj-two");
+    }
   };
 
   return (
@@ -62,7 +80,7 @@ function SelectPrjOne() {
           <Input
             size="small"
             margin="5px"
-            value={projectState.shortDescription}
+            value={projectState.projectShortDescription}
             onChange={(e) =>
               projectActions.changeUserShortDescription(e.target.value)
             }
@@ -72,7 +90,7 @@ function SelectPrjOne() {
           <TitleProduct text="카테고리" />
           <DescriptionProduct text="프로젝트에 해당하는 여러 카테고리 중 가장 적합한 카테고리를 선택해주세요." />
           <Category
-            categoryState={projectState.category} // 카테고리 상태 전달
+            categoryState={projectState.projectCategory} // 카테고리 상태 전달
             onCategoryChange={projectActions.changeProjectCategory} // 카테고리 업데이트 함수 전달
           />
         </div>

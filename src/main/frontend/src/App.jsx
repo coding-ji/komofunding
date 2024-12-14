@@ -110,6 +110,16 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "selectPrj/edit/:projectNum",
+        element: <SelectPrj />, // 부모 컴포넌트
+        children: [
+          { index: true, element: <SelectPrjOne /> },
+          { path: "prj-two", element: <SelectPrjTwo /> },
+          { path: "prj-three", element: <SelectPrjThree /> },
+        ],
+      },
+
+      {
         path: "userfunding",
         element: <UserFunding />, // 부모 컴포넌트
         children: [
@@ -177,7 +187,7 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  useEffect(() => {
+   useEffect(() => {
     const handleBeforeUnload = () => {
       localStorage.removeItem("user"); // 종료 시 초기화
     };
@@ -188,14 +198,6 @@ function App() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
-
-  useEffect(() => {
-    // 경로가 "selectPrj"와 관련된 경로가 아닐 경우
-    if (!location.pathname.startsWith("/home/selectprj")) {
-      // "selectPrj" 경로가 포함되지 않으면 localStorage 지우기
-      localStorage.removeItem("projectState");
-    }
-  }, [location]);
 
   // 라우터 경로
   return <RouterProvider router={router} />;

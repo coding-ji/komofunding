@@ -6,7 +6,7 @@ import TitleProduct from "../../components/TitleProduct";
 import Date from "../../components/Date";
 import ImageUploader from "../../components/ImageUploader";
 import { Btn, WhiteBtn } from "../../components/MyBtn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import MyNavLine from "../../components/MyNavLine";
 import EditorItem from "../../components/EditorItem/EditorItem";
 import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
@@ -30,6 +30,7 @@ const PrjFooter = styled.div`
 function SelectPrjThree() {
   const { state: projectState, actions: projectActions } = ProjectStore();
   const { state: fileState, actions: fileActions } = FileStore();
+  const { projectNum } = useOutletContext();
 
   const quillRef = useRef(null);
   const [editorContent, setEditorContent] = useState(""); // 에디터 내용
@@ -39,6 +40,7 @@ function SelectPrjThree() {
   const [thumbnailImgs, setThumbnailImgs] = useState([]); // 하위컴포넌트에서 받아오는 썸네일
 
   const [isDone, setIsDone] = useState(false);
+
 
   // localStorage에서 상태 복원
   useEffect(() => {
@@ -98,20 +100,19 @@ function SelectPrjThree() {
         };
 
         try {
-            await projectActions.createNewProject(projectData);
-            alert("프로젝트 심사까지는 3~5일 정도 소요됩니다.");
-            localStorage.removeItem("projectState");
-            navigate("/home");
+          await projectActions.createNewProject(projectData);
+          alert("프로젝트 심사까지는 3~5일 정도 소요됩니다.");
+          localStorage.removeItem("projectState");
+          navigate("/home");
         } catch (error) {
           console.error("프로젝트 생성 실패:", error);
           setErrorMessage("프로젝트 생성 중 오류가 발생했습니다.");
         }
-      } 
+      }
     };
 
     createProject(); // 비동기 함수 호출
     setIsDone(true);
-    
   }, [fileState]);
 
   return (

@@ -10,11 +10,7 @@ function Ongoing() {
 
   // 'EDIT' 클릭 시 이동 함수
   const handleEditClick = (projectNum) => {
-    navigate(`/home/product-details/${projectNum}`); // 해당 제품 상세 페이지로 이동
-  };
-
-  const handleContainerClick = (projectNum) => {
-    navigate(`/home/product-details/${projectNum}`);
+    navigate(`/home/selectPrj/edit/${projectNum}`); // 해당 제품 상세 페이지로 이동
   };
 
   useEffect(() => {
@@ -38,7 +34,7 @@ function Ongoing() {
       <MyContainers
         products={filteredData}
         onEditClick={handleEditClick} // 클릭 핸들러 전달
-        onContainerClick={handleContainerClick}
+        onContainerClick={handleEditClick} 
         text="수정"
       />
     </div>

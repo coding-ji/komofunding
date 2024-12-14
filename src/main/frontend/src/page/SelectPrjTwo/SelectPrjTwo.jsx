@@ -1,6 +1,6 @@
 import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
@@ -29,6 +29,7 @@ const EnrollButton = styled.div`
 
 function SelectPrjTwo() {
   const { state: projectState, actions: projectActions } = ProjectStore();
+  const { projectNum } = useOutletContext();
   const items = projectState.items || [];
    
   // 개별 상품 정보 상태 관리
