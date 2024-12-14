@@ -1,10 +1,28 @@
 import React, { useState } from "react";
 import styles from "./ReusableTable.module.css";
 import { WhiteBtn } from "../MyBtn";
-
-const ReusableTable = ({ title, data, columns }) => {
+import { formattedDate } from "../../utils/formattedData";
+const ReusableTable = ({ title, data, columns, searchOptions, onSearch }) => {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [selectedOption, setSelectedOption] = useState(searchOptions?.[0]?.value || ""); // 기본 검색 옵션
   const [checkedRows, setCheckedRows] = useState(data.map(() => false)); // 각 행의 체크 상태
   const [allChecked, setAllChecked] = useState(false); // 전체 선택 상태
+
+  // 검색 실행
+  const handleSearch = () => {
+    if (onSearch) {
+      onSearch(selectedOption, searchKeyword); // 검색 기준과 키워드를 부모로 전달
+      setSearchKeyword(""); // 검색어 초기화
+      setSelectedOption(searchOptions?.[0]?.value || ""); // 드롭다운 초기화
+    }
+  };
+
+  // 엔터 키로 검색 실행
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   // 전체 선택/해제
   const handleSelectAll = () => {
@@ -60,19 +78,19 @@ const ReusableTable = ({ title, data, columns }) => {
             </thead>
             <tbody>
               ${selectedRows
-                .map(
-                  (row) =>
-                    `<tr>${columns
-                      .map((col) => `<td>${row[col.accessor] || ""}</td>`)
-                      .join("")}</tr>`
-                )
-                .join("")}
+        .map(
+          (row) =>
+            `<tr>${columns
+              .map((col) => `<td>${row[col.accessor] || ""}</td>`)
+              .join("")}</tr>`
+        )
+        .join("")}
             </tbody>
           </table>
         </body>
       </html>
     `;
- 
+
     printWindow.document.open();
     printWindow.document.write(printContent);
     printWindow.document.close();
@@ -81,6 +99,7 @@ const ReusableTable = ({ title, data, columns }) => {
 
   return (
     <div className={styles.wrapper01}>
+      {/* 버튼 영역 */}
       <div className={styles.buttonWrapper0}>
         <WhiteBtn
           onClick={handlePrint}
@@ -90,8 +109,55 @@ const ReusableTable = ({ title, data, columns }) => {
           padding="3px 5px"
           height="40px"
         />
+        <div className={styles.searchWrapper0}>
+          {/* 검색 기준 드롭다운 */}
+          <select
+            className={styles.dropdown0}
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+          >
+            {searchOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          {/* 검색 키워드 입력 */}
+          {selectedOption === "isHidden" ? (
+            <select
+              className={styles.dropdown0}
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            >
+              <option value="">전체</option>
+              <option value="false">공개</option>
+              <option value="true">비공개</option>
+            </select>
+          ) : (
+            <input
+              type="text"
+              className={styles.searchInput0}
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              onKeyPress={handleKeyPress} // 엔터 키로 검색 실행
+              placeholder="검색어를 입력하세요"
+            />
+          )}
+
+          {/* 검색 버튼 */}
+          <WhiteBtn
+            onClick={handleSearch}
+            text="검색"
+            width="80px"
+            fontSize="1rem"
+            padding="3px 5px"
+            height="40px"
+          />
+        </div>
       </div>
 
+      {/* 테이블 영역 */}
       <div className={styles.tableWrapper0}>
         <table className={styles.table0}>
           <thead>
@@ -110,21 +176,26 @@ const ReusableTable = ({ title, data, columns }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, index) => (
-              <tr
-                key={index}
-                className={checkedRows[index] ? styles.selected0 : ""}
-              >
+            {data.map((row, rowIndex) => (
+              <tr key={rowIndex} className={checkedRows[rowIndex] ? styles.selected0 : ""}>
                 <td>
                   <input
                     type="checkbox"
                     className={styles.checkbox0}
-                    checked={checkedRows[index]}
-                    onChange={() => handleCheckboxChange(index)}
+                    checked={checkedRows[rowIndex]}
+                    onChange={() => handleCheckboxChange(rowIndex)}
                   />
                 </td>
                 {columns.map((col, colIndex) => (
-                  <td key={colIndex}>{row[col.accessor]}</td>
+                  <td key={colIndex}>
+                    {col.accessor === "writeDate" || col.accessor === "endDate"
+                      ? formattedDate(row[col.accessor]).toLocaleString()
+                      : col.accessor === "isHidden"
+                      ? row[col.accessor] === false
+                        ? "공개"
+                        : "비공개"
+                      : row[col.accessor]}
+                  </td>
                 ))}
               </tr>
             ))}

@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,6 +37,7 @@ public class UserService {
     private final JavaMailSender mailSender;
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailRepository emailRepository;
+    @Autowired
     private final AdminRepository adminRepository;
 
 
@@ -150,50 +152,61 @@ public class UserService {
 
 
     // 로그인
-    @Transactional
     public Map<String, String> login(String email, String password, HttpSession session) {
-        // Admin에서 먼저 검색
+        // Admin 테이블에서 검색
         Admin admin = adminRepository.findByAdminEmail(email);
         if (admin != null) {
-            // Admin 로그인 로직
-            if (password == admin.getAdminPw()) {
-                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-            }
-
-            // 세션에 Admin ID 저장
-            session.setAttribute("adminId", admin.getAdminId());
-
-            // 응답 생성
-            Map<String, String> response = new HashMap<>();
-            response.put("sessionId", session.getId());
-            response.put("role", "admin");
-            return response;
+            return handleAdminLogin(admin, password, session);
         }
 
-        // Admin에서 찾지 못하면 User에서 검색
+        // User 테이블에서 검색
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        return handleUserLogin(user, password, session);
+    }
+
+    private Map<String, String> handleAdminLogin(Admin admin, String password, HttpSession session) {
+        if (!password.equals(admin.getAdminPw())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 세션에 Admin 정보 저장
+        session.setAttribute("adminId", admin.getAdminId());
+        session.setAttribute("admin_nickname", admin.getAdminNickname()); // 글 작성시 들어가게 하려고 일단 이렇게 뺏는데.. 나중에 스토어 만들면 큼.. 지워두댐!
+
+        session.setAttribute("role", "admin");
+
+        // 응답 생성
+        Map<String, String> response = new HashMap<>();
+        response.put("sessionId", session.getId());
+        response.put("role", "admin");
+        response.put("adminId", admin.getAdminId());
+        response.put("adminNickname", admin.getAdminNickname());
+        return response;
+    }
+
+    private Map<String, String> handleUserLogin(User user, String password, HttpSession session) {
+        // User 활성화 상태 확인
+        if (user.getActivatedStatus() == UserStatus.DEACTIVATED) {
+            throw new IllegalStateException("탈퇴한 회원입니다.");
+        }
 
         // 비밀번호 확인
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 세션 생성 및 사용자 데이터 저장
-        session.setAttribute("userId", user.getUserId()); // 세션에 사용자 ID 저장
+        // 세션에 User 정보 저장
+        session.setAttribute("userId", user.getUserId());
+        session.setAttribute("role", "user");
 
-        // 세션 ID 반환
-        String sessionId = session.getId();
-
-        // 클라이언트로 반환할 데이터 준비
+        // 응답 생성
         Map<String, String> response = new HashMap<>();
-        response.put("sessionId", sessionId); // 세션 ID
+        response.put("sessionId", session.getId());
         response.put("role", "user");
-        response.put("userNum", user.getUserNum().toString()); // 유저 번호 로컬스토리지에 저장
-
-        return response; // 세션 ID 포함 응답
+        response.put("userNum", String.valueOf(user.getUserNum()));
+        return response;
     }
-
 
 
 

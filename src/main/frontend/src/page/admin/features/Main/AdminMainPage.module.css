@@ -1,5 +1,5 @@
-.container {
-  padding: 20px;
+.AdminMainPagecontainer {
+  padding: 50px 20px;
   font-family: Arial, sans-serif;
 }
 
@@ -8,14 +8,21 @@
   margin-bottom: 20px;
 }
 
-.charts, .tables {
+.charts{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
+.tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  
+}
+
 .totalMembers {
-  color: #007bff;
+  color: #256E91;
   font-weight: bold;
 }
 

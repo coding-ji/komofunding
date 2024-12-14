@@ -15,6 +15,8 @@ public interface CommunityRepository extends JpaRepository<Community, String> {
     // 카테고리별 커뮤니티 조회
     List<Community> findByCommunityCategory(CommunityCategory category);
 
+    Community findByCommunityNumber(Integer communityNumber);
+
     // 숨김 여부로 조회
     List<Community> findByIsHidden(boolean isHidden);
 

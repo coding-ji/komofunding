@@ -1,10 +1,31 @@
 .sidebar {
   background-color: var(--darkgreen-color);
   color: white;
-  padding: 20px;
   width: 250px;
-  height: 100vh;
+  height: auto;
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease; /* 애니메이션 추가 */
+  z-index: 0;
+  padding: 30px;
+
 }
+
+/* 접힘 상태 */
+/* .menuCollapsed {
+  max-height: 0; 
+} */
+
+
+/* 항상 보이는 헤더 */
+.headeradminside {
+  cursor: pointer; /* 클릭 가능하도록 설정 */
+  text-align: center;
+  padding: 10px 0;
+  background-color: var(--darkgreen-color);
+}
+
 
 .logo {
   font-size: 20px;
@@ -21,6 +42,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
 }
 
 .sectionDivider {
@@ -54,6 +76,7 @@
   padding-left: 20px;
   list-style: disc;
   color: #b8c5c1;
+  transition: max-height 0.5s ease-in-out; /* 접힘/펼침 애니메이션 */
 }
 
 .subMenu li {
@@ -76,4 +99,35 @@
 .menu > li:first-child .sectionDivider {
   border-top: none;
   margin-top: 0;
+}
+
+
+.collapsed {
+  width: 80px; /* 접혔을 때 너비 */
+}
+
+
+
+/* 반응형 처리 */
+@media (max-width: 760px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    z-index: 100;
+  }
+
+  .sidebar.collapsed {
+    transform: translateY(-100%); /* 화면 위로 숨김 */
+  }
+
+  .sidebar:not(.collapsed) {
+    transform: translateY(0); /* 화면 아래로 펼침 */
+  }
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden; /* 접힘 시 메뉴 숨김 */
+    transition: all  2s ease-in-out; /* 메뉴 접힘/펼침 애니메이션 */
+  }
 }

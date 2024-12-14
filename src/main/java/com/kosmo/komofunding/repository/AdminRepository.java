@@ -16,7 +16,7 @@ public interface AdminRepository extends JpaRepository<Admin, String> {
 
     Admin findByAdminId(String adminId);
  // 관리자 이메일로 조회
-Admin findByAdminEmail(String adminEmail);
+Admin findByAdminEmail(String email);
 
     // 관리자 별명 검색 (포함 검색)
     List<Admin> findByAdminNicknameContaining(String adminNickname);

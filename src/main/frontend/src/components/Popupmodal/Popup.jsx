@@ -36,7 +36,7 @@ function Popup({ message, onClose,navigateTo,onConfirm }) {
           margin="5px"
             />
              <WhiteBtn 
-         onClick={()=> onClose()} // 버튼 클릭 이벤트
+         onClick={onClose} // 버튼 클릭 이벤트
           text="취소"
           width = "100px"
           padding="2px 2px"

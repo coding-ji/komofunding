@@ -99,6 +99,7 @@ export const readAllCommunities = () => async (dispatch) => {
     try {
         const response = await fetchAllCommunities();
         dispatch({ type: READ_COMMUNITY, payload: response.data });
+        return response.data; // 데이터를 반환
     } catch (error) {
         console.error("Failed to fetch all communities", error);
     }

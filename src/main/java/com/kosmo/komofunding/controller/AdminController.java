@@ -1,6 +1,7 @@
 package com.kosmo.komofunding.controller;
 
 import com.kosmo.komofunding.entity.Admin;
+import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private AdminRepository adminRepository;
 
     @PostMapping("/admin")
     public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin){
@@ -34,7 +37,7 @@ public class AdminController {
 
     @GetMapping("/admin/{adminId}")
     public ResponseEntity<Admin> findByAdminId(@PathVariable("adminId") String adminId){
-        Optional<Admin> admin = adminService.fintByAdminId(adminId);
+        Optional<Admin> admin = adminRepository.findById(adminId);
         return admin.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 

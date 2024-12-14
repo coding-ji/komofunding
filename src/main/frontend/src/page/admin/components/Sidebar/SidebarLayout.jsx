@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./SidebarLayout.module.css";
 import memberIcon from "./회원관리/user svg.svg";
 import projectIcon from "./프로젝트/prj svg.svg";
@@ -8,28 +8,52 @@ import noticeIcon from "./공지사항/notice svg.svg";
 import eventIcon from "./이벤트/event svg.svg";
 import qnaIcon from "./q&a/Q&A svg.svg";
 
-const SidebarLayout = ({ className }) => {
-  const [activeMenu, setActiveMenu] = useState("");
 
-  const toggleMenu = (menu) => {
+const SidebarLayout = () => {
+  const [activeMenu, setActiveMenu] = useState("");
+  const [isCollapsed, setIsCollapsed] = useState(true); // 메뉴 접힘 상태
+
+  const navigate = useNavigate()
+  
+  const toggleMenu = (menu,event) => {
+    event.stopPropagation(); // 이벤트 전파 방지
     setActiveMenu((prevMenu) => (prevMenu === menu ? "" : menu));
   };
 
+  const handleMenuClick = (menu, path, event) => {
+    event.stopPropagation();
+    toggleMenu(menu, event); // 메뉴 확장/축소
+    navigate(path); // 페이지 이동
+  };
+
+
+
+  const toggleSidebar = () => {
+    setIsCollapsed((prev) => !prev); // 사이드바 접힘 상태 토글
+  };
+
   return (
-    <div className={`${styles.sidebar} ${className}`}>
+    <div
+      className={styles.sidebar}   >
+       <div className={styles.headeradminside} onClick={toggleSidebar}>
       <h1 className={styles.logo}>포실포실포시리</h1>
       <h2 className={styles.email}>email</h2>
-      <ul className={styles.menu}>
+      </div>
+
+      <ul
+        className={`${styles.menu} ${
+          isCollapsed ? styles.menuCollapsed : styles.menuExpanded
+        }`}>
         {/* 회원관리 */}
         <li>
           <div className={styles.sectionDivider}>관리 홈</div>
-          <Link
-            to="/admin/member/all"
+          <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("member")}
+            onClick={(e) => toggleMenu("member",e)}
+            Link to="admin/community"
           >
             <img src={memberIcon} alt="회원관리" /> 회원관리
-          </Link>
+          </div>
           {activeMenu === "member" && (
             <ul className={styles.subMenu}>
               <li>
@@ -47,13 +71,12 @@ const SidebarLayout = ({ className }) => {
 
         {/* 프로젝트 */}
         <li>
-          <Link
-            to="/admin/project/review"
+        <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("project")}
+            onClick={(e) => toggleMenu("project",e)}
           >
             <img src={projectIcon} alt="프로젝트" /> 프로젝트
-          </Link>
+          </div>
           {activeMenu === "project" && (
             <ul className={styles.subMenu}>
               <li>
@@ -68,13 +91,12 @@ const SidebarLayout = ({ className }) => {
 
         {/* 결제 */}
         <li>
-          <Link
-            to="/admin/payment/settlement"
+        <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("payment")}
+            onClick={(e) => toggleMenu("payment",e)}
           >
             <img src={paymentIcon} alt="결제" /> 결제
-          </Link>
+          </div>
           {activeMenu === "payment" && (
             <ul className={styles.subMenu}>
               <li>
@@ -91,29 +113,36 @@ const SidebarLayout = ({ className }) => {
         <li>
           <div className={styles.sectionDivider}>펀딩 운영</div>
           {/* 공지사항 */}
-          <Link
-            to="/admin/notice"
+{/*           
+          <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("announcement")}
+            onClick={(e) => toggleMenu("announcement",e)}
           >
             <img src={noticeIcon} alt="공지사항" /> 공지사항
-          </Link>
+          </div> */}
+
+          <div
+            className={styles.menuHeader}
+            onClick={(e) => handleMenuClick("announcement", "/admin/community/notice-faq", e)}
+          >
+            <img src={noticeIcon} alt="공지사항" /> 공지사항
+          </div>
+
           {activeMenu === "announcement" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/write">작성 및 수정</Link>
+                <Link to="/admin/community/write">작성 및 수정</Link>
               </li>
             </ul>
           )}
-
+ 
           {/* 이벤트 */}
-          <Link
-            to="/admin/event/ongoing"
+          <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("event")}
+            onClick={(e) => handleMenuClick("event", "/admin/community/event", e)}
           >
             <img src={eventIcon} alt="이벤트" /> 이벤트
-          </Link>
+          </div>
           {activeMenu === "event" && (
             <ul className={styles.subMenu}>
               <li>
@@ -126,13 +155,12 @@ const SidebarLayout = ({ className }) => {
           )}
 
           {/* 알림/수신 */}
-          <Link
-            to="/admin/email"
+          <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("alert")}
+            onClick={(e) => toggleMenu("alert",e)}
           >
-            🔔 알림/수신 {/*FIXME: 아이콘 추가*/}
-          </Link>
+            🔔 알림/수신
+          </div>
           {activeMenu === "alert" && (
             <ul className={styles.subMenu}>
               <li>
@@ -142,13 +170,12 @@ const SidebarLayout = ({ className }) => {
           )}
 
           {/* Q&A */}
-          <Link
-            to="/admin/qna/waiting"
+          <div
             className={styles.menuHeader}
-            onClick={() => toggleMenu("qna")}
+            onClick={(e) => toggleMenu("qna",e)}
           >
             <img src={qnaIcon} alt="Q&A" /> Q&A
-          </Link>
+          </div>
           {activeMenu === "qna" && (
             <ul className={styles.subMenu}>
               <li>
@@ -161,6 +188,7 @@ const SidebarLayout = ({ className }) => {
           )}
         </li>
       </ul>
+     
     </div>
   );
 };

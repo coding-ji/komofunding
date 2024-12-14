@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import styles from './WriteForm.module.css';
-import Dropdown from '../../../components/Dropdown/Dropdown';
+import Dropdown from '../../../../components/Dropdown/Dropdown';
 
 
 const WriteForm = ({ action, state }) => {
+
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const storedData = sessionStorage.getItem('user');
+        if (storedData) {
+            setUserData(JSON.parse(storedData)); // 세션 데이터 파싱
+        }
+    }, []);
+
+
+    // 작성자 닉네임 초기화
+    const initialAuthor = userData?.adminNickname || '관리자';
+
     // useState로 상태 관리
     const [formData, setFormData] = useState({
         communityCategory: state.communityCategory || '',
         communityTitle: state.communityTitle || '',
-        author: state.author || '',
+        author: initialAuthor,
         isHidden: state.isHidden || false,
         endDate: state.endDate || '',
     });
@@ -17,11 +31,13 @@ const WriteForm = ({ action, state }) => {
     useEffect(() => {
         action.changeCommunityCategory(formData.communityCategory);
         action.changeCommunityTitle(formData.communityTitle);
-        action.changeAuthor(formData.author);
+        action.changeAuthor(formData.author); // Store 상태 업데이트
         action.changeIsHidden(formData.isHidden);
         action.changeEndDate(formData.endDate);
         
     }, [formData]);
+
+    
 
     // input 변경 핸들러
     const handleInputChange = (key, value) => {
@@ -55,10 +71,11 @@ const WriteForm = ({ action, state }) => {
             </div>
             <div className={styles.row}>
                 <label>작성자</label>
-                <input
+            
+                 <input
                     type="text"
                     value={formData.author}
-                    onChange={(e) => handleInputChange('author', e.target.value)}
+                    readOnly // 읽기 전용으로 설정
                 />
             </div>
             <div className={styles.row}>

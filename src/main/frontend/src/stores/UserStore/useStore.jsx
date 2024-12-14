@@ -21,7 +21,7 @@ import {
     fetchMyPageInfo,
     fetchUserProfile,
     updateProfile,
-    applyCreatorSwitch,
+    // applyCreatorSwitch,
     register,
     sendEmailForRegister,
     sendEmailVerificationCode,

@@ -2,7 +2,7 @@ import React from "react";
 import Barchart from "./Barchart";
 import ChartContainer from "./ChartContainer";
 import AdminPieChart from "./PieChart";
-import QATable from "./QATable";
+import {QATable1, QATable2, QATable3} from "./QATable";
 import styles from "./AdminMainPage.module.css";
 
 const AdminMainPage = () => {
@@ -30,9 +30,9 @@ const AdminMainPage = () => {
     },
     yearly: {
       data: [
-        { year: "2024", total: 160 },
-        { year: "2023", total: 240 },
-        { year: "2022", total: 360 },
+        { year: "2024", joined: 200, withdrawn: 40 },
+        { year: "2023", joined: 180, withdrawn: 50 },
+        { year: "2022", joined: 220, withdrawn: 60 },
       ],
     },
     dailyMembers: {
@@ -79,7 +79,7 @@ const AdminMainPage = () => {
   } = transformedData;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.AdminMainPagecontainer}>
       <header className={styles.header}>
         <h1>
           현재 <span className={styles.totalMembers}>{totalMembers}</span>명의 회원이 이용 중입니다.
@@ -88,17 +88,28 @@ const AdminMainPage = () => {
 
       <section className={styles.charts}>
         <ChartContainer title="월간 신규 회원 분석">
-          <Barchart data={monthlyNew.data} dataKey="month" barKey="members" />
+        <Barchart data={monthlyNew.data} dataKey="month" barKey="members" />
         </ChartContainer>
 
         <ChartContainer title="월간 탈퇴 회원 분석">
-          <Barchart data={withdrawMembers.data} dataKey="month" barKey="members" />
+        <Barchart
+            data={withdrawMembers.data}
+            dataKey="month"
+            barKey="members"
+            fillColor="#FF5733" // 모든 막대를 빨간색으로 설정
+          />
         </ChartContainer>
 
         <ChartContainer title="연간 회원 분석">
-          <Barchart data={yearly.data} dataKey="year" barKey="total" />
-        </ChartContainer>
-
+  <Barchart
+    data={yearly.data}
+    dataKey="year"
+    bars={[
+      { dataKey: "joined", color: "#256E91" }, // 가입한 회원 (파란색)
+      { dataKey: "withdrawn", color: "#FF5733" }, // 탈퇴한 회원 (빨간색)
+    ]}
+  />
+</ChartContainer>
         <ChartContainer title="일간 회원 분석">
           <AdminPieChart data={dailyMembers.data} />
         </ChartContainer>
@@ -106,15 +117,15 @@ const AdminMainPage = () => {
 
       <section className={styles.tables}>
         <ChartContainer title="프로젝트 달성률">
-          <QATable data={projectViews.data} />
+          <QATable1 data={projectViews.data} />
         </ChartContainer>
 
         <ChartContainer title="제작자 신청">
-          <QATable data={creators.data} />
+          <QATable2 data={creators.data} />
         </ChartContainer>
 
         <ChartContainer title="Q&A 분석">
-          <QATable data={qna.data} />
+          <QATable3 data={qna.data} />
         </ChartContainer>
       </section>
     </div>

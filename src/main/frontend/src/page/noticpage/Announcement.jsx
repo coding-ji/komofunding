@@ -44,7 +44,8 @@ const Announcement = () => {
             <hr />
           </header>
           <section className={styles.announcementBody}>
-            <p>{announcement.communityContent}</p>
+            {/* <p>{announcement.communityContent}</p> */}
+            <div dangerouslySetInnerHTML={{ __html: announcement.communityContent }} />
           </section>
         </article>
         

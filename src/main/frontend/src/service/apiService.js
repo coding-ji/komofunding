@@ -131,7 +131,7 @@ export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 // 커뮤니티 API
 
 // 커뮤니티 목록 가져오기
-export const fetchAllCommunities = () => apiClient.get("/posts/community");
+export const fetchAllCommunities = () => apiClient.get("/api/posts/community");
 
 // 특정 커뮤니티 가져오기 (ID로 검색)
 export const fetchCommunityById = (communityId) =>

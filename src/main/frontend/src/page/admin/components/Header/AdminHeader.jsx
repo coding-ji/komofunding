@@ -53,7 +53,13 @@ const AdminHeader = () => {
     setIsPopupOpen(false);
   };
 
-
+     // 로그아웃 핸들러
+     const handleLogout = () => {
+      localStorage.removeItem("user"); // 사용자 정보 삭제
+      setIsLoggedIn(false); // 상태 갱신
+      navigate("/"); // 홈으로 이동
+    };
+    
 
   return (
     <div className={styles.headerContainerAdmin}>
@@ -80,7 +86,7 @@ const AdminHeader = () => {
           />
           <HeaderMenu
             name="로그아웃"
-            // onClick={() => navigate("/home/active")} 
+            onClick={handleLogout}
           />
 
     {isPopupOpen && (

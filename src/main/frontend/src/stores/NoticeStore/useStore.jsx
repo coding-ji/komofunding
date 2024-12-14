@@ -37,41 +37,26 @@ export const useStore = () => {
         changeIsHidden: (isHidden) => dispatch(changeIsHidden(isHidden)),
         resetCommunityState: () => dispatch(resetCommunityState()),
 
-           // API 호출 액션
-           readAllCommunities: async () => {
-            try {
-                await readAllCommunities()(dispatch);
-            } catch (error) {
-                console.error("Failed to fetch all communities", error);
-            }
-        },
+        // API 호출 액션
+        // readAllCommunities: async () => {
+        //     try {
+        //         await readAllCommunities()(dispatch);
+        //     } catch (error) {
+        //         console.error("Failed to fetch all communities", error);
+        //     }
+        // },
+        readAllCommunities: () => readAllCommunities()(dispatch),
 
         readCommunityDetail: (projectNum) => readProjectDetail(projectNum)(dispatch),
 
-        createNewCommunity: async (communityData) => {
-            try {
-                await createNewCommunity(communityData)(dispatch);
-            } catch (error) {
-                console.error("Failed to create community", error);
-            }
-        },
+        createNewCommunity: (communityData) => createNewCommunity(communityData)(dispatch),
 
-        updateExistingCommunity: async (communityNumber, updateData) => {
-            try {
-                await updateExistingCommunity(communityNumber, updateData)(dispatch);
-            } catch (error) {
-                console.error(`Failed to update community ID: ${communityNumber}`, error);
-            }
-        },
 
-        deleteExistingCommunity: async (communityNumber) => {
-            try {
-                await deleteExistingCommunity(communityNumber)(dispatch);
-            } catch (error) {
-                console.error(`Failed to delete community ID: ${communityNumber}`, error);
-            }
-        },
-    };
+        updateExistingCommunity: (communityNumber, updateData) => updateExistingCommunity(communityNumber, updateData)(dispatch),
+
+        deleteExistingCommunity: (communityNumber) => deleteExistingCommunity(communityNumber)(dispatch),
+    }
+
 
     return { state, actions };
 };

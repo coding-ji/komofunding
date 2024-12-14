@@ -29,6 +29,12 @@ public class CommunityService {
         return convertToOutDTO(community);
     }
 
+    public CommunityOutDTO getCommunityByNumber(Integer communityNumber){
+        Community community = communityRepository.findByCommunityNumber(communityNumber);
+        return convertToOutDTO(community);
+
+    }
+
     public List<CommunityOutDTO> getCommunitiesByCategory(CommunityCategory category) {
         List<Community> communities = communityRepository.findByCommunityCategory(category);
         return communities.stream()
@@ -38,19 +44,26 @@ public class CommunityService {
 
 
     public List<CommunityOutDTO> getAllCommunities() { // 모든 커뮤니티 데이터 가져오기 추가
-        return communityRepository.findAll().stream()
+        List<Community> communities = communityRepository.findAll();
+//        System.out.println("Fetched communities from DB: " + communities);
+        return communities.stream()
                 .map(this::convertToOutDTO)
                 .collect(Collectors.toList());
     }
 
     public void createCommunity(CommunityInDTO communityInDTO) {
+        // adminId null 체크
+        if (communityInDTO.getAdminId() == null) {
+            throw new IllegalArgumentException("Admin ID가 null입니다. 유효한 값을 전달해주세요.");
+        }
+
+        // Admin 조회
+        Admin admin = adminRepository.findById(communityInDTO.getAdminId())
+                .orElseThrow(() -> new RuntimeException("Admin 정보를 찾을 수 없습니다."));
+
         // communityNumber 자동 증가 처리
         Integer maxCommunityNumber = communityRepository.findMaxCommunityNumber();
         int nextCommunityNumber = (maxCommunityNumber != null ? maxCommunityNumber : 0) + 1;
-
-        // Admin 조회 (adminId는 String 타입)
-        Admin admin = adminRepository.findById(communityInDTO.getAdminId())
-                .orElseThrow(() -> new RuntimeException("Admin 정보를 찾을 수 없습니다."));
 
         Community community = Community.builder()
                 .communityNumber(nextCommunityNumber)
@@ -61,12 +74,13 @@ public class CommunityService {
                 .updatedDate(LocalDateTime.now())
                 .author(admin.getAdminNickname()) // Admin의 닉네임 설정
                 .admin(admin) // Admin 매핑
-                .isHidden(communityInDTO.isHidden())
+                .isHidden(communityInDTO.getIsHidden())
                 .endDate(communityInDTO.getEndDate())
                 .build();
 
         communityRepository.save(community);
     }
+
 
     public void updateCommunity(String communityId, CommunityInDTO communityInDTO) {
         Community community = communityRepository.findById(communityId)
@@ -74,7 +88,7 @@ public class CommunityService {
         community.setCommunityTitle(communityInDTO.getCommunityTitle());
         community.setCommunityContent(communityInDTO.getCommunityContent());
         community.setUpdatedDate(LocalDateTime.now());
-        community.setIsHidden(communityInDTO.isHidden());
+        community.setIsHidden(communityInDTO.getIsHidden());
         community.setEndDate(communityInDTO.getEndDate());
         communityRepository.save(community);
     }
@@ -97,7 +111,6 @@ public class CommunityService {
                 .endDate(community.getEndDate())
                 .author(community.getAdmin().getAdminNickname()) // Admin 닉네임 반환
                 .isHidden(community.getIsHidden())
-                .url("/posts/community/" + community.getCommunityId())
                 .build();
     }
 }

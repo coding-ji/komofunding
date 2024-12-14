@@ -9,7 +9,7 @@ import java.util.List;
 public class AdminOutDTO {
 
     private String adminId; // 관리자 UID
-    private String adminNickname; // 관리자 별명
+    private String adminNickname; // 관리자 별명s
     private String adminPw;//관리자 비번
     private String adminEmail; // 관리자 이메일
     private LocalDateTime adminJoinDate; // 관리자 생성 날짜

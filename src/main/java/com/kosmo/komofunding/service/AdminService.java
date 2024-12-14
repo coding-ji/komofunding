@@ -24,8 +24,6 @@ public class AdminService {
     //Admin저장
     public Admin saveAdmin(Admin admin){return adminRepository.save(admin);}
 
-    //AdminId로 찾기
-    public Optional<Admin>  fintByAdminId(String adminId){return adminRepository.findById(adminId);}
 
     // 모든 Admin 데이터 가져오기
     public List<Admin> findAllAdmins() {

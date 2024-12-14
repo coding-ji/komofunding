@@ -1,10 +1,7 @@
 package com.kosmo.komofunding.controller;
 
 import com.kosmo.komofunding.common.enums.UserStatus;
-import com.kosmo.komofunding.dto.EmailRequestDTO;
-import com.kosmo.komofunding.dto.UserInDTO;
-import com.kosmo.komofunding.dto.UserOutDTO;
-import com.kosmo.komofunding.dto.UserProfileUpdateDTO;
+import com.kosmo.komofunding.dto.*;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.repository.UserRepository;
@@ -29,13 +26,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
     private final EmailService emailService;
-    @Autowired
-    private JavaMailSender mailSender;
-    private AdminRepository adminRepository;
+    private final JavaMailSender mailSender;
+    private final AdminRepository adminRepository;
 
     // 회원 가입
     @PostMapping("/register")
@@ -109,26 +104,23 @@ public class AuthController {
 public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginRequest, HttpSession session) {
     String email = loginRequest.getEmail();
     String password = loginRequest.getPassword();
+
     try {
-        // 사용자 조회
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-
-        // 활성화 상태 확인
-        if (user.getActivatedStatus() == UserStatus.DEACTIVATED) {
-            throw new IllegalStateException("탈퇴한 회원입니다.");
-        }
-
-        // 로그인 로직 실행
         Map<String, String> response = userService.login(email, password, session);
-        System.out.println("로그인 성공: " + response);
         return ResponseEntity.ok(response);
-
-    }catch (Exception e) {
+    } catch (IllegalArgumentException e) {
         System.err.println("로그인 실패: " + e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+    } catch (IllegalStateException e) {
+        System.err.println("로그인 실패: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
+    } catch (Exception e) {
+        System.err.println("로그인 실패: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "서버 오류 발생"));
     }
 }
+
+
 
     // 로그아웃 처리
     @PostMapping("/logout")
