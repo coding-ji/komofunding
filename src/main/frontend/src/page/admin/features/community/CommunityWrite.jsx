@@ -5,20 +5,20 @@ function CommunityWrite() {
   const [modalOpenSubmit, setModalOpenSubmit] = useState(false)
   const [modalOpenCancel, setModalOpenCancel] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false); // 오류 모달 상태 // 이벤트에서 종료일 미설정
-  
-
- // 에디터 내용 변경 시 호출되는 함수
- const handleEditorChange = (newContent) => {
-  actions.changeCommunityContent(newContent);
-};
 
 
-// 모달 닫기
-const closeSubmitModal = () => {
-  setModalOpenSubmit(false);
-  setModalOpenCancel(false);  
-  setErrorModalOpen(false); // 오류 모달 닫기
-};
+  // 에디터 내용 변경 시 호출되는 함수
+  const handleEditorChange = (newContent) => {
+    actions.changeCommunityContent(newContent);
+  };
+
+
+  // 모달 닫기
+  const closeSubmitModal = () => {
+    setModalOpenSubmit(false);
+    setModalOpenCancel(false);
+    setErrorModalOpen(false); // 오류 모달 닫기
+  };
 
 
 // 폼 제출 핸들러
@@ -42,13 +42,13 @@ try {
     if (response) {
         const responseData = await response.json();
         alert(responseData.message || "글이 성공적으로 작성되었습니다.");
+      }
+      navigate("/admin");
+    } catch (error) {
+      console.error("글 작성 중 오류 발생:", error);
+      alert("글 작성에 실패했습니다.");
     }
-    navigate("/admin");
-} catch (error) {
-    console.error("글 작성 중 오류 발생:", error);
-    alert("글 작성에 실패했습니다.");
-}
-};
+  };
 
   return (
       <div className={styles.container}>

@@ -16,7 +16,7 @@ const ReusableTable = ({ title, data, columns, searchOptions, onSearch }) => {
       setSelectedOption(searchOptions?.[0]?.value || ""); // 드롭다운 초기화
     }
   };
-
+``
   // 엔터 키로 검색 실행
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {

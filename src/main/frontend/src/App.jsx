@@ -41,7 +41,27 @@ import DonateGuide from "./page/noticpage/DonateGuide";
 import ProfileView from "./page/Profile/ProfileView";
 import MainProDetails from "./page/MainProDetails/MainProDetails";
 import OrderTable from "./page/OrderTable/OrderTable";
+import AddressSearchModal from './components/Refunded/AddressSearchModal'
+
+import CommunityWrite from './page/Admin/features/community/CommunityWrite'
+import ChargePolicy from "./page/noticpage/ChargePolicy";
+import TermsOfService from "./page/noticpage/TermsOfService";
+import PrivacyPolicy from "./page/noticpage/PrivacyPolicy";
+
+
+// 어드민
+
+import AdminHeader from './page/Admin/components/Header/AdminHeader'
+import SidebarLayout from "./page/Admin/components/Sidebar/SidebarLayout";
+import AdminLayout from "./page/Admin/Layout";
+import AdminQnaPage from "./page/Admin/features/Qna/AdminQnaPage";
+
+
+
 import FundingPay from "./page/FundingPay/FundingPay";
+import AdminMainPage from "./page/Admin/features/Main/AdminMainPage";
+import AdminNoticePage from "./page/Admin/features/community/communityPage/AdminNoticePage";
+import AdminEventPage from "./page/Admin/features/community/communityPage/AdminEventPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -64,6 +84,8 @@ const router = createBrowserRouter([
           { path: ":id", element: <QnAView /> }, // 상세 경로
         ],
       },
+
+      // 사용자 커뮤니티 / 공지사항
       { path: "notice", element: <NoticePage /> },
       { path: "announcement/:id", element: <Announcement /> },
       // { path:"/productDetail", element:<ProductDetail/>},
@@ -99,15 +121,60 @@ const router = createBrowserRouter([
       { path: "profile/:userNum", element: <ProfileView /> },
       { path: "profile-edit/:userNum", element: <ProfileEdit /> },
 
-      { path: "creation-guide", element: <CreationGuide /> },
-      { path: "donate-guide", element: <DonateGuide /> },
+      // 푸터로 연결되는 정책, 이용안내
+      { path: "creation-guide", element: <CreationGuide /> }, //창작가이드
+      { path: "donate-guide", element: <DonateGuide /> }, // 후원 가이드
+      { path: "charge", element: <ChargePolicy /> }, // 수수료 안내
+      {path:"useterms", element:<TermsOfService/>}, // 이용약관
+      {path:"privacypolicy", element:<PrivacyPolicy/>}, // 개인정보처리
       { path: "product-details/:projectNum", element: <MainProDetails /> },
-      { path: "ordertable/:projectNum", element: <OrderTable /> },
-      { path: "fundingpay", element: <FundingPay /> },
+
+
+      { path: "ordertable", element: <OrderTable /> },
+      { path: "fundingpay", element: <FundingPay />},
       // { path: "investment", element: <Investment />}
+
+
     ],
   },
-]);
+  {
+    path: "/admin",
+    element : <AdminLayout/>,
+    children: [
+      { index: true, element: <AdminMainPage/>},
+
+      // 관리자 공지사항 / 커뮤니티
+      {path : "community/notice-faq", element:<AdminNoticePage/> }, //공지사항/FAQ 목록
+      {path : "community/event", element:<AdminEventPage/> }, // 이벤트 목록
+      { path: "community/write", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
+      // { path: "community/write", element: <CommunityWrite/>},
+
+      // Qna
+      { path:"qna/waiting", element: <AdminQnaPage/>},
+      // { path:"qna/completed", element: <AdminQnaPage/>},
+
+    ]
+    }
+
+//   // { path: "/write", element: <CommunityWrite /> } ,
+//   {path : "/address", element:<AddressSearchModal/> }
+// ]);
+//       //   ],
+//       // },
+//       // {path:"create-apply", element:<CreatorApply/> },
+//       // {path:"profile/:userNum", element:<ProfileView/> },
+//       // {path:"profile-edit/:userNum", element:<ProfileEdit/> },
+
+//       // {path:"creation-guide", element:<CreationGuide/>},
+//       // {path:"donate-guide", element:<DonateGuide/>},
+//       // {path :"product-details", element:<MainProDetails/> },
+
+// //   //   ]},
+
+
+
+
+])
 
 function App() {
   useEffect(() => {
@@ -132,6 +199,7 @@ function App() {
 
   // 라우터 경로
   return <RouterProvider router={router} />;
+  // return (<Date /> )
 }
 
 export default App;
