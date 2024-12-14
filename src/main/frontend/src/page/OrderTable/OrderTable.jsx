@@ -24,7 +24,7 @@ const OrderTable = () => {
   }, [projectNum]);
 
   useEffect(() => {
-    if (state.payment.length > 0) {
+    if (Array.isArray(state.payment) && state.payment.length > 0) {
       // 주문 항목 체크 상태 초기화 (전체 항목 체크 여부에 따라)
       setOrderChecked(state.payment.map(() => false));
     }

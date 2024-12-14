@@ -26,7 +26,7 @@ function Completed() {
         const today = new Date(); // 오늘 날짜
 
         // 시작 날짜와 종료 날짜 조건 모두 확인
-        return projectEndDate > today;
+        return projectEndDate < today;
       });
 
       setFilteredData(filtered); // 필터링된 데이터를 상태로 설정

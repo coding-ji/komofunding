@@ -7,7 +7,7 @@ import PrjCategory from "../PrjCategory";
 import TitleProduct from "../TitleProduct";
 import MainProDetailQnA from "./MainProDetailQnA";
 import RefundPolicy from "./RefundPolicy";
-import { formatCustomDate } from "../../utils/formattedData";
+import { formatCustomDate, formatCurrency } from "../../utils/formattedData";
 import UserQnaBox from "./UserQnaBox/UserQnaBox";
  
 const ImageContainer = styled.div`
@@ -73,12 +73,6 @@ function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
         color = "rgb(0,0,0)"
         text = {htmlContent}
          />
-        
-        {/* <ImageContainer ref={introRef}>
-          {project.imgs.map((img, index) => (
-            <img key={index} src={img} alt={`${index + 1}`} />
-          ))}
-        </ImageContainer> */}
   
         {/* 일정 */}
         <TitleBox text="일정" ref={scheduleRef} />
@@ -107,7 +101,7 @@ function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
               color="black"
               fontSize="1.0rem"
               lineHeight="2rem"
-              text={`가격: ${item.itemPrice}원\n 수량: ${item.itemAmount}`}
+              text={`가격: ${formatCurrency(item.itemPrice)}원\n 수량: ${formatCurrency(item.itemAmount)}`}
             />
           </ItemCard>
         ))}

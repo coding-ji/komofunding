@@ -13,6 +13,10 @@ function Ongoing() {
     navigate(`/home/product-details/${projectNum}`); // 해당 제품 상세 페이지로 이동
   };
 
+  const handleContainerClick = (projectNum) => {
+    navigate(`/home/product-details/${projectNum}`);
+  };
+
   useEffect(() => {
     if (Array.isArray(state.project) && state.project.length > 0) {
       // 현재 날짜 기준으로 조건에 맞는 project 필터링
@@ -20,21 +24,21 @@ function Ongoing() {
         const projectStartDate = new Date(product.projectStartDate); // 시작 날짜
         const projectEndDate = new Date(product.projectEndDate); // 종료 날짜
         const today = new Date(); // 오늘 날짜
-  
+
         // 시작 날짜와 종료 날짜 조건 모두 확인
-        return projectStartDate < today && projectEndDate < today;
+        return projectStartDate < today && projectEndDate > today;
       });
-  
+
       setFilteredData(filtered); // 필터링된 데이터를 상태로 설정
     }
   }, [state.project]);
-  
 
   return (
     <div>
       <MyContainers
         products={filteredData}
         onEditClick={handleEditClick} // 클릭 핸들러 전달
+        onContainerClick={handleContainerClick}
         text="수정"
       />
     </div>

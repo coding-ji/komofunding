@@ -7,7 +7,7 @@ import ProductMoreBtn from "../../components/ProductMoreBtn";
 function MainProductContainer({ products }) {
   const [shuffledProducts, setShuffledProducts] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
-
+ 
   // 데이터를 랜덤으로 섞어서 표시
   useEffect(() => {
     if (products && products.length > 0) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './AmountInfo.module.css'; // 별도 CSS 모듈 사용
 
+
 const AmountInfo = ({ amount, percentage }) => {
   return (
     <div className={styles.amountWrapper}>

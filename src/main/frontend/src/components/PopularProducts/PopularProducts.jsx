@@ -4,6 +4,7 @@ import ProductCardImage from "../ProductCard1/ProductCardImage";
 import ProductTitle from "../ProductCard1/ProductTitle";
 import styled from "styled-components";
 import "./PopularProducts.css";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -14,6 +15,7 @@ function PopularProducts({ products }) {
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 슬라이드 인덱스
   const [popularProducts, setPopularProducts] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const navigate = useNavigate();
 
   // 데이터 정렬 후 상위 5개 추출
   useEffect(() => {
@@ -67,6 +69,7 @@ function PopularProducts({ products }) {
     transition: { duration: 1 },
   };
 
+
   return (
     <div className="popular-products-container">
       <Wrapper>
@@ -82,6 +85,7 @@ function PopularProducts({ products }) {
       {/* AnimatePresence로 슬라이드 감싸기 */}
       <div
         style={{ position: "relative", height: "300px", overflow: "hidden" }}
+        onClick={()=>navigate(`/home/product-details/${popularProducts[currentIndex].projectNum}`)}
       >
         <AnimatePresence>
           {popularProducts[currentIndex] && (

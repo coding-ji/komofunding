@@ -160,7 +160,7 @@ const TopSection = ({ datas }) => {
               imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
-              onClick={() => navigate(`/project/${project.projectNum}`)}
+              onClick={() => navigate(`/home/product-details/${project.projectNum}`)}
               isNew={project.isNew}
               isPopular={project.isPopular}
             />
@@ -176,7 +176,7 @@ const TopSection = ({ datas }) => {
               imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
-              onClick={() => navigate(`/project/${project.projectNum}`)}
+              onClick={() => navigate(`/home/product-details/${project.projectNum}`)}
               isNew={project.isNew}
               isPopular={project.isPopular}
             />
@@ -191,7 +191,7 @@ const TopSection = ({ datas }) => {
               imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
-              onClick={() => navigate(`/project/${project.projectNum}`)}
+              onClick={() => navigate(`/home/product-details/${project.projectNum}`)}
               isNew={project.isNew}
               isPopular={project.isPopular}
             />
@@ -207,7 +207,7 @@ const TopSection = ({ datas }) => {
               imgSrc={project.thumbnailImgs[0]}
               currentAmount={parseInt(project.currentAmount, 10)}
               totalAmount={parseInt(project.totalAmount, 10)}
-              onClick={() => navigate(`/project/${project.projectNum}`)}
+              onClick={() => navigate(`/home/product-details/${project.projectNum}`)}
               isNew={project.isNew}
               isPopular={project.isPopular}
             />
@@ -222,7 +222,7 @@ const TopSection = ({ datas }) => {
                   imgSrc={project.thumbnailImgs[0]}
                   currentAmount={parseInt(project.currentAmount, 10)}
                   totalAmount={parseInt(project.totalAmount, 10)}
-                  onClick={() => navigate(`/project/${project.projectNum}`)}
+                  onClick={() => navigate(`/home/product-details/${project.projectNum}`)}
                   isNew={project.isNew}
                   isPopular={project.isPopular}
                 />
@@ -238,7 +238,7 @@ const TopSection = ({ datas }) => {
                   imgSrc={project.thumbnailImgs[0]}
                   currentAmount={parseInt(project.currentAmount, 10)}
                   totalAmount={parseInt(project.totalAmount, 10)}
-                  onClick={() => navigate(`/project/${project.projectNum}`)}
+                  onClick={() => navigate(`/home/product-details/${project.projectNum}`)}
                   isNew={project.isNew}
                   isPopular={project.isPopular}
                 />

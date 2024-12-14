@@ -4,7 +4,7 @@ import styles from "./ProgressContainer.module.css";
 import Progress from "../Progress";
 import AmountInfo from "./AmountInfo";
 import MyNavLine from "../MyNavLine";
-import { formatCurrency } from "../../utils/formattedData";
+import { formatCurrency, formatAchievementRate } from "../../utils/formattedData";
 
 const ProgressContainer = ({ project, paymentState, paymentActions }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false); // 아코디언 상태 관리
@@ -12,7 +12,9 @@ const ProgressContainer = ({ project, paymentState, paymentActions }) => {
   // 프로젝트 시작일과 현재 날짜 비교
   const currentDate = new Date();
   const projectStartDate = new Date(project.projectStartDate);
+  const projectEndDate = new Date(project.projectEndDate);
   const isProjectStarted = projectStartDate <= currentDate;
+  const isProjectEnded = projectEndDate < currentDate;
 
   // 선택된 아이템들의 총 금액 계산
   useEffect(() => {
@@ -77,7 +79,7 @@ const ProgressContainer = ({ project, paymentState, paymentActions }) => {
       <div className={styles.amountInfoWrapper}>
         <AmountInfo
           amount={project.currentAmount}
-          percentage={project.progressRate}
+          percentage={formatAchievementRate(project.progressRate)}
         />
       </div>
 
@@ -96,47 +98,57 @@ const ProgressContainer = ({ project, paymentState, paymentActions }) => {
         <MyNavLine />
       </div>
 
-      {/* 드롭다운(아코디언) */}
-      <div className={styles.accordionWrapper}>
-        <button
-          className={`${styles.accordionToggle} ${
-            isAccordionOpen ? styles.open : ""
-          }`}
-          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-          disabled={!isProjectStarted} // 프로젝트 시작 전에는 드롭다운을 비활성화
-        >
-          상품을 선택해주세요
-        </button>
-
-        {/* 프로젝트가 시작되지 않았으면 메시지 표시 */}
-        {!isProjectStarted && (
-          <div style={{textAlign: "center"}}>
-            아직 시작하지 않은 후원입니다
-          </div>
-        )}
-
-        {/* 프로젝트가 시작되었을 때만 드롭다운 표시 */}
-        {isProjectStarted && (
-          <div
-            className={styles.dropdownContent}
-            style={{ visibility: isAccordionOpen ? "visible" : "hidden" }}
+    {/* 드롭다운(아코디언) */}
+    <div className={styles.accordionWrapper}>
+      {/* 프로젝트 종료 상태일 경우 메시지 표시 */}
+      {isProjectEnded ? (
+        <div style={{ textAlign: "center", color: "red" }}>
+          프로젝트가 종료되었습니다
+        </div>
+      ) : (
+        <>
+          <button
+            className={`${styles.accordionToggle} ${
+              isAccordionOpen ? styles.open : ""
+            }`}
+            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+            disabled={!isProjectStarted} // 프로젝트 시작 전에는 드롭다운을 비활성화
           >
-            {Array.isArray(project.items) &&
-              project.items.map((item) => (
-                <div
-                  key={item.itemName}
-                  className={styles.dropdownItem}
-                  onClick={() => handleAddItem(item)}
-                >
-                  <span>{item.itemName}</span>
-                  <span className={styles.itemPrice}>
-                    {formatCurrency(item.itemPrice)} 원
-                  </span>
-                </div>
-              ))}
-          </div>
-        )}
-      </div>
+            상품을 선택해주세요
+          </button>
+
+          {/* 프로젝트가 시작되지 않았으면 메시지 표시 */}
+          {!isProjectStarted && (
+            <div style={{ textAlign: "center" }}>
+              아직 시작하지 않은 후원입니다
+            </div>
+          )}
+
+          {/* 프로젝트가 시작되었을 때만 드롭다운 표시 */}
+          {isProjectStarted && (
+            <div
+              className={styles.dropdownContent}
+              style={{ visibility: isAccordionOpen ? "visible" : "hidden" }}
+            >
+              {Array.isArray(project.items) &&
+                project.items.map((item) => (
+                  <div
+                    key={item.itemName}
+                    className={styles.dropdownItem}
+                    onClick={() => handleAddItem(item)}
+                  >
+                    <span>{item.itemName}</span>
+                    <span className={styles.itemPrice}>
+                      {formatCurrency(item.itemPrice)} 원
+                    </span>
+                  </div>
+                ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+
 
       {/* 선택된 아이템 상자 */}
       <div className={styles.itemsContainer}>
