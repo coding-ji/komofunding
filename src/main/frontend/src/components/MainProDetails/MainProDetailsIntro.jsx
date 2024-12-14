@@ -36,7 +36,7 @@ const ItemCard = styled.div`
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
 `;
-function MainProDetailsIntro({ project, qnaList, setQnaList,htmlContent }) {
+function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
     // 각 섹션에 대한 ref 생성
     const introRef = useRef(null);
     const scheduleRef = useRef(null);

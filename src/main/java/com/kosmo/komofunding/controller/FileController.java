@@ -62,7 +62,8 @@ public class FileController {
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> getHtmlFile(@PathVariable("filename")  String filename) {
         try {
-            Path filePath = fileService.loadFile(filename);  // HTML 파일을 요청하므로 isImage = false
+            Path filePath = fileService.loadFile(filename);
+
             Resource resource = new UrlResource(filePath.toUri());
 
             if (!resource.exists()) {
@@ -99,7 +100,7 @@ public class FileController {
             String htmlFileName = fileService.uploadFile(file);  // HTML 파일 업로드 처리
 
             // 응답으로 파일 경로 전달
-            return ResponseEntity.ok("http://localhost:8080/files/" + htmlFileName);  // 파일 경로 리턴
+            return ResponseEntity.ok(htmlFileName);  // 파일 경로 리턴
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("HTML 파일 업로드 실패: " + e.getMessage());
         }

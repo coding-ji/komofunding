@@ -39,12 +39,7 @@ function MainProDetails() {
     const fetchHtml = async () => {
       if (state.project) {
         try {
-          const response = await fileActions.readFileData(state.project.description); // HTML 파일을 요청
-          if (!response.ok) {
-            throw new Error("HTML 파일을 불러오는 데 실패했습니다.");
-          }
-          const data = await response.text(); // HTML 내용을 텍스트로 읽기
-          setHtmlContent(data); // 상태에 저장
+          await fileActions.readFileData(state.project.description); 
         } catch (error) {
           console.error("Error fetching HTML file:", error);
           setHtmlContent("소개 내용을 불러오는 데 실패했습니다.");
@@ -73,7 +68,7 @@ function MainProDetails() {
         project={state.project}
         qnaList={qnaList}
         setQnaList={setQnaList}
-        htmlContent={htmlContent}
+        htmlContent={fileState}
       />
     </ProDetails>
   );

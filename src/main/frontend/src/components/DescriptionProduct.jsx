@@ -32,9 +32,7 @@ function DescriptionProduct({
   flexDirection,
   padding, // padding props 추가
 }) {
-
-
-  return (    
+  return (
     <Description
       fontSize={fontSize}
       color={color}
@@ -48,12 +46,14 @@ function DescriptionProduct({
       flexDirection={flexDirection}
       padding={padding} // padding props 전달
     >
-      <div
-        style={{ fontSize: "1rem", color: "rgb(0,0,0)" }}
-        dangerouslySetInnerHTML={{
-          __html: text || "소개 내용이 없습니다.",
-        }}
-      />
+      {text && 
+        <div
+          style={{ fontSize: "1rem", color: "rgb(0,0,0)" }}
+          dangerouslySetInnerHTML={{
+            __html: text || "소개 내용이 없습니다.",
+          }}
+        />
+      }
     </Description>
   );
 }

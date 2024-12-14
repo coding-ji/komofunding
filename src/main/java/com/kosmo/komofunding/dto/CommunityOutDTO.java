@@ -18,7 +18,7 @@ public class CommunityOutDTO {
     private LocalDateTime writeDate; // 작성일
     private LocalDateTime updatedDate; // 수정일
     private LocalDateTime endDate; // 종료일
-    private boolean isHidden; // 숨김 처리 여부
+    private Boolean isHidden; // 숨김 처리 여부
     private String author; // 작성자 닉네임
     private String url; // 상세 조회 URL
 }
