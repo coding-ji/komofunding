@@ -7,6 +7,7 @@ import PrjCategory from "../PrjCategory";
 import TitleProduct from "../TitleProduct";
 import MainProDetailQnA from "./MainProDetailQnA";
 import RefundPolicy from "./RefundPolicy";
+import { formatCustomDate } from "../../utils/formattedData";
 import UserQnaBox from "./UserQnaBox/UserQnaBox";
  
 const ImageContainer = styled.div`
@@ -44,7 +45,7 @@ function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
     const policyRef = useRef(null);
     const inquiryRef = useRef(null);
   
-    const dateText = `${project.projectStartDate}\n~\n${project.projectEndDate}`;
+    const dateText = `${formatCustomDate(project.projectStartDate)}\n~\n${formatCustomDate(project.projectEndDate)}`;
   
     return (
       <IntroBox>

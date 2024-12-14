@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import MainProDetailsIntro from "../../components/MainProDetails/MainProDetailsIntro";
 import MainProDetailsImg from "../../components/MainProDetails/MainProDetailsImg";
 import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
 import { useStore as FileStore } from "../../stores/FileStore/useStore";
+import { useStore as PaymentStore } from "../../stores/PaymentStore/useStore";
 import { useParams } from "react-router-dom";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
@@ -18,9 +18,10 @@ const ProDetails = styled.div`
 
 function MainProDetails() {
   const { projectNum } = useParams();
-  const [qnaList, setQnaList] = useState(["고쳐야함.."]);  
+  const [qnaList, setQnaList] = useState(["고쳐야함.."]);
   const { state, actions } = ProjectStore();
-  const { state:fileState, actions:fileActions} = FileStore();
+  const { state: fileState, actions: fileActions } = FileStore();
+  const { state: paymentState, actions: paymentActions } = PaymentStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,24 +33,19 @@ function MainProDetails() {
     fetchData();
   }, [projectNum]);
 
-  
-  const [htmlContent, setHtmlContent] = useState("");
-
   useEffect(() => {
     const fetchHtml = async () => {
       if (state.project) {
         try {
-          await fileActions.readFileData(state.project.description); 
+          await fileActions.readFileData(state.project.description);
         } catch (error) {
           console.error("Error fetching HTML file:", error);
-          setHtmlContent("소개 내용을 불러오는 데 실패했습니다.");
         }
       }
     };
 
     fetchHtml();
   }, [state.project]);
-
 
   // 데이터가 없을 경우 로딩 상태 표시
   if (!state.project) {
@@ -63,7 +59,11 @@ function MainProDetails() {
 
   return (
     <ProDetails>
-      <MainProDetailsImg project={state.project} />
+      <MainProDetailsImg
+        project={state.project}
+        paymentState={paymentState}
+        paymentActions={paymentActions}
+      />
       <MainProDetailsIntro
         project={state.project}
         qnaList={qnaList}
