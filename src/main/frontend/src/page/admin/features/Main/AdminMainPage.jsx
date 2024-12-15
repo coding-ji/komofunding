@@ -1,8 +1,8 @@
 import React from "react";
 import Barchart from "./Barchart";
 import ChartContainer from "./ChartContainer";
-import AdminPieChart from "./PieChart";
-import {QATable1, QATable2, QATable3} from "./QATable";
+// import AdminPieChart from "./PieChart";
+// import {QATable1, QATable2, QATable3} from "./QATable";
 import styles from "./AdminMainPage.module.css";
 
 const AdminMainPage = () => {

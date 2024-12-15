@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SidebarLayout.module.css";
-import memberIcon from "./회원관리/user svg.svg";
-import projectIcon from "./프로젝트/prj svg.svg";
-import paymentIcon from "./결제/pay svg.svg";
-import noticeIcon from "./공지사항/notice svg.svg";
-import eventIcon from "./이벤트/event svg.svg";
-import qnaIcon from "./q&a/Q&A svg.svg";
+// import memberIcon from "./회원관리/user svg.svg";
+// import projectIcon from "./프로젝트/prj svg.svg";
+// import paymentIcon from "./결제/pay svg.svg";
+// import noticeIcon from "./공지사항/notice svg.svg";
+// import eventIcon from "./이벤트/event svg.svg";
+// import qnaIcon from "./q&a/Q&A svg.svg";
 
 
 const SidebarLayout = () => {

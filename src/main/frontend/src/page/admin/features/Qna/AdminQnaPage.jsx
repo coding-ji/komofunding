@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../../../page/MyPage/Pagination";
 import TitleText from "../../../../components/TitleText";
 import ReusableTable from "../../../../components/Table/ReusableTable";
-import styles from "../../styles/TablePageLayout.module.css";
+// import styles from "../../styles/TablePageLayout.module.css";
 
 const AdminQnaPage = () => {
   const navigate = useNavigate();

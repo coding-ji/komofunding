@@ -59,9 +59,9 @@ import AdminQnaPage from "./page/Admin/features/Qna/AdminQnaPage";
 
 
 import FundingPay from "./page/FundingPay/FundingPay";
-import AdminMainPage from "./page/Admin/features/Main/AdminMainPage";
-import AdminNoticePage from "./page/Admin/features/community/communityPage/AdminNoticePage";
-import AdminEventPage from "./page/Admin/features/community/communityPage/AdminEventPage";
+import AdminMainPage from "./page/admin/features/Main/AdminMainPage"
+import AdminNoticePage from "./page/noticpage/NoticePage";
+// import AdminEventPage from "./page/admin/features/community/communityPage/AdminEventPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -155,7 +155,7 @@ const router = createBrowserRouter([
 
       // 관리자 공지사항 / 커뮤니티
       {path : "community/notice-faq", element:<AdminNoticePage/> }, //공지사항/FAQ 목록
-      {path : "community/event", element:<AdminEventPage/> }, // 이벤트 목록
+      // {path : "community/event", element:<AdminEventPage/> }, // 이벤트 목록
       { path: "community/write", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
       // { path: "community/write", element: <CommunityWrite/>},
 
