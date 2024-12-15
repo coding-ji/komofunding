@@ -51,7 +51,7 @@ public class QnA {
     @Column(name="answer_user_id")
     private String answerUserId; // 문의답변 작성한 userId
 
-    @Column(name="answer", nullable = false)
+    @Column(name="answer")
     @ColumnDefault("'-'") // 답변이 작성되지 않았을 경우 하이픈(-)
     private String answer; // 문의 답변
 

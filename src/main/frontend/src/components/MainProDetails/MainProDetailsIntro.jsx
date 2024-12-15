@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import TitleBox from "../TitleBox";
 import DescriptionProduct from "../DescriptionProduct";
@@ -9,7 +9,8 @@ import MainProDetailQnA from "./MainProDetailQnA";
 import RefundPolicy from "./RefundPolicy";
 import { formatCustomDate, formatCurrency } from "../../utils/formattedData";
 import UserQnaBox from "./UserQnaBox/UserQnaBox";
- 
+import { useStore as QnaStore } from "../../stores/QnaStore/useStore";
+
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,24 +38,25 @@ const ItemCard = styled.div`
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
 `;
-function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
-    // 각 섹션에 대한 ref 생성
-    const introRef = useRef(null);
-    const scheduleRef = useRef(null);
-    const productInfoRef = useRef(null);
-    const policyRef = useRef(null);
-    const inquiryRef = useRef(null);
-  
-    const dateText = `${formatCustomDate(project.projectStartDate)}\n~\n${formatCustomDate(project.projectEndDate)}`;
-  
-    return (
-      <IntroBox>
-        {/* 나 들어가유 */}
-        <div>
-        <TitleProduct 
-        fontSize = "1.5rem"
-        padding = "5px 0px "
-        text="프로젝트 스토리" />
+function MainProDetailsIntro({ project, projectActions, htmlContent, setIsAdded }) {
+  // 각 섹션에 대한 ref 생성
+  const introRef = useRef(null);
+  const scheduleRef = useRef(null);
+  const productInfoRef = useRef(null);
+  const policyRef = useRef(null);
+  const inquiryRef = useRef(null);
+
+  const dateText = `${formatCustomDate(project.projectStartDate)}\n~\n${formatCustomDate(project.projectEndDate)}`;
+
+  return (
+    <IntroBox>
+      {/* 나 들어가유 */}
+      <div>
+        <TitleProduct
+          fontSize="1.5rem"
+          padding="5px 0px "
+          text="프로젝트 스토리"
+        />
         <PrjCategory
           sectionRefs={[
             introRef,
@@ -64,32 +66,34 @@ function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
             inquiryRef,
           ]}
         />
-        </div>
-  
-        {/* 소개 - 이미지 */}
-        <TitleBox text="소개" ref={introRef} />
-        <DescriptionProduct
-        fontSize= "1rem"
-        color = "rgb(0,0,0)"
-        text = {htmlContent}
-         />
-  
-        {/* 일정 */}
-        <TitleBox text="일정" ref={scheduleRef} />
-        <DescriptionProduct
-          textAlign="center"
-          fontSize="1.5rem"
-          lineHeight="2rem"
-          color="black"
-          fontWeight="bold"
-          letterSpacing="0.1rem"
-          text={dateText}
-        />
-        <MyNavLine />
-  
-        {/* 상품 정보 */}
-        <TitleBox text="상품 정보" ref={productInfoRef} />
-        {Array.isArray(project.items)&&project.items.length>0 && project.items.map((item, index) => (
+      </div>
+
+      {/* 소개 - 이미지 */}
+      <TitleBox text="소개" ref={introRef} />
+      <DescriptionProduct
+        fontSize="1rem"
+        color="rgb(0,0,0)"
+        text={htmlContent}
+      />
+
+      {/* 일정 */}
+      <TitleBox text="일정" ref={scheduleRef} />
+      <DescriptionProduct
+        textAlign="center"
+        fontSize="1.5rem"
+        lineHeight="2rem"
+        color="black"
+        fontWeight="bold"
+        letterSpacing="0.1rem"
+        text={dateText}
+      />
+      <MyNavLine />
+
+      {/* 상품 정보 */}
+      <TitleBox text="상품 정보" ref={productInfoRef} />
+      {Array.isArray(project.items) &&
+        project.items.length > 0 &&
+        project.items.map((item, index) => (
           <ItemCard key={index}>
             <DescriptionProduct
               color="#436446"
@@ -101,20 +105,28 @@ function MainProDetailsIntro({ project, qnaList, setQnaList, htmlContent}) {
               color="black"
               fontSize="1.0rem"
               lineHeight="2rem"
-              text={`가격: ${formatCurrency(item.itemPrice)}원\n 수량: ${formatCurrency(item.itemAmount)}`}
+              text={`가격: ${formatCurrency(
+                item.itemPrice
+              )}원\n 수량: ${formatCurrency(item.itemAmount)}`}
             />
           </ItemCard>
         ))}
-  
-        <MyNavLine />
-  
-        {/* 환불/정책 */}
-        <RefundPolicy ref={policyRef} />
-  
-        {/* 문의 */}
-        <MainProDetailQnA qnaList={qnaList} setQnaList={setQnaList} ref={inquiryRef} />
-      </IntroBox>
-    );
-  }
 
-  export default MainProDetailsIntro;
+      <MyNavLine />
+
+      {/* 환불/정책 */}
+      <RefundPolicy ref={policyRef} />
+
+      {/* 문의 */}
+      <MainProDetailQnA
+        qnaState={project.qnaList}
+        projectActions={projectActions}
+        ref={inquiryRef}
+        setIsAdded={setIsAdded}
+        projectUser={project.userNum}
+      />
+    </IntroBox>
+  );
+}
+
+export default MainProDetailsIntro;

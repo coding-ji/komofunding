@@ -5,6 +5,7 @@ import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.dto.QnAOutDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.Project;
+import com.kosmo.komofunding.entity.QnA;
 import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.QnARepository;
 import com.kosmo.komofunding.repository.UserRepository;
@@ -21,6 +22,7 @@ public class ProjectConverter {
 
     private final UserRepository userRepository;
     private final QnARepository qnARepository;
+    private final QnAConverter qnAConverter;
 
     //Entity에서 DTO 변환
     public ProjectOutDTO toOutDTO(Project project){
@@ -28,12 +30,10 @@ public class ProjectConverter {
         User user = userRepository.findById(project.getUserId())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // QnA 리스트 생성 (null 처리)
-        List<QnAOutDTO> qnaList = (project.getQnaIdList() != null ? project.getQnaIdList() : Collections.emptyList())
-                .stream()
-                .map(qna -> qnARepository.findByQnaId((String) qna)
-                        .orElseThrow(() -> new RuntimeException("QnA를 찾을 수 없습니다.")))
-                .map(qna -> QnAConverter.toOutDTO(qna, userRepository))
+        // QnA 리스트 생성
+        List<QnA> qnaEntities = qnARepository.findAllByQnaIdIn(project.getQnaIdList());
+        List<QnAOutDTO> qnaList = qnaEntities.stream()
+                .map(qnAConverter::toOutDTO)
                 .collect(Collectors.toList());
 
         // Supporters 리스트 생성 (null 처리)

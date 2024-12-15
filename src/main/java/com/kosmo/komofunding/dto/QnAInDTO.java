@@ -22,7 +22,7 @@ public class QnAInDTO {
 
     @NotBlank(message = "문의글 내용은 비워둘 수 없습니다.")
     @Size(min = 10, max = 1000, message = "문의글 내용은 최소 10자 이상, 최대 1000자까지 입력 가능합니다.")
-    private String question_Comment; // 문의글 내용
+    private String questionComment; // 문의글 내용
 
     private String answerUserId; //답변자 userId
 

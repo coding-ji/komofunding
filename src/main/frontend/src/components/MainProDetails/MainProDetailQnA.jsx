@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import DescriptionProduct from "../DescriptionProduct";
 import TitleBox from "../TitleBox";
 import styled from "styled-components";
@@ -6,6 +6,8 @@ import UserQnaBox from "./UserQnaBox/UserQnaBox";
 import { ProductBtn1, ProductBtn2 } from "../MyBtn";
 import "../../index.css";
 import Input from "../input";
+import { useParams } from "react-router-dom";
+import { useStore as QnaStore } from "../../stores/QnaStore/useStore";
 
 const Head = styled.div`
   margin: 5px 0px 5px 5px;
@@ -15,7 +17,8 @@ const Head = styled.div`
 
 const QBox = styled.div`
   padding: 0 5px;
-  display: ${(props) => (props.visible ? "block" : "none")}; /* visible 상태에 따라 표시 */
+  display: ${(props) =>
+    props.visible ? "block" : "none"}; /* visible 상태에 따라 표시 */
 `;
 
 const Btns = styled.div`
@@ -25,36 +28,38 @@ const Btns = styled.div`
   justify-content: flex-end;
 `;
 
-const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
+const MainProDetailQnA = forwardRef((qnaState,ref) => {
+  const { projectNum } = useParams();
   const [isQBoxVisible, setIsQBoxVisible] = useState(false); // QBox 관리
   const [inputValue, setInputValue] = useState(""); // Input -> 수정 / 답변
+  const { state, actions } = QnaStore();
 
-  // 로그인된 사용자 정보 가져오기
-  const user = JSON.parse(localStorage.getItem('user')); // user 정보 가져오기   -> 로컬로 빼눈곤가 끄릉
-  const userId = user ? user.userId : "guest"; // 로그인된 사용자의 ID
-
-  // 관리자 정보 가져오기
-  const admin = JSON.parse(localStorage.getItem('admin')); // 관리자 정보
-  const answerUserId = admin ? admin.userId : "Admin123"; // 관리자 ID
+  // user정보 가져오기
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleInquiryClick = () => {
     setIsQBoxVisible(true); // QBox 보이기
   };
 
-  const handleConfirmClick = () => {
-    if (inputValue.trim()) {
-      // qnaList에 새 Q&A 추가
-      const newQna = {
-        qnaId: Date.now(),
-        userId: userId, // 로그인된 사용자 ID 
-        writtenDate: new Date().toISOString(),
-        question_Comment: inputValue,
-        answer: null,
-        answerUserId: null,
-        answerWrittenDate: null,
-      };
+  useEffect(() => {
+    // qnaState가 배열이 아니거나 null/undefined인 경우 빈 배열로 초기화
+    const currentQnaState = Array.isArray(qnaState) ? qnaState : [];
 
-      setQnaList((prevList) => [...prevList, newQna]); // 상태 업데이트
+    // 새로운 inputValue를 추가한 배열 생성
+    const updatedQnaState = [...currentQnaState, inputValue];
+    qnaState.projectActions.changeQnaList(updatedQnaState);
+    qnaState.setIsAdded(true);
+  }, [state]);
+
+  // 문의등록
+  const handleConfirmClick = async () => {
+    if (inputValue.trim()) {
+      const data = {
+        qnaCategory: "COMMENT",
+        questionComment: inputValue,
+      };
+      await actions.createProjectComment(projectNum, data);
+
       setInputValue(""); // 입력 값 초기화
       setIsQBoxVisible(false); // QBox 숨기기
     }
@@ -65,29 +70,20 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
     setIsQBoxVisible(false); // QBox 숨기기
   };
 
-  const handleUpdate = (qnaId, updatedQuestion) => {
-    setQnaList((prevList) =>
-      prevList.map((qna) =>
-        qna.qnaId === qnaId
-          ? { ...qna, question_Comment: updatedQuestion }
-          : qna
-      )
-    );
+  // 수정 (수정은 댓글 작성자만 가능)
+  const handleUpdate = async (qna, commentText) => {
+    if(commentText){
+      await actions.updatedComment(qna.qnaNumber, commentText);
+      qnaState.setIsAdded(true);
+    }
   };
-  
-  const handleAnswer = (qnaId, answerText) => {
-    setQnaList((prevList) =>
-      prevList.map((qna) =>
-        qna.qnaId === qnaId
-          ? {
-              ...qna,
-              answer: answerText,
-              answerUserId: answerUserId, // 관리자 ID
-              answerWrittenDate: new Date().toISOString(),
-            }
-          : qna
-      )
-    );
+
+  // 답변 (프로젝트 작성자만 답변 가능)
+  const handleAnswer = async (qna, answerText) => {
+    if (answerText) {
+      await actions.updateReplyQna(qna.qnaNumber, answerText);
+      qnaState.setIsAdded(true);
+    }
   };
 
   return (
@@ -110,7 +106,7 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
           onClick={handleInquiryClick} // 클릭 시 QBox 표시
         />
       </Head>
-  
+
       <QBox visible={isQBoxVisible}>
         <Input
           placeholder="문의하고자 하는 내용을 입력해주세요."
@@ -128,27 +124,30 @@ const MainProDetailQnA = forwardRef(({ qnaList, setQnaList }, ref) => {
             padding="3px 0px"
             width="55px"
             text="확인"
-            onClick={handleConfirmClick} 
+            onClick={handleConfirmClick}
           />
           <ProductBtn2
             fontSize="0.7rem"
             padding="3px 0px"
             width="55px"
             text="취소"
-            onClick={handleCancelClick} 
+            onClick={handleCancelClick}
           />
         </Btns>
       </QBox>
-  
+
       {/* Q&A 리스트 */}
-      {qnaList.map((qna) => (
-        <UserQnaBox
-          key={qna.qnaId}
-          qna={qna}
-          onUpdate={handleUpdate} // 수정 핸들러 전달
-          onAnswer={handleAnswer} // 답변 핸들러 전달
-        />
-      ))}
+      {Array.isArray(qnaState.qnaState) &&
+        qnaState.qnaState.map((qna, index) => (
+          <UserQnaBox
+            key={qna.qnaNumber}
+            qna={qna}
+            onUpdate={handleUpdate} // 수정 핸들러 전달
+            onAnswer={handleAnswer} // 답변 핸들러 전달
+            user={user}
+            projectUser={qnaState.projectUser}
+          />
+        ))}
     </div>
   );
 });

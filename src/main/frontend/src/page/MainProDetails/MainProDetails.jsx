@@ -18,26 +18,29 @@ const ProDetails = styled.div`
 
 function MainProDetails() {
   const { projectNum } = useParams();
-  const [qnaList, setQnaList] = useState(["고쳐야함.."]);
-  const { state, actions } = ProjectStore();
+  const { state: projectState, actions: projectActions } = ProjectStore();
   const { state: fileState, actions: fileActions } = FileStore();
   const { state: paymentState, actions: paymentActions } = PaymentStore();
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       if (projectNum) {
-        await actions.readProjectDetail(projectNum);
+        await projectActions.readProjectDetail(projectNum);
       }
     };
 
     fetchData();
-  }, [projectNum]);
+    if (isAdded) {
+      setIsAdded(false);
+    }
+  }, [projectNum, isAdded]);
 
   useEffect(() => {
     const fetchHtml = async () => {
-      if (state.project) {
+      if (projectState.project) {
         try {
-          await fileActions.readFileData(state.project.description);
+          await fileActions.readFileData(projectState.project.description);
         } catch (error) {
           console.error("Error fetching HTML file:", error);
         }
@@ -45,10 +48,10 @@ function MainProDetails() {
     };
 
     fetchHtml();
-  }, [state.project]);
+  }, [projectState.project]);
 
   // 데이터가 없을 경우 로딩 상태 표시
-  if (!state.project) {
+  if (!projectState.project) {
     return (
       <div>
         <TitleBox text="전체 프로젝트 정보" />
@@ -60,15 +63,15 @@ function MainProDetails() {
   return (
     <ProDetails>
       <MainProDetailsImg
-        project={state.project}
+        project={projectState.project}
         paymentState={paymentState}
         paymentActions={paymentActions}
       />
       <MainProDetailsIntro
-        project={state.project}
-        qnaList={qnaList}
-        setQnaList={setQnaList}
+        project={projectState.project}
+        projectActions={projectActions}
         htmlContent={fileState}
+        setIsAdded={setIsAdded}
       />
     </ProDetails>
   );
