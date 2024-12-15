@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styles from "./ReusableTable.module.css";
 import { WhiteBtn } from "../MyBtn";
 import { formattedDate } from "../../utils/formattedData";
-const ReusableTable = ({ title, data, columns, searchOptions, onSearch,categories,onRowClick }) => {
+const ReusableTable = ({ title, data, columns, searchOptions, onSearch, categories, onRowClick, tableClassName }) => {
+
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedOption, setSelectedOption] = useState(searchOptions?.[0]?.value || ""); // 기본 검색 옵션
   const [checkedRows, setCheckedRows] = useState(data.map(() => false)); // 각 행의 체크 상태
@@ -172,7 +173,7 @@ const ReusableTable = ({ title, data, columns, searchOptions, onSearch,categorie
 
       {/* 테이블 영역 */}
       <div className={styles.tableWrapper0}>
-        <table className={styles.table0}>
+      <table className={`${styles.table0} ${tableClassName || ''}`.trim()}>
           <thead>
             <tr>
               <th>
