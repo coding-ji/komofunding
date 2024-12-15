@@ -1,3 +1,14 @@
+import styles from './CommunityWrite.module.css';
+import EditorItem from '../../../../components/EditorItem/EditorItem';
+import WriteForm from './WriteForm';
+import { useState, useRef, useEffect } from 'react';
+import { Btn, WhiteBtn } from '../../../../components/MyBtn';
+import TitleText from '../../../../components/TitleText';
+import { useNavigate } from 'react-router-dom';
+import { useStore as CommunityStore } from '../../../../stores/NoticeStore/useStore'
+import Popup from '../../../../components/Popupmodal/Popup';
+
+
 function CommunityWrite() {
   const { state, actions } = CommunityStore(); // Store의 state와 actions
   const navigate = useNavigate();
