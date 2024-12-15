@@ -15,6 +15,7 @@ import {
     resetPassword,
     changePassword,
     verifyPassword,
+    checkNickName,
     // uploadImg
 } from '../../service/apiService';
 
@@ -87,7 +88,7 @@ export const fetchMyPageInfo = () => async (dispatch) => {
     }
 };
 
-
+// 비밀번호 인증
 export const apiVerifyPassword = (userNum, password) => async (dispatch) => {
     try {
         const response = await verifyPassword(userNum, password);
@@ -127,29 +128,16 @@ export const fetchUserProfile = (userNum) => async (dispatch) => {
 export const updateProfile = (userNum, request) => async (dispatch) => {
     try {
         const response = await updateUserProfile(userNum, request);
-        if (response.status === 200) { // 서버 응답 상태 코드 확인
-            console.log('프로필 업데이트 성공:', response.data);
-
-            // Redux 상태 업데이트
+        if (response.status === 200) {
             dispatch({
                 type: UPDATE_USER_PROFILE,
                 payload: response.data,
             });
-
-            return "ok"; // 성공 응답 반환
-        } else {
-            console.error('프로필 업데이트 실패: 상태 코드', response.status);
-            return "fail"; // 실패 응답 반환
+            return "ok"; // 프로필 업데이트 성공
         }
     } catch (error) {
-        console.error('프로필 업데이트 실패:', error);
-
-        // 서버에서 반환된 에러 메시지 로그
-        if (error.response) {
-            console.error('서버 응답 에러:', error.response.data.message);
-        }
-
-        return "fail"; // 에러 발생 시 실패 응답 반환
+        console.error("프로필 업데이트 실패:", error);
+        return "error"; // 프로필 업데이트 실패
     }
 };
 
@@ -158,10 +146,13 @@ export const updateProfile = (userNum, request) => async (dispatch) => {
 export const register = (userInDTO) => async (dispatch) => {
     try {
         const response = await registerUser(userInDTO);
-        console.log('회원가입 성공:', response.data);
-        dispatch({ type: CREATE_USER, payload: response.data });
+        if (response.status === 200) {
+            dispatch({ type: CREATE_USER, payload: response.data });
+            return "ok"; // 회원가입 성공
+        }
     } catch (error) {
-        console.error('회원가입 실패:', error);
+        console.error("회원가입 실패:", error);
+        return "error"; // 회원가입 실패
     }
 };
 
@@ -169,10 +160,13 @@ export const register = (userInDTO) => async (dispatch) => {
 export const sendEmailForRegister = (email) => async (dispatch) => {
     try {
         const response = await sendRegisterEmailCode(email);
-        console.log('이메일 인증 요청 성공:', response.data);
-        dispatch({ type: SEND_REGISTER_EMAIL_SUCCESS, payload: response.data });
+        if (response.status === 200) {
+            dispatch({ type: SEND_REGISTER_EMAIL_SUCCESS, payload: response.data });
+            return "ok"; // 이메일 인증 요청 성공
+        }
     } catch (error) {
-        console.error('이메일 인증 요청 실패:', error);
+        console.error("이메일 인증 요청 실패:", error);
+        return "error"; // 이메일 인증 요청 실패
     }
 };
 
@@ -180,10 +174,13 @@ export const sendEmailForRegister = (email) => async (dispatch) => {
 export const sendEmailVerificationCode = (email) => async (dispatch) => {
     try {
         const response = await sendEmailCode(email);
-        console.log('이메일 인증 코드 발송 성공:', response.data);
-        dispatch({ type: SEND_EMAIL_VERIFICATION_SUCCESS, payload: response.data });
+        if (response.status === 200) {
+            dispatch({ type: SEND_EMAIL_VERIFICATION_SUCCESS, payload: response.data });
+            return "ok"; // 이메일 인증 코드 발송 성공
+        }
     } catch (error) {
-        console.error('이메일 인증 코드 발송 실패:', error);
+        console.error("이메일 인증 코드 발송 실패:", error);
+        return "error"; // 이메일 인증 코드 발송 실패
     }
 };
 
@@ -191,21 +188,26 @@ export const sendEmailVerificationCode = (email) => async (dispatch) => {
 export const verifyEmail = (email, code) => async (dispatch) => {
     try {
         const response = await verifyEmailCode(email, code);
-        console.log('이메일 인증 성공:', response.data);
-        dispatch({ type: VERIFY_EMAIL_SUCCESS, payload: response.data });
+        if (response.status === 200) {
+            dispatch({ type: VERIFY_EMAIL_SUCCESS, payload: response.data });
+            return "ok"; // 이메일 인증 성공
+        }
     } catch (error) {
-        console.error('이메일 인증 실패:', error);
+        console.error("이메일 인증 실패:", error);
+        return "error"; // 이메일 인증 실패
     }
 };
-
 // 로그인 및 로그 아웃
 export const login = (email, password) => async (dispatch) => {
     try {
         const response = await loginUser(email, password);
-        dispatch({ type: LOGIN_SUCCESS, payload: response.data });
-        console.log('로그인 성공');
+        if (response.status === 200) {
+            dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+            return "ok"; // 로그인 성공
+        }
     } catch (error) {
-        console.error('로그인 실패:', error);
+        console.error("로그인 실패:", error);
+        return "error"; // 로그인 실패
     }
 };
 
@@ -213,21 +215,42 @@ export const logoutUser = () => async (dispatch) => {
     try {
         await logout();
         dispatch({ type: LOGOUT_USER }); // 상태 초기화
-        console.log('로그아웃 성공');
+        return "ok"; // 로그아웃 성공
     } catch (error) {
-        console.error('로그아웃 실패:', error);
+        console.error("로그아웃 실패:", error);
+        return "error"; // 로그아웃 실패
     }
 };
+
+// 닉네임 중복확인
+export const checkNick = (nickName) => async (dispatch) => {
+    try {
+        const response = await checkNickName(nickName);
+        if (response.status === 200) {
+            dispatch({ type: READ_USER, payload: response.data });
+            return "ok";
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            console.error("중복된 닉네임입니다.");
+            return "fail"; 
+        } else {
+            console.error("알 수 없는 오류", error);
+            return "error"; // 기타 오류
+        }
+    }
+}
 
 // 사용자 관리 로직
 // 회원 탈퇴
 export const removeUser = (userNum) => async (dispatch) => {
     try {
         const response = await deleteUser(userNum);
-        console.log('회원 탈퇴 성공');
         dispatch({ type: DELETE_USER, payload: response.data }); // 상태 초기화
+        return "ok"; // 회원 탈퇴 성공
     } catch (error) {
-        console.error('회원 탈퇴 실패:', error);
+        console.error("회원 탈퇴 실패:", error);
+        return "error"; // 회원 탈퇴 실패
     }
 };
 
@@ -246,10 +269,11 @@ export const findEmail = (name, phoneNumber) => async (dispatch) => {
 export const resetUserPassword = (email) => async (dispatch) => {
     try {
         await resetPassword(email);
-        console.log('비밀번호 재설정 요청 성공');
         dispatch({ type: RESET_PASSWORD_REQUEST_SUCCESS });
+        return "ok"; // 비밀번호 재설정 요청 성공
     } catch (error) {
-        console.error('비밀번호 재설정 요청 실패:', error);
+        console.error("비밀번호 재설정 요청 실패:", error);
+        return "error"; // 비밀번호 재설정 요청 실패
     }
 };
 

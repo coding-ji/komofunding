@@ -50,7 +50,7 @@ export const useStore = () => {
     changeRefundAccountNumber: (refundAccountNumber) => dispatch(changeRefundAccountNumber(refundAccountNumber)),
     changeIsRefunded: (isRefunded) => dispatch(changeIsRefunded(isRefunded)),
 
-    resetState: () => dispatch(resetState),
+    resetStat: () => dispatch(resetState),
     updateAllFields: (data) => dispatch(updateAllFields(data)),
     
     createDonorByProject: (projectNum, payment) => createDonorByProject(projectNum, payment)(dispatch),  

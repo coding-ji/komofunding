@@ -102,7 +102,7 @@ public class AuthController {
     // 닉네임 중복 확인
     @PostMapping("/checkNickName")
     public ResponseEntity<Map<String, Boolean>> checkNickName(
-            @RequestBody Map<String,String> request){
+            @RequestBody Map<String,String> request) {
         String nickName = request.get("nickName"); // 요청에서 닉네임 추출
         // 서비스에서 중복 확인
         boolean isAvailable = userService.isNickNameAvailable(nickName);

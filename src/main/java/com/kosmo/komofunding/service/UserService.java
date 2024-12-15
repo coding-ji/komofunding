@@ -148,7 +148,8 @@ public class UserService {
 
         return userOutDTO;
     }
-
+    
+    // 닉네임 중복확인
     public boolean isNickNameAvailable(String nickName){
         return !userRepository.existsByNickName(nickName);
     }

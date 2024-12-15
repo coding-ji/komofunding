@@ -29,10 +29,10 @@ export const updateUserProfile = (userNum, request) => apiClient.patch(`/api/use
 export const registerUser = (userInDTO) => apiClient.post('/api/auth/register', userInDTO);
 
 // 회원가입 이메일 인증 요청 
-export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck', { email });
+export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck',  email );
 
 // 이메일 인증 코드 발송 요청
-export const sendEmailCode = (email) => apiClient.post('/api/auth/emailcheck', { email });
+export const sendEmailCode = (email) => apiClient.post('/api/auth/emailcheck',  email );
 
 // 이메일 인증 코드 검증 요청
 export const verifyEmailCode = (email, verificationCode) => apiClient.post('/api/auth/emailverification', { email, verificationCode });
@@ -43,6 +43,8 @@ export const loginUser = (email, password) => apiClient.post('/api/auth/login', 
 // 사용자 로그아웃
 export const logout = () => apiClient.post('/api/auth/logout');
 
+// 닉네임 중복확인
+export const checkNickName = (nickName) => apiClient.post('/api/auth/checkNickName', {"nickName" : nickName});
 
 // 특정 사용자의 정보를 가져옴 (이메일 기반)
 export const getUserInfo = (email) => apiClient.get(`/api/auth/users?email=${email}`);
@@ -131,7 +133,7 @@ export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 // 커뮤니티 API
 
 // 커뮤니티 목록 가져오기
-export const fetchAllCommunities = () => apiClient.get("/api/posts/community");
+export const fetchAllCommunities = () => apiClient.get("/posts/community");
 
 // 특정 커뮤니티 가져오기 (ID로 검색)
 export const fetchCommunityById = (communityId) =>
