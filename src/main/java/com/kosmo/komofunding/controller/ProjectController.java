@@ -128,14 +128,25 @@ public class ProjectController {
         // 201 Created 상태와 함께 메시지 반환
         return ResponseEntity.status(201).body(response);
     }
-//
-//    // 개인 프로젝트 수정
-//    @PatchMapping("/api/user/myinfo/projects/{projectNum}")
-//    public ResponseEntity<Map<String, String>> updateProject(
-//            @PathVariable("projectNum") String projectNum,
-//            @RequestBody ProjectInDTO projectInDTO){
-//
-//    }
+
+    // 개인 프로젝트 수정
+    @PatchMapping("/api/user/myinfo/projects/{projectNum}")
+    public ResponseEntity<Map<String, String>> updateProject(
+            @PathVariable("projectNum") Long projectNum,
+            @RequestBody ProjectInDTO projectInDTO){
+
+        try{
+            Project updatedProject = projectService.updateProject(projectNum, projectInDTO);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "프로젝트가 수정이 되었습니다.");
+            return ResponseEntity.ok(response);
+        }catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "프로젝트를 수정할 수 없습니다..");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+    }
 
     // 개인 프로젝트 삭제
     @DeleteMapping("/api/user/myinfo/projects/{projectNum}")

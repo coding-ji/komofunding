@@ -31,7 +31,7 @@ function SelectPrjTwo() {
   const { state: projectState, actions: projectActions } = ProjectStore();
   const { projectNum } = useOutletContext();
   const items = projectState.items || [];
-   
+
   // 개별 상품 정보 상태 관리
   const [itemName, setItemName] = useState(null);
   const [itemPrice, setItemPrice] = useState(null);
@@ -87,13 +87,23 @@ function SelectPrjTwo() {
 
   // 이전 단계로 이동
   const handleBeforeClick = () => {
-    navigate("/home/selectprj");
-    localStorage.setItem("projectState", JSON.stringify(projectState));
-  }
+    if (projectNum) {
+      navigate(`/home/selectPrj/edit/${projectNum}`);
+      localStorage.setItem("projectState", JSON.stringify(projectState));
+    } else {
+      navigate("/home/selectPrj");
+      localStorage.setItem("projectState", JSON.stringify(projectState));
+    }
+  };
   // 다음 단계로 이동
   const handleNextClick = () => {
-    navigate("/home/selectprj/prj-three");
-    localStorage.setItem("projectState", JSON.stringify(projectState));
+    if (projectNum) {
+      navigate(`/home/selectPrj/edit/${projectNum}/prj-three`);
+      localStorage.setItem("projectState", JSON.stringify(projectState));
+    }else{
+      navigate("/home/selectPrj/prj-three");
+      localStorage.setItem("projectState", JSON.stringify(projectState));
+    }
   };
 
   return (

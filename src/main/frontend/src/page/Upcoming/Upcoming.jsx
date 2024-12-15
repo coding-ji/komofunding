@@ -10,8 +10,8 @@ function Upcoming() {
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
 
-  const handleContainerClick = (projectNum) => {  
-    navigate(`/home/product-details/${projectNum}`);
+  const handleContainerClick = (product) => {  
+    navigate(`/home/product-details/${product.projectNum}`);
   };
 
   useEffect(() => {

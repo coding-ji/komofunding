@@ -15,7 +15,6 @@ const Styleddiv = styled(motion.div)`
 `;
 
 function MyContainer({ onContainerClick, text, product, onClick }) {
-
   return (
     <Styleddiv
       whileHover={{
@@ -23,23 +22,21 @@ function MyContainer({ onContainerClick, text, product, onClick }) {
         boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.3)",
       }}
       transition={{ type: "spring", stiffness: 100, transition: 0.1 }}
-      onClick={onContainerClick}
     >
       <motion.div>
         <ProductImg src={product.thumbnailImgs[0]} />
       </motion.div>
-      <motion.div>
-        <ProductTitle title={product.title} fontFamily="var(--kr-font)" />
+      <motion.div onClick={onContainerClick}>
+        <ProductTitle
+          title={product.title}
+          fontFamily="var(--kr-font)"
+        />
       </motion.div>
       <motion.div>
         <ProductDescription description={product.projectShortDescription} />
       </motion.div>
       <motion.div>
-        <Btn
-          text={text}
-          fontFamily="var(--eng-font)"
-          onClick={onClick}
-        />
+        <Btn text={text} fontFamily="var(--eng-font)" onClick={onClick} />
       </motion.div>
     </Styleddiv>
   );

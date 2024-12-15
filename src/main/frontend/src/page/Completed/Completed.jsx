@@ -8,6 +8,10 @@ function Completed() {
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [filteredData, setFilteredData] = useState([]);
 
+  const handleContainerClick = (product) => {  
+    navigate(`/home/product-details/${product.projectNum}`);
+  };
+
   // LIST 버튼 클릭 시 이동 함수
   const handleMovement = (product) => {
     // progressRate가 100% 이상일 경우에만 이동
@@ -39,6 +43,7 @@ function Completed() {
         products={filteredData}
         onEdit={handleMovement} // onEditClick 전달
         text="확인"
+        onContainerClick={handleContainerClick}
       />
     </div>
   );

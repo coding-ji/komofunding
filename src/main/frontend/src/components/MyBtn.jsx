@@ -193,12 +193,10 @@ export const ClickBtn = ({
   padding,
   fontFamily,
   active,
+  handleClick,
+  clicked
 }) => {
-  const [clicked, setClicked] = useState(false); // 클릭 상태 관리
 
-  const handleClick = () => {
-    setClicked(!clicked); // 클릭 시 상태 토글
-  };
 
   const currentStyles = clicked
     ? hoverEffects.Cancel // 클릭된 경우 스타일

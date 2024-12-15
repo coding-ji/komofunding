@@ -34,6 +34,7 @@ function SelectPrjThree() {
 
   const quillRef = useRef(null);
   const [editorContent, setEditorContent] = useState(""); // 에디터 내용
+  const [htmlContent, setHtmlContent] = useState(""); // 보내는 내용
 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지를 위한 상태
@@ -41,14 +42,51 @@ function SelectPrjThree() {
 
   const [isDone, setIsDone] = useState(false);
 
-
   // localStorage에서 상태 복원
   useEffect(() => {
     const savedState = localStorage.getItem("projectState");
     if (savedState) {
-      projectActions.updateAllFields(JSON.parse(savedState));
+      const parsedState = JSON.parse(savedState);
+
+      // 썸네일 이미지 상태 설정
+      setThumbnailImgs(parsedState.thumbnailImgs || []);
+
+      // 프로젝트 기간 설정
+      if (parsedState.projectStartDate && parsedState.projectEndDate) {
+        handleDateChange(
+          parsedState.projectStartDate,
+          parsedState.projectEndDate
+        );
+      }
+
+      const fetchHtml = async () => {
+        if (parsedState.description) {
+          try {
+            await fileActions.readFileData(parsedState.description);
+          } catch (error) {
+            console.error("Error fetching HTML file:", error);
+          }
+        }
+      };
+
+      fetchHtml();
+
+      // Redux 상태 업데이트
+      projectActions.updateAllFields(parsedState);
     }
-  }, [projectActions]);
+  }, [projectNum]);
+
+  useEffect(() => {
+    if (fileState) {
+      // HTML 파싱
+      const parser = new DOMParser();
+      const parsedHtml = parser.parseFromString(fileState, "text/html");
+      const bodyContent = parsedHtml.body.innerHTML; // <body> 내부 내용만 추출
+
+      // editorContent에 <body> 내용만 설정
+      setHtmlContent(bodyContent);
+    }
+  }, [fileState]);
 
   // 시작일 & 종료일 처리
   const handleDateChange = (start, end) => {
@@ -58,8 +96,11 @@ function SelectPrjThree() {
 
   // 이전 단계로 이동
   const handleBeforeClick = () => {
+    const path = projectNum
+      ? `/home/selectPrj/edit/${projectNum}/prj-two`
+      : "/home/selectPrj/prj-two";
     localStorage.setItem("projectState", JSON.stringify(projectState));
-    navigate("/home/selectprj/prj-two");
+    navigate(path);
   };
 
   const handleCompleteClick = async () => {
@@ -88,11 +129,12 @@ function SelectPrjThree() {
     formDataDescription.append("file", htmlBlob, "description.html");
 
     await fileActions.createFileData(formDataDescription);
+    setIsDone(true);
   };
 
   useEffect(() => {
     const createProject = async () => {
-      if (fileState) {
+      if (isDone) {
         const projectData = {
           ...projectState,
           thumnailImgs: thumbnailImgs,
@@ -100,20 +142,28 @@ function SelectPrjThree() {
         };
 
         try {
-          await projectActions.createNewProject(projectData);
-          alert("프로젝트 심사까지는 3~5일 정도 소요됩니다.");
+          if (projectNum) {
+            // projectNum이 있을 경우, 업데이트 로직
+            await projectActions.updateExistingProject(projectNum, projectData);
+            alert("프로젝트가 성공적으로 수정되었습니다.");
+          } else {
+            // projectNum이 없을 경우, 새 프로젝트 생성
+            await projectActions.createNewProject(projectData);
+            alert("프로젝트 심사까지는 3~5일 정도 소요됩니다.");
+          }
+
+          // 프로젝트 상태 저장 후 이동
           localStorage.removeItem("projectState");
           navigate("/home");
         } catch (error) {
-          console.error("프로젝트 생성 실패:", error);
-          setErrorMessage("프로젝트 생성 중 오류가 발생했습니다.");
+          console.error("프로젝트 저장 실패:", error);
+          setErrorMessage("프로젝트 생성 또는 수정 중 오류가 발생했습니다.");
         }
       }
     };
 
     createProject(); // 비동기 함수 호출
-    setIsDone(true);
-  }, [fileState]);
+  }, [isDone]);
 
   return (
     <div>
@@ -122,7 +172,10 @@ function SelectPrjThree() {
         <div>
           <TitleProduct text="이미지 첨부" />
           <DescriptionProduct text="프로젝트와 관련된 이미지를 첨부해주세요." />
-          <ImageUploader setThumbnailImgs={setThumbnailImgs} />
+          <ImageUploader
+            thumbnailImgs={thumbnailImgs}
+            setThumbnailImgs={setThumbnailImgs}
+          />
         </div>
         <div>
           <TitleProduct text="프로젝트 기간 설정" />
@@ -131,12 +184,19 @@ function SelectPrjThree() {
             startDate={projectState.projectStartDate}
             endDate={projectState.projectEndDate}
             onDateChange={handleDateChange}
+            projectActions={projectActions}
+            projectNum={projectNum}
           />
         </div>
         <div>
           <TitleProduct text="프로젝트 내용" />
           <DescriptionProduct text="프로젝트 상세 내용을 작성해주세요." />
-          <EditorItem setEditorContent={setEditorContent} quillRef={quillRef} />
+          <EditorItem
+            editorContent={editorContent}
+            setEditorContent={setEditorContent}
+            quillRef={quillRef}
+            htmlContent={htmlContent}
+          />
         </div>
         {errorMessage && (
           <div style={{ color: "red", marginTop: "20px" }}>{errorMessage}</div>

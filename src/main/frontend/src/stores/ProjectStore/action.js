@@ -64,9 +64,9 @@ export const changePhoneNumber = (phoneNumber) => ({
     payload: phoneNumber,
 });
 
-export const changeUserShortDescription = (projectShortDescription) => ({
+export const changeUserShortDescription = (shortDescription) => ({
     type: CHANGE_USER_SHORT_DESCRIPTION,
-    payload: projectShortDescription,
+    payload: shortDescription,
 });
 
 // 프로젝트 관련
@@ -90,9 +90,9 @@ export const changeProjectThumbnailImgs = (thumnailImgs) => ({
     payload: thumnailImgs,
 });
 
-export const changeProjectShortDescription = (shortDescription) => ({
+export const changeProjectShortDescription = (projectShortDescription) => ({
     type: CHANGE_PROJECT_SHORT_DESCRIPTION,
-    payload: shortDescription,
+    payload: projectShortDescription,
 });
 
 export const changeDescription = (description) => ({
@@ -251,10 +251,10 @@ export const createNewProject = (projectData) => async (dispatch) => {
     }
 };
 
-// 프로젝트 업데이트 (UPDATE) ** updateData에 projectNum으로 수정
-export const updateExistingProject = (updateData) => async (dispatch) => {
+// 프로젝트 업데이트 (UPDATE) 
+export const updateExistingProject = (projectNum, updateData) => async (dispatch) => {
     try {
-        const response = await updateProject(updateData);
+        const response = await updateProject(projectNum, updateData);
         dispatch({
             type: UPDATE_PROJECT,
             payload: response.data  // 업데이트된 프로젝트 데이터

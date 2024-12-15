@@ -140,7 +140,7 @@ const router = createBrowserRouter([
       { path: "product-details/:projectNum", element: <MainProDetails /> },
 
 
-      { path: "ordertable", element: <OrderTable /> },
+      { path: "ordertable/:projectNum", element: <OrderTable /> },
       { path: "fundingpay", element: <FundingPay />},
       // { path: "investment", element: <Investment />}
 

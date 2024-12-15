@@ -9,8 +9,12 @@ function Ongoing() {
   const [filteredData, setFilteredData] = useState([]);
 
   // 'EDIT' 클릭 시 이동 함수
-  const handleEditClick = (projectNum) => {
-    navigate(`/home/selectPrj/edit/${projectNum}`); // 해당 제품 상세 페이지로 이동
+  const handleEditClick = (product) => {
+    navigate(`/home/selectPrj/edit/${product.projectNum}`); // 해당 제품 상세 페이지로 이동
+  };
+
+  const handleContainerClick = (product) => {  
+    navigate(`/home/product-details/${product.projectNum}`);
   };
 
   useEffect(() => {
@@ -33,8 +37,8 @@ function Ongoing() {
     <div>
       <MyContainers
         products={filteredData}
-        onEditClick={handleEditClick} // 클릭 핸들러 전달
-        onContainerClick={handleEditClick} 
+        onEdit={handleEditClick} // 클릭 핸들러 전달
+        onContainerClick={handleContainerClick} 
         text="수정"
       />
     </div>

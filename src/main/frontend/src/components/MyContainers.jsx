@@ -62,7 +62,7 @@ function MyContainers({ text, products, onDelete, onEdit, onContainerClick }) {
               text={text}
               product={product}
               onClick={() => handleButtonClick(product)}
-              onContainerClick={() => onContainerClick(product.projectNum)}
+              onContainerClick={() => onContainerClick(product)}
             />
           </motion.div>
         ))}

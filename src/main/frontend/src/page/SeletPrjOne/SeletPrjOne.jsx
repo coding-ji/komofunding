@@ -82,7 +82,7 @@ function SelectPrjOne() {
             margin="5px"
             value={projectState.projectShortDescription}
             onChange={(e) =>
-              projectActions.changeUserShortDescription(e.target.value)
+              projectActions.changeProjectShortDescription(e.target.value)
             }
           />
         </div>

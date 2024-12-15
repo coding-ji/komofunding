@@ -90,7 +90,7 @@ public class ProjectConverter {
                 .title(projectInDTO.getTitle())
                 .projectCategory(projectInDTO.getProjectCategory())
                 .thumbnailImgs(projectInDTO.getThumnailImgs())
-                .shortDescription(projectInDTO.getShortDescription())
+                .shortDescription(projectInDTO.getProjectShortDescription())
                 .description(projectInDTO.getDescription())
                 .items(projectInDTO.getItems())
                 .totalAmount(totalAmount)

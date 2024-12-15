@@ -4,7 +4,7 @@ import "quill/dist/quill.snow.css";
 import "./EditorItem.css";
 import { useStore } from "../../stores/FileStore/useStore";
 
-const Editor = ({ setEditorContent, quillRef }) => {
+const Editor = ({ htmlContent, editorContent, setEditorContent, quillRef }) => {
   const editorRef = useRef(null);
   const [isQuillReady, setIsQuillReady] = useState(false);
   const [isLoaded, setIsLoaded] = useState([]);
@@ -43,6 +43,7 @@ const Editor = ({ setEditorContent, quillRef }) => {
     });
   };
 
+  // 이미지 로드된 후 에디터 삽입
   useEffect(() => {
     if (state) {
       const range = quillRef.current.getSelection();
@@ -69,21 +70,40 @@ const Editor = ({ setEditorContent, quillRef }) => {
   );
 
   useEffect(() => {
+    if (isQuillReady && quillRef.current && htmlContent) {
+      quillRef.current.clipboard.dangerouslyPasteHTML(htmlContent);
+    }
+  }, [htmlContent]);
+
+  // Quill 초기화
+  useEffect(() => {
     if (editorRef.current && !isQuillReady) {
       const quillInstance = new Quill(editorRef.current, {
         theme: "snow",
         modules: modules,
       });
       quillRef.current = quillInstance;
-
       setIsQuillReady(true);
+  
+      // editorContent가 초기화 시점에 있을 경우 반영
+      if (editorContent) {
+        quillInstance.clipboard.dangerouslyPasteHTML(editorContent);
+      }
+  
+      // 에디터 내용 변경 시 상태 업데이트
       quillInstance.on("text-change", () => {
         setEditorContent(quillInstance.root.innerHTML);
       });
     }
   }, [modules, isQuillReady]);
+  
 
-  return <div ref={editorRef}></div>;
+
+  return (
+    <div>
+      <div ref={editorRef}></div>
+    </div>
+  );
 };
 
 export default Editor;

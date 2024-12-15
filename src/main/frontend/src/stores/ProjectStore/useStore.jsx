@@ -75,7 +75,7 @@ export const useStore = () => {
         readProjectsByCategoryAndStatus: (projectCategory, fundingStatus) => readProjectsByCategoryAndStatus(projectCategory, fundingStatus)(dispatch),
         readUserProjects: (userNum) => readUserProjects(userNum)(dispatch),
         createNewProject: (projectData) => createNewProject(projectData)(dispatch),
-        updateExistingProject: (updateData) => updateExistingProject(updateData)(dispatch),
+        updateExistingProject: (projectNum, updateData) => updateExistingProject(projectNum, updateData)(dispatch),
         deleteExistingProject: (projectNum) => deleteExistingProject(projectNum)(dispatch),
         readProjectDonors: (projectNum) => readProjectDonors(projectNum)(dispatch)
     };

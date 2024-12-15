@@ -140,6 +140,31 @@ public class ProjectService {
         return projectConverter.toOutDTO(project);
     }
 
+    // 프로젝트 수정 로직
+    public Project updateProject(Long projectNum, ProjectInDTO projectInDTO) {
+        // 프로젝트 번호로 프로젝트 조회
+        Project project = projectRepository.findByProjectNum(projectNum)
+                .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
+
+        // 프로젝트 정보를 수정
+        project.setTitle(projectInDTO.getTitle());
+        project.setProjectCategory(projectInDTO.getProjectCategory());
+        project.setThumbnailImgs(projectInDTO.getThumnailImgs());
+        project.setShortDescription(projectInDTO.getProjectShortDescription());
+        project.setDescription(projectInDTO.getDescription());
+        project.setItems(projectInDTO.getItems());
+        project.setTotalAmount(projectInDTO.getTotalAmount());
+        project.setProjectStartDate(projectInDTO.getProjectStartDate());
+        project.setProjectEndDate(projectInDTO.getProjectEndDate());
+        project.setUpdatedDate(LocalDateTime.now());
+        
+
+        // 수정된 프로젝트를 저장
+        return projectRepository.save(project);
+    }
+
+
+    // 프로젝트 삭제 로직
     @Transactional
     public Boolean deleteProjectByNum(String projectNum) {
         // 프로젝트 찾기: 없으면 예외 던짐

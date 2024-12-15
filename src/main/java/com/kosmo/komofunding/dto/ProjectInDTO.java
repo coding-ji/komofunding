@@ -1,6 +1,5 @@
 package com.kosmo.komofunding.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kosmo.komofunding.common.dto.ItemDTO;
 import com.kosmo.komofunding.common.enums.ProjectCategory;
 import jakarta.validation.constraints.*;
@@ -27,7 +26,7 @@ public class ProjectInDTO {
 
     @NotBlank(message = "짧은 소개는 필수 입력입니다.")
     @Size(max = 70, message = "짧은 소개는 70자 이하로 입력해야 합니다.")
-    private String shortDescription;
+    private String projectShortDescription;
 
     @NotBlank(message = "소개 내용은 필수 입력입니다.")
     private String description;
