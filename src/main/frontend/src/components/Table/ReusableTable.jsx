@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./ReusableTable.module.css";
 import { WhiteBtn } from "../MyBtn";
 import { formattedDate } from "../../utils/formattedData";
-const ReusableTable = ({ title, data, columns, searchOptions, onSearch }) => {
+const ReusableTable = ({ title, data, columns, searchOptions, onSearch,categories,onRowClick }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedOption, setSelectedOption] = useState(searchOptions?.[0]?.value || ""); // 기본 검색 옵션
   const [checkedRows, setCheckedRows] = useState(data.map(() => false)); // 각 행의 체크 상태
@@ -134,7 +134,20 @@ const ReusableTable = ({ title, data, columns, searchOptions, onSearch }) => {
               <option value="false">공개</option>
               <option value="true">비공개</option>
             </select>
-          ) : (
+          ) : selectedOption === "communityCategory" ? (
+            <select
+              className={styles.dropdown0}
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            >
+              <option value="">전체</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            ) : (
             <input
               type="text"
               className={styles.searchInput0}
@@ -177,13 +190,21 @@ const ReusableTable = ({ title, data, columns, searchOptions, onSearch }) => {
           </thead>
           <tbody>
             {data.map((row, rowIndex) => (
-              <tr key={rowIndex} className={checkedRows[rowIndex] ? styles.selected0 : ""}>
+              <tr
+                key={rowIndex}
+                className={checkedRows[rowIndex] ? styles.selected0 : ""}
+                onClick={() => onRowClick && onRowClick(row)} // 추가: 행 클릭 처리
+                style={{ cursor: onRowClick ? "pointer" : "default" }} // 클릭 가능 여부 시각적 피드백
+              >
                 <td>
                   <input
                     type="checkbox"
                     className={styles.checkbox0}
                     checked={checkedRows[rowIndex]}
-                    onChange={() => handleCheckboxChange(rowIndex)}
+                    onChange={(e) => {
+                      e.stopPropagation(); // 행 클릭 이벤트 차단
+                      handleCheckboxChange(rowIndex);
+                    }}
                   />
                 </td>
                 {columns.map((col, colIndex) => (

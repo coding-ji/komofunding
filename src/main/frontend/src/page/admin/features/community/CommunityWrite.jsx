@@ -4,124 +4,168 @@ import WriteForm from './WriteForm';
 import { useState, useRef, useEffect } from 'react';
 import { Btn, WhiteBtn } from '../../../../components/MyBtn';
 import TitleText from '../../../../components/TitleText';
-import { useNavigate } from 'react-router-dom';
-import { useStore as CommunityStore } from '../../../../stores/NoticeStore/useStore'
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useStore as CommunityStore } from '../../../../stores/NoticeStore/useStore';
 import Popup from '../../../../components/Popupmodal/Popup';
 
-
 function CommunityWrite() {
-  const { state, actions } = CommunityStore(); // Store의 state와 actions
+  const { state, actions } = CommunityStore();
   const navigate = useNavigate();
-  const quillRef = useRef(null); // Quill 인스턴스 관리용 ref
-  const [modalOpenSubmit, setModalOpenSubmit] = useState(false)
-  const [modalOpenCancel, setModalOpenCancel] = useState(false)
-  const [errorModalOpen, setErrorModalOpen] = useState(false); // 오류 모달 상태 // 이벤트에서 종료일 미설정
+  const quillRef = useRef(null);
+  const location = useLocation();
+
+  const [modalOpenSubmit, setModalOpenSubmit] = useState(false);
+  const [modalOpenCancel, setModalOpenCancel] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
 
-  // 에디터 내용 변경 시 호출되는 함수
+ // 초기 데이터 설정 (수정 모드 확인)
+ useEffect(() => {
+  const announcement = location.state?.announcement;
+  if (announcement) {
+    setIsEditing(true); // 수정 모드 활성화
+    actions.changeCommunity({
+      communityNumber: announcement.communityNumber,
+      communityTitle: announcement.communityTitle,
+      communityContent: announcement.communityContent,
+      communityCategory: announcement.communityCategory,
+      writeDate: announcement.writeDate,
+      endDate: announcement.endDate,
+      author: announcement.author,
+      isHidden: announcement.isHidden,
+    }); // 기존 데이터 설정
+  } else {
+    actions.resetCommunityState(); // 초기화
+  }
+}, [location.state, actions]);
+
+
+
+  // 에디터 내용 변경 핸들러
   const handleEditorChange = (newContent) => {
     actions.changeCommunityContent(newContent);
   };
 
+  // 제출 핸들러
+  const handleSubmit = async () => {
+    const communityData = state.community;
+
+    // 필수값 확인
+    if (!communityData.communityTitle?.trim()) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
+    if (!communityData.communityContent?.trim()) {
+      alert('내용을 입력해주세요.');
+      return;
+    }
+    if (
+      communityData.communityCategory === 'EVENT' &&
+      !communityData.endDate?.trim()
+    ) {
+      alert('이벤트 글은 종료일을 반드시 입력해야 합니다.');
+      return;
+    }
+
+    try {
+      const response = isEditing
+        ? await actions.updateExistingCommunity(communityData)
+        : await actions.createNewCommunity(communityData);
+
+      if (response) {
+        alert('작업이 성공적으로 완료되었습니다.');
+        navigate('/admin/community/notice-faq');
+      }
+    } catch (error) {
+      console.error('작업 중 오류 발생:', error);
+      alert('작업에 실패했습니다.');
+    }
+  };
+
+  // 삭제 핸들러
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
+    if (!confirmDelete) return;
+
+    try {
+      await actions.deleteExistingCommunity(state.community.communityId);
+      alert('삭제가 완료되었습니다.');
+      navigate('/admin/community/notice-faq');
+    } catch (error) {
+      console.error('삭제 중 오류 발생:', error);
+      alert('삭제에 실패했습니다.');
+    }
+  };
 
   // 모달 닫기
   const closeSubmitModal = () => {
     setModalOpenSubmit(false);
     setModalOpenCancel(false);
-    setErrorModalOpen(false); // 오류 모달 닫기
-  };
-
-
-// 폼 제출 핸들러
-const handleSubmit = async () => {
-const communityData = state.community;
-
-console.log("communityCategory:", communityData.communityCategory);
-console.log("endDate:", communityData.endDate);
-
-if (
-    communityData.communityCategory === "EVENT" &&
-    (!communityData.endDate || communityData.endDate.trim() === "")
-) {
-    console.log("조건 충족: 종료일이 입력되지 않음");
-    setErrorModalOpen(true); // 상태 업데이트
-    return;
-}
-
-try {
-    const response = await actions.createNewCommunity(communityData);
-    if (response) {
-        const responseData = await response.json();
-        alert(responseData.message || "글이 성공적으로 작성되었습니다.");
-      }
-      navigate("/admin");
-    } catch (error) {
-      console.error("글 작성 중 오류 발생:", error);
-      alert("글 작성에 실패했습니다.");
-    }
+    setErrorModalOpen(false);
   };
 
   return (
-      <div className={styles.container}>
-          <TitleText title="글쓰기" />
-          <div className={styles.editor}>
-              <EditorItem
-                  editorContent={state.communityContent ||''}
-                  setEditorContent={handleEditorChange}
-                  quillRef={quillRef} // Quill 인스턴스를 관리할 ref 전달
-              />
-          </div>
-          <div className={styles.optionForm}>
-              <WriteForm 
-              state={state} action={actions}
-               />
-          </div>
-          <div className={styles.buttonContainer}>
-              <Btn
-                  text="작성 완료"
-                  onClick={()=>{setModalOpenSubmit(true)}}
-                  width="130px"
-                  padding="2px 10px"
-                  fontSize="1rem"
-                  height="40px"
-               
-              />
-              <WhiteBtn
-                  text="취소"
-                  width="130px"
-                  padding="2px 10px"
-                  fontSize="1rem"
-                  height="40px"
-                  onClick={()=>{setModalOpenCancel(true)}}
-              />
-          </div>
-          {modalOpenSubmit && (
-      <Popup
-        message="글을 작성하시겠습니까?"
-        onConfirm={() => {
-          handleSubmit(); // 제출 핸들러 호출
-          closeSubmitModal(); // 모달 닫기
-        }}
-        onClose={closeSubmitModal} // 모달 닫기
-      />
-    )}
-       {modalOpenCancel && (
-      <Popup
-        message="작성을 취소하시겠습니까?"
-        onConfirm={()=>{
-          navigate('/admin')// /admin으로 이동
-          closeSubmitModal()} // 모달 닫기
-        }
-        onClose={closeSubmitModal} // 모달 닫기         
-      />
-    )}
-    {errorModalOpen && (
-                 <Popup
-                 message="이벤트 글은 종료일을 반드시 입력해야 합니다."
-                 onConfirm={closeSubmitModal} // onConfirm을 올바르게 설정
-             />
-          )}
+    <div className={styles.container}>
+      <TitleText title={isEditing ? '글 수정' : '글쓰기'} />
+      <div className={styles.editor}>
+        <EditorItem
+          editorContent={state.communityContent || ''}
+          setEditorContent={handleEditorChange}
+          quillRef={quillRef}
+        />
       </div>
+      <div className={styles.optionForm}>
+        <WriteForm state={state} action={actions} />
+      </div>
+      <div className={styles.buttonContainer}>
+        <Btn
+          text={isEditing ? '수정 완료' : '작성 완료'}
+          onClick={() => setModalOpenSubmit(true)}
+          width="130px"
+          padding="2px 10px"
+          fontSize="1rem"
+          height="40px"
+        />
+        {isEditing && (
+          <WhiteBtn
+            text="삭제"
+            width="130px"
+            padding="2px 10px"
+            fontSize="1rem"
+            height="40px"
+            onClick={handleDelete}
+          />
+        )}
+        <WhiteBtn
+          text="취소"
+          width="130px"
+          padding="2px 10px"
+          fontSize="1rem"
+          height="40px"
+          onClick={() => setModalOpenCancel(true)}
+        />
+      </div>
+      {modalOpenSubmit && (
+        <Popup
+          message={isEditing ? '글을 수정하시겠습니까?' : '글을 작성하시겠습니까?'}
+          onConfirm={handleSubmit}
+          onClose={closeSubmitModal}
+        />
+      )}
+      {modalOpenCancel && (
+        <Popup
+          message={
+            <>
+              지금 나가시면 작성 중인 내용이 저장되지 않습니다. <br />
+              계속하시겠습니까?
+            </>
+          }
+          onConfirm={() => navigate('/admin/community/notice-faq')}
+          onClose={closeSubmitModal}
+        />
+      )}
+    </div>
   );
 }
 
