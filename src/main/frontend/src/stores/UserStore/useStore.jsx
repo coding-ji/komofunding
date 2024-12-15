@@ -33,7 +33,8 @@ import {
     resetUserPassword,
     updateUserPassword,
     // uploadProfileImage,
-    apiVerifyPassword
+    apiVerifyPassword,
+    checkNick
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.
 
 export const useStore = () => {
@@ -46,7 +47,7 @@ export const useStore = () => {
         changeEmail: (email) => dispatch(changeEmail(email)),
         changeUserPassword: (password) => dispatch(changeUserPassword(password)),
         changeName: (name) => dispatch(changeName(name)),
-        changeNickname: (nickName) => dispatch(changeNickname(nickName)),
+        changeNickname: (nickName) => dispatch(changeNickName(nickName)),
         changePhoneNumber: (phoneNumber) => dispatch(changePhoneNumber(phoneNumber)),
         changeProfileImg: (profileImage) => dispatch(changeProfileImg(profileImage)),
         changeUserShortDescription: (userShortDescription) => dispatch(changeUserShortDescription(userShortDescription)),
@@ -57,7 +58,7 @@ export const useStore = () => {
         changeUserJoinDate: (joinDate) => dispatch(changeUserJoinDate(joinDate)),
         changeCorporationName: (corporationName) => dispatch(changeCorporationName(corporationName)),
         changeCorporationTel: (corporationTel) => dispatch(changeCorporationTel(corporationTel)),
-        changeBSN: (BSN) => dispatch(changeBsn(BSN)),
+        changeBSN: (BSN) => dispatch(changeBSN(BSN)),
 
         // 모든 필드를 한 번에 업데이트하는 액션
         updateAllFields: (fields) => dispatch(updateAllFields(fields)),
@@ -79,7 +80,8 @@ export const useStore = () => {
         resetUserPassword: (email) => resetUserPassword(email)(dispatch),
         updateUserPassword: (request) => updateUserPassword(request)(dispatch),
 //      uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
-        apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch)
+        apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch),
+        checkNick: (nickName) => checkNick(nickName)(dispatch)
      };
     return { state, actions };
         // state 상태 객체

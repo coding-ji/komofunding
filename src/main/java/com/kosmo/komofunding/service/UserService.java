@@ -149,7 +149,9 @@ public class UserService {
         return userOutDTO;
     }
 
-
+    public boolean isNickNameAvailable(String nickName){
+        return !userRepository.existsByNickName(nickName);
+    }
 
     // 로그인
     public Map<String, String> login(String email, String password, HttpSession session) {

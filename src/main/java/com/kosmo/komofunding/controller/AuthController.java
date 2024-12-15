@@ -99,9 +99,23 @@ public class AuthController {
                 : ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build(); // 422 Unprocessable Entity
   }
 
-//     로그인
-@PostMapping("/login")
-public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginRequest, HttpSession session) {
+    // 닉네임 중복 확인
+    @PostMapping("/checkNickName")
+    public ResponseEntity<Map<String, Boolean>> checkNickName(
+            @RequestBody Map<String,String> request){
+        String nickName = request.get("nickName"); // 요청에서 닉네임 추출
+        // 서비스에서 중복 확인
+        boolean isAvailable = userService.isNickNameAvailable(nickName);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isAvailable", isAvailable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    //     로그인
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserInDTO loginRequest, HttpSession session) {
     String email = loginRequest.getEmail();
     String password = loginRequest.getPassword();
 
