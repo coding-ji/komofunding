@@ -62,6 +62,9 @@ import FundingPay from "./page/FundingPay/FundingPay";
 import AdminMainPage from "./page/admin/features/Main/AdminMainPage"
 import AdminNoticePage from "./page/admin/features/community/communityPage/AdminNoticePage";
 import AdminEventPage from "./page/admin/features/community/communityPage/AdminEventPage";
+import UserManagementPage from "./page/admin/features/user/UserManagementPage";
+import ProjectManagementPage from "./page/admin/features/Project/ProjectManagementPage";
+import QnaPage from "./page/admin/features/QnaPage/QnaPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -159,10 +162,40 @@ const router = createBrowserRouter([
       // 관리자 공지사항 / 커뮤니티
       {path : "community/notice-faq", element:<AdminNoticePage/> }, //공지사항/FAQ 목록
       {path : "community/event", element:<AdminEventPage/> }, // 이벤트 목록
-      { path: "community/write/:communityNum?", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
+      { path: "community/write", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
+      {
+        path: "community",
+        children: [
+          { path: "notice-faq", element: <AdminNoticePage /> },
+          { path: "event", element: <AdminEventPage /> },
+          { path: "edit/:communityNumber", element: <CommunityWrite /> },
+        ],
+      },
+
+      {
+        path: "user",
+        children: [
+          { path: "user-management", element: <UserManagementPage/> },
+          // { path: "event", element: <AdminEventPage /> },
+          // { path: "edit/:communityNumber", element: <CommunityWrite /> },
+        ],
+      },
+      {
+        path: "project",
+        children: [
+          { path: "project-management", element: <ProjectManagementPage/> },
+          // { path: "event", element: <AdminEventPage /> },
+          // { path: "edit/:communityNumber", element: <CommunityWrite /> },
+        ],
+      },
+
+
+
+
+
 
       // Qna
-      { path:"qna/waiting", element: <AdminQnaPage/>},
+      // { path:"qna/waiting", element: <AdminQnaPage/>},
       // { path:"qna/completed", element: <AdminQnaPage/>},
 
     ]
@@ -203,7 +236,7 @@ function App() {
 
   // 라우터 경로
   return <RouterProvider router={router} />;
-  // return (<Date /> )
+    // return (<QnaPage /> )
 }
 
 export default App;

@@ -31,6 +31,22 @@ public class UserOutDTO {
     private LocalDateTime lastLoginTime;
     private List<String> projectIds;
 
+    // UserOutDTO.java
+
     public UserOutDTO(User user) {
+        this.userNum = user.getUserNum();
+        this.email = user.getEmail();
+        this.name = user.getName();
+        this.nickName = user.getNickName();
+        this.phoneNumber = user.getPhoneNumber();
+        this.profileImg = user.getProfileImg();
+        this.shortDescription = user.getShortDescription();
+        this.activatedStatus = user.getActivatedStatus();
+        this.deactivationReason = user.getDeactivationReason();
+        this.deactivationDate = user.getDeactivationDate();
+        this.joinDate = user.getJoinDate();
+        this.lastLoginTime = user.getLastLoginTime();
+        this.projectIds = user.getProjectIds();
     }
+
 }

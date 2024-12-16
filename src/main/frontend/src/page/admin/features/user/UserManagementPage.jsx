@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TitleText from "../../../../components/TitleText";
@@ -49,6 +50,10 @@ const UserManagementPage = () => {
   ];
 
   const ITEMS_PER_PAGE = 10;
+
+  useEffect(()=>{
+    console.log("dklsss")
+  },[])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -183,3 +188,6 @@ const UserManagementPage = () => {
 };
 
 export default UserManagementPage;
+
+
+

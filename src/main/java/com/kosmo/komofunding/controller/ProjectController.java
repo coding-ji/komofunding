@@ -29,6 +29,15 @@ public class ProjectController {
     @Autowired
     ProjectConverter projectConverter;
 
+    // 권한 체크 메소드
+    private boolean isAdmin(HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        return "admin".equals(role);
+    }
+
+
+
+
     // 현재 진행 중인 프로젝트 불러오기 (인기순으로 50개)
     @GetMapping("/projects")
     public ResponseEntity<List<ProjectOutDTO>> getAllProjects() {
@@ -164,5 +173,39 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+
+    // 어드민..
+
+    // 어드민 전용: 모든 프로젝트 조회
+    @GetMapping("/admin/projects")
+    public ResponseEntity<List<ProjectOutDTO>> getAllProjectsForAdmin(HttpSession session) {
+//        if (!isAdmin(session)) { // 어드민 권한 체크
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
+
+        List<ProjectOutDTO> projects = projectService.getAllProjects();
+        return ResponseEntity.ok(projects);
+    }
+
+
+    // 어드민 전용: 프로젝트 삭제
+//    @DeleteMapping("/admin/projects/{projectNum}")
+//    public ResponseEntity<Void> deleteProjectForAdmin(@PathVariable("projectNum") Long projectNum, HttpSession session) {
+//        if (!isAdmin(session)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 권한 확인
+//        }
+//
+//        try {
+//            projectService.hideProject(projectNum); // 숨김 처리 로직 호출
+//            return ResponseEntity.noContent().build();
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 프로젝트가 존재하지 않는 경우
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 일반적인 서버 오류
+//        }
+//
+
 }
+
 

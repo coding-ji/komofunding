@@ -423,4 +423,11 @@ public class UserService {
     }
 
 
+// 전체 유저 검색 (어드민 전용)
+    public List<User> getAllUsers() {
+        return userRepository.findAll(); // 모든 사용자 조회
+    }
+
 }
+
+

@@ -165,5 +165,10 @@ export const replyQna = (qnaNumber, text) => apiClient.patch(`/reply/${qnaNumber
 // 문의 수정
 export const updateComment = (qnaNumber,text) => apiClient.patch(`/comment/${qnaNumber}`, {"questionComment" : text})
 
+// 이렇게 해도 되나... 큼
+// 모든 유저 가져오기 API 추가
+export const fetchAllUsers = () => apiClient.get('/api/admin/users');
+export const fetchAllProjectsForAdmin = () => apiClient.get('/admin/projects');
+export const deleteProjectByAdmin = (projectNum) => apiClient.delete(`/admin/projects/${projectNum}`);
 
 export default apiClient;

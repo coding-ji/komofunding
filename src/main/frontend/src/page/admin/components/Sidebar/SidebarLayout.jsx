@@ -76,7 +76,7 @@ const SidebarLayout = () => {
         <li>
         <div
             className={styles.menuHeader}
-            onClick={(e) => handleMenuClick("project", "/admin/project/project-management", e)}
+            onClick={(e) => handleMenuClick("project", "/admin/project", e)}
           >
             <img src={projectIcon} alt="프로젝트" /> 프로젝트
           </div>
