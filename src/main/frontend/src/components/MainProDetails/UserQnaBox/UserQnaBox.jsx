@@ -103,7 +103,7 @@ function UserQnaBox({ user, qna, projectUser, onUpdate, onAnswer }) {
               </>
             ) : (
               <>
-                {user.userNum == qna.userNum &&
+                {user && user.userNum == qna.userNum &&
                   <ProductBtn1
                     justifySelf="center"
                     fontSize="0.7rem"
@@ -114,7 +114,7 @@ function UserQnaBox({ user, qna, projectUser, onUpdate, onAnswer }) {
                     onClick={handleEditClick}
                   />
                 }
-                {user.userNum == projectUser && 
+                {user && user.userNum == projectUser && 
                   <ProductBtn1
                     justifySelf="center"
                     fontSize="0.7rem"

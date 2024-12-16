@@ -16,9 +16,6 @@ const Announcement = () => {
 
   // 공지사항 or 문의사항 상세 데이터를 불러오는 useEffect
   useEffect(() => {
-    console.log(communityNum);
-    console.log(qnaNum);
-
     if (communityNum) {
       // communityNum이 있으면 공지사항 데이터
       noticeActions.readCommunityById(communityNum);

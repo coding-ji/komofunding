@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, String> {
+    Optional<Project> findByProjectId(String projectId);
     // 프로젝트 글번호로 검색
     Optional<Project> findByProjectNum(Long projectNum);
     // 프로젝트 제목으로 검색 (정확히 일치)

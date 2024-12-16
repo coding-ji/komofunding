@@ -44,7 +44,6 @@ const Login = () => {
       
       // 성공 메시지 출력
       setMessage("로그인 성공!");
-      console.log("로그인 정보:", userInfo);
   
       // 로컬 스토리지에 사용자 정보 저장
       localStorage.setItem("user", JSON.stringify(userInfo));

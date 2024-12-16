@@ -142,7 +142,6 @@ const ProfileEdit = () => {
 
     useEffect(() => {
         if (isValidated) {
-            console.log(userState);
             const result = userActions.updateUserPassword(userState);
 
             if (result === "ok") {
@@ -156,8 +155,7 @@ const ProfileEdit = () => {
 
 
     const handleProfileUpdate = async () => {
-        console.log(userState);
-    
+   
         try {
             if (!userNum || !userState) {
                 alert("유효하지 않은 사용자 정보입니다.");
@@ -170,7 +168,6 @@ const ProfileEdit = () => {
                 password: currentPassword, // 사용자가 입력한 현재 비밀번호를 포함
             };
             
-            console.log(data);
             // 프로필 업데이트 실행
             const result = await userActions.updateProfile(userNum, data);
     
@@ -330,8 +327,6 @@ const ProfileEdit = () => {
                                         text="취소"
                                         onClick={() => {
                                             if (userState.userNum) {
-                                                console.log("userState:", userState);
-                                                console.log("userNum:", userState.userNum);
                                                 navigate(`/home/profile/${userState.userNum}`);
                                             } else {
                                                 alert("사용자 정보를 불러오지 못했습니다.");

@@ -8,6 +8,7 @@ import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.PaymentRepository;
 import com.kosmo.komofunding.repository.ProjectRepository;
 import com.kosmo.komofunding.repository.UserRepository;
+import com.kosmo.komofunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class PaymentConverter {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final PaymentRepository paymentRepository;
+
 
     public PaymentOutDTO toOutDTO(Payment payment) {
         // 사용자 정보 가져오기
@@ -67,6 +69,7 @@ public class PaymentConverter {
                 .shortDescription(project.getShortDescription())
                 .startDate(project.getProjectStartDate())
                 .endDate(project.getProjectEndDate())
+                .projectNum(project.getProjectNum())
                 .build();
     }
 

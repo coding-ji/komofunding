@@ -68,6 +68,7 @@ public class QnAService {
             qna.setTitle(qnAInDTO.getTitle());
         }
 
+
         qna.setQuestion_comment(qnAInDTO.getQuestionComment());
         qna.setWrittenDate(now);
         qna.setUpdatedDate(now);

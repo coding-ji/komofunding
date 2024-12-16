@@ -60,7 +60,7 @@ const SidebarLayout = () => {
           {activeMenu === "member" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/member/all">전체회원</Link>
+                <Link to="/admin/user/user-management">전체회원</Link>
               </li>
               <li>
                 <Link to="/admin/member/waiting">제작자 전환 대기</Link>
@@ -158,7 +158,7 @@ const SidebarLayout = () => {
           )}
 
           {/* 알림/수신 */}
-          <div
+          {/* <div
             className={styles.menuHeader}
             onClick={(e) => toggleMenu("alert",e)}
           >
@@ -170,7 +170,7 @@ const SidebarLayout = () => {
                 <Link to="/admin/email-send">이메일 발송</Link>
               </li>
             </ul>
-          )}
+          )} */}
 
           {/* Q&A */}
           <div

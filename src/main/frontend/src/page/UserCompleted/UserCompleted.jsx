@@ -1,67 +1,33 @@
-import React, { useEffect } from 'react';
-import { useStore } from '../../stores/PaymentStore/useStore';  // useStore 훅을 가져옵니다.
-import MyContainers from '../../components/MyContainers';
-import PopupInquiry from '../MyPage/writeQnA/PopupInquiry';
+import MyContainers from "../../components/MyContainers";
+import { useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function UserCompleted() {
-    const { state, actions } = useStore();  // state와 actions를 useStore 훅을 통해 가져옵니다.
+  const { state, actions, loading } = useOutletContext();
+  const navigate = useNavigate();
 
-    // 상태 초기화 (useState 대신 useReducer로 관리)
-    const products = state.products ?? [];
+  if (!state.payment) {
+    return <div>로딩 중...</div>;
+  }
 
-    const [isPopupOpen, setIsPopupOpen] = React.useState(false); // 팝업 상태
-    const [productToDelete, setProductToDelete] = React.useState(null); // 삭제할 상품 추적
+  const handleContainerClick = (product) => {
+    navigate(`/home/product-details/${product.projectNum}`);
+  };
 
-    // 삭제 버튼 클릭 시 팝업 열기
-    const handleDeleteClick = (product) => {
-        if (!product) {
-            console.warn("삭제하려는 상품이 존재하지 않습니다:", product);
-            return;
-        }
-        setProductToDelete(product);
-        setIsPopupOpen(true);
-    };
-
-    // 팝업에서 삭제 확인 시 실행
-    const handleConfirmDelete = () => {
-        if (!productToDelete) {
-            console.warn("삭제할 상품이 없습니다.");
-            return;
-        }
-
-        // 삭제 로직 수행: 상태에서 해당 상품을 삭제하는 액션 호출
-        actions.deleteProduct(productToDelete.id);  // actions에서 정의된 deleteProduct 액션 사용
-
-        // 팝업 상태 및 삭제 상품 초기화
-        setIsPopupOpen(false);
-        setProductToDelete(null);
-    };
-
-    return (
-        <div>
-            {/* 팝업 */}
-            {isPopupOpen && productToDelete && (
-                <PopupInquiry
-                    message={`"${productToDelete.title}"을(를) 삭제하시겠습니까?`}
-                    onClose={() => {
-                        console.log("팝업 닫힘");
-                        setIsPopupOpen(false);
-                    }}
-                    handleButtonClick={() => {
-                        console.log("삭제 확인 클릭");
-                        handleConfirmDelete();
-                    }}
-                    text="삭제"
-                />
-            )}
-
-            {/* 데이터 렌더링 */}
-            <MyContainers
-                products={products} 
-                onDelete={handleDeleteClick} // 삭제 버튼 클릭 시 호출될 함수
-            />
-        </div>
-    );
+  return (
+    <div>
+      {/* 데이터 렌더링 */}
+      {Array.isArray(state.payment) && state.payment.length > 0 ? (
+        <MyContainers
+          products={state.payment}
+          text="확인"
+          onContainerClick={handleContainerClick}
+        />
+      ) : (
+        <p>마감된 후원이 없습니다. </p>
+      )}
+    </div>
+  );
 }
 
 export default UserCompleted;

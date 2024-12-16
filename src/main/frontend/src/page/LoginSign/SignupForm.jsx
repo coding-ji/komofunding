@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
 import { useStore } from "../../stores/UserStore/useStore"; // useStore를 불러옵니다.
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   const { state, actions } = useStore(); // actions와 state를 불러옵니다.
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     nickName: "",
@@ -122,6 +124,7 @@ const SignupForm = () => {
       setConfirmPassword("");
       setEmailSent(false);
       setEmailVerified(false);
+      navigate("/");
     } catch (error) {
       alert("회원가입 중 오류가 발생했습니다.");
     }

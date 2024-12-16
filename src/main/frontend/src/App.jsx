@@ -97,7 +97,7 @@ const router = createBrowserRouter([
       // { path:"/productDetail", element:<ProductDetail/>},
       {
         path: "myfunding",
-        element: <MyFunding />, // 부모 컴포넌트
+        element: <MyFunding />, // 부모 컴포넌트(나의 프로젝트)
         children: [
           { index: true, element: <Upcoming /> },
           { path: "ongoing", element: <Ongoing/> },
@@ -127,7 +127,7 @@ const router = createBrowserRouter([
 
       {
         path: "userfunding",
-        element: <UserFunding />, // 부모 컴포넌트
+        element: <UserFunding />, // 부모 컴포넌트 (나의 후원)
         children: [
           { index: true, element: <UserIng /> },
           { path: "user-completed", element: <UserCompleted /> },

@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class PaymentService {
     private PaymentConverter paymentConverter;
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
+    private ProjectService projectService;
 
     @Transactional
     public Payment savePayment(PaymentInDTO paymentInDTO, Long projectNum, HttpSession httpSession){
@@ -91,49 +93,43 @@ public class PaymentService {
         return paymentNum;
     }
 
-    // 특정 사용자의 후원 정보를 조회
-    public List<PaymentOutDTO> getMyFunding(String userId, String projectStatus) {
-        // 해당 사용자의 모든 후원 내역 조회
-        List<Payment> payments = paymentRepository.findByUserId(userId);
+//     특정 사용자의 후원 정보를 조회
+// 특정 사용자의 후원 정보를 조회
+public List<PaymentOutDTO> getMyFunding(String userId, String projectStatus) {
+    // 유저의 모든 후원 목록 불러옴
+    List<Payment> payments = paymentRepository.findByUserId(userId);
 
-        // 현재 날짜를 기준으로
-        LocalDateTime now = LocalDateTime.now();
+    // 현재 날짜와 시간
+    LocalDateTime now = LocalDateTime.now();
 
-        // 프로젝트 상태에 맞는 후원 정보만 반환
-        return payments.stream()
-                .map(payment -> {
-                    Optional<Project> project = projectRepository.findById(payment.getProjectId());
+    // 각 결제에 대해 프로젝트 상태 확인 후 필터링
+    return payments.stream()
+            .filter(payment -> {
+                // 결제와 연결된 프로젝트 가져오기
+                Optional<Project> projectOpt = projectRepository.findByProjectId(payment.getProjectId());
 
-                    // 프로젝트가 존재하는 경우
-                    if (project.isPresent()) {
-                        Project p = project.get();
-                        String status = "";
+                // 프로젝트 존재 여부 확인
+                if (projectOpt.isPresent()) {
+                    Project project = projectOpt.get();
 
-                        // 진행 중인 프로젝트: 시작일이 현재 날짜 이전이고 종료일이 현재 날짜 이후
-                        if (p.getProjectStartDate().isBefore(now) && p.getProjectEndDate().isAfter(now)) {
-                            status = "ongoing"; // 진행 중
-                        }
-                        // 마감된 프로젝트: 종료일이 현재 날짜 이전
-                        else if (p.getProjectEndDate().isBefore(now)) {
-                            status = "completed"; // 마감
-                        }
-                        // 시작되지 않은 프로젝트
-                        else {
-                            status = "not started"; // 시작되지 않음
-                        }
-
-                        // projectStatus와 일치하는 프로젝트만 반환
-                        if (status.equals(projectStatus)) {
-                            // PaymentOutDTO로 변환 (컨버터 사용)
-                            return paymentConverter.toOutDTO(payment);
-                        }
+                    // 상태 필터링 로직
+                    if ("ONGOING".equalsIgnoreCase(projectStatus)) {
+                        // 진행 중: 종료일이 현재 날짜 이후
+                        return project.getProjectEndDate().isAfter(now);
+                    } else if ("COMPLETED".equalsIgnoreCase(projectStatus)) {
+                        // 완료된 프로젝트: 종료일이 현재 날짜 이전
+                        return project.getProjectEndDate().isBefore(now);
                     }
-                    return null; // 상태가 일치하지 않으면 null 반환
-                })
-                .filter(Objects::nonNull) // null을 제외하고 필터링
-                .collect(Collectors.toList());
-    }
+                }
 
+                return false; // 프로젝트가 없거나 조건에 맞지 않으면 제외
+            })
+            .map(payment -> {
+                // Payment -> PaymentOutDTO로 변환
+                return paymentConverter.toOutDTO(payment);
+            })
+            .collect(Collectors.toList());
+}
 }
 
 

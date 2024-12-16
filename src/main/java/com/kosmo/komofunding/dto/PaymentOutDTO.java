@@ -47,5 +47,5 @@ public class PaymentOutDTO {
     private String shortDescription;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-
+    private Long projectNum;
 }
