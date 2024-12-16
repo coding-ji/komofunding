@@ -11,6 +11,8 @@ import com.kosmo.komofunding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+
+
 @Component
 @RequiredArgsConstructor
 
@@ -28,6 +30,7 @@ public class PaymentConverter {
         // 프로젝트 정보 가져오기
         Project project = projectRepository.findById(payment.getProjectId())
                 .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
 
         // PaymentOutDTO로 변환하여 반환
         return PaymentOutDTO.builder()
@@ -57,6 +60,13 @@ public class PaymentConverter {
                 .refundAccountHolder(payment.getRefundAccountHolder())
                 .refundAccountNumber(payment.getRefundAccountNumber())
                 .isRefunded(payment.getIsRefunded())
+
+                // 프로젝트 관련
+                .thumbnailImgs(project.getThumbnailImgs())
+                .title(project.getTitle())
+                .shortDescription(project.getShortDescription())
+                .startDate(project.getProjectStartDate())
+                .endDate(project.getProjectEndDate())
                 .build();
     }
 
@@ -67,7 +77,7 @@ public class PaymentConverter {
                 .paidAmount(paymentInDTO.getPaidAmount()) // 결제 금액
                 .paymentDate(paymentInDTO.getPaymentDate()) // 결제 일시
                 .paymentMethod(paymentInDTO.getPaymentMethod()) // 결제 방법
-                .paymentStatus(paymentInDTO.getPaymentStatus()) // 결제 상태
+                .paymentStatus(paymentInDTO.getPaymentStatus()) // 결제 승인?
                 .failureReason(paymentInDTO.getFailureReason()) // 실패 사유
                 .senderName(paymentInDTO.getSenderName()) // 송금자 이름
                 .shippingName(paymentInDTO.getShippingName()) // 배송 이름

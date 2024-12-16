@@ -25,6 +25,10 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     List<Project> findByProjectStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
     // 시작과 끝 날짜에 프로젝트 끝나는 날짜가 포함되어있는 프로젝트 조회
     List<Project> findByProjectEndDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    // 진행 중 프로젝트
+    List<Project> findByProjectStartDateBeforeAndProjectEndDateAfter(LocalDateTime startDate, LocalDateTime endDate);
+    // 마감된 프로젝트: 종료일이 오늘 이전인 프로젝트
+    List<Project> findByProjectEndDateBefore(LocalDateTime today);
     // 프로젝트 카테고리로 프로젝트 조회
     List<Project> findByProjectCategory(ProjectCategory category);
     // 프로젝트 Id를 통해서 후원자 찾기

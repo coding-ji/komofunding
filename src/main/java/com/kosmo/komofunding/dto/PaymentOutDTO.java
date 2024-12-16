@@ -2,6 +2,7 @@ package com.kosmo.komofunding.dto;
 
 import com.kosmo.komofunding.common.dto.ItemDTO;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,5 +40,12 @@ public class PaymentOutDTO {
     private String refundAccountHolder;
     private String refundAccountNumber;
     private Boolean isRefunded;
+
+    // 프로젝트 관련
+    private List<String> thumbnailImgs;
+    private String title;
+    private String shortDescription;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
 }

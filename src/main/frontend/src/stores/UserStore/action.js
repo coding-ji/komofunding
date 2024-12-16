@@ -5,7 +5,6 @@ import {
     updateUserProfile,
     registerUser,
     sendRegisterEmailCode,
-    sendEmailCode,
     verifyEmailCode,
     loginUser,
     logout,
@@ -16,6 +15,7 @@ import {
     changePassword,
     verifyPassword,
     checkNickName,
+    sendEmailCode
     // uploadImg
 } from '../../service/apiService';
 
@@ -67,6 +67,7 @@ export const LOGOUT_USER = 'LOGOUT_USER'; // 로그아웃
 export const SEND_REGISTER_EMAIL_SUCCESS = 'SEND_REGISTER_EMAIL_SUCCESS'; // 회원가입 이메일 인증 성공
 export const SEND_EMAIL_VERIFICATION_SUCCESS = 'SEND_EMAIL_VERIFICATION_SUCCESS'; // 이메일 인증 코드 발송 성공
 export const VERIFY_EMAIL_SUCCESS = 'VERIFY_EMAIL_SUCCESS'; // 이메일 인증 성공
+export const VERIFY_EMAIL_FAILURE = "VERIFY_EMAIL_FAILURE";
 export const FIND_EMAIL_SUCCESS = 'FIND_EMAIL_SUCCESS'; // 이메일 찾기 성공
 export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS'; // 비밀번호 재설정 요청 성공
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'; // 비밀번호 변경 성공
@@ -187,14 +188,19 @@ export const sendEmailVerificationCode = (email) => async (dispatch) => {
 // 이메일 인증 코드 검증
 export const verifyEmail = (email, code) => async (dispatch) => {
     try {
-        const response = await verifyEmailCode(email, code);
+        const response = await verifyEmailCode(email, code); // 이메일 인증 API 호출
+        // 성공적인 인증 처리
         if (response.status === 200) {
-            dispatch({ type: VERIFY_EMAIL_SUCCESS, payload: response.data });
-            return "ok"; // 이메일 인증 성공
+            dispatch({ type: VERIFY_EMAIL_SUCCESS, payload: response.data.message });
+            return response.message;  // 성공 메시지 반환
+        } else if(response.status === 422){
+            dispatch({ type: VERIFY_EMAIL_FAILURE, payload: response.data.message });
+            return response.message;  // 실패 메시지 반환
         }
     } catch (error) {
         console.error("이메일 인증 실패:", error);
-        return "error"; // 이메일 인증 실패
+        dispatch({ type: VERIFY_EMAIL_FAILURE, payload: "인증 코드 검증 중 오류가 발생했습니다." });
+        return "인증 코드 검증 중 오류가 발생했습니다.";  // 예외 메시지 반환
     }
 };
 // 로그인 및 로그 아웃
@@ -226,20 +232,14 @@ export const logoutUser = () => async (dispatch) => {
 export const checkNick = (nickName) => async (dispatch) => {
     try {
         const response = await checkNickName(nickName);
-        if (response.status === 200) {
-            dispatch({ type: READ_USER, payload: response.data });
-            return "ok";
-        }
+        dispatch({
+            type: READ_USER,
+            payload: response.data
+        });
     } catch (error) {
-        if (error.response && error.response.status === 401) {
-            console.error("중복된 닉네임입니다.");
-            return "fail"; 
-        } else {
-            console.error("알 수 없는 오류", error);
-            return "error"; // 기타 오류
-        }
+        console.error('사용자 프로필 가져오기 실패:', error);
     }
-}
+};
 
 // 사용자 관리 로직
 // 회원 탈퇴

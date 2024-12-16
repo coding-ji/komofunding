@@ -1,6 +1,7 @@
     package com.kosmo.komofunding.dto;
 
     import com.kosmo.komofunding.common.dto.ItemDTO;
+    import com.kosmo.komofunding.entity.Project;
     import lombok.Getter;
     import lombok.Setter;
 

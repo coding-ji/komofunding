@@ -29,7 +29,7 @@ export const updateUserProfile = (userNum, request) => apiClient.patch(`/api/use
 export const registerUser = (userInDTO) => apiClient.post('/api/auth/register', userInDTO);
 
 // 회원가입 이메일 인증 요청 
-export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck', email);
+export const sendRegisterEmailCode = (email) => apiClient.post('/api/auth/register/emailcheck', { email });
 
 // 이메일 인증 코드 발송 요청
 export const sendEmailCode = (email) => apiClient.post('/api/auth/emailcheck', email);
@@ -69,6 +69,7 @@ export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/statu
 
 
 // 프로젝트 관련 API
+
 // 전체 게시물 조회
 export const fetchPosts = () => apiClient.get('/projects');
 
@@ -79,6 +80,7 @@ export const fetchDetailPost = (projectNum) => apiClient.get(`/projects/${projec
 export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) => {
   return apiClient.get(`/projects/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
+
 
 // 개인 프로젝트
 // 조회
@@ -95,6 +97,7 @@ export const deleteProject = (projectNum) => apiClient.delete(`/api/user/myinfo/
 
 // 프로젝트 후원자 조회
 export const fetchProjectDonors = (projectNum) => apiClient.get(`api/user/myinfo/projects/donors?projectNum=${projectNum}`)
+
 
 
 // 결제 
@@ -159,7 +162,7 @@ export const createQuestion = (commentData) => apiClient.post(`/qna/new`, commen
 // 답변 생성
 export const replyQna = (qnaNumber, text) => apiClient.patch(`/reply/${qnaNumber}`, { "answer": text });
 
-// 문의 수정 
+// 문의 수정
 export const updateComment = (qnaNumber,text) => apiClient.patch(`/comment/${qnaNumber}`, {"questionComment" : text})
 
 

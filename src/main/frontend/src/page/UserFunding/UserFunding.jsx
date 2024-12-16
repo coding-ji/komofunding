@@ -9,7 +9,7 @@ function UserFunding() {
 
     const navItems = [
         { label: "진행 중 후원", path: "" },
-        { label: "마감된 후원", path: "user-completed" },
+        { label: "마감된 후원", path: "user-completed" }
       ];    
 
     return (

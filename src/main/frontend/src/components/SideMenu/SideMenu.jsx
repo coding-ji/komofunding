@@ -106,8 +106,8 @@ function SideMenu({onDeleteAccount }) {
             style={{ overflow: "hidden" }}
           >
             <ul>
-              <li>진행 중인 후원</li>
-              <li>마감 된 후원</li>
+              <li><StyledLink to="/home/userfunding">진행 중인 후원</StyledLink></li>
+              <li><StyledLink to="/home/userfunding/user-completed">마감 된 후원</StyledLink></li>
             </ul>
           </motion.div>
         </div>

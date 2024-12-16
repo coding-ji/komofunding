@@ -44,7 +44,7 @@ public class AuthController {
     @PostMapping("/register/emailcheck")
     public HashMap<String, Object> sendRegisterEmailCode(@RequestBody EmailRequestDTO emailRequest) {
         HashMap<String, Object> map = new HashMap<>();
-        String email = emailRequest.email();  // 이메일 주소 추출
+        String email = emailRequest.getEmail();  // 이메일 주소 추출
 
         try {
             // 이메일 유효성 검사
@@ -88,16 +88,33 @@ public class AuthController {
 
     // 이메일 인증 코드 검증
     @PostMapping("/emailverification")
-    public ResponseEntity<Void> emailVerification(@RequestBody EmailRequestDTO emailRequest) {
-        String email = emailRequest.email(); // 이메일 주소
-        String inputCode = emailRequest.verificationCode(); // 입력된 인증 코드
+    public ResponseEntity<Map<String, Object>> emailVerification(@RequestBody EmailRequestDTO emailRequest) {
+        String email = emailRequest.getEmail(); // 이메일 주소
+        String inputCode = emailRequest.getVerificationCode(); // 입력된 인증 코드
 
-        boolean isValid = emailService.verifyCode(email, inputCode);
+        Map<String, Object> responseMap = new HashMap<>();
 
-        return isValid
-                ? ResponseEntity.noContent().build() // 204 No Content
-                : ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build(); // 422 Unprocessable Entity
-  }
+        try {
+            boolean isValid = emailService.verifyCode(email, inputCode);
+
+            if (isValid) {
+                // 인증 코드가 유효한 경우
+                responseMap.put("success", Boolean.TRUE);
+                responseMap.put("message", "인증 코드가 맞습니다.");
+                return ResponseEntity.ok(responseMap); // 200 OK 응답과 함께 성공 메시지 반환
+            } else {
+                // 인증 코드가 잘못된 경우
+                responseMap.put("success", Boolean.FALSE);
+                responseMap.put("message", "인증 코드가 틀렸습니다. 다시 확인해주세요.");
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(responseMap); // 422 응답과 함께 실패 메시지 반환
+            }
+        } catch (Exception e) {
+            // 예외 발생 시 처리
+            responseMap.put("success", Boolean.FALSE);
+            responseMap.put("message", "인증 코드 검증 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap); // 500 응답과 함께 오류 메시지 반환
+        }
+    }
 
     // 닉네임 중복 확인
     @PostMapping("/checkNickName")

@@ -2,17 +2,26 @@ package com.kosmo.komofunding.service;
 
 import com.kosmo.komofunding.converter.PaymentConverter;
 import com.kosmo.komofunding.dto.PaymentInDTO;
+import com.kosmo.komofunding.dto.PaymentOutDTO;
+import com.kosmo.komofunding.dto.ProjectOutDTO;
 import com.kosmo.komofunding.entity.Payment;
 import com.kosmo.komofunding.entity.Project;
+import com.kosmo.komofunding.entity.User;
 import com.kosmo.komofunding.repository.PaymentRepository;
 import com.kosmo.komofunding.repository.ProjectRepository;
+import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,13 +29,14 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
     private PaymentConverter paymentConverter;
     private ProjectRepository projectRepository;
+    private UserRepository userRepository;
 
     @Transactional
     public Payment savePayment(PaymentInDTO paymentInDTO, Long projectNum, HttpSession httpSession){
         // HttpSession에서 userId를 가져옵니다.
         String userId = (String) httpSession.getAttribute("userId");
         if (userId == null) {
-            throw new RuntimeException("User ID not found in session");
+            throw new RuntimeException("세션에서 유저 아이디를 찾을 수 없습니다.");
         }
 
         // ProjectNum을 통해 ProjectId를 가져옵니다.
@@ -80,5 +90,89 @@ public class PaymentService {
         }
         return paymentNum;
     }
-}
+
+    // 특정 사용자의 후원 정보를 조회
+    public List<PaymentOutDTO> getMyFunding(String userId, String projectStatus) {
+        // 해당 사용자의 모든 후원 내역 조회
+        List<Payment> payments = paymentRepository.findByUserId(userId);
+
+        // 현재 날짜를 기준으로
+        LocalDateTime now = LocalDateTime.now();
+
+        // 프로젝트 상태에 맞는 후원 정보만 반환
+        return payments.stream()
+                .map(payment -> {
+                    Optional<Project> project = projectRepository.findById(payment.getProjectId());
+
+                    // 프로젝트가 존재하는 경우
+                    if (project.isPresent()) {
+                        Project p = project.get();
+                        String status = "";
+
+                        // 진행 중인 프로젝트: 시작일이 현재 날짜 이전이고 종료일이 현재 날짜 이후
+                        if (p.getProjectStartDate().isBefore(now) && p.getProjectEndDate().isAfter(now)) {
+                            status = "ongoing"; // 진행 중
+                        }
+                        // 마감된 프로젝트: 종료일이 현재 날짜 이전
+                        else if (p.getProjectEndDate().isBefore(now)) {
+                            status = "completed"; // 마감
+                        }
+                        // 시작되지 않은 프로젝트
+                        else {
+                            status = "not started"; // 시작되지 않음
+                        }
+
+                        // projectStatus와 일치하는 프로젝트만 반환
+                        if (status.equals(projectStatus)) {
+                            // PaymentOutDTO로 변환 (컨버터 사용)
+                            return paymentConverter.toOutDTO(payment);
+                        }
+                    }
+                    return null; // 상태가 일치하지 않으면 null 반환
+                })
+                .filter(Objects::nonNull) // null을 제외하고 필터링
+                .collect(Collectors.toList());
+    }
+
+//
+//        // 후원 내역마다 상태 값을 status로 계산하여 반환 -> 값만 List로 반환
+//        return payments.stream()
+//                .map(payment -> {
+//                    String status = "";  // status 변수 선언
+//
+//                    if (payment.getProjectId() != null) {
+//                        // 프로젝트의 시작일과 종료일을 LocalDate로 변환하여 사용
+//                        Optional<Project> project = projectRepository.findById(payment.getProjectId());
+//                        if (project.isPresent()) {
+//                            LocalDate now = LocalDate.now();
+//                            LocalDate projectStartDate = project.get().getProjectStartDate().toLocalDate();
+//                            LocalDate projectEndDate = project.get().getProjectEndDate().toLocalDate();
+//
+//                            // 진행 중인 프로젝트: 시작일이 현재 날짜 이전이고 종료일이 현재 날짜 이후
+//                            if (projectStartDate.isBefore(now) && projectEndDate.isAfter(now)) {
+//                                status = "ongoing";  // 진행 중
+//                            }
+//                            // 마감된 프로젝트: 종료일이 현재 날짜 이전
+//                            else if (projectEndDate.isBefore(now)) {
+//                                status = "completed";  // 마감됨
+//                            }
+//                            // 시작되지 않은 프로젝트
+//                            else {
+//                                status = "not started";  // 시작되지 않음
+//                            }
+//                        } else {
+//                            // 프로젝트가 존재하지 않는 경우 처리
+//                            status = "no project";  // 프로젝트 없음
+//                        }
+//                    } else {
+//                        // 프로젝트가 null인 경우 처리
+//                        status = "no project";  // 프로젝트 없음
+//                    }
+//
+//                    return status;  // status만 반환
+//                })
+//                .collect(Collectors.toList());
+    }
+
+
 

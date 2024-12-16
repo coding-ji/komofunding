@@ -26,6 +26,7 @@ import {
     SEND_REGISTER_EMAIL_SUCCESS,
     SEND_EMAIL_VERIFICATION_SUCCESS,
     VERIFY_EMAIL_SUCCESS,
+    VERIFY_EMAIL_FAILURE,
     FIND_EMAIL_SUCCESS,
     RESET_PASSWORD_REQUEST_SUCCESS,
     UPDATE_USER_PROFILE,
@@ -37,22 +38,22 @@ import {
 
 // 초기 상태 정의
 export const initialState = {
-//    userNum: null,
-//    email: '',
-//    password: '',
-//    name: '',
-//    nickName: '',
-//    phoneNumber: '',
-//    profileImage: '',
-//    userShortDescription: '',
-//    activatedStatus: false,
-//    bankName: '',
-//    accountNumber: '',
-//    accountHolder: '',
-//    joinDate: '',
-//    corporationName: '',
-//    corporationTel: '',
-//    BSN: '',
+    //    userNum: null,
+    //    email: '',
+    //    password: '',
+    //    name: '',
+    //    nickName: '',
+    //    phoneNumber: '',
+    //    profileImage: '',
+    //    userShortDescription: '',
+    //    activatedStatus: false,
+    //    bankName: '',
+    //    accountNumber: '',
+    //    accountHolder: '',
+    //    joinDate: '',
+    //    corporationName: '',
+    //    corporationTel: '',
+    //    BSN: '',
 };
 
 // 동적 상태 업데이트 함수
@@ -62,19 +63,19 @@ export const updateStateField = (state, field, value) => ({
 });
 
 // 리듀서 함수
-export const reducer = (state , action) => {
+export const reducer = (state, action) => {
     switch (action.type) {
         case CHANGE_USER_NUM:
             return updateStateField(state, 'userNum', action.payload);
 
-            case CHANGE_EMAIL:
+        case CHANGE_EMAIL:
             return updateStateField(state, 'email', action.payload);
 
         // case UPDATE_USER_PASSWORD:
         //     return updateStateField(state, 'password', action.payload);
 
         case CHANGE_NAME:
-            return updateStateField(state, 'name', action.payload );
+            return updateStateField(state, 'name', action.payload);
 
         case CHANGE_NICKNAME:
             return updateStateField(state, 'nickName', action.payload);
@@ -119,13 +120,13 @@ export const reducer = (state , action) => {
             return { ...initialState };
 
         case READ_USER:
-            return { ...state, user: action.payload};
+            return { ...state, user: action.payload };
 
         case CREATE_USER:
-            return { ...state, user: action.payload};
+            return { ...state, user: action.payload };
 
         case UPDATE_USER:
-            return {...state, user: action.payload };
+            return { ...state, user: action.payload };
 
         case DELETE_USER:
             return { ...state, user: action.payload };
@@ -141,50 +142,53 @@ export const reducer = (state , action) => {
 
         case UPDATE_USER_PROFILE:
             return { ...state, message: action.payload };
-        
-        case APPLY_CREATOR_SWITCH:
-            return {...state, message: action.payload};
-        
-        case  LOGIN_SUCCESS:
-            return {...state, message: action.payload};
+
+        // case APPLY_CREATOR_SWITCH:
+        //     return {...state, message: action.payload};
+
+        case LOGIN_SUCCESS:
+            return { ...state, message: action.payload };
 
         case SEND_REGISTER_EMAIL_SUCCESS:
-            return {...state, message: action.payload};
+            return { ...state, message: action.payload };
 
         case SEND_EMAIL_VERIFICATION_SUCCESS:
-            return {...state, message: action.payload};
-        
+            return { ...state, message: action.payload };
+
         case VERIFY_EMAIL_SUCCESS:
-            return {...state, message: action.payload};
-        
+            return { ...state, successMessage: action.payload, errorMessage: null };
+
+        case VERIFY_EMAIL_FAILURE:
+            return { ...state, successMessage: null, errorMessage: action.payload };
+
         case LOGIN_SUCCESS:
-            return {...state, message: action.payload};
+            return { ...state, message: action.payload };
 
         case LOGOUT_USER:
-            return {...state, message: action.payload};
-        
+            return { ...state, message: action.payload };
+
         case FIND_EMAIL_SUCCESS:
-            return {...state, message: action.payload};
+            return { ...state, message: action.payload };
 
         case RESET_PASSWORD_REQUEST_SUCCESS:
-            return {...state, message: action.payload};
+            return { ...state, message: action.payload };
 
 
         case CHANGE_PASSWORD_SUCCESS:
-            return {...state, message: action.payload};
+            return { ...state, message: action.payload };
 
         case RESET_STATE:
             return initialState;
 
-            
+
         // case UPDATE_USER_PASSWORD:
         //     // 비밀번호 업데이트 중 로직 처리 (예: 로딩 상태 변경)
         //     return { ...state, isLoading: true };
-        
+
         // case UPDATE_USER_PASSWORD_SUCCESS:
         //     // 비밀번호 업데이트 성공 후 상태 변경
         //     return { ...state, isLoading: false, passwordUpdated: true };  // 필요한 상태 추가
-        
+
 
         default:
             return state;

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./SignupForm.module.css";
-import { registerUser, sendRegisterEmailCode, verifyEmailCode } from "../../service/apiService";
+import { useStore } from "../../stores/UserStore/useStore"; // useStore를 불러옵니다.
 
 const SignupForm = () => {
+  const { state, actions } = useStore(); // actions와 state를 불러옵니다.
   const [formData, setFormData] = useState({
     name: "",
     nickName: "",
@@ -13,7 +14,7 @@ const SignupForm = () => {
   });
   const [authCode, setAuthCode] = useState(""); // 이메일 인증 코드 입력값
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [isNickNameAvailable, setIsNickNameAvailable] = useState(false); // 닉네임 사용 가능 여부 상태
   const [emailSent, setEmailSent] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
 
@@ -31,44 +32,73 @@ const SignupForm = () => {
     }
 
     try {
-      await sendRegisterEmailCode(formData.email);
+      await actions.sendEmailForRegister(formData.email); // 액션으로 이메일 전송
       setEmailSent(true);
       alert("인증코드가 이메일로 전송되었습니다.");
     } catch (error) {
+      setEmailSent(false);
       alert("이메일 전송 중 오류가 발생했습니다.");
     }
   };
 
-  // 이메일 인증 코드 검증
+
   const handleVerifyEmail = async () => {
     const trimmedAuthCode = authCode.trim();
+    try {
+      await actions.verifyEmail(formData.email, trimmedAuthCode); // 액션으로 인증 코드 검증
+    } catch (error) {
+      alert("인증 코드 검증 시 오류가 발생했습니다.");
+    }
+  }
+
+  useEffect(() => {
+    // 상태에 따라 인증 결과 처리
+    if (state.errorMessage) {
+      setEmailVerified(false); // 오류 발생 시 인증 실패
+      alert(state.errorMessage); // 오류 메시지 표시
+    } else if (state.successMessage) {
+      setEmailVerified(true); // 인증 성공
+      alert(state.successMessage); // 성공 메시지 표시
+    }
+
+    console.log("state after dispatch:", state); 
+    
+  }, [state.successMessage, state.errorMessage])
+
+
+  // 닉네임 중복확인
+  const handleCheckNickName = async () => {
+    if (!formData.nickName) {
+      alert("닉네임을 입력하세요.");
+      return;
+    }
 
     try {
-      await verifyEmailCode(formData.email, trimmedAuthCode);
-      setEmailVerified(true);
-      alert("이메일 인증 성공!");
+      await actions.checkNick(formData.nickName); // 중복 확인 API 호출
+      setIsNickNameAvailable(true);
     } catch (error) {
-      alert("인증코드가 일치하지 않습니다.");
+      setIsNickNameAvailable(null); // 오류 상태
+      console.error("닉네임 확인 중 오류 발생:", error);
+      alert("서버와의 통신에 문제가 발생했습니다.");
     }
   };
-  //닉네임 중복확인
-const handleCheckNickName = async () => {
-  if (!formData.nickName) {
-    alert("닉네임을 입력하세요.");
-    return;
-  }
 
-  try {
-    const response = await checkNickName(formData.nickName); // 중복 확인 API 호출
-    if (response.data.isAvailable) {
-      alert("사용 가능한 닉네임입니다.");
-    } else {
-      alert("이미 사용 중인 닉네임입니다.");
+  useEffect(() => {
+    if (isNickNameAvailable) {
+      // 상태에 isAvailable 값이 있을 경우 확인
+      if (state.user.isAvailable === true) {
+        alert("닉네임 사용이 가능합니다.");
+      } else if (state.user.isAvailable === false) {
+        setIsNickNameAvailable(false); // 닉네임 중복
+        alert("중복된 닉네임입니다.");
+      } else {
+        setIsNickNameAvailable(null); // 알 수 없는 오류 상태
+        alert("알 수 없는 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
-  } catch (error) {
-    alert("닉네임 확인 중 오류가 발생했습니다.");
-  }
-};
+    setIsNickNameAvailable(false)
+  }, [isNickNameAvailable])
+
   // 회원가입 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +114,7 @@ const handleCheckNickName = async () => {
     }
 
     try {
-      await registerUser(formData);
+      await actions.register(formData); // 액션을 통해 회원가입
       alert("회원가입이 완료되었습니다!");
       // 폼 초기화
       setFormData({ name: "", nickName: "", email: "", password: "", phoneNumber: "" });
@@ -140,18 +170,19 @@ const handleCheckNickName = async () => {
               placeholder="닉네임을 입력하세요"
               className={styles.input}
               value={formData.nickName}
-              onChange={handleInputChange}
+              onChange={(e) => setFormData({ ...formData, nickName: e.target.value })}
               style={{ gridArea: "input7" }}
             />
-<div style={{ gridArea: "nickbtn" }}>
-  <button
-    type="button"
-    className={styles.smallButton}
-    onClick={handleCheckNickName}
-  >
-    중복 확인
-  </button>
-</div>
+            <div style={{ gridArea: "nickbtn" }}>
+              <button
+                type="button"
+                className={styles.smallButton}
+                onClick={handleCheckNickName}
+              >
+                중복 확인
+              </button>
+            </div>
+
             {/* 이메일 */}
             <label className={styles.label} style={{ gridArea: "label2" }}>
               이메일
@@ -175,7 +206,6 @@ const handleCheckNickName = async () => {
                 이메일 인증
               </button>
             </div>
-
 
             <label className={styles.label} style={{ gridArea: "label3" }}>
               인증번호
@@ -262,6 +292,6 @@ const handleCheckNickName = async () => {
       </motion.div>
     </div>
   );
-};
+}
 
 export default SignupForm;
