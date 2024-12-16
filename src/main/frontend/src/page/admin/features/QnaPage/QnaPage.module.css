@@ -1,0 +1,156 @@
+.wrapper-qna {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper-qna > :nth-child(2) {
+  margin-bottom: 30px; /* AdminTabs에 간격 추가 */
+}
+
+.title-qna {
+  font-size: 2rem;
+}
+
+.buttonWrapper-qna {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.printButton-qna {
+  display: block;
+  padding: 10px 16px;
+  border: 1px solid black;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tableWrapper-qna {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-bottom: 1px solid #ccc;
+  overflow-x: auto;
+}
+
+.table-qna {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 테이블 열 너비 고정 */
+  font-size: 14px;
+}
+
+.table-qna thead {
+  background-color: #436446;
+  color: white;
+  font-weight: bold;
+}
+
+.table-qna th,
+.table-qna td {
+  padding: 12px 8px;
+  text-align: center;
+  border: none; /* 모든 border 초기화 */
+  border-bottom: 1px solid #ddd; /* 아래쪽 선만 추가 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.table-qna th {
+  text-align: center;
+  white-space: nowrap; /* 헤더 텍스트 줄바꿈 방지 */
+}
+
+.table-qna th:nth-child(1) {
+  width: 5%; /* 체크박스 열 */
+}
+
+.table-qna th:nth-child(2) {
+  width: 10%; /* No 열 */
+}
+
+.table-qna th:nth-child(3) {
+  width: 30%; /* 제목 열 */
+}
+
+.table-qna th:nth-child(4) {
+  width: 15%; /* 별명 열 */
+}
+
+.table-qna th:nth-child(5) {
+  width: 15%; /* 날짜 열 */
+}
+
+.table-qna th:nth-child(6) {
+  width: 10%; /* 상태 열 */
+}
+
+.table-qna th:nth-child(7) {
+  width: 15%; /* 답변 여부 열 */
+}
+
+.table-qna tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-qna tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.checkbox-qna {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .table-qna {
+    font-size: 12px;
+  }
+  .printButton-qna {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+  .table-qna th,
+  .table-qna td {
+    padding: 10px 6px;
+  }
+}
+
+@media print {
+  tr {
+    display: none;
+  }
+
+  tr input[type="checkbox"]:checked {
+    display: table-row !important;
+  }
+
+  .table-qna thead {
+    display: table-header-group !important;
+  }
+
+  .table-qna thead tr {
+    display: table-row !important;
+  }
+
+  .buttonWrapper-qna {
+    display: none;
+  }
+
+  .table-qna th,
+  .table-qna td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid black;
+    font-size: 12px;
+  }
+
+  @page {
+    margin: 10mm;
+  }
+}
