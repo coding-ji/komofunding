@@ -102,6 +102,12 @@ function CommunityWrite() {
       console.error("작업 중 오류 발생:", error);
       alert("작업에 실패했습니다.");
     }
+
+    navigate(
+      location.pathname.includes("admin")
+        ? "/admin/community/notice-faq"
+        : "/home/inquiry"
+    );
   };
 
   useEffect(() => {
@@ -122,12 +128,6 @@ function CommunityWrite() {
         }
 
         alert("작업이 성공적으로 완료되었습니다.");
-
-        navigate(
-          location.pathname.includes("admin")
-            ? "/admin/community/notice-faq"
-            : "/home/inquiry"
-        );
       }
     };
 
@@ -249,20 +249,20 @@ function CommunityWrite() {
       {location.pathname.includes("inquiry") && (
         <>
           <TitleText title={isEditing ? "글 수정" : "문의하기"} />
-          <div className={styles.editor}>
-            <EditorItem
-              editorContent={editorContent}
-              setEditorContent={setEditorContent}
-              quillRef={quillRef}
-              htmlContent={htmlContent}
-            />
-          </div>
           <div className={styles.titleForm}>
             <label>제목</label>
             <input
               type="text"
               value={state.communityTitle}
               onChange={(e) => actions.changeCommunityTitle(e.target.value)}
+            />
+          </div>
+          <div className={styles.editor}>
+            <EditorItem
+              editorContent={editorContent}
+              setEditorContent={setEditorContent}
+              quillRef={quillRef}
+              htmlContent={htmlContent}
             />
           </div>
           <div className={styles.buttonContainer}>

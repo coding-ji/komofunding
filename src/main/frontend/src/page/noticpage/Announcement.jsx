@@ -4,6 +4,7 @@ import TitleText from "../../components/TitleText";
 import { formattedDate } from "../../utils/formattedData";
 
 
+// 상세 내역
 const Announcement = () => {
   const { communityNum, userNum } = useParams();
   const navigate = useNavigate();
