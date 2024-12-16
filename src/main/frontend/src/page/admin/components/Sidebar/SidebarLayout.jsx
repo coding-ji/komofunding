@@ -134,7 +134,7 @@ const SidebarLayout = () => {
           {activeMenu === "announcement" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/community/edit/create">작성 및 수정</Link>
+                <Link to="/admin/community/write">작성 및 수정</Link>
               </li>
             </ul>
           )}

@@ -179,8 +179,8 @@ function SideMenu({onDeleteAccount }) {
             style={{ overflow: "hidden" }}
           >
             <ul>
-              <li><StyledLink to={`inquiry/${user.userNum}/write`}>문의하기</StyledLink></li>
-              <li><StyledLink to={`/inquiry`}>나의 문의 내역</StyledLink></li>
+              <li><StyledLink to={`/home/inquiry/${user.userNum}/write`}>문의하기</StyledLink></li>
+              <li><StyledLink to={`/home/inquiry`}>나의 문의 내역</StyledLink></li>
             </ul>
           </motion.div>
         </div>

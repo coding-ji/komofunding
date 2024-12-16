@@ -159,7 +159,7 @@ const router = createBrowserRouter([
       // 관리자 공지사항 / 커뮤니티
       {path : "community/notice-faq", element:<AdminNoticePage/> }, //공지사항/FAQ 목록
       {path : "community/event", element:<AdminEventPage/> }, // 이벤트 목록
-      { path: "community/write", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
+      { path: "community/write/:communityNum?", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
 
       // Qna
       { path:"qna/waiting", element: <AdminQnaPage/>},
