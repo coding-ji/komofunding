@@ -87,14 +87,17 @@ const router = createBrowserRouter([
 
       // 사용자 커뮤니티 / 공지사항
       { path: "notice", element: <NoticePage /> },
-      { path: "announcement/:id", element: <Announcement /> },
+      { path: "inquiry", element: <NoticePage/>},
+      { path: "announcement/:communityNum", element: <Announcement /> },
+      { path: "inquiry/:userNum", element: <Announcement /> }, // 나의 문의 내역
+      { path: "inquiry/:userNum/write", element: <CommunityWrite/>}, // 1:1 문의하기 
       // { path:"/productDetail", element:<ProductDetail/>},
       {
         path: "myfunding",
         element: <MyFunding />, // 부모 컴포넌트
         children: [
           { index: true, element: <Upcoming /> },
-          { path: "ongoing", element: <Ongoing /> },
+          { path: "ongoing", element: <Ongoing/> },
           { path: "completed", element: <Completed /> },
         ],
       },
@@ -134,7 +137,7 @@ const router = createBrowserRouter([
       // 푸터로 연결되는 정책, 이용안내
       { path: "creation-guide", element: <CreationGuide /> }, //창작가이드
       { path: "donate-guide", element: <DonateGuide /> }, // 후원 가이드
-      { path: "charge", element: <ChargePolicy /> }, // 수수료 안내
+      { path: "charge", element: <ChargePolicy /> }, // 수수료 
       {path:"useterms", element:<TermsOfService/>}, // 이용약관
       {path:"privacypolicy", element:<PrivacyPolicy/>}, // 개인정보처리
       { path: "product-details/:projectNum", element: <MainProDetails /> },
@@ -157,7 +160,6 @@ const router = createBrowserRouter([
       {path : "community/notice-faq", element:<AdminNoticePage/> }, //공지사항/FAQ 목록
       {path : "community/event", element:<AdminEventPage/> }, // 이벤트 목록
       { path: "community/write", element: <CommunityWrite/>}, // 공자사항/ faq/ 이벤트 작성
-      { path: "community/write", element: <CommunityWrite/>},
 
       // Qna
       { path:"qna/waiting", element: <AdminQnaPage/>},

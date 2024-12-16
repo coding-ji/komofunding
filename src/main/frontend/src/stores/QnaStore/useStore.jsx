@@ -17,7 +17,8 @@ import {
     createProjectComment,
     createNewQuestion,
     updateReplyQna,
-    updatedComment
+    updatedComment,
+    readAllQnas
 } from "./action";
 
 export const useStore = () => {
@@ -39,6 +40,7 @@ export const useStore = () => {
     updateAllFields: (fields) => dispatch(updateAllFields(fields)),
     resetState: () => dispatch(resetState()),
 
+    readAllQnas: ()=>readAllQnas()(dispatch),
     createProjectComment: (projectNum, commentData) => createProjectComment(projectNum, commentData)(dispatch),
     createNewQuestion: (commentData) => createNewQuestion(commentData)(dispatch),
     updateReplyQna: (qnaNumber, text) => updateReplyQna(qnaNumber, text)(dispatch),

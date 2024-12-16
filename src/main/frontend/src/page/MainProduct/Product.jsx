@@ -17,21 +17,25 @@ function Product() {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
 
-  // pathname에 따라 상태 업데이트
-  useEffect(() => {
-if (pathname.includes("/upcoming")) {
-      setFundingStatus("UPCOMING");
-      setSubCategory("all");
-    } else if (pathname.includes("/active")) {
-      setFundingStatus("ONGOING");
-      setSubCategory("all");
-    } else{
-      setFundingStatus("HOME");
-      setSubCategory("all");
-    }
+// pathname에 따라 상태 업데이트
+useEffect(() => {
+  if (pathname.includes("/upcoming")) {
+    setFundingStatus("UPCOMING");
+    setSubCategory("all");
+  } else if (pathname.includes("/active")) {
+    setFundingStatus("ONGOING");
+    setSubCategory("all");
+  } else if (pathname.includes("/home/notice")) {
+    // home/notice일 경우 상태를 초기화
+    setFundingStatus(null);
+    setSubCategory(null);
+  } else {
+    setFundingStatus("HOME");
+    setSubCategory("all");
+  }
 
-    actions.resetState();
-  }, [pathname]); // pathname이 변경될 때마다 실행
+  actions.resetState();
+}, [pathname]);
 
   // fundingStatus 또는 subCategory가 변경될 때마다 데이터 fetch
   useEffect(() => {

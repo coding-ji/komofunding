@@ -41,6 +41,8 @@ const StyledLink = styled(Link)`
 `
 
 function SideMenu({onDeleteAccount }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [activeMenu, setActiveMenu] = useState(null); // 현재 활성화된 메뉴 상태
 
   const toggleMenu = (menu) => {
@@ -177,8 +179,8 @@ function SideMenu({onDeleteAccount }) {
             style={{ overflow: "hidden" }}
           >
             <ul>
-              <li>문의하기</li>
-              <li>나의 문의 내역</li>
+              <li><StyledLink to={`inquiry/${user.userNum}/write`}>문의하기</StyledLink></li>
+              <li><StyledLink to={`/inquiry`}>나의 문의 내역</StyledLink></li>
             </ul>
           </motion.div>
         </div>

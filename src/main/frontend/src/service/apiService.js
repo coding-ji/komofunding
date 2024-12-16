@@ -70,14 +70,14 @@ export const checkSuspension = (userNum) => apiClient.get(`/api/auth/login/statu
 
 // 프로젝트 관련 API
 // 전체 게시물 조회
-export const fetchPosts = () => apiClient.get('/posts');
+export const fetchPosts = () => apiClient.get('/projects');
 
 // 상세 게시물 조회
-export const fetchDetailPost = (projectNum) => apiClient.get(`/posts/${projectNum}`)
+export const fetchDetailPost = (projectNum) => apiClient.get(`/projects/${projectNum}`)
 
 // 전체 게시물 카테고리별 & 상태별(all, upcoming, active )
 export const fetchPostsByCategoryAndStatus = (projectCategory, fundingStatus) => {
-  return apiClient.get(`/posts/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
+  return apiClient.get(`/projects/category?projectCategory=${projectCategory}&fundingStatus=${fundingStatus}`);
 };
 
 // 개인 프로젝트
@@ -117,23 +117,23 @@ export const deleteItem = (id) => apiClient.delete(`/items/${id}`);
 // 커뮤니티 API
 
 // 커뮤니티 목록 가져오기
-export const fetchAllCommunities = () => apiClient.get("/posts/community");
+export const fetchAllCommunities = () => apiClient.get("/api/posts/community");
 
 // 특정 커뮤니티 가져오기 (ID로 검색)
-export const fetchCommunityById = (communityId) =>
-  apiClient.get(`/api/posts/community/${communityId}`);
+export const fetchCommunityById = (communityNumber) =>
+  apiClient.get(`/api/posts/community/${communityNumber}`);
 
 // 새로운 커뮤니티 생성
 export const createCommunity = (communityData) =>
   apiClient.post("/api/posts/community", communityData);
 
 // 특정 커뮤니티 수정
-export const updateCommunity = (communityId, updateData) =>
-  apiClient.put(`/api/posts/community/${communityId}`, updateData);
+export const updateCommunity = (communityNumber, updateData) =>
+  apiClient.put(`/api/posts/community/${communityNumber}`, updateData);
 
 // 특정 커뮤니티 삭제
-export const deleteCommunity = (communityId) =>
-  apiClient.delete(`/api/posts/community/${communityId}`);
+export const deleteCommunity = (communityNumber) =>
+  apiClient.delete(`/api/posts/community/${communityNumber}`);
 
 
 // 신청서 목록 가져오기 
@@ -147,6 +147,9 @@ export const fetchApplicationByUserNum = (userNum) => apiClient.post(`/api/appli
 
 
 // 댓글 혹은 1:1 문의
+// 유저 문의 조회
+export const readQna = () => apiClient.get('/user/inquiry');
+
 // 댓글 생성
 export const createComment = (projectNum, commentData) => apiClient.post(`/comment/${projectNum}/new`, commentData);
 

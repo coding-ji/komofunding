@@ -126,6 +126,10 @@ public class QnAService {
         return Optional.empty(); // QnA가 없으면 빈 Optional 반환
     }
 
+    // userId로 찾기
+    public List<QnA> getQnaByUserId(String userId){
+        return qnARepository.findByUserId(userId);
+    }
 
     // userId로 1:1문의 혹은 댓글 조회
     public List<QnA> getQnaByUserIdAndCategory(String userId, QnaCategory qnaCategory) {

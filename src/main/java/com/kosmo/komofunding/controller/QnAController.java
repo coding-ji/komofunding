@@ -140,7 +140,26 @@ public class QnAController {
         }
     }
 
+    // Get all QnA data (1:1 inquiries and comments) by userId from session
+    @GetMapping("/user/inquiry")
+    public ResponseEntity<List<QnAOutDTO>> getAllByUserId(HttpSession session) {
+        // Retrieve userId from session
+        String userId = (String) session.getAttribute("userId");
 
+        if (userId == null) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        // Fetch QnA data by userId from the service
+        List<QnA> qnaList = qnAService.getQnaByUserId(userId);
+
+        // Convert the list of QnA entities to DTOs using map
+        List<QnAOutDTO> qnaDTOList = qnaList.stream()
+                .map(qnAConverter::toOutDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(qnaDTOList);
+    }
 
 
     // 유저의 1:1 문의 검색 (userId 기반)

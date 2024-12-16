@@ -30,7 +30,7 @@ public class ProjectController {
     ProjectConverter projectConverter;
 
     // 현재 진행 중인 프로젝트 불러오기 (인기순으로 50개)
-    @GetMapping("/posts")
+    @GetMapping("/projects")
     public ResponseEntity<List<ProjectOutDTO>> getAllProjects() {
         try {
             List<ProjectOutDTO> projects = projectService.getAllProjects();
@@ -45,7 +45,7 @@ public class ProjectController {
     }
 
     // 카테고리별 프로젝트 조회
-    @GetMapping("/posts/category")
+    @GetMapping("/projects/category")
     public ResponseEntity<List<ProjectOutDTO>> getProjectsByCategory(
             @RequestParam(name = "projectCategory") String projectCategory,
             @RequestParam(name = "fundingStatus") String fundingStatus) {
@@ -94,7 +94,7 @@ public class ProjectController {
     }
 
     // 프로젝트 번호에 해당하는 프로젝트 조회
-    @GetMapping("/posts/{projectNum}")
+    @GetMapping("/projects/{projectNum}")
     public ResponseEntity<ProjectOutDTO> findProjectByProjectNumber(@PathVariable("projectNum") Long projectNum) {
         // 프로젝트 번호로 조회
         Optional<Project> project = projectRepository.findByProjectNum(projectNum);

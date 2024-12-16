@@ -47,7 +47,7 @@ export const useStore = () => {
         // },
         readAllCommunities: () => readAllCommunities()(dispatch),
 
-        readCommunityDetail: (projectNum) => readProjectDetail(projectNum)(dispatch),
+        readCommunityDetail: (communityNumber) => readProjectDetail(communityNumber)(dispatch),
 
         createNewCommunity: (communityData) => createNewCommunity(communityData)(dispatch),
 
