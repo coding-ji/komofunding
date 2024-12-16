@@ -107,6 +107,9 @@ export const fetchDonorsByProjectNum = (projectNum) => apiClient.get(`/payment/l
 // 결제 저장 로직 
 export const createPayment = (projectNum, payment) => apiClient.post(`/payment/save?projectNum=${projectNum}`, payment);
 
+// 나의 후원 내역 조회 ( 후원중 , 마감 )
+export const getMyFunding = (projectStatus) => apiClient.get(`/payment/myinfo/funding?projectStatus=${projectStatus}`);
+
 
 // 이미지 저장
 export const uploadImg = (img) => apiClient.post('/upload/image', img);

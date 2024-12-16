@@ -56,8 +56,8 @@ function MyContainers({ text, products, onDelete, onEdit, onContainerClick }) {
       animate="animate"
     >
       {Array.isArray(products) &&
-        products.map((product, index) => (
-          <motion.div key={index} variants={itemVariants}>
+        products.map((product) => (
+          <motion.div key={product.id} variants={itemVariants}>
             <MyContainer
               text={text}
               product={product}

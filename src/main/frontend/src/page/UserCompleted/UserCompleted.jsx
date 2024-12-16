@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useStore } from '../../stores/PaymentStore/useStore';  // useStore 훅을 가져옵니다.
 import MyContainers from '../../components/MyContainers';
 import PopupInquiry from '../MyPage/writeQnA/PopupInquiry';
 
 function UserCompleted() {
-    // 초기 데이터
-    const initialProducts = [
-        { id: 1, title: "Product 1", description: "Description for product 1", text: "DELETE" },
-        { id: 2, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-        { id: 3, title: "포실포실하덕", description: "얄루얄루", text: "DELETE" },
-    ];
+    const { state, actions } = useStore();  // state와 actions를 useStore 훅을 통해 가져옵니다.
 
-    const [products, setProducts] = useState(initialProducts ?? []); // 상태 초기화
-    const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 상태
-    const [productToDelete, setProductToDelete] = useState(null); // 삭제할 상품 추적
+    // 상태 초기화 (useState 대신 useReducer로 관리)
+    const products = state.products ?? [];
+
+    const [isPopupOpen, setIsPopupOpen] = React.useState(false); // 팝업 상태
+    const [productToDelete, setProductToDelete] = React.useState(null); // 삭제할 상품 추적
 
     // 삭제 버튼 클릭 시 팝업 열기
     const handleDeleteClick = (product) => {
@@ -31,10 +29,8 @@ function UserCompleted() {
             return;
         }
 
-        // 삭제 로직 수행
-        setProducts((prevProducts) =>
-            prevProducts.filter((p) => p.id !== productToDelete.id)
-        );
+        // 삭제 로직 수행: 상태에서 해당 상품을 삭제하는 액션 호출
+        actions.deleteProduct(productToDelete.id);  // actions에서 정의된 deleteProduct 액션 사용
 
         // 팝업 상태 및 삭제 상품 초기화
         setIsPopupOpen(false);
@@ -62,7 +58,7 @@ function UserCompleted() {
             {/* 데이터 렌더링 */}
             <MyContainers
                 products={products} 
-                onDelete={handleDeleteClick}
+                onDelete={handleDeleteClick} // 삭제 버튼 클릭 시 호출될 함수
             />
         </div>
     );

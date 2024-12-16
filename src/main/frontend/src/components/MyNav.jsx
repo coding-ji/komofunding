@@ -32,52 +32,51 @@ const navVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-function MyNav({ navItems, basePath }) {
-  const location = useLocation(); // 현재 경로를 가져옴
-  const [hoveredIndex, setHoveredIndex] = useState(null); // hover 상태를 관리
-  const [clickedIndex, setClickedIndex] = useState(0); // 클릭된 항목을 관리
 
-  // URL에 따라 clickedIndex 초기화
+function MyNav({ navItems, basePath}) {
+  const location = useLocation();
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [clickedIndex, setClickedIndex] = useState(0);
+
+  // 데이터 검증
   useEffect(() => {
-    const currentPath = location.pathname.replace(basePath, ""); // basePath 제거
+    if (!Array.isArray(navItems)) {
+      console.error("navItems가 배열이 아닙니다:", navItems);
+      return;
+    }
+
+    const currentPath = location.pathname.replace(basePath, "");
     const matchedIndex = navItems.findIndex(
       (item) => `/${item.path}` === currentPath
     );
+
     if (matchedIndex !== -1) {
-      setClickedIndex(matchedIndex); // URL과 매칭되는 index 설정
+      setClickedIndex(matchedIndex);
+    } else {
+      setClickedIndex(0); // 기본값
     }
   }, [location.pathname, basePath, navItems]);
 
-  const handleItemClick = (index) => {
-    setClickedIndex(index); // 클릭된 항목의 index를 상태로 저장
-  };
-
   return (
-    <StyledNav
-      initial="hidden"
-      animate="visible"
-      variants={navVariants}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-    >
-      {navItems.map((item, index) => (
-        <NavItem
-          key={index}
-          initial="hidden"
-          animate="visible"
-          onMouseEnter={() => setHoveredIndex(index)} // 마우스 오버 상태 업데이트
-          onMouseLeave={() => setHoveredIndex(null)} // 마우스 아웃 상태 초기화
-          onClick={() => handleItemClick(index)} // 클릭 시 상태 업데이트
-        >
-          {/* Link를 NavItem으로 감싸서 네비게이션 연결 */}
-          <NavFont nav={item.label} to={`${basePath}/${item.path}`} />{" "}
-          {/* basePath 추가 */}
-          <HoverRectangle
-            isHovered={hoveredIndex === index || clickedIndex === index}
-          />
-        </NavItem>
-      ))}
+    <StyledNav initial="hidden" animate="visible" variants={navVariants}>
+      {Array.isArray(navItems) &&
+        navItems.map((item, index) => (
+          <NavItem
+            key={index}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => setClickedIndex(index)}
+          >
+            <NavFont nav={item.label} to={`${basePath}/${item.path}`} />
+            <HoverRectangle
+              isHovered={hoveredIndex === index || clickedIndex === index}
+            />
+          </NavItem>
+        ))}
     </StyledNav>
   );
 }
+
+
 
 export default MyNav;

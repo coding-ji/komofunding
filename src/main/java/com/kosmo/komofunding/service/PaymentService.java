@@ -134,45 +134,7 @@ public class PaymentService {
                 .collect(Collectors.toList());
     }
 
-//
-//        // 후원 내역마다 상태 값을 status로 계산하여 반환 -> 값만 List로 반환
-//        return payments.stream()
-//                .map(payment -> {
-//                    String status = "";  // status 변수 선언
-//
-//                    if (payment.getProjectId() != null) {
-//                        // 프로젝트의 시작일과 종료일을 LocalDate로 변환하여 사용
-//                        Optional<Project> project = projectRepository.findById(payment.getProjectId());
-//                        if (project.isPresent()) {
-//                            LocalDate now = LocalDate.now();
-//                            LocalDate projectStartDate = project.get().getProjectStartDate().toLocalDate();
-//                            LocalDate projectEndDate = project.get().getProjectEndDate().toLocalDate();
-//
-//                            // 진행 중인 프로젝트: 시작일이 현재 날짜 이전이고 종료일이 현재 날짜 이후
-//                            if (projectStartDate.isBefore(now) && projectEndDate.isAfter(now)) {
-//                                status = "ongoing";  // 진행 중
-//                            }
-//                            // 마감된 프로젝트: 종료일이 현재 날짜 이전
-//                            else if (projectEndDate.isBefore(now)) {
-//                                status = "completed";  // 마감됨
-//                            }
-//                            // 시작되지 않은 프로젝트
-//                            else {
-//                                status = "not started";  // 시작되지 않음
-//                            }
-//                        } else {
-//                            // 프로젝트가 존재하지 않는 경우 처리
-//                            status = "no project";  // 프로젝트 없음
-//                        }
-//                    } else {
-//                        // 프로젝트가 null인 경우 처리
-//                        status = "no project";  // 프로젝트 없음
-//                    }
-//
-//                    return status;  // status만 반환
-//                })
-//                .collect(Collectors.toList());
-    }
+}
 
 
 

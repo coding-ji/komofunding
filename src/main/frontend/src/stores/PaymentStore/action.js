@@ -1,6 +1,7 @@
 import {
     fetchDonorsByProjectNum,
-    createPayment
+    createPayment,
+    getMyFunding
 } from "../../service/apiService";
 
 
@@ -89,3 +90,15 @@ export const createDonorByProject = (projectNum, payment) => async (dispatch) =>
         console.error("결제 실패", error);
     }
 }
+
+export const getMyFundingByProject = (projectStatus) => async (dispatch) => {
+    try {
+        const response = await getMyFunding(projectStatus);
+        dispatch({
+            type : READ_PAYMENT,
+            payload: response.data
+        });
+    }catch (error) {
+        console.error("불러오기 실패", error);
+    }
+} 

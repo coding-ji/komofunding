@@ -23,7 +23,8 @@ import {
   resetState, 
   updateAllFields, 
   createDonorByProject, 
-  readDonorsByProjectNum } 
+  readDonorsByProjectNum,
+  getMyFundingByProject } 
   from "./action";
 
 export const useStore = () => {
@@ -54,7 +55,8 @@ export const useStore = () => {
     updateAllFields: (data) => dispatch(updateAllFields(data)),
     
     createDonorByProject: (projectNum, payment) => createDonorByProject(projectNum, payment)(dispatch),  
-    readDonorsByProjectNum: (projectNum) => readDonorsByProjectNum(projectNum)(dispatch)
+    readDonorsByProjectNum: (projectNum) => readDonorsByProjectNum(projectNum)(dispatch),
+    getMyFundingByProject: (projectStatus) => getMyFundingByProject(projectStatus)(dispatch)
   };
 
   return { state, actions };

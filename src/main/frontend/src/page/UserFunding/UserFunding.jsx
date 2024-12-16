@@ -8,7 +8,7 @@ import styles from './UserFunding.module.css';  // CSS 모듈 임포트
 function UserFunding() {
 
     const navItems = [
-        { label: "진행 중 후원", path: "" },
+        { label: "진행 중 후원", path: "/" },
         { label: "마감된 후원", path: "user-completed" }
       ];    
 
