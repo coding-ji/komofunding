@@ -77,8 +77,8 @@ const AdminHeader = () => {
           />
         </motion.div>
         <div className={styles.menuListAdmin}>
-          <HeaderMenu name="메인화면" 
-          //  onClick={() => navigate("/admin")}
+          <HeaderMenu name="관리 홈" 
+           onClick={() => navigate("/admin")}
            />
           <HeaderMenu
             name="비밀번호 변경"
