@@ -62,8 +62,16 @@ const MainProDetailQnA = forwardRef((qnaState,ref) => {
 
       setInputValue(""); // 입력 값 초기화
       setIsQBoxVisible(false); // QBox 숨기기
+      qnaState.setIsAdded(true)
     }
   };
+
+  useEffect(() => {
+    if(qnaState.isAdded){
+      qnaState.projectActions.changeQnaList(qnaState.qnaState);
+    }
+
+  },[qnaState.isAdded])
 
   const handleCancelClick = () => {
     setInputValue(""); // 입력 값 초기화
@@ -74,7 +82,7 @@ const MainProDetailQnA = forwardRef((qnaState,ref) => {
   const handleUpdate = async (qna, commentText) => {
     if(commentText){
       await actions.updatedComment(qna.qnaNumber, commentText);
-      qnaState.setIsAdded(true);
+      qnaState.setIsAdded(true)
     }
   };
 

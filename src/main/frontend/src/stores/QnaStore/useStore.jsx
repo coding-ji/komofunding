@@ -18,7 +18,10 @@ import {
     createNewQuestion,
     updateReplyQna,
     updatedComment,
-    readAllQnas
+    readAllQnas,
+    readAllQnasByAdmin,
+    readAllUserQuestions,
+    readQnaDetailByQnaNumber
 } from "./action";
 
 export const useStore = () => {
@@ -40,12 +43,18 @@ export const useStore = () => {
     updateAllFields: (fields) => dispatch(updateAllFields(fields)),
     resetState: () => dispatch(resetState()),
 
-    readAllQnas: ()=>readAllQnas()(dispatch),
+    readAllQnas: ()=>readAllQnas()(dispatch), // 유저의 qna가져오기
     createProjectComment: (projectNum, commentData) => createProjectComment(projectNum, commentData)(dispatch),
     createNewQuestion: (commentData) => createNewQuestion(commentData)(dispatch),
     updateReplyQna: (qnaNumber, text) => updateReplyQna(qnaNumber, text)(dispatch),
-    updatedComment: (qnaNumber,text) => updatedComment(qnaNumber,text)(dispatch)
+    updatedComment: (qnaNumber,text) => updatedComment(qnaNumber,text)(dispatch),
+    readQnaDetailByQnaNumber: (qnaNumber) => readQnaDetailByQnaNumber(qnaNumber)(dispatch),
+     // Admin 전체 qna 불러오기
+    readAllQnasByAdmin: () => readAllQnasByAdmin()(dispatch),
+    // Admin 문의내역 불러오기
+    readAllUserQuestions: () => readAllUserQuestions()(dispatch)
   };
+
 
   return { state, actions };
 };

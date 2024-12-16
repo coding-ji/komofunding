@@ -92,7 +92,7 @@ const router = createBrowserRouter([
       { path: "notice", element: <NoticePage /> },
       { path: "inquiry", element: <NoticePage/>},
       { path: "announcement/:communityNum", element: <Announcement /> },
-      { path: "inquiry/:userNum", element: <Announcement /> }, // 나의 문의 내역
+      { path: "inquiry/:qnaNum", element: <Announcement /> }, // 나의 문의 내역
       { path: "inquiry/:userNum/write", element: <CommunityWrite/>}, // 1:1 문의하기 
       // { path:"/productDetail", element:<ProductDetail/>},
       {

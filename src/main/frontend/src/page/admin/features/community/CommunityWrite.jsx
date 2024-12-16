@@ -93,7 +93,7 @@ function CommunityWrite() {
         // Inquiry: QnaStore를 사용하여 질문 작성
         const questionData = {
           qnaCategory: "QUESTION",
-          title: state.communityTitle,
+          title: state.community.communityTitle,
           questionComment: questionComment,
         };
         await qnaActions.createNewQuestion(questionData);

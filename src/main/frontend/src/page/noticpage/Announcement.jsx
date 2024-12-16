@@ -2,19 +2,47 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Announcement.module.css";
 import TitleText from "../../components/TitleText";
 import { formattedDate } from "../../utils/formattedData";
-
+import { useStore as NoticeStore } from "../../stores/NoticeStore/useStore";
+import { useStore as QnaStore } from "../../stores/QnaStore/useStore";
+import { useEffect } from "react";
 
 // 상세 내역
 const Announcement = () => {
-  const { communityNum, userNum } = useParams();
+  const { state: qnaState, actions: qnaActions } = QnaStore();
+  const { state: noticeState, actions: noticeActions } = NoticeStore();
+
+  const { communityNum, qnaNum } = useParams();
   const navigate = useNavigate();
 
+  // 공지사항 or 문의사항 상세 데이터를 불러오는 useEffect
+  useEffect(() => {
+    console.log(communityNum);
+    console.log(qnaNum);
 
+    if (communityNum) {
+      // communityNum이 있으면 공지사항 데이터
+      noticeActions.readCommunityById(communityNum);
+    } else if (qnaNum) {
+      // qnaNum이 있으면 1:1 문의사항 데이터
+      qnaActions.readQnaDetailByQnaNumber(qnaNum);
+    }
+  }, [communityNum, qnaNum]);
 
-  
+  const handleClick = () => {
+    if (communityNum) {
+      navigate("/home/notice");
+    } else if (qnaNum) {
+      navigate("/home/inquiry");
+    }
+  };
 
-  // 공지사항 데이터를 상태로 설정
-  const announcement = state?.announcement;
+  // 공지사항이나 1:1 문의사항 데이터 가져오기
+  let announcement;
+  if (communityNum) {
+    announcement = noticeState.communities;
+  } else if (qnaNum) {
+    announcement = qnaState;
+  }
 
   if (!announcement) {
     return <div className={styles.loading}>공지사항 로딩 중...</div>;
@@ -22,73 +50,56 @@ const Announcement = () => {
 
   return (
     <>
-      {communityNum && (
+      {announcement && (
         <div className={styles.announcementPage}>
-          <TitleText title={announcement.communityCategory} />
+          <TitleText
+            title={announcement.communityCategory || announcement.qnaCategory}
+          />
           <hr />
 
           <main className={styles.mainContent}>
             <article className={styles.announcement}>
               <header className={styles.announcementHeader}>
-                <h2>{announcement.communityTitle}</h2>
+                <h2>
+                  {announcement.communityTitle ||
+                    announcement.title ||
+                    "댓글내용"}
+                </h2>
                 <div className={styles.announcementMeta}>
                   <span className={styles.date}>
-                    {formattedDate(announcement.writeDate)}
+                    {formattedDate(
+                      announcement.writeDate || announcement.writtenDate
+                    )}
                   </span>
-                  <span className={styles.author}>{announcement.author}</span>
+                  <span className={styles.author}>
+                    {announcement.author || announcement.nickName}
+                  </span>
                 </div>
                 <hr />
               </header>
               <section className={styles.announcementBody}>
-                {/* <p>{announcement.communityContent}</p> */}
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: announcement.communityContent,
+                    __html:
+                      announcement.communityContent ||
+                      announcement.questionComment,
                   }}
                 />
               </section>
+              {/* 답변 부분 추가 */}
+              {qnaNum && announcement.answer && (
+                <section className={styles.answerSection}>
+                  <h3>답변</h3>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: announcement.answer,
+                    }}
+                  />
+                </section>
+              )}
             </article>
           </main>
-          <button
-            className={styles.backButton}
-            onClick={() => navigate("/home/notice")}
-          >
-            목록
-          </button>
-        </div>
-      )}
-
-      {userNum && (
-        <div className={styles.announcementPage}>
-          <TitleText title={announcement.communityCategory} />
-          <hr />
-
-          <main className={styles.mainContent}>
-            <article className={styles.announcement}>
-              <header className={styles.announcementHeader}>
-                <h2>{announcement.communityTitle}</h2>
-                <div className={styles.announcementMeta}>
-                  <span className={styles.date}>
-                    {formattedDate(announcement.writeDate)}
-                  </span>
-                  <span className={styles.author}>{announcement.author}</span>
-                </div>
-                <hr />
-              </header>
-              <section className={styles.announcementBody}>
-                {/* <p>{announcement.communityContent}</p> */}
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: announcement.communityContent,
-                  }}
-                />
-              </section>
-            </article>
-          </main>
-          <button
-            className={styles.backButton}
-            onClick={() => navigate(`profile/${userNum}`)}
-          >
+          <button className={styles.backButton} onClick={handleClick}>
             목록
           </button>
         </div>

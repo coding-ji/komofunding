@@ -29,6 +29,7 @@ const NoticePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentQnaPage, setCurrentQnaPage] = useState(1);
   const [underlineProps, setUnderlineProps] = useState({ width: 0, left: 0 });
   const [inquiryUnderlineProps, setInquiryUnderlineProps] = useState({
     width: 0,
@@ -98,19 +99,23 @@ const NoticePage = () => {
     currentPage * ITEMS_PER_PAGE
   );
 
-  //문의사항
+  const totalPages = Math.ceil(
+    noticeState.communities?.length / ITEMS_PER_PAGE
+  );
+
+  // 문의사항 데이터 필터링
   const filteredQnas = Object.values(qnaState).filter(
     (item) => item.qnaCategory === activeInquiryCategory.name
   );
 
-  const currentQnas = filteredQnas?.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+  // 현재 페이지의 1:1 문의사항 데이터
+  const currentQnas = filteredQnas.slice(
+    (currentQnaPage - 1) * ITEMS_PER_PAGE,
+    currentQnaPage * ITEMS_PER_PAGE
   );
 
-  const totalPages = Math.ceil(
-    noticeState.communities?.length / ITEMS_PER_PAGE
-  );
+  // 1:1 문의사항 데이터 기반으로 페이지 수 계산
+  const totalQnaPages = Math.ceil(filteredQnas.length / ITEMS_PER_PAGE);
 
   return (
     <>
@@ -265,11 +270,11 @@ const NoticePage = () => {
             ))}
           </div>
 
-          {totalPages > 1 && (
+          {totalQnaPages > 1 && (
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
+              currentPage={currentQnaPage}
+              totalPages={totalQnaPages}
+              onPageChange={(page) => setCurrentQnaPage(page)}
             />
           )}
         </div>

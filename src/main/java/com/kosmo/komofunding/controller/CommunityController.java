@@ -27,7 +27,6 @@ import java.util.Map;
     @GetMapping
     public ResponseEntity<List<CommunityOutDTO>> getAllCommunities() {
         List<CommunityOutDTO> communities = communityService.getAllCommunities();
-        System.out.println("Fetched Communities: " + communities);
         return ResponseEntity.ok(communities);
     }
 
@@ -39,7 +38,7 @@ import java.util.Map;
         }
 
 
-        @GetMapping("/api/id/{communityNumber}")
+        @GetMapping("/{communityNumber}")
         public ResponseEntity<CommunityOutDTO> getCommunityById(@PathVariable Integer communityNumber) {
             CommunityOutDTO community = communityService.getCommunityByNumber(communityNumber);
             return ResponseEntity.ok(community);

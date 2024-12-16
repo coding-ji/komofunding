@@ -1,4 +1,4 @@
-import { createComment, createQuestion, readQna, replyQna, updateComment } from "../../service/apiService"
+import { createComment, createQuestion, readQna, replyQna, updateComment, readQnaByAdmin, readAllQuestions, readQnaDetail } from "../../service/apiService"
 
 // COMMENT(댓글) 혹은 QUESTION(1:1문의)
 export const CHANGE_QNA_CATEGORY = "CHANGE_QNA_CATEGORY";
@@ -95,6 +95,32 @@ export const resetState = () => ({
 });
 
 
+export const readAllQnasByAdmin = () => async(dispatch) => {
+    try{
+        const response = await readAllQnasByAdmin();
+        dispatch({
+            type: "READ_QNA",
+            payload: response.data
+        })
+    }catch(error){
+        console.error("qna목록을 불러올 수 없습니다.");
+    }
+}
+
+export const readAllUserQuestions = () => async(dispatch) => {
+    try{
+        const response = await readAllQuestions();
+        dispatch({
+            type: "READ_QNA",
+            payload: response.data
+        })
+    }catch(error){
+        console.error("1:1문의 내역을 불러올 수 없습니다.")
+    }
+}
+
+
+
 export const readAllQnas = ()  => async(dispatch) => {
     try{
         const response = await readQna();
@@ -104,6 +130,18 @@ export const readAllQnas = ()  => async(dispatch) => {
         })
     }catch(error){
         console.error("문의 내역을 불러올 수 없습니다.");
+    }
+}
+
+export const readQnaDetailByQnaNumber = (qnaNumber) => async(dispatch) => {
+    try{
+        const response = await readQnaDetail(qnaNumber);
+        dispatch({
+            type: "READ_QNA",
+            payload: response.data
+        })
+    }catch(error){
+        console.error("문의 상세 내역을 불러올 수 없습니다.")
     }
 }
 

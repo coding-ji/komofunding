@@ -1,7 +1,9 @@
 package com.kosmo.komofunding.service;
 
 import com.kosmo.komofunding.common.enums.QnaCategory;
+import com.kosmo.komofunding.converter.QnAConverter;
 import com.kosmo.komofunding.dto.QnAInDTO;
+import com.kosmo.komofunding.dto.QnAOutDTO;
 import com.kosmo.komofunding.entity.QnA;
 import com.kosmo.komofunding.repository.QnARepository;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +25,23 @@ public class QnAService {
 
     @Autowired
     private QnARepository qnARepository;
+    private QnAConverter qnAConverter;
+
+    // 전체 다 불러오기 (관리자용)
+    @Transactional
+    public List<QnAOutDTO> getAllQnas() {
+        return qnARepository.findAll().stream()
+                .map(qnAConverter::toOutDTO)
+                .collect(Collectors.toList());
+    }
+
+    // QUESTION만 다 불러오기 (관리자용
+    @Transactional
+    public List<QnAOutDTO> getQnasByCategory(QnaCategory category) {
+        return qnARepository.findByQnaCategory(category).stream()
+                .map(qnAConverter::toOutDTO)
+                .collect(Collectors.toList());
+    }
 
     // QnA 저장
     @Transactional
@@ -42,7 +62,7 @@ public class QnAService {
         qna.setQnaCategory(qnAInDTO.getQnaCategory());
 
         // COMMENT 카테고리일 경우 title은 null이어야 하므로 null로 설정
-        if (qnAInDTO.getQnaCategory() == QnaCategory.COMMENT && qnAInDTO.getTitle() != null) {
+        if (qnAInDTO.getQnaCategory() == QnaCategory.COMMENT) {
             qna.setTitle(null);
         } else {
             qna.setTitle(qnAInDTO.getTitle());
@@ -137,8 +157,14 @@ public class QnAService {
     }
 
     // userId와 qnaNumber로 1:1 문의글 상세조회
-    public Optional<QnA> getQnaByQnaNumberAndUserId(Long qnaNumber, String userId){
-        return qnARepository.findByQnaNumberAndUserId(qnaNumber, userId);
+    @Transactional
+    public QnAOutDTO getQnaDetailByNumberAndUser(Long qnaNumber, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+
+        return qnARepository.findByQnaNumberAndUserId(qnaNumber, userId)
+                .map(qnAConverter::toOutDTO) // QnA 엔티티를 DTO로 변환
+                .orElseThrow(() -> new IllegalArgumentException("해당 QnA를 찾을 수 없습니다. QnA 번호: "
+                        + qnaNumber + ", 유저 ID: " + userId));
     }
 
     // QnA 조회 (QnaId로)

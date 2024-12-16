@@ -38,4 +38,5 @@ public interface QnARepository extends JpaRepository<QnA, String> {
     List<QnA> findByWrittenDate(LocalDateTime writtenDate);
     //qnaIdList로 QnA 리스트 반환
     List<QnA> findAllByQnaIdIn(List<String> qnaIdList);
+
 }

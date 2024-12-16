@@ -33,6 +33,25 @@ public class QnAController {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
+    // 전체조회(admin용)
+    @GetMapping("/api/admin/qna/all")
+    public List<QnAOutDTO> getAllQnas() {
+        return qnAService.getAllQnas();
+    }
+
+    // QUESTION만 전체 조회 (admin용)
+    @GetMapping("/api/admin/qna/question")
+    public List<QnAOutDTO> getQuestions() {
+        return qnAService.getQnasByCategory(QnaCategory.QUESTION);
+    }
+
+    // 1:1 문의 상세 조회
+    @GetMapping("/qna/{qnaNumber}")
+    public QnAOutDTO getQnaDetail(@PathVariable("qnaNumber") Long qnaNumber,
+                                  HttpSession session) {
+        return qnAService.getQnaDetailByNumberAndUser(qnaNumber, session);
+    }
+
     // 1:1 문의글 생성
     @PostMapping("/qna/new")
     public ResponseEntity<Map<String, String>> createQuestion(@RequestBody QnAInDTO qnaInDTO, HttpSession session) {
@@ -140,7 +159,7 @@ public class QnAController {
         }
     }
 
-    // Get all QnA data (1:1 inquiries and comments) by userId from session
+    // 유저 댓글 찾기
     @GetMapping("/user/inquiry")
     public ResponseEntity<List<QnAOutDTO>> getAllByUserId(HttpSession session) {
         // Retrieve userId from session

@@ -149,9 +149,22 @@ export const createApplication = (data) => apiClient.post("/api/applications/cre
 export const fetchApplicationByUserNum = (userNum) => apiClient.post(`/api/applications/user/${userNum}`);
 
 
+// Admin용 문의 조회
+// 전체조회(댓글+문의)
+export const readQnaByAdmin = () => apiClient.get('/api/admin/qna/all'); 
+
+// 문의 전체 조회
+export const readAllQuestions = () => apiClient.get('/api/admin/qna/question');
+
+
+
+
 // 댓글 혹은 1:1 문의
 // 유저 문의 조회
 export const readQna = () => apiClient.get('/user/inquiry');
+
+// 1:1 문의 상세 조회 
+export const readQnaDetail = (qnaNumber) => apiClient.get(`/qna/${qnaNumber}`);
 
 // 댓글 생성
 export const createComment = (projectNum, commentData) => apiClient.post(`/comment/${projectNum}/new`, commentData);
