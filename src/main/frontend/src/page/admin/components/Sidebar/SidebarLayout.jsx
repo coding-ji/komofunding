@@ -21,11 +21,14 @@ const SidebarLayout = () => {
   };
 
   const handleMenuClick = (menu, path, event) => {
-    event.stopPropagation();
+    event.preventDefault(); // 기본 동작 방지
+    event.stopPropagation(); // 이벤트 전파 방지
+  
     toggleMenu(menu, event); // 메뉴 확장/축소
-    navigate(path); // 페이지 이동
+    console.log(`Navigating to ${path}`); // 디버그용 로그
+  
+    if (path) navigate(path); // 경로가 있을 경우만 이동
   };
-
 
 
   const toggleSidebar = () => {
@@ -49,8 +52,8 @@ const SidebarLayout = () => {
           <div className={styles.sectionDivider}>관리 홈</div>
           <div
             className={styles.menuHeader}
-            onClick={(e) => toggleMenu("member",e)}
-            Link to="admin/community"
+         
+            onClick={(e) => handleMenuClick("member", "/admin/user/user-management", e)}
           >
             <img src={memberIcon} alt="회원관리" /> 회원관리
           </div>
@@ -73,7 +76,7 @@ const SidebarLayout = () => {
         <li>
         <div
             className={styles.menuHeader}
-            onClick={(e) => toggleMenu("project",e)}
+            onClick={(e) => handleMenuClick("project", "/admin/project/project-management", e)}
           >
             <img src={projectIcon} alt="프로젝트" /> 프로젝트
           </div>
@@ -131,7 +134,7 @@ const SidebarLayout = () => {
           {activeMenu === "announcement" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/community/write">작성 및 수정</Link>
+                <Link to="/admin/community/edit/create">작성 및 수정</Link>
               </li>
             </ul>
           )}

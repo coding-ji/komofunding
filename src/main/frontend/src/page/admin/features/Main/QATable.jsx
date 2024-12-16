@@ -3,13 +3,13 @@ import styles from "./QATable.module.css";
 
 export const QATable1 = ({ data }) => {
   return (
-    <table className={styles.table}>
+    <table className={styles.qaTable}>
       <thead>
-        {/* <tr>
+        <tr>
           <th>번호</th>
           <th>질문</th>
-          <th>상태</th>
-        </tr> */}
+          <th>조회수</th>
+        </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
@@ -26,13 +26,13 @@ export const QATable1 = ({ data }) => {
 
 export const QATable2 = ({ data }) => {
   return (
-    <table className={styles.table}>
+    <table className={styles.qaTable}>
       <thead>
-        {/* <tr>
+        <tr>
           <th>번호</th>
-          <th>질문</th>
-          <th>상태</th>
-        </tr> */}
+          <th>사용자 ID</th>
+          <th>이름</th>
+        </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
@@ -47,16 +47,15 @@ export const QATable2 = ({ data }) => {
   );
 };
 
-
 export const QATable3 = ({ data }) => {
   return (
-    <table className={styles.table}>
+    <table className={styles.qaTable}>
       <thead>
-        {/* <tr>
+        <tr>
           <th>번호</th>
           <th>질문</th>
           <th>상태</th>
-        </tr> */}
+        </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
@@ -70,5 +69,3 @@ export const QATable3 = ({ data }) => {
     </table>
   );
 };
-
-
