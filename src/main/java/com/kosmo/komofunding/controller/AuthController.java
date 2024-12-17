@@ -228,7 +228,11 @@ public class AuthController {
 
     // 아이디 찾기 (이메일 찾기)
     @PostMapping("/id")
-    public ResponseEntity<String> findUserId(@RequestBody String name, String phoneNumber) {
+    public ResponseEntity<String> findUserId(@RequestBody UserInDTO request) {
+        // DTO에서 값을 추출
+        String name = request.getName();
+        String phoneNumber = request.getPhoneNumber();
+
         String email = userService.findEmailByNameAndPhoneNumber(name, phoneNumber);
         if (email == null) {
             return ResponseEntity.status(404).body("User not found");
@@ -236,13 +240,39 @@ public class AuthController {
         return ResponseEntity.ok(email);
     }
 
-    // 비밀번호 재설정
-    @PostMapping("/pw")
-    public ResponseEntity<Void> resetPassword(@RequestBody String email) {
-        return userService.resetPassword(email)
-                ? ResponseEntity.noContent().build() // 204 No Content
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
+    // 비밀번호 찾기 (이메일로 인증 코드 전송)
+    @PostMapping("/password/reset")
+    public ResponseEntity<String> sendResetPasswordEmail(@RequestBody UserInDTO request) {
+        // 이메일로 인증 코드 전송
+        boolean isEmailSent = userService.sendPasswordResetCode(request.getEmail());
+        if (isEmailSent) {
+            return ResponseEntity.ok("비밀번호 재설정 이메일을 발송했습니다.");
+        } else {
+            return ResponseEntity.status(400).body("이메일 전송에 실패했습니다.");
+        }
     }
+
+
+    // 비밀번호 재설정 (인증 코드 검증 후 새로운 비밀번호 설정)
+    @PostMapping("/password/confirm")
+    public ResponseEntity<String> resetPassword(@RequestBody UserInDTO request) {
+        // 인증 코드 검증 및 비밀번호 재설정
+        boolean isResetSuccessful = userService.resetPassword(request.getEmail(), request.getVerificationCode(), request.getNewPassword());
+        if (isResetSuccessful) {
+            return ResponseEntity.ok("비밀번호가 성공적으로 재설정되었습니다.");
+        } else {
+            return ResponseEntity.status(400).body("비밀번호 재설정에 실패했습니다.");
+        }
+    }
+
+//    // 비밀번호 재설정
+//    @PostMapping("/pw")
+//    public ResponseEntity<String> resetPassword(@RequestBody UserInDTO request) {
+//        String email = request.getEmail();
+//        return userService.resetPassword(email)
+//                ? ResponseEntity.noContent().build() // 204 No Content
+//                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 Bad Request
+//    }
 
     // 비밀번호 변경
     @PatchMapping("/setting/pw")

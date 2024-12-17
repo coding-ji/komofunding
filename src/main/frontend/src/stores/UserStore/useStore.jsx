@@ -30,6 +30,7 @@ import {
     logoutUser,
     removeUser,
     findEmail,
+    findPassword,
     resetUserPassword,
     updateUserPassword,
     // uploadProfileImage,
@@ -81,7 +82,8 @@ export const useStore = () => {
         updateUserPassword: (request) => updateUserPassword(request)(dispatch),
 //      uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
         apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch),
-        checkNick: (nickName) => checkNick(nickName)(dispatch)
+        checkNick: (nickName) => checkNick(nickName)(dispatch),
+        findPassword: (email, verificationCode) => findPassword(email, verificationCode)(dispatch)
      };
     return { state, actions };
         // state 상태 객체

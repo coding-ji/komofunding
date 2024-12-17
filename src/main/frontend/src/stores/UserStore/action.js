@@ -15,7 +15,8 @@ import {
     changePassword,
     verifyPassword,
     checkNickName,
-    sendEmailCode
+    sendEmailCode,
+    findUserPassword
     // uploadImg
 } from '../../service/apiService';
 
@@ -69,6 +70,7 @@ export const SEND_EMAIL_VERIFICATION_SUCCESS = 'SEND_EMAIL_VERIFICATION_SUCCESS'
 export const VERIFY_EMAIL_SUCCESS = 'VERIFY_EMAIL_SUCCESS'; // 이메일 인증 성공
 export const VERIFY_EMAIL_FAILURE = "VERIFY_EMAIL_FAILURE";
 export const FIND_EMAIL_SUCCESS = 'FIND_EMAIL_SUCCESS'; // 이메일 찾기 성공
+export const FIND_PASSWORD_SUCCESS = 'FIND_PASSWORD_SUCCESS'; // 비밀번호 찾기 성공
 export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS'; // 비밀번호 재설정 요청 성공
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'; // 비밀번호 변경 성공
 export const VERIFY_PASSWORD = 'VERIFY_PASSWORD' // 비밀번호 검증
@@ -262,6 +264,17 @@ export const findEmail = (name, phoneNumber) => async (dispatch) => {
         dispatch({ type: FIND_EMAIL_SUCCESS, payload: response.data });
     } catch (error) {
         console.error('이메일 찾기 실패:', error);
+    }
+};
+
+// 이메일과 인증번호로 비밀번호 찾기
+export const findPassword = (email, verificationCode) => async (dispatch) => {
+    try {
+        const response = await findUserPassword(email, verificationCode);
+        console.log('비밀번호 찾기 성공:', response.data);
+        dispatch({type : FIND_PASSWORD_SUCCESS, payload: response.data})
+    }catch (error) {
+        console.error('비밀번호 찾기 실패:', error)
     }
 };
 

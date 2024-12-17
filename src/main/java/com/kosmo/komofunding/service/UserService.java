@@ -59,6 +59,65 @@ public class UserService {
         emailRepository.save(emailEntity);
     }
 
+    // 비밀번호 찾기: 이메일로 인증 코드 전송
+    public boolean sendPasswordResetCode(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            return false; // 이메일로 사용자 찾을 수 없음
+        }
+
+        String verificationCode = generateVerificationCode();
+
+        // 인증 코드 이메일 엔티티 생성 및 저장
+        Email emailEntity = new Email();
+        emailEntity.setEmail(email);
+        emailEntity.setVerificationCode(verificationCode);
+        emailEntity.setCreatedAt(LocalDateTime.now());
+        emailRepository.save(emailEntity);
+
+        // 인증 코드 이메일로 발송
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("비밀번호 재설정 코드");
+            helper.setText("비밀번호 재설정 코드: " + verificationCode);
+            mailSender.send(message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 비밀번호 재설정: 인증 코드 검증 후 새 비밀번호로 변경
+    public boolean resetPassword(String email, String verificationCode, String newPassword) {
+        Optional<Email> emailEntityOptional = emailRepository.findByEmail(email);
+        if (!emailEntityOptional.isPresent()) {
+            return false; // 이메일을 통한 인증 코드 찾을 수 없음
+        }
+
+        Email emailEntity = emailEntityOptional.get();
+        if (!emailEntity.getVerificationCode().equals(verificationCode)) {
+            return false; // 인증 코드 불일치
+        }
+
+        // 비밀번호 암호화 후 사용자 업데이트
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            return false; // 사용자를 찾을 수 없음
+        }
+
+        User user = userOptional.get();
+        user.setPassword(passwordEncoder.encode(newPassword)); // 비밀번호 암호화
+        userRepository.save(user);
+
+        // 인증 코드 삭제 (재사용 방지)
+        emailRepository.delete(emailEntity);
+
+        return true;
+    }
+
     // 비밀번호 비교
     public boolean verifyPassword(String password) {
         Optional<User> userOptional = userRepository.findByEmailAndPassword(email, password);
@@ -212,6 +271,7 @@ public class UserService {
 //        response.put("email")
         return response;
     }
+
 
 
 

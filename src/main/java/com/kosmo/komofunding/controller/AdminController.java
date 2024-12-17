@@ -145,7 +145,7 @@ public class AdminController {
 
     // 프로젝트 승인 처리
     @PutMapping("/projects/{projectNum}/approve")
-    public ResponseEntity<String> approveProject(@RequestParam(name = "projectNum") Long projectNum, HttpSession session) {
+    public ResponseEntity<String> approveProject(@PathVariable(name = "projectNum") Long projectNum, HttpSession session) {
         // 어드민 권한 확인
         String role = (String) session.getAttribute("role");
         if (role == null || !role.equals("admin")) {
@@ -163,7 +163,7 @@ public class AdminController {
 
     // 프로젝트 거부 처리
     @PutMapping("/projects/{projectNum}/reject")
-    public ResponseEntity<String> rejectProject(@RequestParam(name = "projectNum") Long projectNum, HttpSession session) {
+    public ResponseEntity<String> rejectProject(@PathVariable(name = "projectNum") Long projectNum, HttpSession session) {
         // 어드민 권한 확인
         String role = (String) session.getAttribute("role");
         if (role == null || !role.equals("admin")) {
@@ -181,7 +181,7 @@ public class AdminController {
 
     // 프로젝트 숨김/공개 처리
     @PutMapping("/projects/{projectNum}/toggleVisibility")
-    public ResponseEntity<String> toggleVisibility(@RequestParam(name = "projectNum") Long projectNum, HttpSession session) {
+    public ResponseEntity<String> toggleVisibility(@PathVariable(name = "projectNum") Long projectNum, HttpSession session) {
         // 어드민 권한 확인
         String role = (String) session.getAttribute("role");
         if (role == null || !role.equals("admin")) {

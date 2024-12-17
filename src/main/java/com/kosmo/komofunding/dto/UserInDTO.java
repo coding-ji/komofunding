@@ -32,6 +32,7 @@ public class UserInDTO {
     private String corporationTel;
     private Long BSN;
     private List<String> projectIds;
+    private String verificationCode;
 
     private String newPassword;
     private String confirmPassword;
