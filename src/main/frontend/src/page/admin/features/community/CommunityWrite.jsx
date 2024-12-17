@@ -2,7 +2,7 @@ import styles from "./CommunityWrite.module.css";
 import EditorItem from "../../../../components/EditorItem/EditorItem";
 import WriteForm from "./WriteForm";
 import { useState, useRef, useEffect } from "react";
-import { Btn, WhiteBtn } from "../../../../components/MyBtn";
+import { AdminBtn1, AdminBtn2, Btn, WhiteBtn } from "../../../../components/MyBtn";
 import TitleText from "../../../../components/TitleText";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useStore as CommunityStore } from "../../../../stores/NoticeStore/useStore";
@@ -192,7 +192,7 @@ function CommunityWrite() {
             <WriteForm state={state} action={actions} />
           </div>
           <div className={styles.buttonContainer}>
-            <Btn
+            <AdminBtn1
               text={isEditing ? "수정 완료" : "작성 완료"}
               onClick={() => setModalOpenSubmit(true)}
               width="130px"
@@ -210,7 +210,7 @@ function CommunityWrite() {
                 onClick={handleDelete}
               />
             )}
-            <WhiteBtn
+            <AdminBtn2
               text="취소"
               width="130px"
               padding="2px 10px"

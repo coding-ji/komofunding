@@ -19,6 +19,7 @@ public class ProjectOutDTO {
     private String email;
     private String phoneNumber;
     private String userShortDescription;
+    private String profileImg;
 
     // 프로젝트 관련 정보
     private Long projectNum;

@@ -17,6 +17,8 @@ export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
 export const UPDATE_ALL_FIELDS = 'UPDATE_ALL_FIELDS';
+export const FETCH_ADMIN_PROJECTS = 'FETCH_ADMIN_PROJECTS';
+export const FETCH_ADMIN_PROJECTS_SUCCESS = 'FETCH_ADMIN_PROJECTS_SUCCESS';
 
 // 유저 CRUD
 export const READ_USER = "READ_USER";
@@ -54,6 +56,7 @@ export const fetchUsers = (userNum) => async (dispatch) => {
 
 // 프로젝트 전체 조회
 export const fetchAllProject = () => async (dispatch) => {
+  dispatch({ type: FETCH_ADMIN_PROJECTS });
   try {
     const response = await fetchAllProjects();
     dispatch({ type: READ_PROJECT, payload: response.data});
@@ -64,9 +67,10 @@ export const fetchAllProject = () => async (dispatch) => {
 
 // 어드민 특정 프로젝트 조회
 export const fetchAdminProjects = (projectNum) => async (dispatch) => {
+  dispatch({ type: FETCH_ADMIN_PROJECTS });
   try {
     const response = await fetchAllProjectsForAdmin(projectNum);
-    dispatch({ type: READ_PROJECT, payload: response.data});
+    dispatch({ type: FETCH_ADMIN_PROJECTS_SUCCESS, payload: response.data});
   } catch (error) {
     console.error("특정 프로젝트를 불러올 수 없습니다.");
   }

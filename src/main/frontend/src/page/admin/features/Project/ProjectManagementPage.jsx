@@ -31,7 +31,7 @@ const ProjectManagementPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                actions.fetchAdminProjects();
+                actions.fetchAllProject();
             } catch (error) {
                 console.error("프로젝트를 가져오는데 실패했습니다.");
             }
@@ -39,6 +39,7 @@ const ProjectManagementPage = () => {
 
         fetchData();
     }, []);
+
 
     if (!Array.isArray(state.project)) {
         return <p>데이터 로드 중...</p>;
@@ -49,8 +50,8 @@ const ProjectManagementPage = () => {
         ...project,
         status: project.isHidden ? "숨김" : "활성",
         projectPeriod: project.projectStartDate && project.projectEndDate
-        ? `${formattedDate(project.projectStartDate)} ~ ${formattedDate(project.projectEndDate)}`
-        : "미정", // 프로젝트 기간 가공
+            ? `${formattedDate(project.projectStartDate)} ~ ${formattedDate(project.projectEndDate)}`
+            : "미정", // 프로젝트 기간 가공
         actions: (
             <button onClick={() => handleDelete(project.projectNum)}>
                 삭제
@@ -86,10 +87,24 @@ const ProjectManagementPage = () => {
     const getColumns = () => [
         { label: "프로젝트번호", accessor: "projectNum" },
         { label: "카테고리", accessor: "projectCategory" },
-        { label: "제목", accessor: "title" },
+        {
+            label: "제목",
+            accessor: "title",
+            render: (project) => (
+                <span
+                onClick={() => {
+                    console.log("Navigating to:", project.projectNum);
+                    navigate(`/admin/project/detail/${project.projectNum}`);
+                }}
+                    style={{ cursor: "pointer" }}
+                >
+                    {project.title}
+                </span>
+            ),
+        },
         { label: "제작자", accessor: "nickname" },
         { label: "휴대폰", accessor: "phoneNumber" },
-        { label: "프로젝트 기간",  accessor: "projectPeriod"},
+        { label: "프로젝트 기간", accessor: "projectPeriod" },
         { label: "신청날짜", accessor: "writtenDate" },
         { label: "상태", accessor: "status" },
     ];
@@ -107,9 +122,11 @@ const ProjectManagementPage = () => {
             try {
                 await actions.deleteProject(projectNum);
                 alert("프로젝트가 성공적으로 삭제되었습니다.");
+                navigate("/admin/project")
             } catch (error) {
                 console.error("프로젝트 삭제 실패:", error);
                 alert("프로젝트 삭제에 실패했습니다.");
+                navigate("/admin/project")
             }
         }
     };
@@ -121,7 +138,7 @@ const ProjectManagementPage = () => {
             <AdminFilterTabs
                 navItems={[
                     { name: "ALL", label: "전체 프로젝트" },
-                    { name: "REVIEW", label: "심사 현황" },
+                    { name: "REVIEW", label: "승인 대기 프로젝트" },
                     { name: "HIDDEN", label: "숨김 프로젝트" },
                 ]}
                 activeTab={activeTab}
@@ -144,6 +161,7 @@ const ProjectManagementPage = () => {
                     setSearchKeyword(keyword);
                     setCurrentPage(1);
                 }}
+                onRowClick={(row) => navigate(`/admin/project/detail/${row.projectNum}`)} // 이 부분 추가
             />
 
             {Math.ceil(filteredData.length / ITEMS_PER_PAGE) > 1 && (

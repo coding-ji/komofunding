@@ -15,6 +15,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../utils/formattedData";
 import * as PortOne from "@portone/browser-sdk/v2";
 
+
 const FundingPay = () => {
   const { projectNum } = useParams();
   const location = useLocation();
@@ -159,7 +160,7 @@ const FundingPay = () => {
           alert("결제는 성공했지만 데이터 저장 중 문제가 발생했습니다.");
         } finally{
           navigate("/home")
-        } 
+        }
       } else {
         console.error("결제 실패: 알 수 없는 상태입니다.", response);
         alert("결제가 실패했습니다. 다시 시도해주세요.");

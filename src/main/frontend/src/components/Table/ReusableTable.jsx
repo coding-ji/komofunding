@@ -135,7 +135,7 @@ const ReusableTable = ({
               <tr
                 key={rowIndex}
                 className={checkedRows[rowIndex] ? styles.selected0 : ""}
-                onClick={() => onRowClick && onRowClick(row)}
+                onClick={() => onRowClick && onRowClick(row)} // 이 부분 유지
               >
                 <td>
                   <input
@@ -152,9 +152,12 @@ const ReusableTable = ({
                 </td>
                 {columns.map((col) => (
                   <td key={col.accessor}>
-                    {col.accessor === "writeDate" || col.accessor === "endDate" 
-                    || col.accessor === "writtenDate" ||col.accessor === "joinDate" 
-                    || col.accessor === "deactivationDate" ||col.accessor === "approvalDate" 
+                    {col.accessor === "writeDate" || 
+                    col.accessor === "endDate" || 
+                    col.accessor === "writtenDate" ||
+                    col.accessor === "joinDate"  || 
+                    col.accessor === "deactivationDate" ||
+                    col.accessor === "approvalDate" 
                       ? formattedDate(row[col.accessor])
                       : col.accessor === "isHidden"
                       ? row[col.accessor] === false

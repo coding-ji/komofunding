@@ -65,6 +65,8 @@ import AdminEventPage from "./page/admin/features/community/communityPage/AdminE
 import UserManagementPage from "./page/admin/features/user/UserManagementPage";
 import ProjectManagementPage from "./page/admin/features/Project/ProjectManagementPage";
 import QnaPage from "./page/admin/features/QnaPage/QnaPage";
+import AdminProjectDetail from "./page/admin/features/Project/AdminProjectDetail";
+import AdminProjectCard from "./page/admin/features/Project/AdminProjectCard";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -143,10 +145,12 @@ const router = createBrowserRouter([
       { path: "charge", element: <ChargePolicy /> }, // 수수료 
       {path:"useterms", element:<TermsOfService/>}, // 이용약관
       {path:"privacypolicy", element:<PrivacyPolicy/>}, // 개인정보처리
+
+
       { path: "product-details/:projectNum", element: <MainProDetails /> },
 
 
-      { path: "ordertable/:projectNum", element: <OrderTable /> },
+      // { path: "ordertable/:projectNum", element: <OrderTable /> },
       { path: "fundingpay/:projectNum", element: <FundingPay />},
       // { path: "investment", element: <Investment />}
 
@@ -182,6 +186,15 @@ const router = createBrowserRouter([
       },
       {
         path: "project",
+        children: [
+          { path: "project-management", element: <ProjectManagementPage/> },
+          { path: "detail/:projectNum", element: <AdminProjectDetail/> },
+          // { path: "event", element: <AdminEventPage /> },
+          // { path: "edit/:communityNumber", element: <CommunityWrite /> },
+        ],
+      },
+      {
+        path: "payment",
         children: [
           { path: "project-management", element: <ProjectManagementPage/> },
           // { path: "event", element: <AdminEventPage /> },
@@ -221,6 +234,18 @@ const router = createBrowserRouter([
 
 ])
 
+// const projectData = {
+//   profileImg: "/default.png",
+//   nickname: "포실이예뻐하허",
+//   category: "액세서리",
+//   email: "kosmo@kosmo.com",
+//   phoneNumber: "010-8484-8484",
+//   userShortDescription: "안녕하세요. 포실이를 좋아하는 포실이 친구입니다^_^",
+//   writtenDate: "2024-00-00",
+//   approvalDate: null,
+//   rejectionDate: null,
+// };
+
 function App() {
    useEffect(() => {
     const handleBeforeUnload = () => {
@@ -236,7 +261,7 @@ function App() {
 
   // 라우터 경로
   return <RouterProvider router={router} />;
-    // return (<QnaPage /> )
+    // return (<AdminProjectCard  project={projectData}/> )
 }
 
 export default App;
