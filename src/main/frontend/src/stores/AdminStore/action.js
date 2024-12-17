@@ -6,7 +6,7 @@ import {
   approveProject,
   rejectProject,
   ProjectVisibility,
-  fetchAllProjects
+  fetchAllProjects,
 } from '../../service/apiService';
 
 // 초기화
@@ -87,9 +87,21 @@ export const deleteProject = (projectNum) => async (dispatch) => {
 };
 
 // 유저 탈퇴, 정지 시키고 이유
-export const deactivate = (userNum, deactivationData) => async (dispatch) => {
+// export const deactivate = (userNum, deactivationData) => async (dispatch) => {
+//   try {
+//     const response = await deactivateUser(userNum, deactivationData);
+//     dispatch({type : UPDATE_USER, payload : response.data})
+//   }catch (error) {
+//     console.error('유저 데이터 수정 실패:', error)
+//     throw error;
+//   }
+// };
+
+
+// 유저 탈퇴, 정지 시키고 이유
+export const deactivate = (userNum) => async (dispatch) => {
   try {
-    const response = await deactivateUser(userNum, deactivationData);
+    const response = await deactivateUser(userNum);
     dispatch({type : UPDATE_USER, payload : response.data})
   }catch (error) {
     console.error('유저 데이터 수정 실패:', error)

@@ -80,7 +80,7 @@ const SidebarLayout = () => {
               </li>
               <li>
 
-                <Link to="/admin/user/user-management?tab=DEACTIVATED">탈퇴회원</Link>
+                <Link to="/admin/user/user-management?tab=DEACTIVATED">탈퇴/정지 회원</Link>
               </li>
             </ul>
           )}

@@ -17,7 +17,7 @@ export const reducer = (state, action) => {
       return {...state, user : action.payload};
 
     case FETCH_USERS:
-      return {...state};
+      return {...state, user : action.payload};
     
     case FETCH_USERS_SUCCESS:
       return {...state, user : action.payload};

@@ -1,4 +1,4 @@
-// AdminQnaPage.jsx
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../../../page/MyPage/Pagination";
@@ -15,8 +15,8 @@ const AdminQnaPage = () => {
   const columns = [
     { label: "No", accessor: "qna_number" },
     { label: "제목", accessor: "title" },
-    { label: "별명", accessor: "user_id" },
-    { label: "날짜", accessor: "written_date" },
+    { label: "별명", accessor: "nickName" },
+    { label: "작성일", accessor: "writtenDate" },
     { label: "상태", accessor: "answer" },
     { label: "답변여부", accessor: "answer_status" },
   ];

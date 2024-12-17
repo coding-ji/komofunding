@@ -7,6 +7,9 @@ import { useStore } from "../../../../stores/AdminStore/useStore";
 import styles from "../../../../components/Table/ReusableTable.module.css";
 import Pagination from "../../../MyPage/Pagination";
 import AdminFilterTabs from "../../components/AdminTabs/AdminFilterTabs";
+import UserInfoModal from "./UserInfoModal";
+import CreatorPendingModal from "./CreatorPendingModal";
+
 
 
 
@@ -39,6 +42,12 @@ const UserManagementPage = () => {
   const [searchOption, setSearchOption] = useState("nickName");
   const [activeTab, setActiveTab] = useState("ALL");
   const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
+  // 모달 상태 추가
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState(null);
+
+  const [modalType, setModalType] = useState(null); // 'userInfo' 또는 'creatorPending'
+
 
   useEffect(() => {
     const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
@@ -47,6 +56,46 @@ const UserManagementPage = () => {
     }
   }, [searchParams]);
 
+  // 모달 열기 함수
+  const openUserModal = (user) => {
+    if (activeTab === "CREATORPENDING") {
+      // 제작자 전환 대기 모달 열기
+      setModalType("creatorPending");
+    } else {
+      // 전체 회원 또는 탈퇴/정지 회원 모달 열기
+      setModalType("userInfo");
+      setSelectedUserData({
+        userCode: user.userNum,
+        email: user.email,
+        name: user.name,
+        nickName: user.nickName,
+        phoneNumber: user.phoneNumber,
+        joinDate: user.joinDate,
+        address: user.address || "주소 없음",
+        accountNumber: user.accountNumber || "계좌번호 없음",
+        role: user.userType, // 제작자 or 후원자
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // 강제 탈퇴 실행 함수
+  const handleForceDelete = () => {
+    const isConfirmed = window.confirm("정말 이 회원을 강제 탈퇴시키겠습니까?");
+    if (isConfirmed) {
+      actions.deactivate(selectedUserData.userCode); // 탈퇴 API 실행
+      console.log("강제 탈퇴 실행:", selectedUserData.userCode);
+      closeModal(); // 모달 닫기
+    } else {
+      console.log("강제 탈퇴가 취소되었습니다.");
+    }
+  };
 
 
   const userTypeOptions = [
@@ -159,7 +208,7 @@ const UserManagementPage = () => {
 
   return (
     <>
-      { state.user && 
+      {state.user &&
         <div className={styles.gridContainerAdminNotice}>
 
           <TitleText title="유저 관리" />
@@ -168,7 +217,7 @@ const UserManagementPage = () => {
             navItems={[
               { name: "ALL", label: "전체회원" },
               { name: "CREATORPENDING", label: "제작자 전환 대기" },
-              { name: "DEACTIVATED", label: "탈퇴한 회원" },
+              { name: "DEACTIVATED", label: "탈퇴/정지 회원" },
             ]}
             activeTab={activeTab}
             onTabClick={handleTabClick}
@@ -188,6 +237,7 @@ const UserManagementPage = () => {
             userTypeOptions={userTypeOptions}
             userStatusOptions={userStatusOptions}
             onSearch={handleSearch}
+            onRowClick={openUserModal}
           />
 
           {Math.ceil(filteredData.length / ITEMS_PER_PAGE) > 1 && (
@@ -197,13 +247,33 @@ const UserManagementPage = () => {
               onPageChange={setCurrentPage}
             />
           )}
+          {isModalOpen && modalType === "userInfo" && (
+            <UserInfoModal
+              userData={selectedUserData}
+              onClose={closeModal}
+              onForceDelete={handleForceDelete}
+            />
+          )}
+
+          {isModalOpen && modalType === "creatorPending" && (
+            <CreatorPendingModal
+              userData={selectedUserData}
+              onClose={closeModal}
+              onApprove={() => {
+                console.log("승인 처리:", selectedUserData.userCode);
+                closeModal();
+              }}
+              onReject={() => {
+                console.log("거절 처리:", selectedUserData.userCode);
+                closeModal();
+              }}
+            />
+          )}
         </div>
+
       }
     </>
   );
 };
 
 export default UserManagementPage;
-
-
-
