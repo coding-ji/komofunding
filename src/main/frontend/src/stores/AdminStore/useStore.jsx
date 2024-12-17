@@ -9,7 +9,8 @@ import {
   resetState,
   approve,
   reject,
-  visibility
+  visibility,
+  fetchAllProject
 } from './action';
 
 export const useStore = () => {
@@ -23,6 +24,7 @@ export const useStore = () => {
 
     fetchUsers: (userNum) => fetchUsers(userNum)(dispatch), // 유저 리스트 조회
     fetchAdminProjects: (projectNum) => fetchAdminProjects(projectNum)(dispatch), // 어드민 프로젝트 조회
+    fetchAllProject: () => fetchAllProject()(dispatch),
     deleteProject: (projectNum) => deleteProject(projectNum)(dispatch), // 프로젝트 삭제
     deactivate: (userNum, deactivationData) => deactivate(userNum, deactivationData)(dispatch), // 관리자의 회원 탈퇴, 정지
     approve: (projectNum) => approve(projectNum)(dispatch), // 프로젝트 승인

@@ -4,7 +4,9 @@ import {
   deleteProjectByAdmin,
   deactivateUser,
   approveProject,
-  rejectProject
+  rejectProject,
+  ProjectVisibility,
+  fetchAllProjects
 } from '../../service/apiService';
 
 // 초기화
@@ -52,14 +54,25 @@ export const fetchUsers = (userNum) => async (dispatch) => {
   }
 };
 
-// 어드민 프로젝트 전체 조회
+// 프로젝트 전체 조회
+export const fetchAllProject = () => async (dispatch) => {
+  dispatch({ type: FETCH_ADMIN_PROJECTS });
+  try {
+    const response = await fetchAllProjects();
+    dispatch({ type: READ_PROJECT, payload: response.data});
+  } catch (error) {
+    console.error("프로젝트 전체 목록을 불러올 수 없습니다.");
+  }
+};
+
+// 어드민 특정 프로젝트 조회
 export const fetchAdminProjects = (projectNum) => async (dispatch) => {
   dispatch({ type: FETCH_ADMIN_PROJECTS });
   try {
     const response = await fetchAllProjectsForAdmin(projectNum);
     dispatch({ type: FETCH_ADMIN_PROJECTS_SUCCESS, payload: response.data});
   } catch (error) {
-    console.error("프로젝트 전체 목록을 불러올 수 없습니다.");
+    console.error("특정 프로젝트를 불러올 수 없습니다.");
   }
 };
 
@@ -99,6 +112,17 @@ export const approve = (projectNum) => async (dispatch) => {
 export const reject = (projectNum) => async (dispatch) => {
   try {
     const response = await rejectProject(projectNum);
+    dispatch({type : UPDATE_PROJECT, payload : response.data})
+  }catch (error) {
+    console.error('프로젝트 거절 실패:', error)
+    throw error;
+  }
+};
+
+// 프로젝트 공개 / 숨김 처리
+export const visibility = (projectNum) => async (dispatch) => {
+  try {
+    const response = await ProjectVisibility(projectNum);
     dispatch({type : UPDATE_PROJECT, payload : response.data})
   }catch (error) {
     console.error('프로젝트 거절 실패:', error)

@@ -187,6 +187,7 @@ export const fetchAllUsers = (userNum) => apiClient.get(`/api/admin/users/${user
 export const deactivateUser = (userNum, deactivationData) => apiClient.put(`api/admin/users/${userNum}/deactivate`, deactivationData);
 
 // 모든 프로젝트 조회 및 특정 프로젝트 조회
+export const fetchAllProjects = ()  => apiClient.get('api/admin/projects');
 export const fetchAllProjectsForAdmin = (projectNum) => apiClient.get(`/api/admin/projects/${projectNum}`);
 
 // 프로젝트 승인

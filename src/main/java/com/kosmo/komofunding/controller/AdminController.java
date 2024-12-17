@@ -114,23 +114,32 @@ public class AdminController {
         }
     }
 
-    // 전체 프로젝트 조회
+    // 전체 프로젝트 조회 및 특정 프로젝트 조회
     @GetMapping("/projects")
-    public ResponseEntity<List<ProjectOutDTO>> getAllProjects(
+    public ResponseEntity<?> getAllOrSpecificProjects(
             @RequestParam(name = "projectNum", required = false) Long projectNum,
             HttpSession session) {
         // 어드민 권한 확인
         String role = (String) session.getAttribute("role");
         if (role == null || !role.equals("admin")) {
-            return ResponseEntity.status(403).build();  // 권한 없으면 403 응답
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다."); // 권한 없음
         }
 
         try {
-            // 특정 프로젝트 조회
-            ProjectOutDTO projectOutDTO = adminService.getProjectByProjectNum(projectNum);
-            return ResponseEntity.ok(Collections.singletonList(projectOutDTO));  // DTO 반환
+            if (projectNum != null) {
+                // 특정 프로젝트 조회
+                ProjectOutDTO projectOutDTO = adminService.getProjectByProjectNum(projectNum);
+                return ResponseEntity.ok(Collections.singletonList(projectOutDTO)); // DTO 반환
+            } else {
+                // 전체 프로젝트 조회
+                List<ProjectOutDTO> projects = adminService.getAllProjects().stream()
+                        .map(projectConverter::toOutDTO)  // Project -> ProjectOutDTO 변환
+                        .collect(Collectors.toList());
+                return ResponseEntity.ok(projects); // 전체 프로젝트 반환
+            }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("오류가 발생했습니다: " + e.getMessage());
         }
     }
 
