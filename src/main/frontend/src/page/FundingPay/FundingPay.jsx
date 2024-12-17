@@ -9,18 +9,19 @@ import TitleBox from "../../components/TitleBox";
 import MyNavLine from "../../components/MyNavLine";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import TitleProduct from "../../components/TitleProduct";
-import PopupInquiry from "../MyPage/writeQnA/PopupInquiry";
 import { useStore as UserStore } from "../../stores/UserStore/useStore";
+import { useStore as PaymentStore } from "../../stores/PaymentStore/useStore";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../utils/formattedData";
-import { payment as payFunction } from "../../service/Payment";
+import * as PortOne from "@portone/browser-sdk/v2";
 
 const FundingPay = () => {
   const { projectNum } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   // 이동하면서 project 내용과 payment 내용 가져옴
-  const { project, payment } = location.state || {};
+  const { project, payment, paymentActions } = location.state || {};
+  const { state, actions } = PaymentStore();
   const { state: userState, actions: userActions } = UserStore();
 
   useEffect(() => {
@@ -33,8 +34,6 @@ const FundingPay = () => {
       navigate("/home/login");
     }
   }, []);
-
-  const [isFormValid, setIsFormValid] = useState(false); // isFormValid 상태 추가
 
   const [fundingInfo, setFundingInfo] = useState({
     sender: "",
@@ -93,21 +92,82 @@ const FundingPay = () => {
     setFundingInfo({ ...fundingInfo, address }); // 선택된 주소 업데이트
   };
 
-  const shippingCost = 0; // 배송비는 2500원으로 고정인데 수정해야하면 바꾸겠습니다
+  const shippingCost = 2500;
 
-  const handleSubmit = () => {
-    payFunction(userState.user, payment, fundingInfo);
+  // 결제 처리 함수
+  const handleSubmit = async () => {
+    const formatName = (items) => {
+      return items.length > 1
+        ? `${items[0].itemName} 외 ${items.length - 1}`
+        : `${items[0].itemName}`;
+    };
 
-    // const isValid = Object.values(fundingInfo).every(
-    //   (field) => field.trim() !== ""
-    // );
-    // setIsFormValid(isValid); // isFormValid 상태 업데이트
+    try {
+      console.log("결제 시작...");
+      const paymentId = `payment-${crypto.randomUUID()}`; // UUID 생성
 
-    // if (isValid) {
-    //   setShowPopup(true); // 팝업을 보여주기 위해 상태 변경
-    // } else {
-    //   setShowPopup(true); // 팝업을 보여주기 위해 상태 변경
-    // }
+      // 결제 요청 데이터 구성
+      const paymentRequestData = {
+        storeId: "store-b90f386e-0f27-451e-9d1b-2a5c5c06ee18",
+        channelKey: "channel-key-f872bd78-c5b7-44a7-9bcd-037b64429005", // 채널 키
+        paymentId: paymentId, // 주문 번호
+        orderName: formatName(payment.items), // 주문명
+        totalAmount: payment.paidAmount, // 결제 금액
+        currency: "KRW",
+        payMethod: "CARD", // 결제 수단
+      };
+
+      // PortOne 결제 요청
+      const response = await PortOne.requestPayment(paymentRequestData);
+      console.log("결제 응답:", response);
+
+      // 응답 유효성 검사
+      if (!response || !response.transactionType) {
+        console.error("결제 응답이 잘못되었습니다:", response);
+        alert("결제 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+        return;
+      }
+
+      // 결제 성공 여부 확인
+      if (response.transactionType === "PAYMENT") {
+        console.log("결제 성공! PaymentId:", response.paymentId);
+
+        // 결제 성공 시 저장할 데이터 구성
+        const paymentSaveData = {
+          paymentId: response.paymentId, // 주문 ID
+          txId: response.txId, // 거래 ID
+          items: payment.items, // 주문 항목
+          paidAmount: payment.paidAmount, // 결제 금액
+          paymentMethod: paymentRequestData.payMethod, // 결제 수단
+          paymentStatus: "SUCCESS", // 결제 성공으로 상태 설정
+          senderName: fundingInfo.sender,
+          shippingName: fundingInfo.recipient,
+          shippingPhone: fundingInfo.phoneNumber,
+          shippingAddress: `${fundingInfo.address} ${fundingInfo.detailAddress}`,
+          refundBankName: fundingInfo.bank,
+          refundAccountHolder: fundingInfo.accountHolder,
+          refundAccountNumber: fundingInfo.accountNumber,
+          isRefunded: false,
+        };
+
+        try {
+          // 백엔드에 결제 데이터 저장
+          await actions.addPayment(projectNum, paymentSaveData);
+          alert("결제가 성공적으로 처리되었습니다!");
+        } catch (saveError) {
+          console.error("결제 데이터 저장 중 오류 발생:", saveError);
+          alert("결제는 성공했지만 데이터 저장 중 문제가 발생했습니다.");
+        } finally{
+          navigate("/home")
+        } 
+      } else {
+        console.error("결제 실패: 알 수 없는 상태입니다.", response);
+        alert("결제가 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("결제 처리 중 오류 발생:", error);
+      alert("결제 처리 중 문제가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -366,18 +426,6 @@ const FundingPay = () => {
               fontSize="1.1rem"
             />
           </div>
-
-          {/* PopupInquiry 팝업을 조건부로 렌더링 */}
-          {showPopup && (
-            <PopupInquiry
-              message={
-                isFormValid
-                  ? "후원이 완료되었습니다."
-                  : "입력이 완료되지 않았습니다."
-              }
-              onClose={() => window.location.reload()}
-            />
-          )}
         </div>
       )}
     </>

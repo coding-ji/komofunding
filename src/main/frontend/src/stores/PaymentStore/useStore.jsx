@@ -58,7 +58,7 @@ export const useStore = () => {
     createDonorByProject: (projectNum, payment) => createDonorByProject(projectNum, payment)(dispatch),  
     readDonorsByProjectNum: (projectNum) => readDonorsByProjectNum(projectNum)(dispatch),
     getMyFundingByProject: (projectStatus) => getMyFundingByProject(projectStatus)(dispatch),
-    addPayment : (payment) => addPayment(payment)(dispatch)
+    addPayment : (paymentNum, payment) => addPayment(paymentNum, payment)(dispatch)
   };
 
   return { state, actions };

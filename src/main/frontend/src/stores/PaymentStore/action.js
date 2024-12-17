@@ -104,9 +104,9 @@ export const getMyFundingByProject = (projectStatus) => async (dispatch) => {
 } 
 
 // 결제 생성
-export const addPayment = (payment) => async(dispatch) => {
+export const addPayment = (paymentNum, payment) => async(dispatch) => {
     try{
-        const response = await createPayment(payment);
+        const response = await createPayment(paymentNum, payment);
         dispatch({
             type: CREATE_PAYMENT,
             payload: response.data
