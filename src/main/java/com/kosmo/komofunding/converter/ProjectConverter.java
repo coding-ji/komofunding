@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,28 +27,31 @@ public class ProjectConverter {
     private final QnAConverter qnAConverter;
 
     //Entity에서 DTO 변환
-    public ProjectOutDTO toOutDTO(Project project){
+    public ProjectOutDTO toOutDTO(Project project) {
         // 사용자 정보 가져오기
         User user = userRepository.findById(project.getUserId())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // QnA 리스트 생성
-        List<QnA> qnaEntities = qnARepository.findAllByQnaIdIn(project.getQnaIdList());
+        // QnA 리스트 생성 (null 처리)
+        List<QnA> qnaEntities = Optional.ofNullable(project.getQnaIdList())
+                .map(qnaIdList -> qnARepository.findAllByQnaIdIn(qnaIdList))
+                .orElse(Collections.emptyList());
         List<QnAOutDTO> qnaList = qnaEntities.stream()
                 .map(qnAConverter::toOutDTO)
                 .collect(Collectors.toList());
 
         // Supporters 리스트 생성 (null 처리)
-        List<UserOutDTO> supporters = (project.getSupportersIdList() != null ? project.getSupportersIdList() : Collections.emptyList())
+        List<UserOutDTO> supporters = Optional.ofNullable(project.getSupportersIdList())
+                .orElse(Collections.emptyList())
                 .stream()
-                .map(userId -> userRepository.findById((String) userId)
-                        .orElseThrow(() -> new RuntimeException("후원자를 찾을 수 없습니다.")))
+                .map(userId -> userRepository.findById(userId).orElse(null))  // 사용자 ID가 없으면 null 반환
+                .filter(Objects::nonNull)  // null 값은 필터링
                 .map(UserConverter::toOutDTO)
                 .collect(Collectors.toList());
 
         // 달성률 계산
         Double progressRate = 0.0;
-        if (project.getTotalAmount() > 0) {
+        if (project.getTotalAmount() != null && project.getTotalAmount() > 0) {
             progressRate = (project.getCurrentAmount() / (double) project.getTotalAmount()) * 100;
         }
 

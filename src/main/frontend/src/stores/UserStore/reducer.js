@@ -30,6 +30,7 @@ import {
     FIND_EMAIL_SUCCESS,
     RESET_PASSWORD_REQUEST_SUCCESS,
     UPDATE_USER_PROFILE,
+    FIND_PASSWORD_SUCCESS,
     // CHANGE_PASSWORD_SUCCESS,
     // UPLOAD_PROFILE_IMAGE_SUCCESS,
     VERIFY_PASSWORD
@@ -157,6 +158,9 @@ export const reducer = (state, action) => {
 
         case VERIFY_EMAIL_SUCCESS:
             return { ...state, successMessage: action.payload, errorMessage: null };
+        
+        case FIND_PASSWORD_SUCCESS:
+            return {...state, message: action.payload};
 
         case VERIFY_EMAIL_FAILURE:
             return { ...state, successMessage: null, errorMessage: action.payload };

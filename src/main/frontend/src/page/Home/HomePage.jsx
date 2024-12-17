@@ -8,7 +8,9 @@ import MembersSection from '../../container/Home/MembersSection/MembersSection';
 
 const HomePage = () => {
   const { state, actions } = ProjectStore();  // useStore를 사용하여 상태와 액션을 가져옵니다.
+  
   // 메인 페이지는 인기순 50개
+
   useEffect(() => {
     // 프로젝트 목록을 불러옵니다.
     actions.readProjects();

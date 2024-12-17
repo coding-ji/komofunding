@@ -55,6 +55,9 @@ export const deleteUser = (userNum) => apiClient.delete(`/api/auth/delete/${user
 // 이름과 전화번호를 기반으로 이메일 찾기 요청
 export const findUserId = (name, phoneNumber) => apiClient.post('/api/auth/id', { name, phoneNumber });
 
+// 이메일로 인증번호 받아서 비밀번호 찾기
+export const findUserPassword = (email,verificationCode) => apiClient.post('api/auth/password/reset', {email, verificationCode});
+
 // 비밀번호 재설정 요청
 export const resetPassword = (email) => apiClient.post('/api/auth/pw', email);
 
