@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+//    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "payment_id", nullable = false, updatable = false, length = 36)
     private String paymentId; // 결제 ID
 

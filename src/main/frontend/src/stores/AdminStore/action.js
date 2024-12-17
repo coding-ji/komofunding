@@ -2,13 +2,19 @@ import {
   fetchAllUsers,
   fetchAllProjectsForAdmin,
   deleteProjectByAdmin,
+  deactivateUser,
 } from '../../service/apiService';
 
-// 모든 필드
-export const UPDATE_ALL_FIELDS = 'UPDATE_ALL_FIELDS';
-
-// 초기화 
+// 초기화
 export const RESET_STATE = "RESET_STATE";
+
+// 액션 타입 정의
+export const FETCH_USERS = 'FETCH_USERS';
+export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
+export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
+export const UPDATE_ALL_FIELDS = 'UPDATE_ALL_FIELDS';
+export const FETCH_ADMIN_PROJECTS = 'FETCH_ADMIN_PROJECTS';
+export const FETCH_ADMIN_PROJECTS_SUCCESS = 'FETCH_ADMIN_PROJECTS_SUCCESS';
 
 // 유저 CRUD
 export const READ_USER = "READ_USER";
@@ -34,22 +40,24 @@ export const resetState = () => ({
 });
 
 // 유저 목록 조회
-export const fetchUsers = () => async (dispatch) => {
+export const fetchUsers = (userNum) => async (dispatch) => {
+  dispatch({ type: FETCH_USERS });
   try {
-    const response = await fetchAllUsers();
-    dispatch({ type: READ_USER, payload: response.data });
+    const response = await fetchAllUsers(userNum);
+    dispatch({ type: FETCH_USERS_SUCCESS, payload: response.data });
   } catch (error) {
     console.error("유저목록을 불러올 수 없습니다.");
   }
 };
 
 // 어드민 프로젝트 전체 조회
-export const fetchAdminProjects = () => async (dispatch) => {
+export const fetchAdminProjects = (projectNum) => async (dispatch) => {
+  dispatch({ type: FETCH_ADMIN_PROJECTS });
   try {
-    const response = await fetchAllProjectsForAdmin();
-    dispatch({ type: READ_PROJECT, payload: response.data });
+    const response = await fetchAllProjectsForAdmin(projectNum);
+    dispatch({ type: FETCH_ADMIN_PROJECTS_SUCCESS, payload: response.data});
   } catch (error) {
-    console.error("프로젝트 전체 목록을 불러올 수 없습니다. ");
+    console.error("프로젝트 전체 목록을 불러올 수 없습니다.");
   }
 };
 
@@ -62,3 +70,14 @@ export const deleteProject = (projectNum) => async (dispatch) => {
     console.error("Admin 프로젝트 삭제 실패:", error);
   }
 };
+
+// 유저 탈퇴, 정지 시키고 이유
+export const deactivate = (userNum, deactivationData) => async (dispatch) => {
+  try {
+    const response = await deactivateUser(userNum, deactivationData);
+    dispatch({type : UPDATE_USER, payload : response.data})
+  }catch (error) {
+    console.error('유저 데이터 수정 실패:', error)
+    throw error;
+  }
+}

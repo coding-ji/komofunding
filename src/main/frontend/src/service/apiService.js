@@ -160,8 +160,6 @@ export const readQnaByAdmin = () => apiClient.get('/api/admin/qna/all');
 export const readAllQuestions = () => apiClient.get('/api/admin/qna/question');
 
 
-
-
 // 댓글 혹은 1:1 문의
 // 유저 문의 조회
 export const readQna = () => apiClient.get('/user/inquiry');
@@ -182,9 +180,16 @@ export const replyQna = (qnaNumber, text) => apiClient.patch(`/reply/${qnaNumber
 export const updateComment = (qnaNumber,text) => apiClient.patch(`/comment/${qnaNumber}`, {"questionComment" : text})
 
 // ADMIN 
-// 모든 유저 가져오기 API 추가
-export const fetchAllUsers = () => apiClient.get('/api/admin/users');
-export const fetchAllProjectsForAdmin = () => apiClient.get('/admin/projects');
+// 모든 유저 혹은 특정 유저 정보 가져오기
+export const fetchAllUsers = (userNum) => apiClient.get(`/api/admin/users/${userNum}`);
+
+// 유저 삭제? 정지, 탈퇴 회원
+export const deactivateUser = (userNum, deactivationData) => apiClient.put(`api/admin/users/${userNum}/deactivate`, deactivationData);
+
+// 모든 프로젝트 조회 및 특정 프로젝트 조회
+export const fetchAllProjectsForAdmin = (projectNum) => apiClient.get(`/api/admin/projects/${projectNum}`);
+
+// 특정 프로젝트 조회
 export const deleteProjectByAdmin = (projectNum) => apiClient.delete(`/admin/projects/${projectNum}`);
 
 export default apiClient;
