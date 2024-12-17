@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TitleText from "../../../../../components/TitleText";
 import ReusableTable from "../../../../../components/Table/ReusableTable";
 import { useStore } from "../../../../../stores/NoticeStore/useStore";
@@ -8,6 +8,7 @@ import Pagination from "../../../../MyPage/Pagination";
 import { formattedDate } from "../../../../../utils/formattedData";
 import AdminFilterTabs from "../../../components/AdminTabs/AdminFilterTabs"; // AdminTabs 추가
 
+
 const AdminEventPage = () => {
   const { state, actions } = useStore();
   const navigate = useNavigate();
@@ -15,6 +16,16 @@ const AdminEventPage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchOption, setSearchOption] = useState("communityTitle"); // 기본 검색 옵션
   const [activeTab, setActiveTab] = useState("ALL"); // 현재 활성화된 탭 상태
+    const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
+
+    
+      useEffect(() => {
+        const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
+        if (tabParam) {
+          setActiveTab(tabParam); // 파라미터에 맞게 activeTab 설정
+        }
+      }, [searchParams]);
+    
 
   const columns = [
     { label: "No", accessor: "communityNumber" },

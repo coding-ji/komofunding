@@ -208,6 +208,7 @@ public class UserService {
         response.put("sessionId", session.getId());
         response.put("role", "user");
         response.put("userNum", String.valueOf(user.getUserNum()));
+//        response.put("email")
         return response;
     }
 

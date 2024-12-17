@@ -180,13 +180,59 @@ public class ProjectController {
     // 어드민 전용: 모든 프로젝트 조회
     @GetMapping("/admin/projects")
     public ResponseEntity<List<ProjectOutDTO>> getAllProjectsForAdmin(HttpSession session) {
-//        if (!isAdmin(session)) { // 어드민 권한 체크
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//        }
+        // 세션에서 어드민 ID 확인
+        String adminId = (String) session.getAttribute("adminId");
 
-        List<ProjectOutDTO> projects = projectService.getAllProjects();
-        return ResponseEntity.ok(projects);
+        if (adminId == null) {
+            throw new UnauthorizedException("인증되지 않은 사용자입니다.");
+        }
+
+        // 모든 프로젝트 조회
+        List<Project> projects = projectRepository.findAll();
+
+        // 프로젝트 데이터를 DTO로 변환
+        List<ProjectOutDTO> projectOutDTOs = projects.stream()
+                .map(projectConverter::toOutDTO) // projectConverter를 활용
+                .toList();
+
+        return ResponseEntity.ok(projectOutDTOs);
     }
+//
+//        List<ProjectOutDTO> projects = projectService.getAllProjects();
+//        return ResponseEntity.ok(projects);
+//    }
+
+//
+//
+//    public ResponseEntity<List<ProjectOutDTO>> getProjects(HttpSession session) {
+//        // 세션에서 userId 가져오기
+//        String userId = (String) session.getAttribute("userId");
+//
+//        if (userId == null) {
+//            // 인증되지 않은 사용자가 인증을 요구
+//            throw new UnauthorizedException("인증되지 않은 사용자입니다.");
+//        }
+//
+//        // userId로 유저 정보 조회
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+//
+//        // 유저의 프로젝트 ID 리스트 가져오기
+//        List<String> projectIds = user.getProjectIds();  // 유저가 참여한(혹은 생성한) 프로젝트 ID 리스트
+//
+//        if (projectIds == null || projectIds.isEmpty()) {
+//            return ResponseEntity.ok(List.of());  // 프로젝트가 없으면 빈 리스트 반환
+//        }
+//
+//        // 프로젝트 ID 리스트를 통해 해당 프로젝트 조회
+//        List<Project> projects = projectRepository.findAllById(projectIds);
+//
+//        // 프로젝트들을 DTO로 변환하여 반환
+//        List<ProjectOutDTO> projectOutDTOs = projects.stream()
+//                .map(project -> projectConverter.toOutDTO(project))  // 엔티티를 DTO로 변환
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(projectOutDTOs);
 
 
     // 어드민 전용: 프로젝트 삭제

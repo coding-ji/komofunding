@@ -210,7 +210,7 @@ const ReusableTable = ({ title, data, columns, searchOptions, onSearch, categori
                 </td>
                 {columns.map((col, colIndex) => (
                   <td key={colIndex}>
-                    {col.accessor === "writeDate" || col.accessor === "endDate"
+                    {col.accessor === "writeDate" || col.accessor === "endDate" || col.accessor === "joinDate" || col.accessor === "applicationDate" || col.accessor === "deactivationDates" 
                       ? formattedDate(row[col.accessor]).toLocaleString()
                       : col.accessor === "isHidden"
                       ? row[col.accessor] === false

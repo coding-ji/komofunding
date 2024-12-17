@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TitleText from "../../../../components/TitleText";
 import ReusableTable from "../../../../components/Table/ReusableTable";
-import { useStore } from "../../../../stores/AdminStore/useStore";
 import styles from "../../../../components/Table/ReusableTable.module.css";
 import Pagination from "../../../MyPage/Pagination";
 import AdminFilterTabs from "../../components/AdminTabs/AdminFilterTabs";
+import { useStore } from "../../../../stores/AdminStore/useStore";
+
 
 const ProjectManagementPage = () => {
     const { state, actions } = useStore(); // 어드민 프로젝트 상태 및 액션
@@ -16,25 +17,39 @@ const ProjectManagementPage = () => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const [searchOption, setSearchOption] = useState("title");
     const [activeTab, setActiveTab] = useState("ALL");
+     const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
 
     const ITEMS_PER_PAGE = 10;
 
-    // 프로젝트 데이터를 서버에서 불러오기
+    
+      useEffect(() => {
+        const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
+        if (tabParam) {
+          setActiveTab(tabParam); // 파라미터에 맞게 activeTab 설정
+        }
+      }, [searchParams]);
+
+      
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await actions.fetchAdminProjects();
-                console.log("Fetched admin projects:", state.adminProjects);
+                actions.fetchAdminProjects();
             } catch (error) {
-                console.error("프로젝트 데이터를 가져오는 데 실패했습니다:", error);
+                console.error("프로젝트를 가져오는데 실패했습니다.")
             }
         };
 
         fetchData();
-    }, [actions]);
+    }, [])
+
+    if (!Array.isArray(state.project)) {
+        return <p>데이터 로드 중...</p>;
+      }
+
 
     // 데이터 변환 로직
-    const enhancedData = state.adminProjects.map((project) => ({
+    const enhancedData = state.project.map((project) => ({
         ...project,
         status: project.isHidden ? "숨김" : "활성",
         actions: (
@@ -80,10 +95,6 @@ const ProjectManagementPage = () => {
         { label: "상태", accessor: "status" },
         { label: "관리", accessor: "actions" }, // 삭제 버튼 추가
     ];
-
-    // 데이터 로드 실패 처리
-    if (state.loading) return <p>데이터 로드 중...</p>;
-    if (filteredData.length === 0) return <p>프로젝트 데이터가 없습니다.</p>;
 
     // 탭 클릭 핸들러
     const handleTabClick = (tabName) => {
@@ -150,4 +161,3 @@ const ProjectManagementPage = () => {
 };
 
 export default ProjectManagementPage;
- 

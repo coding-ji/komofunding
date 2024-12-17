@@ -1,12 +1,15 @@
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TitleText from "../../../../components/TitleText";
 import ReusableTable from "../../../../components/Table/ReusableTable";
 import { useStore } from "../../../../stores/AdminStore/useStore";
 import styles from "../../../../components/Table/ReusableTable.module.css";
 import Pagination from "../../../MyPage/Pagination";
 import AdminFilterTabs from "../../components/AdminTabs/AdminFilterTabs";
+
+
+
 
 // 상태 및 유형 매핑
 const getDescriptionFromStatus = (status) => {
@@ -35,6 +38,16 @@ const UserManagementPage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchOption, setSearchOption] = useState("nickName");
   const [activeTab, setActiveTab] = useState("ALL");
+  const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
+
+  useEffect(() => {
+    const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
+    if (tabParam) {
+      setActiveTab(tabParam); // 파라미터에 맞게 activeTab 설정
+    }
+  }, [searchParams]);
+
+
 
   const userTypeOptions = [
     { value: "후원자", label: "후원자" },
@@ -51,10 +64,6 @@ const UserManagementPage = () => {
 
   const ITEMS_PER_PAGE = 10;
 
-  useEffect(()=>{
-    console.log("dklsss")
-  },[])
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,14 +75,16 @@ const UserManagementPage = () => {
     };
 
     fetchData();
+
   }, []);
 
-  if (!Array.isArray(state.users)) {
+
+  if (!Array.isArray(state.user)) {
     return <p>데이터 로드 중...</p>;
   }
 
   // 상태 및 유형 변환
-  const transformedData = state.users.map((user) => ({
+  const transformedData = state.user.map((user) => ({
     ...user,
     userType: getDescriptionFromStatus(user.activatedStatus),
     userStatus:
@@ -147,43 +158,48 @@ const UserManagementPage = () => {
   };
 
   return (
-    <div className={styles.gridContainerAdminNotice}>
-      <TitleText title="유저 관리" />
+    <>
+      { state.user && 
+        <div className={styles.gridContainerAdminNotice}>
 
-      <AdminFilterTabs
-        navItems={[
-          { name: "ALL", label: "전체회원" },
-          { name: "CREATORPENDING", label: "제작자 전환 대기" },
-          { name: "DEACTIVATED", label: "탈퇴한 회원" },
-        ]}
-        activeTab={activeTab}
-        onTabClick={handleTabClick}
-      />
+          <TitleText title="유저 관리" />
 
-      <ReusableTable
-        title="유저 목록"
-        data={currentData}
-        columns={getColumns()}
-        searchOptions={[
-          { label: "닉네임", value: "nickName" },
-          { label: "이메일", value: "email" },
-          { label: "전화번호", value: "phoneNumber" },
-          { label: "유형", value: "userType" },
-          { label: "상태", value: "userStatus" },
-        ]}
-        userTypeOptions={userTypeOptions}
-        userStatusOptions={userStatusOptions}
-        onSearch={handleSearch}
-      />
+          <AdminFilterTabs
+            navItems={[
+              { name: "ALL", label: "전체회원" },
+              { name: "CREATORPENDING", label: "제작자 전환 대기" },
+              { name: "DEACTIVATED", label: "탈퇴한 회원" },
+            ]}
+            activeTab={activeTab}
+            onTabClick={handleTabClick}
+          />
 
-      {Math.ceil(filteredData.length / ITEMS_PER_PAGE) > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
-          onPageChange={setCurrentPage}
-        />
-      )}
-    </div>
+          <ReusableTable
+            title="유저 목록"
+            data={currentData}
+            columns={getColumns()}
+            searchOptions={[
+              { label: "닉네임", value: "nickName" },
+              { label: "이메일", value: "email" },
+              { label: "전화번호", value: "phoneNumber" },
+              { label: "유형", value: "userType" },
+              { label: "상태", value: "userStatus" },
+            ]}
+            userTypeOptions={userTypeOptions}
+            userStatusOptions={userStatusOptions}
+            onSearch={handleSearch}
+          />
+
+          {Math.ceil(filteredData.length / ITEMS_PER_PAGE) > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </div>
+      }
+    </>
   );
 };
 

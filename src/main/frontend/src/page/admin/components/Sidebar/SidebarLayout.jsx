@@ -52,21 +52,23 @@ const SidebarLayout = () => {
           <div className={styles.sectionDivider}>관리 홈</div>
           <div
             className={styles.menuHeader}
-         
-            onClick={(e) => handleMenuClick("member", "/admin/user/user-management", e)}
+
+            onClick={(e) => handleMenuClick("member", "/admin/user/user-management?tab=ALL", e)}
           >
             <img src={memberIcon} alt="회원관리" /> 회원관리
           </div>
           {activeMenu === "member" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/user/user-management">전체회원</Link>
+                   <Link to="/admin/user/user-management?tab=ALL">전체회원</Link>
               </li>
               <li>
-                <Link to="/admin/member/waiting">제작자 전환 대기</Link>
+
+                <Link to="/admin/user/user-management?tab=CREATORPENDING">제작자 전환 대기</Link>
               </li>
               <li>
-                <Link to="/admin/member/withdrawal">탈퇴회원</Link>
+
+                <Link to="/admin/user/user-management?tab=DEACTIVATED">탈퇴회원</Link>
               </li>
             </ul>
           )}
@@ -76,17 +78,17 @@ const SidebarLayout = () => {
         <li>
         <div
             className={styles.menuHeader}
-            onClick={(e) => handleMenuClick("project", "/admin/project", e)}
+            onClick={(e) => handleMenuClick("project", "/admin/project/project-management?tab=ALL", e)}
           >
             <img src={projectIcon} alt="프로젝트" /> 프로젝트
           </div>
           {activeMenu === "project" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/project/review">심사 현황</Link>
+              <Link to="/admin/project/project-management?tab=REVIEW">심사 현황</Link>
               </li>
               <li>
-                <Link to="/admin/project/manage">승인 프로젝트 관리</Link>
+                <Link to="/admin/project/project-management?tab=HIDDEN">숨긴 프로젝트</Link>
               </li>
             </ul>
           )}
@@ -126,7 +128,7 @@ const SidebarLayout = () => {
 
           <div
             className={styles.menuHeader}
-            onClick={(e) => handleMenuClick("announcement", "/admin/community/notice-faq", e)}
+            onClick={(e) => handleMenuClick("announcement", "/admin/community/notice-faq?tab=ALL", e)}
           >
             <img src={noticeIcon} alt="공지사항" /> 공지사항
           </div>
@@ -134,7 +136,13 @@ const SidebarLayout = () => {
           {activeMenu === "announcement" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/community/write">작성 및 수정</Link>
+                <Link to="/admin/community/write">공지사항 & 자주 묻는 질문 작성</Link>
+              </li>
+              <li>
+                <Link to="/admin/community/notice-faq?tab=NOTICE">공지사항</Link>
+              </li>
+              <li>
+                <Link to="/admin/community/notice-faq?tab=FAQ">자주 묻는 질문</Link>
               </li>
             </ul>
           )}
@@ -142,35 +150,21 @@ const SidebarLayout = () => {
           {/* 이벤트 */}
           <div
             className={styles.menuHeader}
-            onClick={(e) => handleMenuClick("event", "/admin/community/event", e)}
+            onClick={(e) => handleMenuClick("event", "/admin/community/event?tab=ALL", e)}
           >
             <img src={eventIcon} alt="이벤트" /> 이벤트
           </div>
           {activeMenu === "event" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/event/ongoing">진행 중인 이벤트</Link>
+                <Link to="/admin/community/event?tab=ONGOING">진행 중인 이벤트</Link>
               </li>
               <li>
-                <Link to="/admin/event/ended">종료된 이벤트</Link>
+                <Link to="/admin/community/event?tab=ENDED">종료된 이벤트</Link>
               </li>
             </ul>
           )}
 
-          {/* 알림/수신 */}
-          {/* <div
-            className={styles.menuHeader}
-            onClick={(e) => toggleMenu("alert",e)}
-          >
-            🔔 알림/수신
-          </div>
-          {activeMenu === "alert" && (
-            <ul className={styles.subMenu}>
-              <li>
-                <Link to="/admin/email-send">이메일 발송</Link>
-              </li>
-            </ul>
-          )} */}
 
           {/* Q&A */}
           <div

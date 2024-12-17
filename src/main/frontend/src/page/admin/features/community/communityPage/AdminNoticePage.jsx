@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TitleText from "../../../../../components/TitleText";
 import ReusableTable from "../../../../../components/Table/ReusableTable";
 import { useStore } from "../../../../../stores/NoticeStore/useStore";
 import styles from "../../../../../components/Table/ReusableTable.module.css";
 import Pagination from "../../../../MyPage/Pagination";
 import AdminFilterTabs from "../../../components/AdminTabs/AdminFilterTabs"; // 필터 탭 컴포넌트 추가
+
 
 const AdminNoticePage = () => {
   const { state, actions } = useStore();
@@ -14,7 +15,17 @@ const AdminNoticePage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchOption, setSearchOption] = useState("communityTitle"); // 기본 검색 옵션
   const [activeTab, setActiveTab] = useState("ALL"); // 활성화된 탭 상태
+    const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
 
+
+  
+    useEffect(() => {
+      const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
+      if (tabParam) {
+        setActiveTab(tabParam); // 파라미터에 맞게 activeTab 설정
+      }
+    }, [searchParams]);
+  
 
     // 테이블 행 클릭 시 동작
     const handleRowClick = (row) => {
