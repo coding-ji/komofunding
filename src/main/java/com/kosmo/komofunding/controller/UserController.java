@@ -64,7 +64,7 @@ public class UserController {
                     .accountNumber(user.getAccountNumber())  // 계좌 번호
                     .accountHolder(user.getAccountHolder())  // 계좌 주
                     .BSN(user.getBSN())  // 사업자 등록 번호
-                    .password(user.getPassword())  // 비밀번호
+                    .password(null)  // 비밀번호
                     .build();
 
             return ResponseEntity.ok(response);
@@ -80,9 +80,6 @@ public class UserController {
             @RequestBody UserProfileUpdateDTO request  // 수정할 프로필 정보 받기
         ) {
         try {
-            System.out.println("Request JSON: " + request);
-            System.out.println("userNum : " + userNum);
-
             // 비밀번호 확인
             boolean isPasswordValid = userService.verifyPassword(userNum, request.getPassword());  // 비밀번호 검증
 

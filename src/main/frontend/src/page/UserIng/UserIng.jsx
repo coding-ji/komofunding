@@ -1,41 +1,47 @@
 import React, { useEffect } from "react";
 import MyContainers from "../../components/MyContainers";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 function UserIng() {
   //Outlet에 전달된 context가져오기
-  const { state, actions, loading } = useOutletContext();
+  const { state, actions, loading, setIsChanged} = useOutletContext();
+  const navigate = useNavigate();
 
   if (!state.payment) {
     return <div>로딩 중...</div>;
   }
 
-  // 삭제 핸들러 예시 (여기에 실제 삭제 로직을 추가할 수 있습니다)
-  const handleDelete = (product) => {
-    console.log(`삭제하려는 제품: ${product.title}`);
-    // 삭제 로직 추가 (예: API 호출 후 상태 업데이트)
-  };
+  // 환불 핸들러
+  const handleRefund = (product) => {
+    const isConfirmed = window.confirm(
+      `${product.title}을/를 환불하시겠습니까?`
+    );
+    if (isConfirmed) {
+      const updatedPayments = state.payment.filter(
+        (payment) => payment.paymentId !== product.paymentId
+      );
+      actions.updateAllFields(updatedPayments);
 
-  // 수정 핸들러 예시 (여기에 실제 수정 로직을 추가할 수 있습니다)
-  const handleEdit = (product) => {
-    console.log(`수정하려는 제품: ${product.title}`);
-    // 수정 로직 추가 (예: 수정 페이지로 이동)
+      actions.removePayment(product.paymentId); // 예시: 환불 요청을 하는 액션 호출
+      alert("환불이 완료되었습니다.");
+      setIsChanged(true);
+    } else {
+      console.log("환불을 취소했습니다.");
+    }
   };
 
   // 컨테이너 클릭 시의 핸들러 예시 (제품 클릭 시 어떤 동작을 할지 정의)
   const handleContainerClick = (product) => {
-    console.log(`컨테이너 클릭한 제품: ${product.title}`);
-    // 클릭 후 어떤 동작을 할지 정의 (예: 상세 페이지로 이동)
+    navigate(`/home/product-details/${product.projectNum}`);
   };
 
   return (
     <div>
       {Array.isArray(state.payment) && state.payment.length > 0 ? (
         <MyContainers
-          text="ongoing"
+          text="환불"
           products={state.payment}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
+          onDelete={handleRefund}
           onContainerClick={handleContainerClick}
         />
       ) : (

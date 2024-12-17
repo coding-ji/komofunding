@@ -68,10 +68,12 @@ public class User {
     private String bankName; // 은행명
 
     @Column(name = "account_number", length = 50)
-    private String accountNumber; // 은행 계좌 번호
+    @Builder.Default
+    private String accountNumber = "계좌번호"; // 은행 계좌 번호
 
     @Column(name = "account_holder", length = 50)
-    private String accountHolder; // 예금주
+    @Builder.Default
+    private String accountHolder = "예금주"; // 예금주
 
     @Column(name = "join_date", nullable = false)
     private LocalDateTime joinDate;  // 가입 날짜

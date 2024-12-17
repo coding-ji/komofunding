@@ -16,7 +16,8 @@ import {
     verifyPassword,
     checkNickName,
     sendEmailCode,
-    // findUserPassword
+    findUserPassword,
+    getTemporalPw
     // uploadImg
 } from '../../service/apiService';
 
@@ -76,6 +77,7 @@ export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'; // 비밀번�
 export const VERIFY_PASSWORD = 'VERIFY_PASSWORD' // 비밀번호 검증
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = 'UPLOAD_PROFILE_IMAGE_SUCCESS'; // 프로필 이미지 업로드 성공
 export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';
+export const GET_NEW_PASSWORD = "GET_NEW_PASSWORD";
 
 
 // 마이 페이지 정보 가져오기
@@ -308,6 +310,17 @@ export const updateUserPassword = (request) => async (dispatch) => {
     }
 };
 
+export const temporalUserPassword = (email, verificationCode) => async(dispatch) => {
+    try{
+        const response = await getTemporalPw(email, verificationCode);
+        dispatch({
+            type: GET_NEW_PASSWORD,
+            payload: response.data
+        })
+    }catch(error){
+        console.error("임시비밀번호를 발급할 수 없습니다.")
+    }
+}
 // 이미지 업로드
 //export const uploadProfileImage = (file) => async(dispatch) => {
 //    try {

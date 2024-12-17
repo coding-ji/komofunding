@@ -69,4 +69,18 @@ public class PaymentController {
         return paymentService.getMyFunding(userId, projectStatus);
     }
 
+    // paymentId를 받아서 결제 정보 삭제
+    @DeleteMapping("/myfunding/{paymentId}")
+    public ResponseEntity<String> deleteFunding(@PathVariable String paymentId) {
+        // deleteMyFunding 메서드를 호출하여 결제 정보 삭제
+        String result = paymentService.refundPayment(paymentId);
+
+        // 결제 삭제 결과를 반환
+        if (result.equals("ok")) {
+            return ResponseEntity.ok(result); // 성공 시 200 OK 반환
+        } else {
+            return ResponseEntity.badRequest().body(result); // 실패 시 400 Bad Request 반환
+        }
+    }
+
 }

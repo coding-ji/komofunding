@@ -33,29 +33,13 @@ import {
     FIND_PASSWORD_SUCCESS,
     // CHANGE_PASSWORD_SUCCESS,
     // UPLOAD_PROFILE_IMAGE_SUCCESS,
-    VERIFY_PASSWORD
+    VERIFY_PASSWORD,
+    GET_NEW_PASSWORD
 
 } from './action.js';
 
 // 초기 상태 정의
-export const initialState = {
-    //    userNum: null,
-    //    email: '',
-    //    password: '',
-    //    name: '',
-    //    nickName: '',
-    //    phoneNumber: '',
-    //    profileImage: '',
-    //    userShortDescription: '',
-    //    activatedStatus: false,
-    //    bankName: '',
-    //    accountNumber: '',
-    //    accountHolder: '',
-    //    joinDate: '',
-    //    corporationName: '',
-    //    corporationTel: '',
-    //    BSN: '',
-};
+export const initialState = {};
 
 // 동적 상태 업데이트 함수
 export const updateStateField = (state, field, value) => ({
@@ -180,6 +164,9 @@ export const reducer = (state, action) => {
 
         case CHANGE_PASSWORD_SUCCESS:
             return { ...state, message: action.payload };
+
+        case GET_NEW_PASSWORD:
+            return {...state, message: action.payload};
 
         case RESET_STATE:
             return initialState;

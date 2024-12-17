@@ -12,6 +12,7 @@ function UserFunding() {
   const { state, actions } = useStore();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const [isChanged, setIsChanged] = useState(false);
 
   // 처음 렌더링될 때 데이터 가져오기
   useEffect(() => {
@@ -30,8 +31,11 @@ function UserFunding() {
       }
     };
 
-    fetchFundingData(); 
-  }, []); // 빈 배열을 넣어 첫 렌더링에 실행
+    if (isChanged) {
+      fetchFundingData();
+      setIsChanged(false);
+    }
+  }, [isChanged]);
 
   useEffect(() => {
     const fetchFundingData = async () => {
@@ -48,10 +52,9 @@ function UserFunding() {
         setLoading(false);
       }
     };
-  
+
     fetchFundingData();
   }, [location.pathname]); // pathname이 변경될 때마다 데이터 갱신
-
 
   const navItems = [
     { label: "진행 중 후원", path: "" },
@@ -72,7 +75,7 @@ function UserFunding() {
         <MyNavLine />
       </div>
       <div className={styles.contentContainer}>
-        <Outlet context={{ state, actions, loading }}/>
+        <Outlet context={{ state, actions, loading, setIsChanged}} />
       </div>
     </div>
   );

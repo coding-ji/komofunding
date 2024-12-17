@@ -35,7 +35,8 @@ import {
     updateUserPassword,
     // uploadProfileImage,
     apiVerifyPassword,
-    checkNick
+    checkNick,
+    temporalUserPassword
 } from "./action"; // 액션들은 action.js 파일에서 import 합니다.
 
 export const useStore = () => {
@@ -83,7 +84,8 @@ export const useStore = () => {
 //      uploadProfileImage: (file) => uploadProfileImage(file)(dispatch),
         apiVerifyPassword: (userNum, password) => apiVerifyPassword(userNum, password)(dispatch),
         checkNick: (nickName) => checkNick(nickName)(dispatch),
-        findPassword: (email, verificationCode) => findPassword(email, verificationCode)(dispatch)
+        findPassword: (email, verificationCode) => findPassword(email, verificationCode)(dispatch),
+        temporalUserPassword: (email, verificationCode) => temporalUserPassword(email, verificationCode)(dispatch),
      };
     return { state, actions };
         // state 상태 객체

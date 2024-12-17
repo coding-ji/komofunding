@@ -1,7 +1,8 @@
 import {
     fetchDonorsByProjectNum,
     createPayment,
-    getMyFunding
+    getMyFunding,
+    deletePayment
 } from "../../service/apiService";
 
 
@@ -113,5 +114,18 @@ export const addPayment = (paymentNum, payment) => async(dispatch) => {
         })
     }catch(error){
         console.error("결제 실패")
+    }
+}
+
+// 결제 삭제 
+export const removePayment = (paymentId) => async(dispatch) => {
+    try{
+        const response = await deletePayment(paymentId); 
+        dispatch({
+            type: DELETE_PAYMENT,
+            payload: response.data
+        })
+    }catch(error){
+        console.error("환불 실패")
     }
 }

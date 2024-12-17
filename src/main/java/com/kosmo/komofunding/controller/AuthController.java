@@ -228,11 +228,7 @@ public class AuthController {
 
     // 아이디 찾기 (이메일 찾기)
     @PostMapping("/id")
-    public ResponseEntity<String> findUserId(@RequestBody UserInDTO request) {
-        // DTO에서 값을 추출
-        String name = request.getName();
-        String phoneNumber = request.getPhoneNumber();
-
+    public ResponseEntity<String> findUserId(@RequestParam("name") String name, @RequestParam("phoneNumber")String phoneNumber) {
         String email = userService.findEmailByNameAndPhoneNumber(name, phoneNumber);
         if (email == null) {
             return ResponseEntity.status(404).body("User not found");
@@ -264,6 +260,27 @@ public class AuthController {
             return ResponseEntity.status(400).body("비밀번호 재설정에 실패했습니다.");
         }
     }
+
+    // 임시비밀번호 발급
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPasswordWithTemporary(@RequestBody EmailRequestDTO request) {
+        try {
+            // 서비스 호출
+            String tempPassword = userService.resetPasswordWithTemporary(request.getEmail(), request.getVerificationCode());
+
+            // 성공 응답
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "tempPassword", tempPassword
+            ));
+        } catch (IllegalArgumentException e) {
+            // 실패 응답
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false
+            ));
+        }
+    }
+
 
 //    // 비밀번호 재설정
 //    @PostMapping("/pw")

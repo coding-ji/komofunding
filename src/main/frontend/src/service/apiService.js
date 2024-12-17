@@ -53,7 +53,13 @@ export const getUserInfo = (email) => apiClient.get(`/api/auth/users?email=${ema
 export const deleteUser = (userNum) => apiClient.delete(`/api/auth/delete/${userNum}`);
 
 // 이름과 전화번호를 기반으로 이메일 찾기 요청
-export const findUserId = (name, phoneNumber) => apiClient.post('/api/auth/id', { name, phoneNumber });
+export const findUserId = (name, phoneNumber) => apiClient.post(`/api/auth/id?name=${name}&phoneNumber=${phoneNumber}`);
+
+// 임시비밀번호 발급
+export const getTemporalPw = (email, verificationCode) => apiClient.post('/api/auth/reset-password', {email, verificationCode});
+
+// 이메일로 인증번호 받아서 비밀번호 찾기
+export const findUserPassword = (email,verificationCode) => apiClient.post('/api/auth/password/reset', {email, verificationCode});
 
 // 비밀번호 재설정 요청
 export const resetPassword = (email) => apiClient.post('/api/auth/pw', email);
@@ -109,6 +115,9 @@ export const createPayment = (projectNum, payment) => apiClient.post(`/payment/s
 
 // 나의 후원 내역 조회 ( 후원중 , 마감 )
 export const getMyFunding = (projectStatus) => apiClient.get(`/payment/myinfo/funding?projectStatus=${projectStatus}`);
+
+// 결제 삭제
+export const deletePayment = (paymentId) => apiClient.delete(`/payment/myfunding/${paymentId}`)
 
 
 // 이미지 저장
@@ -188,8 +197,7 @@ export const deactivateUser = (userNum, deactivationData) => apiClient.put(`api/
 
 // 모든 프로젝트 조회 및 특정 프로젝트 조회
 export const fetchAllProjects = ()  => apiClient.get('api/admin/projects');
-
-export const fetchAllProjectsForAdmin = (projectNum) => apiClient.get(`/api/admin/projects?projectNum=${projectNum}`);
+export const fetchAllProjectsForAdmin = (projectNum) => apiClient.get(`/api/admin/projects/${projectNum}`);
 
 // 프로젝트 승인
 export const approveProject = (projectNum) => apiClient.put(`api/admin/projects/${projectNum}/approve`);

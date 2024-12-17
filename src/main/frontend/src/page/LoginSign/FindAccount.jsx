@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./FindAccount.module.css"; // CSS 모듈
-import { findUserId, sendEmailCode, verifyEmailCode } from "../../service/apiService";
+import { useStore } from "../../stores/UserStore/useStore";
+import { formatPhoneNumber } from "../../utils/formattedData";
 
 const FindAccount = () => {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [verificationCode, setVerificationCode] = useState("");
-  const [message, setMessage] = useState("");   // 상태 메시지
-  const [foundEmail, setFoundEmail] = useState("");   // 찾은 이메일
-  const [temporaryPassword, setTemporaryPassword] = useState(""); // 임시 비밀번호
+  const [message, setMessage] = useState(""); // 상태 메시지 (이메일)
+  const [pwmessage, setPwMessage] = useState(""); //상태 메시지(비밀번호)
+  const [emailmessage, setEmailMessage] = useState(""); // 상태메시지(이메일보냄)
+
+  const { state, actions } = useStore();
+  const [isChecked, setIsChecked] = useState(false); // 이름, 휴대폰 번호 확인
+  const [isPwChecked, setIsPwChecked] = useState(false); // 아이디, 인증번호 확인
 
   // 폼 데이터 변경 핸들러
   const handleInputChange = (field, value) => {
@@ -17,38 +22,56 @@ const FindAccount = () => {
 
   // 아이디(이메일) 찾기
   const handleFindId = async () => {
+    // 전화번호 포맷이 맞지 않으면 하이픈을 추가
+    if (formData.phone && !formData.phone.includes("-")) {
+      formData.phone = formatPhoneNumber(formData.phone);
+    }
+
     try {
-      const response = await findUserId(formData.name, formData.phone);
-      setFoundEmail(response.data.email); // 백엔드에서 반환된 이메일
-      setMessage(`아이디(이메일)는 ${response.data.email}입니다.`);
+      // 이메일 찾기 시도
+      await actions.findEmail(formData.name, formData.phone);
+      setIsChecked(true); // 유저가 존재하면 성공 처리
     } catch (error) {
       console.error(error);
-      setMessage("입력한 정보와 일치하는 유저가 없습니다.");
+      setMessage("입력한 정보와 일치하는 유저가 없습니다."); // 실패 처리
     }
   };
+
+  useEffect(() => {
+    if (isChecked) {
+      setMessage(`아이디 ${state.message} 입니다.`);
+    }
+    setIsChecked(false);
+  }, [isChecked]);
 
   // 인증번호 전송
   const handleSendAuthCode = async () => {
     try {
-      await sendEmailCode(formData.email);
-      setMessage("인증번호가 이메일로 전송되었습니다.");
+      await actions.sendEmailForRegister(formData.email);
+      setEmailMessage("인증번호가 이메일로 전송되었습니다.");
     } catch (error) {
       console.error(error);
-      setMessage("입력한 이메일과 일치하는 유저가 없습니다.");
+      setEmailMessage("입력한 이메일과 일치하는 유저가 없습니다.");
     }
   };
 
   // 인증번호 확인 및 임시 비밀번호 발급
   const handleVerifyAuthCode = async () => {
     try {
-      const response = await verifyEmailCode(formData.email, verificationCode);
-      setTemporaryPassword(response.data.temporaryPassword); // 백엔드에서 반환된 임시 비밀번호
-      setMessage(`임시 비밀번호는 ${response.data.temporaryPassword}입니다.`);
+      await actions.temporalUserPassword(formData.email, verificationCode);
+      setIsPwChecked(true);
     } catch (error) {
       console.error(error);
       setMessage("인증번호가 일치하지 않습니다.");
     }
   };
+
+  useEffect(() => {
+    if (isPwChecked) {
+      console.log(state)
+      setPwMessage(`임시 비밀번호는 ${state.message.tempPassword}입니다.`);
+    }
+  }, [isPwChecked]);
 
   return (
     <div className={styles.pageContainer}>
@@ -76,9 +99,9 @@ const FindAccount = () => {
               className={styles.input}
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />      <div></div>
+            />{" "}
+            <div></div>
             <label className={styles.label}>휴대폰번호</label>
-
             <input
               type="text"
               placeholder="휴대폰번호를 입력하세요"
@@ -90,13 +113,17 @@ const FindAccount = () => {
               type="button"
               className={styles.button}
               onClick={handleFindId}
-              whileHover={{ scale: 1.1, backgroundColor: "#FFF", color: "#000" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#FFF",
+                color: "#000",
+              }}
               whileTap={{ scale: 0.9 }}
             >
               확인
             </motion.button>
           </form>
-          {foundEmail && <p className={styles.result}>{message}</p>}
+          {message && <p className={styles.result}>{message}</p>}
         </section>
 
         {/* 비밀번호 찾기 섹션 */}
@@ -122,7 +149,11 @@ const FindAccount = () => {
               type="button"
               className={styles.customButtonClass}
               onClick={handleSendAuthCode}
-              whileHover={{ scale: 1.1, backgroundColor: "#FFF", color: "#000" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#FFF",
+                color: "#000",
+              }}
               whileTap={{ scale: 0.9 }}
             >
               인증번호
@@ -139,13 +170,18 @@ const FindAccount = () => {
               type="button"
               className={styles.button}
               onClick={handleVerifyAuthCode}
-              whileHover={{ scale: 1.1, backgroundColor: "#FFF", color: "#000" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#FFF",
+                color: "#000",
+              }}
               whileTap={{ scale: 0.9 }}
             >
               확인
             </motion.button>
           </form>
-          {temporaryPassword && <p className={styles.result}>{message}</p>}
+          {emailmessage && <p className={styles.result}>{emailmessage}</p>}
+          {pwmessage && <p className={styles.result}>{pwmessage}</p>}
         </section>
       </motion.div>
     </div>

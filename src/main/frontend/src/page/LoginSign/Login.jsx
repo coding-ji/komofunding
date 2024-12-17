@@ -16,23 +16,6 @@ const Login = () => {
   const [message, setMessage] = useState(""); // 성공 메시지 상태
   const [error, setError] = useState(""); // 에러 메시지 상태fFff
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //     // 로그인 성공 시
-  //     await loginUser(email, password)
-  //     .then(response => {
-  //       setMessage("로그인 성공!");
-  //       const userInfo = response.data; // 백엔드에서 반환된 사용자 정보
-  //       console.log(userInfo);
-  //       localStorage.setItem("user", JSON.stringify(userInfo));
-  //       window.location.href = "/"; // 메인 페이지로 리디렉션
-  //     })
-  //     .catch(error => {
-  //       console.error("로그인 실패", error);
-  //       setError("로그인 실패");
-  //     });
-  // }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // 기존 에러 메시지 초기화

@@ -45,3 +45,8 @@ export const formatCurrency = (number) => {
 export function formatAchievementRate(rate) {
   return `${Math.round(rate)}`; // 소수점 반올림 후 % 추가
 }
+
+  // 숫자만 있는 전화번호에서 하이픈을 추가하는 방법
+export function formatPhoneNumber(phoneNumber) {
+  return phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3');
+}

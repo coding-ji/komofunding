@@ -45,10 +45,11 @@ public class UserService {
     private String generateVerificationCode() {
         return String.format("%06d", (int) (Math.random() * 1000000));
     }
+    private String verificationCode = generateVerificationCode();
 
     // 이메일 인증 코드 발송 및 저장
     private void sendVerificationEmail(String email) {
-        String verificationCode = generateVerificationCode();
+
 
         // 인증 코드 데이터베이스에 저장
         Email emailEntity = new Email();
@@ -66,7 +67,7 @@ public class UserService {
             return false; // 이메일로 사용자 찾을 수 없음
         }
 
-        String verificationCode = generateVerificationCode();
+
 
         // 인증 코드 이메일 엔티티 생성 및 저장
         Email emailEntity = new Email();
@@ -117,6 +118,39 @@ public class UserService {
 
         return true;
     }
+
+    // 임시비밀번호 발급
+    public String resetPasswordWithTemporary(String email, String verificationCode) {
+        Optional<Email> emailEntityOptional = emailRepository.findByEmail(email);
+        if (!emailEntityOptional.isPresent()) {
+            throw new IllegalArgumentException("이메일을 찾을 수 없습니다."); // 예외 발생
+        }
+
+        Email emailEntity = emailEntityOptional.get();
+        if (!emailEntity.getVerificationCode().equals(verificationCode)) {
+            throw new IllegalArgumentException("인증 코드가 일치하지 않습니다."); // 예외 발생
+        }
+
+        // 랜덤 임시 비밀번호 생성
+        String tempPassword = generateRandomPassword();
+
+        // 비밀번호 암호화 후 사용자 업데이트
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            throw new IllegalArgumentException("사용자를 찾을 수 없습니다."); // 예외 발생
+        }
+
+        User user = userOptional.get();
+        user.setPassword(passwordEncoder.encode(tempPassword)); // 비밀번호 암호화
+        userRepository.save(user);
+
+        // 인증 코드 삭제 (재사용 방지)
+        emailRepository.delete(emailEntity);
+
+        // 임시 비밀번호 반환
+        return tempPassword;
+    }
+
 
     // 비밀번호 비교
     public boolean verifyPassword(String password) {
@@ -483,6 +517,7 @@ public class UserService {
 
         return user; // 수정된 사용자 객체 반환
     }
+
 
 
 // 전체 유저 검색 (어드민 전용)

@@ -19,6 +19,12 @@
     text-align: start;
     margin-bottom: 5px;
   }
+
+  .result{
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+  }
   
   .title {
     color: var(--smallText, #6b6b6b);
