@@ -8,6 +8,7 @@ import { useStore as ProjectStore } from "../../stores/ProjectStore/useStore";
 function Product() {
   const location = useLocation(); // 현재 경로 정보를 가져옴
   const pathname = location.pathname; // 경로에 따라 카테고리 및 상태 설정
+  
 
   const { state, actions } = ProjectStore(); // useStore 훅을 통해 상태와 액션 가져오기
 

@@ -102,3 +102,16 @@ export const getMyFundingByProject = (projectStatus) => async (dispatch) => {
         console.error("불러오기 실패", error);
     }
 } 
+
+// 결제 생성
+export const addPayment = (payment) => async(dispatch) => {
+    try{
+        const response = await createPayment(payment);
+        dispatch({
+            type: CREATE_PAYMENT,
+            payload: response.data
+        })
+    }catch(error){
+        console.error("결제 실패")
+    }
+}

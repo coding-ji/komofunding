@@ -60,7 +60,6 @@ function CommunityWrite() {
 
     // File 저장
     await fileActions.createFileData(formDataDescription);
-    setIsDone(true);
   };
 
   // HTML 태그 제거 함수
@@ -89,6 +88,7 @@ function CommunityWrite() {
       if (location.pathname.includes("admin")) {
         // Admin: 파일 저장 후 커뮤니티 데이터 저장
         await saveHtmlToFile();
+        setIsDone(true);
       } else if (location.pathname.includes("inquiry")) {
         // Inquiry: QnaStore를 사용하여 질문 작성
         const questionData = {
@@ -103,11 +103,7 @@ function CommunityWrite() {
       alert("작업에 실패했습니다.");
     }
 
-    navigate(
-      location.pathname.includes("admin")
-        ? "/admin/community/notice-faq"
-        : "/home/inquiry"
-    );
+    navigate(location.pathname.includes("inquiry") && "/home/inquiry" );
   };
 
   useEffect(() => {
@@ -117,7 +113,6 @@ function CommunityWrite() {
           ...state.community,
           communityContent: fileState,
         };
-
         if (isEditing) {
           await actions.updateExistingCommunity(
             communityNum,
@@ -125,9 +120,11 @@ function CommunityWrite() {
           );
         } else {
           await actions.createNewCommunity(updatedCommunityData);
+          
         }
 
         alert("작업이 성공적으로 완료되었습니다.");
+        navigate(location.pathname.includes("admin") && "/admin" );
       }
     };
 

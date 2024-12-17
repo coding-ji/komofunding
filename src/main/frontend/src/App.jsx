@@ -147,7 +147,7 @@ const router = createBrowserRouter([
 
 
       { path: "ordertable/:projectNum", element: <OrderTable /> },
-      { path: "fundingpay", element: <FundingPay />},
+      { path: "fundingpay/:projectNum", element: <FundingPay />},
       // { path: "investment", element: <Investment />}
 
 

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion"; // framer-motion import
+import { formatCurrency } from "../utils/formattedData";
 
 
 const Wrapper = styled(motion.div)`
@@ -35,11 +36,11 @@ const ProductItem = ({ product }) => {
       </DetailItem>
       <DetailItem>
         <DetailLabel>상품 가격: </DetailLabel>
-        <DetailValue>{product.itemPrice}</DetailValue>
+        <DetailValue>{formatCurrency(product.itemPrice)} 원</DetailValue>
       </DetailItem>
       <DetailItem>
-        <DetailLabel>최소 수량: </DetailLabel>
-        <DetailValue>{product.itemAmount}</DetailValue>
+        <DetailLabel>수량: </DetailLabel>
+        <DetailValue>{product.itemAmount} 개</DetailValue>
       </DetailItem>
     </Wrapper>
   );

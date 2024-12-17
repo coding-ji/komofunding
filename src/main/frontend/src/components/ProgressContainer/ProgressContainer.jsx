@@ -6,7 +6,7 @@ import AmountInfo from "./AmountInfo";
 import MyNavLine from "../MyNavLine";
 import { formatCurrency, formatAchievementRate } from "../../utils/formattedData";
 
-const ProgressContainer = ({ project, paymentState, paymentActions }) => {
+const ProgressContainer = ({ project, paymentState, paymentActions, onClickPayButton }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false); // 아코디언 상태 관리
 
   // 프로젝트 시작일과 현재 날짜 비교
@@ -201,6 +201,7 @@ const ProgressContainer = ({ project, paymentState, paymentActions }) => {
           height="50px"
           fontSize="1.2rem"
           padding="10px"
+          onClick={onClickPayButton}
         />
         <WhiteBtn
           text="링크"

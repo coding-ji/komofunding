@@ -35,7 +35,7 @@ const ProgressContainerWrapper = styled.div`
 
 const ProjectSection = styled.div``;
 
-function MainProDetailsImg({ project, paymentState, paymentActions }) {
+function MainProDetailsImg({ project, paymentState, paymentActions, onClickPayButton}) {
   if (!project) {
     return <div>프로젝트 데이터가 없습니다.</div>;
   }
@@ -68,6 +68,7 @@ function MainProDetailsImg({ project, paymentState, paymentActions }) {
             project={project}
             paymentState={paymentState}
             paymentActions={paymentActions}
+            onClickPayButton={onClickPayButton}
           />
         </ProgressContainerWrapper>
       </Container>

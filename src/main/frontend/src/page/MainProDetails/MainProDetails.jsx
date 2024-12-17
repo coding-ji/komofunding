@@ -8,6 +8,7 @@ import { useStore as PaymentStore } from "../../stores/PaymentStore/useStore";
 import { useParams } from "react-router-dom";
 import TitleBox from "../../components/TitleBox";
 import DescriptionProduct from "../../components/DescriptionProduct";
+import { useNavigate } from "react-router-dom";
 
 const ProDetails = styled.div`
   display: flex;
@@ -18,9 +19,11 @@ const ProDetails = styled.div`
 
 function MainProDetails() {
   const { projectNum } = useParams();
+  const navigate = useNavigate();
   const { state: projectState, actions: projectActions } = ProjectStore();
   const { state: fileState, actions: fileActions } = FileStore();
   const { state: paymentState, actions: paymentActions } = PaymentStore();
+
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
@@ -50,6 +53,13 @@ function MainProDetails() {
     fetchHtml();
   }, [projectState.project]);
 
+  const onClickPayButton = () => {
+    // 이동하면서 상태 전달
+    navigate(`/home/fundingpay/${projectNum}`, {
+      state: { "project" : projectState.project , "payment" : paymentState },
+    });
+  };
+
   // 데이터가 없을 경우 로딩 상태 표시
   if (!projectState.project) {
     return (
@@ -66,6 +76,7 @@ function MainProDetails() {
         project={projectState.project}
         paymentState={paymentState}
         paymentActions={paymentActions}
+        onClickPayButton={onClickPayButton}
       />
       <MainProDetailsIntro
         project={projectState.project}

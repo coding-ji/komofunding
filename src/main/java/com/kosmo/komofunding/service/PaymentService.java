@@ -69,6 +69,7 @@ public class PaymentService {
         payment.setPaymentNum(paymentNum);
         payment.setProjectId(projectId);
         payment.setUserId(userId);
+        payment.setPaymentDate(LocalDateTime.now());
 
         return paymentRepository.save(payment); // 결제 저장
     }
