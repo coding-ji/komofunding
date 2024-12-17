@@ -3,6 +3,8 @@ import {
   fetchAllProjectsForAdmin,
   deleteProjectByAdmin,
   deactivateUser,
+  approveProject,
+  rejectProject
 } from '../../service/apiService';
 
 // 초기화
@@ -80,4 +82,26 @@ export const deactivate = (userNum, deactivationData) => async (dispatch) => {
     console.error('유저 데이터 수정 실패:', error)
     throw error;
   }
-}
+};
+
+// 프로젝트 승인
+export const approve = (projectNum) => async (dispatch) => {
+  try {
+    const response = await approveProject(projectNum);
+    dispatch({type : UPDATE_PROJECT, payload : response.data})
+  }catch (error) {
+    console.error('프로젝트 승인 실패:', error)
+    throw error;
+  }
+};
+
+// 프로젝트 거절
+export const reject = (projectNum) => async (dispatch) => {
+  try {
+    const response = await rejectProject(projectNum);
+    dispatch({type : UPDATE_PROJECT, payload : response.data})
+  }catch (error) {
+    console.error('프로젝트 거절 실패:', error)
+    throw error;
+  }
+};

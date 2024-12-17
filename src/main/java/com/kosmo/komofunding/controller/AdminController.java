@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -124,23 +125,66 @@ public class AdminController {
             return ResponseEntity.status(403).build();  // 권한 없으면 403 응답
         }
 
-        List<ProjectOutDTO> projects;
+        try {
+            // 특정 프로젝트 조회
+            ProjectOutDTO projectOutDTO = adminService.getProjectByProjectNum(projectNum);
+            return ResponseEntity.ok(Collections.singletonList(projectOutDTO));  // DTO 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
-        if (projectNum != null) {
-            // projectNum이 주어졌다면 특정 프로젝트 조회
-            Optional<Project> project = adminService.getProjectByProjectNum(projectNum);
-            if (project.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 프로젝트가 없을 경우
-            }
-            // 하나의 프로젝트만 반환 (DTO로 변환 후 반환)
-            projects = List.of(projectConverter.toOutDTO(project.get()));
-        } else {
-            // projectNum이 없으면 전체 프로젝트 조회
-            projects = adminService.getAllProjects().stream()
-                    .map(projectConverter::toOutDTO)  // Project를 ProjectOutDTO로 변환
-                    .collect(Collectors.toList());
+    // 프로젝트 승인 처리
+    @PutMapping("/projects/{projectNum}/approve")
+    public ResponseEntity<String> approveProject(@RequestParam(name = "projectNum") Long projectNum, HttpSession session) {
+        // 어드민 권한 확인
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equals("admin")) {
+            return ResponseEntity.status(403).build();  // 권한 없으면 403 응답
         }
 
-        return ResponseEntity.ok(projects);  // 프로젝트 목록 반환
+        try {
+            // 승인 처리
+            adminService.approveProject(projectNum);
+            return ResponseEntity.ok("프로젝트가 승인되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+        }
+    }
+
+    // 프로젝트 거부 처리
+    @PutMapping("/projects/{projectNum}/reject")
+    public ResponseEntity<String> rejectProject(@RequestParam(name = "projectNum") Long projectNum, HttpSession session) {
+        // 어드민 권한 확인
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equals("admin")) {
+            return ResponseEntity.status(403).build();  // 권한 없으면 403 응답
+        }
+
+        try {
+            // 거부 처리
+            adminService.rejectProject(projectNum);
+            return ResponseEntity.ok("프로젝트가 거부되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+        }
+    }
+
+    // 프로젝트 숨김/공개 처리
+    @PutMapping("/projects/{projectNum}/toggleVisibility")
+    public ResponseEntity<String> toggleVisibility(@RequestParam(name = "projectNum") Long projectNum, HttpSession session) {
+        // 어드민 권한 확인
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equals("admin")) {
+            return ResponseEntity.status(403).build();  // 권한 없으면 403 응답
+        }
+
+        try {
+            // 숨김/공개 처리
+            adminService.toggleProjectVisibility(projectNum);
+            return ResponseEntity.ok("프로젝트의 공개 여부가 변경되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+        }
     }
 }

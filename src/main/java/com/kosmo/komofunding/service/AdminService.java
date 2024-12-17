@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,8 +67,17 @@ public class AdminService {
     }
 
     // 특정 프로젝트 조회
-    public Optional<Project> getProjectByProjectNum(Long projectNum) {
-        return projectRepository.findByProjectNum(projectNum);  // 프로젝트 번호로 프로젝트 조회
+    public ProjectOutDTO getProjectByProjectNum(Long projectNum) {
+        // 프로젝트 번호로 프로젝트 조회
+        Project project = projectRepository.findByProjectNum(projectNum)
+                .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
+        // 프로젝트의 유저 정보도 함께 가져오기
+        User user = userRepository.findById(project.getUserId())
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+
+        // ProjectOutDTO로 변환하여 반환
+        return projectConverter.toOutDTO(project);  // Project 엔티티를 DTO로 변환
     }
 
     // 전체 프로젝트 조회
@@ -75,4 +85,32 @@ public class AdminService {
         return projectRepository.findAll();  // 모든 프로젝트 조회
     }
 
+    // 프로젝트 승인 처리
+    public void approveProject(Long projectNum) {
+        Project project = projectRepository.findByProjectNum(projectNum)
+                .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
+        project.setApprovalDate(LocalDateTime.now());  // 승인 날짜 설정
+        project.setIsHidden(false);  // 승인되면 공개 처리
+        projectRepository.save(project);
+    }
+
+    // 프로젝트 거부 처리
+    public void rejectProject(Long projectNum) {
+        Project project = projectRepository.findByProjectNum(projectNum)
+                .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
+        project.setRejectionDate(LocalDateTime.now());  // 거부 날짜 설정
+        project.setIsHidden(true);  // 거부되면 숨김 처리
+        projectRepository.save(project);
+    }
+
+    // 프로젝트 숨김/공개 처리 (isHidden 토글)
+    public void toggleProjectVisibility(Long projectNum) {
+        Project project = projectRepository.findByProjectNum(projectNum)
+                .orElseThrow(() -> new RuntimeException("프로젝트를 찾을 수 없습니다."));
+
+        project.setIsHidden(!project.getIsHidden());  // 공개 여부 토글
+        projectRepository.save(project);
+    }
 }

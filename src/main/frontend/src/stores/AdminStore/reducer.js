@@ -4,6 +4,7 @@ import {
   FETCH_USERS_SUCCESS,
   FETCH_ADMIN_PROJECTS,
   FETCH_ADMIN_PROJECTS_SUCCESS,
+  UPDATE_PROJECT
 } from './action';
 
 export const initialState = {};
@@ -23,6 +24,9 @@ export const reducer = (state, action) => {
       return {...state}
 
     case FETCH_ADMIN_PROJECTS_SUCCESS:
+      return {...state, project : action.payload}
+
+    case UPDATE_PROJECT:
       return {...state, project : action.payload}
   
     default:

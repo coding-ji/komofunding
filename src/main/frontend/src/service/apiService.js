@@ -189,7 +189,17 @@ export const deactivateUser = (userNum, deactivationData) => apiClient.put(`api/
 // 모든 프로젝트 조회 및 특정 프로젝트 조회
 export const fetchAllProjectsForAdmin = (projectNum) => apiClient.get(`/api/admin/projects/${projectNum}`);
 
-// 특정 프로젝트 조회
+// 프로젝트 승인
+export const approveProject = (projectNum) => apiClient.put(`api/admin/projects/${projectNum}/approve`);
+
+// 프로젝트 거절
+export const rejectProject = (projectNum) => apiClient.put(`api/admin/projects/${projectNum}/reject`);
+
+// 프로젝트 공개/숨김 처리
+export const ProjectVisibility = (projectNum) => apiClient.put(`api/admin/projects/${projectNum}/toggleVisibility`);
+
+
+// 특정 프로젝트 삭제
 export const deleteProjectByAdmin = (projectNum) => apiClient.delete(`/admin/projects/${projectNum}`);
 
 export default apiClient;

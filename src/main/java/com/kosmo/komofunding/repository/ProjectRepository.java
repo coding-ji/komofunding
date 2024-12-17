@@ -39,6 +39,8 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     List<Project> findByTitleContaining(String keyword);
     // 프로젝트 존재여부 확인
     Boolean existsByProjectNum(Long projectNum);
+    // isHidden 값으로 프로젝트 여부 찾기?
+    List<Project> findByIsHidden(Boolean isHidden);
 
     // 온고잉이면 진행되는 것들이 사이에 , upcoming이면 시작되는게 지금보다 뒤에 !!
     @Query("SELECT p FROM Project p WHERE " +
