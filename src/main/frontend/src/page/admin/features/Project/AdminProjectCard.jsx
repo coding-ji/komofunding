@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./AdminProjectCard.module.css";
 import { AdminBtn1, AdminBtn2 } from "../../../../components/MyBtn";
 import { useStore } from "../../../../stores/AdminStore/useStore";
+import { formattedMMDD } from "../../../../utils/formattedData";
+
 
 const AdminProjectCard = ({ project }) => {
   const navigate = useNavigate();

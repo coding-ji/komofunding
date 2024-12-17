@@ -16,7 +16,7 @@ import {
     verifyPassword,
     checkNickName,
     sendEmailCode,
-    findUserPassword
+    // findUserPassword
     // uploadImg
 } from '../../service/apiService';
 

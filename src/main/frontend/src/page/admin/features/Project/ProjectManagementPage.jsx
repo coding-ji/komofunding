@@ -138,7 +138,7 @@ const ProjectManagementPage = () => {
             <AdminFilterTabs
                 navItems={[
                     { name: "ALL", label: "전체 프로젝트" },
-                    { name: "REVIEW", label: "승인 대기 프로젝트" },
+                    { name: "REVIEW", label: "승인 프로젝트" },
                     { name: "HIDDEN", label: "숨김 프로젝트" },
                 ]}
                 activeTab={activeTab}

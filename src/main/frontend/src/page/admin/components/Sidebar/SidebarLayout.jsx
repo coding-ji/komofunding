@@ -97,7 +97,7 @@ const SidebarLayout = () => {
           {activeMenu === "project" && (
             <ul className={styles.subMenu}>
               <li>
-              <Link to="/admin/project/project-management?tab=REVIEW">승인 대기 프로젝트</Link>
+              <Link to="/admin/project/project-management?tab=REVIEW">승인 프로젝트</Link>
               </li>
               <li>
                 <Link to="/admin/project/project-management?tab=HIDDEN">숨긴 프로젝트</Link>
