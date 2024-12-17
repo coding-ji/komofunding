@@ -29,7 +29,16 @@ const AdminEventPage = () => {
 
   const columns = [
     { label: "No", accessor: "communityNumber" },
-    { label: "제목", accessor: "communityTitle" },
+    // { label: "제목", accessor: "communityTitle" },
+    { 
+      label: "제목", 
+      accessor: "communityTitle", 
+      render: (item) => (
+        <Link to={`/admin/community/edit/${item.communityNumber}`}>
+          {item.communityTitle}
+        </Link>
+      ),
+    },
     { label: "관리자", accessor: "author" },
     {
       label: "기간", // 작성일과 종료일을 병합하여 표시

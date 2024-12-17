@@ -119,6 +119,9 @@ const AdminNoticePage = () => {
           { label: "관리자", value: "author" },
           { label: "공개 여부", value: "isHidden" },
         ]}
+        // 정렬 기준 설정
+        defaultSortBy="writeDate" // 작성일 기준 정렬
+        defaultSortOrder="desc"   // 내림차순 정렬
         onSearch={handleSearch}
       />
 

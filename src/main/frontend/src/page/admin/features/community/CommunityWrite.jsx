@@ -124,7 +124,7 @@ function CommunityWrite() {
         }
 
         alert("작업이 성공적으로 완료되었습니다.");
-        navigate(location.pathname.includes("admin") && "/admin" );
+        navigate(location.pathname.includes("admin") && "/admin/community/notice-faq?tab=ALL" );
       }
     };
 
