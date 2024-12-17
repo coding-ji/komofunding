@@ -87,32 +87,36 @@ const NoticePage = () => {
   }, [activeCategory, activeInquiryCategory]);
 
   // 공지사항
-  const filteredNotifications =
-    activeCategory.name === "전체"
-      ? noticeState.communities
-      : noticeState.communities?.filter(
-          (item) => item.communityCategory === activeCategory.name
-        );
+// 공지사항 정렬
+const filteredNotifications =
+  activeCategory.name === "전체"
+    ? noticeState.communities
+        ?.sort((a, b) => new Date(b.writeDate) - new Date(a.writeDate))
+    : noticeState.communities
+        ?.filter((item) => item.communityCategory === activeCategory.name)
+        ?.sort((a, b) => new Date(b.writeDate) - new Date(a.writeDate));
 
-  const currentNotifications = filteredNotifications?.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+const currentNotifications = filteredNotifications?.slice(
+  (currentPage - 1) * ITEMS_PER_PAGE,
+  currentPage * ITEMS_PER_PAGE
+);
+
 
   const totalPages = Math.ceil(
     noticeState.communities?.length / ITEMS_PER_PAGE
   );
 
   // 문의사항 데이터 필터링
-  const filteredQnas = Object.values(qnaState).filter(
-    (item) => item.qnaCategory === activeInquiryCategory.name
-  );
+// 문의사항 정렬
+const filteredQnas = Object.values(qnaState)
+  .filter((item) => item.qnaCategory === activeInquiryCategory.name)
+  .sort((a, b) => new Date(b.writtenDate) - new Date(a.writtenDate));
 
-  // 현재 페이지의 1:1 문의사항 데이터
-  const currentQnas = filteredQnas.slice(
-    (currentQnaPage - 1) * ITEMS_PER_PAGE,
-    currentQnaPage * ITEMS_PER_PAGE
-  );
+const currentQnas = filteredQnas.slice(
+  (currentQnaPage - 1) * ITEMS_PER_PAGE,
+  currentQnaPage * ITEMS_PER_PAGE
+);
+
 
   // 1:1 문의사항 데이터 기반으로 페이지 수 계산
   const totalQnaPages = Math.ceil(filteredQnas.length / ITEMS_PER_PAGE);

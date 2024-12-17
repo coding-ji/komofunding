@@ -123,7 +123,7 @@ const UserManagementPage = () => {
         { label: "닉네임", accessor: "nickName" },
         { label: "이메일", accessor: "email" },
         { label: "전화번호", accessor: "phoneNumber" },
-        { label: "신청일", accessor: "applicationDate" },
+        { label: "신청일", accessor: "approvalDate" },
         { label: "상태", accessor: "userStatus" },
       ];
     } else if (activeTab === "DEACTIVATED") {

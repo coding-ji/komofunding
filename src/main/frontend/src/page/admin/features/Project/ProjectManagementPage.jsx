@@ -6,52 +6,51 @@ import styles from "../../../../components/Table/ReusableTable.module.css";
 import Pagination from "../../../MyPage/Pagination";
 import AdminFilterTabs from "../../components/AdminTabs/AdminFilterTabs";
 import { useStore } from "../../../../stores/AdminStore/useStore";
+import { formattedDate } from "../../../../utils/formattedData";
 
 
 const ProjectManagementPage = () => {
-    const { state, actions } = useStore(); // 어드민 프로젝트 상태 및 액션
+    const { state, actions } = useStore();
     const navigate = useNavigate();
 
-    // 상태 관리
     const [currentPage, setCurrentPage] = useState(1);
     const [searchKeyword, setSearchKeyword] = useState("");
     const [searchOption, setSearchOption] = useState("title");
     const [activeTab, setActiveTab] = useState("ALL");
-     const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
+    const [searchParams] = useSearchParams();
 
     const ITEMS_PER_PAGE = 10;
 
-    
-      useEffect(() => {
-        const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
+    useEffect(() => {
+        const tabParam = searchParams.get("tab");
         if (tabParam) {
-          setActiveTab(tabParam); // 파라미터에 맞게 activeTab 설정
+            setActiveTab(tabParam);
         }
-      }, [searchParams]);
-
-      
+    }, [searchParams]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 actions.fetchAdminProjects();
             } catch (error) {
-                console.error("프로젝트를 가져오는데 실패했습니다.")
+                console.error("프로젝트를 가져오는데 실패했습니다.");
             }
         };
 
         fetchData();
-    }, [])
+    }, []);
 
     if (!Array.isArray(state.project)) {
         return <p>데이터 로드 중...</p>;
-      }
-
+    }
 
     // 데이터 변환 로직
     const enhancedData = state.project.map((project) => ({
         ...project,
         status: project.isHidden ? "숨김" : "활성",
+        projectPeriod: project.projectStartDate && project.projectEndDate
+        ? `${formattedDate(project.projectStartDate)} ~ ${formattedDate(project.projectEndDate)}`
+        : "미정", // 프로젝트 기간 가공
         actions: (
             <button onClick={() => handleDelete(project.projectNum)}>
                 삭제
@@ -61,9 +60,9 @@ const ProjectManagementPage = () => {
 
     // 프로젝트 데이터 필터링
     const filteredData = enhancedData.filter((project) => {
-        if (activeTab === "REVIEW") return project.status === "PENDING_REVIEW";
-        if (activeTab === "HIDDEN") return project.isHidden;
-        return true; // 기본적으로 모든 데이터 포함
+        if (activeTab === "REVIEW") return !project.isHidden; // 히든이 아닌 프로젝트만
+        if (activeTab === "HIDDEN") return project.isHidden;  // 히든인 프로젝트만
+        return true; // ALL 탭: 모든 프로젝트
     });
 
     // 현재 페이지 데이터
@@ -84,19 +83,18 @@ const ProjectManagementPage = () => {
         { value: "TRAVEL", label: "여행" },
     ];
 
-    // 열 정의
     const getColumns = () => [
         { label: "프로젝트번호", accessor: "projectNum" },
-        { label: "카테고리", accessor: "category" },
+        { label: "카테고리", accessor: "projectCategory" },
         { label: "제목", accessor: "title" },
-        { label: "제작자", accessor: "creatorName" },
-        { label: "휴대폰", accessor: "creatorPhone" },
-        { label: "신청날짜", accessor: "applicationDate" },
+        { label: "제작자", accessor: "nickname" },
+        { label: "휴대폰", accessor: "phoneNumber" },
+        { label: "프로젝트 기간",  accessor: "projectPeriod"},
+        { label: "신청날짜", accessor: "writtenDate" },
         { label: "상태", accessor: "status" },
-        { label: "관리", accessor: "actions" }, // 삭제 버튼 추가
     ];
 
-    // 탭 클릭 핸들러
+
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
         setCurrentPage(1);
@@ -104,7 +102,6 @@ const ProjectManagementPage = () => {
         setSearchOption("title");
     };
 
-    // 삭제 핸들러
     const handleDelete = async (projectNum) => {
         if (window.confirm("정말로 이 프로젝트를 삭제하시겠습니까?")) {
             try {
@@ -137,7 +134,7 @@ const ProjectManagementPage = () => {
                 columns={getColumns()}
                 searchOptions={[
                     { label: "제목", value: "title" },
-                    { label: "글번호", value: "projectNum" },
+                    { label: "프로젝트 번호", value: "projectNum" },
                     { label: "제작자", value: "creatorName" },
                     { label: "카테고리", value: "category" },
                 ]}

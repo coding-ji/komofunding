@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SidebarLayout.module.css";
 import memberIcon from "./icon/user/user svg.svg";
@@ -9,9 +9,12 @@ import eventIcon from "./icon/event/event svg.svg";
 import qnaIcon from "./icon/q&a/Q&A svg.svg";
 
 
+
 const SidebarLayout = () => {
   const [activeMenu, setActiveMenu] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(true); // 메뉴 접힘 상태
+  const [adminNickname, setNickname] = useState(""); // 닉네임 상태
+  const [adminEmail, setEmail] = useState(""); // 이메일 상태
 
   const navigate = useNavigate()
   
@@ -35,12 +38,21 @@ const SidebarLayout = () => {
     setIsCollapsed((prev) => !prev); // 사이드바 접힘 상태 토글
   };
 
+    // 로컬스토리지에서 닉네임과 이메일 불러오기
+    useEffect(() => {
+      const userData = JSON.parse(localStorage.getItem("user")); // 로컬스토리지에서 가져오기
+      if (userData) {
+        setNickname(userData.adminNickname || "관리자"); // 닉네임 설정
+        setEmail(userData.adminEmail || "admin@example.com"); // 이메일 설정
+      }
+    }, []);
+
   return (
     <div
       className={styles.sidebar}   >
        <div className={styles.headeradminside} onClick={toggleSidebar}>
-      <h1 className={styles.logo}>포실포실포시리</h1>
-      <h2 className={styles.email}>email</h2>
+      <h1 className={styles.logo}>{adminNickname || "포실포실포시리"}</h1>
+      <h2 className={styles.email}>{adminEmail || "email@example.com"}</h2>
       </div>
 
       <ul

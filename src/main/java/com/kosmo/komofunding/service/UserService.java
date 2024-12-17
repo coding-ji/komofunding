@@ -185,6 +185,7 @@ public class UserService {
         response.put("role", "admin");
         response.put("adminId", admin.getAdminId());
         response.put("adminNickname", admin.getAdminNickname());
+        response.put("adminEmail", admin.getAdminEmail());
         return response;
     }
 

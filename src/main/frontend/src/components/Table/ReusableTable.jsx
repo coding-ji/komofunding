@@ -12,8 +12,8 @@ const ReusableTable = ({
   categories,
   onRowClick,
   tableClassName,
-  defaultSortBy = "writeDate", // 정렬 기준 (기본값: 작성일)
-  defaultSortOrder = "desc", // 정렬 방향 (기본값: 내림차순)
+  defaultSortBy = "writeDate",
+  defaultSortOrder = "desc",
 }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedOption, setSelectedOption] = useState(searchOptions?.[0]?.value || "");
@@ -24,8 +24,14 @@ const ReusableTable = ({
     direction: defaultSortOrder,
   });
 
-  // 데이터 정렬 함수
-  const sortedData = [...data].sort((a, b) => {
+  // 필터링: 검색 기능
+  const filteredData = data.filter((row) => {
+    const value = String(row[selectedOption] || "").toLowerCase();
+    return value.includes(searchKeyword.toLowerCase());
+  });
+
+  // 정렬
+  const sortedData = [...filteredData].sort((a, b) => {
     const key = sortConfig.key;
     const direction = sortConfig.direction === "asc" ? 1 : -1;
 
@@ -39,7 +45,6 @@ const ReusableTable = ({
     }
   });
 
-  // 헤더 클릭 시 정렬
   const handleSort = (key) => {
     setSortConfig((prevConfig) => ({
       key,
@@ -55,7 +60,6 @@ const ReusableTable = ({
 
   return (
     <div className={styles.wrapper01}>
-      {/* 버튼 영역 */}
       <div className={styles.buttonWrapper0}>
         <WhiteBtn
           onClick={() => window.print()}
@@ -96,7 +100,6 @@ const ReusableTable = ({
         </div>
       </div>
 
-      {/* 테이블 영역 */}
       <div className={styles.tableWrapper0}>
         <table className={`${styles.table0} ${tableClassName || ""}`.trim()}>
           <thead>
@@ -147,9 +150,11 @@ const ReusableTable = ({
                     }}
                   />
                 </td>
-                {columns.map((col, colIndex) => (
-                  <td key={colIndex}>
-                    {col.accessor === "writeDate" || col.accessor === "endDate"
+                {columns.map((col) => (
+                  <td key={col.accessor}>
+                    {col.accessor === "writeDate" || col.accessor === "endDate" 
+                    || col.accessor === "writtenDate" ||col.accessor === "joinDate" 
+                    || col.accessor === "deactivationDate" ||col.accessor === "approvalDate" 
                       ? formattedDate(row[col.accessor])
                       : col.accessor === "isHidden"
                       ? row[col.accessor] === false
