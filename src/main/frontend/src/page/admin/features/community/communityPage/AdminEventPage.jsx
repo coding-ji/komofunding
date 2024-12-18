@@ -126,6 +126,9 @@ const AdminEventPage = () => {
     { name: "ENDED", label: "진행 종료 이벤트" },
   ];
 
+  const handleRowClick = (row) => {
+    navigate(`/admin/community/edit/${row.communityNumber}`, { state: { announcement: row } });
+  };
   
 
   return (
@@ -145,6 +148,7 @@ const AdminEventPage = () => {
           { label: "공개 여부", value: "isHidden" },
         ]}
         onSearch={handleSearch}
+        onRowClick={handleRowClick} // 행 클릭 이벤트 적용
       />
 
       {Math.ceil(filteredData.length / ITEMS_PER_PAGE) > 1 && (
