@@ -17,6 +17,4 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
     List<Payment> findByProjectId(String projectId);
     Boolean existsByPaymentNum(Long paymentNum);
     List<Payment> findByUserId(String userId);
-
-    Page<Payment> findAll(Pageable pageable);
 }
