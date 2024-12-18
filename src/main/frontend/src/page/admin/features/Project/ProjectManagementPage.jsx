@@ -8,17 +8,14 @@ import AdminFilterTabs from "../../components/AdminTabs/AdminFilterTabs";
 import { useStore } from "../../../../stores/AdminStore/useStore";
 import { formattedDate } from "../../../../utils/formattedData";
 
-
 const ProjectManagementPage = () => {
     const { state, actions } = useStore();
     const navigate = useNavigate();
-
     const [currentPage, setCurrentPage] = useState(1);
     const [searchKeyword, setSearchKeyword] = useState("");
     const [searchOption, setSearchOption] = useState("title");
     const [activeTab, setActiveTab] = useState("ALL");
     const [searchParams] = useSearchParams();
-
     const ITEMS_PER_PAGE = 10;
 
     useEffect(() => {
@@ -40,13 +37,12 @@ const ProjectManagementPage = () => {
         fetchData();
     }, []);
 
-
     if (!Array.isArray(state.project)) {
         return <p>데이터 로드 중...</p>;
     }
 
     // 데이터 변환 로직
-    const enhancedData = state.project && state.project.map((project) => ({
+    const enhancedData = state.project.map((project) => ({
         ...project,
         status: project.isHidden ? "숨김" : "활성",
         projectPeriod: project.projectStartDate && project.projectEndDate
@@ -92,10 +88,10 @@ const ProjectManagementPage = () => {
             accessor: "title",
             render: (project) => (
                 <span
-                onClick={() => {
-                    console.log("Navigating to:", project.projectNum);
-                    navigate(`/admin/project/detail/${project.projectNum}`);
-                }}
+                    onClick={() => {
+                        console.log("Navigating to:", project.projectNum);
+                        navigate(`/admin/project/detail/${project.projectNum}`);
+                    }}
                     style={{ cursor: "pointer" }}
                 >
                     {project.title}
@@ -108,7 +104,6 @@ const ProjectManagementPage = () => {
         { label: "신청날짜", accessor: "writtenDate" },
         { label: "상태", accessor: "status" },
     ];
-
 
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
@@ -147,7 +142,7 @@ const ProjectManagementPage = () => {
 
             <ReusableTable
                 title="프로젝트 목록"
-                data={state.project}
+                data={currentData}  // 여기에 필터링된 데이터 전달
                 columns={getColumns()}
                 searchOptions={[
                     { label: "제목", value: "title" },
@@ -164,7 +159,7 @@ const ProjectManagementPage = () => {
                 onRowClick={(row) => navigate(`/admin/project/detail/${row.projectNum}`)} // 이 부분 추가
             />
 
-            {Math.ceil(filteredData.length / ITEMS_PER_PAGE) > 1 && (
+            {filteredData.length > ITEMS_PER_PAGE && (
                 <Pagination
                     currentPage={currentPage}
                     totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
