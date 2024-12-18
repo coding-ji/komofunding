@@ -61,6 +61,7 @@ public class PaymentService {
         // 결제 정보 처리
         Long paymentNum = generatePaymentNum();
         Payment payment = paymentConverter.toEntity(paymentInDTO);
+        payment.setPaymentId(paymentInDTO.getPaymentId());
         payment.setPaymentNum(paymentNum);
         payment.setProjectId(projectId);
         payment.setUserId(userId);
