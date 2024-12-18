@@ -16,7 +16,9 @@ const ReusableTable = ({
   defaultSortOrder = "desc",
 }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedOption, setSelectedOption] = useState(searchOptions?.[0]?.value || "");
+  const [selectedOption, setSelectedOption] = useState(
+    searchOptions?.[0]?.value || ""
+  );
   const [checkedRows, setCheckedRows] = useState(data && data.map(() => false));
   const [allChecked, setAllChecked] = useState(false);
   const [sortConfig, setSortConfig] = useState({
@@ -25,10 +27,12 @@ const ReusableTable = ({
   });
 
   // 필터링: 검색 기능
-  const filteredData = data && data.filter((row) => {
-    const value = String(row[selectedOption] || "").toLowerCase();
-    return value.includes(searchKeyword.toLowerCase());
-  });
+  const filteredData =
+    data &&
+    data.filter((row) => {
+      const value = String(row[selectedOption] || "").toLowerCase();
+      return value.includes(searchKeyword.toLowerCase());
+    });
 
   // 정렬
   const sortedData = [...filteredData].sort((a, b) => {
@@ -48,7 +52,10 @@ const ReusableTable = ({
   const handleSort = (key) => {
     setSortConfig((prevConfig) => ({
       key,
-      direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+      direction:
+        prevConfig.key === key && prevConfig.direction === "asc"
+          ? "desc"
+          : "asc",
     }));
   };
 
@@ -59,120 +66,127 @@ const ReusableTable = ({
   };
 
   return (
-    <div className={styles.wrapper01}>
-
-      <div className={styles.buttonWrapper0}>
-        <WhiteBtn
-          onClick={() => window.print()}
-          text="프린트 출력"
-          width="120px"
-          fontSize="1rem"
-          padding="3px 5px"
-          height="40px"
-        />
-        <div className={styles.searchWrapper0}>
-          <select
-            className={styles.dropdown0}
-            value={selectedOption}
-            onChange={(e) => setSelectedOption(e.target.value)}
-          >
-            {searchOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <input
-            type="text"
-            className={styles.searchInput0}
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-            placeholder="검색어를 입력하세요"
-          />
-          <WhiteBtn
-            onClick={handleSearch}
-            text="검색"
-            width="80px"
-            fontSize="1rem"
-            padding="3px 5px"
-            height="40px"
-          />
-        </div>
-      </div>
-
-      <div className={styles.tableWrapper0}>
-        <table className={`${styles.table0} ${tableClassName || ""}`.trim()}>
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={allChecked}
-                  onChange={() => {
-                    setAllChecked(!allChecked);
-                    setCheckedRows(data && data.map(() => !allChecked));
-                  }}
-                />
-              </th>
-              {columns.map((col) => (
-                <th
-                  key={col.accessor}
-                  onClick={() => handleSort(col.accessor)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {col.label}{" "}
-                  {sortConfig.key === col.accessor
-                    ? sortConfig.direction === "asc"
-                      ? "▲"
-                      : "▼"
-                    : ""}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {sortedData && sortedData.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={checkedRows[rowIndex] ? styles.selected0 : ""}
-                onClick={() => onRowClick && onRowClick(row)} // 이 부분 유지
+    <>
+      {data && (
+        <div className={styles.wrapper01}>
+          <div className={styles.buttonWrapper0}>
+            <WhiteBtn
+              onClick={() => window.print()}
+              text="프린트 출력"
+              width="120px"
+              fontSize="1rem"
+              padding="3px 5px"
+              height="40px"
+            />
+            <div className={styles.searchWrapper0}>
+              <select
+                className={styles.dropdown0}
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
               >
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={checkedRows[rowIndex]}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      const newCheckedRows = [...checkedRows];
-                      newCheckedRows[rowIndex] = !newCheckedRows[rowIndex];
-                      setCheckedRows(newCheckedRows);
-                      setAllChecked(newCheckedRows.every(Boolean));
-                    }}
-                  />
-                </td>
-                {columns.map((col) => (
-                  <td key={col.accessor}>
-                    {col.accessor === "writeDate" || 
-                    col.accessor === "endDate" || 
-                    col.accessor === "writtenDate" ||
-                    col.accessor === "joinDate"  || 
-                    col.accessor === "deactivationDate" ||
-                    col.accessor === "approvalDate" 
-                      ? formattedDate(row[col.accessor])
-                      : col.accessor === "isHidden"
-                      ? row[col.accessor] === false
-                        ? "공개"
-                        : "비공개"
-                      : row[col.accessor] || ""}
-                  </td>
+                {searchOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+              </select>
+              <input
+                type="text"
+                className={styles.searchInput0}
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                placeholder="검색어를 입력하세요"
+              />
+              <WhiteBtn
+                onClick={handleSearch}
+                text="검색"
+                width="80px"
+                fontSize="1rem"
+                padding="3px 5px"
+                height="40px"
+              />
+            </div>
+          </div>
+
+          <div className={styles.tableWrapper0}>
+            <table
+              className={`${styles.table0} ${tableClassName || ""}`.trim()}
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      checked={allChecked}
+                      onChange={() => {
+                        setAllChecked(!allChecked);
+                        setCheckedRows(data && data.map(() => !allChecked));
+                      }}
+                    />
+                  </th>
+                  {columns.map((col) => (
+                    <th
+                      key={col.accessor}
+                      onClick={() => handleSort(col.accessor)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {col.label}{" "}
+                      {sortConfig.key === col.accessor
+                        ? sortConfig.direction === "asc"
+                          ? "▲"
+                          : "▼"
+                        : ""}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {sortedData &&
+                  sortedData.map((row, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className={checkedRows[rowIndex] ? styles.selected0 : ""}
+                      onClick={() => onRowClick && onRowClick(row)} // 이 부분 유지
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={checkedRows[rowIndex]}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            const newCheckedRows = [...checkedRows];
+                            newCheckedRows[rowIndex] =
+                              !newCheckedRows[rowIndex];
+                            setCheckedRows(newCheckedRows);
+                            setAllChecked(newCheckedRows.every(Boolean));
+                          }}
+                        />
+                      </td>
+                      {columns.map((col) => (
+                        <td key={col.accessor}>
+                          {col.accessor === "writeDate" ||
+                          col.accessor === "endDate" ||
+                          col.accessor === "writtenDate" ||
+                          col.accessor === "joinDate" ||
+                          col.accessor === "deactivationDate" ||
+                          col.accessor === "approvalDate"
+                            ? formattedDate(row[col.accessor])
+                            : col.accessor === "isHidden"
+                            ? row[col.accessor] === false
+                              ? "공개"
+                              : "비공개"
+                            : row[col.accessor] || ""}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
