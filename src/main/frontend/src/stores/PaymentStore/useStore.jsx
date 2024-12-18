@@ -27,6 +27,7 @@ import {
   getMyFundingByProject,
   addPayment,
   removePayment,
+  allPaymentInformation
 } from "./action";
 
 export const useStore = () => {
@@ -81,6 +82,8 @@ export const useStore = () => {
       addPayment(paymentNum, payment)(dispatch),
 
     removePayment: (paymentId) => removePayment(paymentId)(dispatch),
+
+    allPaymentInformation: () => allPaymentInformation()(dispatch)
   };
 
   return { state, actions };

@@ -1,5 +1,6 @@
 package com.kosmo.komofunding.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.converter.StringListConverter;
 import jakarta.persistence.*;
@@ -37,6 +38,7 @@ public class Application {
     private List<String> applicationImg; // 첨부 파일 경로 (이미지, hwp 등)
 
     @Column(name = "application_date", nullable = false, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime applicationDate; // 신청 날짜
 
     @Column(name = "approval_date")

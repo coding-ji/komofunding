@@ -11,8 +11,10 @@ import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -174,6 +176,12 @@ public class PaymentService {
             }
         }
         return paymentNum;
+    }
+
+    // 모든 결제 정보 가져오기
+    public Page<PaymentOutDTO> getAllPayments(Pageable pageable) {
+        Page<Payment> paymentPage = paymentRepository.findAll(pageable);
+        return paymentPage.map(payment -> paymentConverter.toOutDTO(payment));
     }
 }
 

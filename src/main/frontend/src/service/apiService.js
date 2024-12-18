@@ -119,6 +119,9 @@ export const getMyFunding = (projectStatus) => apiClient.get(`/payment/myinfo/fu
 // 결제 삭제
 export const deletePayment = (paymentId) => apiClient.delete(`/payment/myfunding/${paymentId}`)
 
+// 모든 결제 정보 가져오기
+export const allPayment = () => apiClient.get('/payment/list/all');
+
 
 // 이미지 저장
 export const uploadImg = (img) => apiClient.post('/upload/image', img);

@@ -12,9 +12,11 @@ import com.kosmo.komofunding.repository.UserRepository;
 import com.kosmo.komofunding.service.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,6 +83,20 @@ public class PaymentController {
         } else {
             return ResponseEntity.badRequest().body(result); // 실패 시 400 Bad Request 반환
         }
+    }
+
+    @GetMapping("/list/all")
+    // 1. 페이징 처리로 모든 결제 정보 가져오기
+    public ResponseEntity<List<PaymentOutDTO>> getAllPayments(Pageable pageable) {
+        Page<Payment> paymentPage = paymentRepository.findAll(pageable);
+
+        // 2. 결제 정보를 PaymentOutDTO로 변환
+        List<PaymentOutDTO> paymentOutDTOList = paymentPage.stream()
+                .map(payment -> paymentConverter.toOutDTO(payment))
+                .collect(Collectors.toList());
+
+        // 3. 변환된 DTO 리스트를 ResponseEntity로 반환
+        return ResponseEntity.ok(paymentOutDTOList);
     }
 
 }

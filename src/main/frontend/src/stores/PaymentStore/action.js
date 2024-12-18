@@ -2,7 +2,8 @@ import {
     fetchDonorsByProjectNum,
     createPayment,
     getMyFunding,
-    deletePayment
+    deletePayment,
+    allPayment
 } from "../../service/apiService";
 
 
@@ -127,5 +128,18 @@ export const removePayment = (paymentId) => async(dispatch) => {
         })
     }catch(error){
         console.error("환불 실패")
+    }
+}
+
+// 모든 결제 정보 불러오기
+export const allPaymentInformation = () => async(dispatch) => {
+    try{
+        const response = await allPayment(); 
+        dispatch({
+            type: READ_PAYMENT,
+            payload: response.data
+        })
+    }catch(error){
+        console.error("정보 불러오기 실패")
     }
 }
