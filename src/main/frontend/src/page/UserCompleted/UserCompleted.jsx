@@ -21,7 +21,7 @@ function UserCompleted() {
         <MyContainers
           products={state.payment}
           text="확인"
-          onContainerClick={handleContainerClick}
+          onContainerClick={handleContainerClick}    
         />
       ) : (
         <p>마감된 후원이 없습니다. </p>

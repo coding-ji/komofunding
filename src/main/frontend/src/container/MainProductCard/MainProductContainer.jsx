@@ -32,7 +32,7 @@ function MainProductContainer({ products }) {
 
   const handleContainerClick = (product) => {  
     navigate(`/home/product-details/${product.projectNum}`);
-  };
+  };   
 
   if (loading) {
     return <div>Loading...</div>; // 데이터 로딩 중 표시

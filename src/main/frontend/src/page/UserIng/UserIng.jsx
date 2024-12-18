@@ -42,7 +42,7 @@ function UserIng() {
           text="환불"
           products={state.payment}
           onDelete={handleRefund}
-          onContainerClick={handleContainerClick}
+          onContainerClick={handleContainerClick}    
         />
       ) : (
         <p>후원 중인 프로젝트가 없습니다.</p>

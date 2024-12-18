@@ -43,7 +43,7 @@ function Completed() {
         products={filteredData}
         onEdit={handleMovement} // onEditClick 전달
         text="확인"
-        onContainerClick={handleContainerClick}
+        onContainerClick={handleContainerClick}  
       />
     </div>
   );

@@ -58,7 +58,7 @@ function Upcoming() {
       <MyContainers
         products={filteredData} // 상태 전달
         onDelete={handleDeleteClick} // 삭제 핸들러 전달
-        onContainerClick={handleContainerClick}
+        onContainerClick={handleContainerClick}   
         text="삭제"
       />
       {/* 팝업 */}

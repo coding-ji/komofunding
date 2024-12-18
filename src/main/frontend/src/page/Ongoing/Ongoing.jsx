@@ -38,7 +38,7 @@ function Ongoing() {
       <MyContainers
         products={filteredData}
         onEdit={handleEditClick} // 클릭 핸들러 전달
-        onContainerClick={handleContainerClick} 
+        onContainerClick={handleContainerClick}   
         text="수정"
       />
     </div>

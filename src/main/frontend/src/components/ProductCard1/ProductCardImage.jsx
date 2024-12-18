@@ -37,7 +37,7 @@ const StyledProductImg = styled(ProductImg)`
 `;
 
 
-function ProductCardImage({ data,animation }) {
+function ProductCardImage({ data,animation, onContainerClick }) {
 
    // 데이터 유효성 검사
    if (!data) {
