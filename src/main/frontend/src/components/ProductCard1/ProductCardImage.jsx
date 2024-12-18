@@ -80,6 +80,8 @@ function ProductCardImage({ data,animation }) {
 
     whileHover={{ scale: 1.02, boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.5)' }}
     transition={{ duration: 0.5 }}
+    onClick={onContainerClick}
+
     
     
     >

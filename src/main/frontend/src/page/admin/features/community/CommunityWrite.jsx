@@ -2,7 +2,12 @@ import styles from "./CommunityWrite.module.css";
 import EditorItem from "../../../../components/EditorItem/EditorItem";
 import WriteForm from "./WriteForm";
 import { useState, useRef, useEffect } from "react";
-import { AdminBtn1, AdminBtn2, Btn, WhiteBtn } from "../../../../components/MyBtn";
+import {
+  AdminBtn1,
+  AdminBtn2,
+  Btn,
+  WhiteBtn,
+} from "../../../../components/MyBtn";
 import TitleText from "../../../../components/TitleText";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useStore as CommunityStore } from "../../../../stores/NoticeStore/useStore";
@@ -11,13 +16,14 @@ import { useStore as FileStore } from "../../../../stores/FileStore/useStore";
 import Popup from "../../../../components/Popupmodal/Popup";
 
 function CommunityWrite() {
-  const { userNum, communityNum } = useParams();
+  const { userNum, communityNumber } = useParams();
 
   // 유저는 QnaStore
   const { state: qnaState, actions: qnaActions } = QnaStore();
 
   // 관리자는 fileStore를 사용해서 html파일로 해당 파일 저장
   const { state: fileState, actions: fileActions } = FileStore();
+
   // 관리자는 communityStore를 통해서 이벤트 작성
   const { state, actions } = CommunityStore();
 
@@ -28,15 +34,44 @@ function CommunityWrite() {
   const quillRef = useRef(null);
   const [editorContent, setEditorContent] = useState(""); // 에디터 내용
   const [htmlContent, setHtmlContent] = useState(""); // 보내는 내용
-
   const [modalOpenSubmit, setModalOpenSubmit] = useState(false);
   const [modalOpenCancel, setModalOpenCancel] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-
   const [isDone, setIsDone] = useState(false);
 
-  // HTML Blob 생성 및 파일 저장 함수 (관리자일 때)
+  const [isEditing, setIsEditing] = useState(false);
+
+  // 수정 모드 여부 체크
+  useEffect(() => {
+    if (communityNumber) {
+      actions.readCommunityById(communityNumber);
+    }
+  }, [communityNumber]);
+
+  //HTML 파일 로드
+  useEffect(() => {
+    if (state.communities) {
+      const { communityContent } = state.communities;
+      fileActions.readFileData(communityContent);
+      actions.updateAllFields(state.communities);
+    }
+  }, [state.communities]);
+
+  // html 파일 전환
+  useEffect(() => {
+    if (fileState && communityNumber) {
+      // HTML 파싱
+      const parser = new DOMParser();
+      const parsedHtml = parser.parseFromString(fileState, "text/html");
+      // editorContent에 <body> 내용만 설정
+      setHtmlContent(parsedHtml.body.innerHTML);
+
+      setIsEditing(true);
+    }
+  }, [fileState, communityNumber]);
+
+  // 생성
+  // 관리자 > HTML Blob 생성 및 파일 저장
   const saveHtmlToFile = async () => {
     const encoder = new TextEncoder();
     const utf8EncodedContent = encoder.encode(editorContent);
@@ -103,7 +138,7 @@ function CommunityWrite() {
       alert("작업에 실패했습니다.");
     }
 
-    navigate(location.pathname.includes("inquiry") && "/home/inquiry" );
+    navigate(location.pathname.includes("inquiry") && "/home/inquiry");
   };
 
   useEffect(() => {
@@ -112,46 +147,30 @@ function CommunityWrite() {
         const updatedCommunityData = {
           ...state.community,
           communityContent: fileState,
+          // endDate 처리: T00:00:00을 추가하여 LocalDateTime 형식으로 변환
+          endDate: state.community.endDate 
+            ? `${state.community.endDate}T00:00:00` 
+            : "",
         };
         if (isEditing) {
           await actions.updateExistingCommunity(
-            communityNum,
+            communityNumber,
             updatedCommunityData
           );
         } else {
           await actions.createNewCommunity(updatedCommunityData);
-          
         }
 
         alert("작업이 성공적으로 완료되었습니다.");
-        navigate(location.pathname.includes("admin") && "/admin/community/notice-faq?tab=ALL" );
+        navigate(
+          location.pathname.includes("admin") &&
+            "/admin/community/notice-faq?tab=ALL"
+        );
       }
     };
 
     createCommunity();
   }, [isDone]);
-
-  // notice 일때 혹은 유저 문의 일때 작성 !!
-
-  // 초기 데이터 설정 (수정 모드 확인)
-  // useEffect(() => {
-  //   const announcement = location.state?.announcement;
-  //   if (announcement) {
-  //     setIsEditing(true); // 수정 모드 활성화
-  //     actions.changeCommunity({
-  //       communityNumber: announcement.communityNumber,
-  //       communityTitle: announcement.communityTitle,
-  //       communityContent: announcement.communityContent,
-  //       communityCategory: announcement.communityCategory,
-  //       writeDate: announcement.writeDate,
-  //       endDate: announcement.endDate,
-  //       author: announcement.author,
-  //       isHidden: announcement.isHidden,
-  //     }); // 기존 데이터 설정
-  //   } else {
-  //     actions.resetCommunityState(); // 초기화
-  //   }
-  // }, [location.state, actions]);
 
   // 삭제 핸들러
   const handleDelete = async () => {
@@ -189,7 +208,7 @@ function CommunityWrite() {
             />
           </div>
           <div className={styles.optionForm}>
-            <WriteForm state={state} action={actions} />
+            <WriteForm state={state} actions={actions} />
           </div>
           <div className={styles.buttonContainer}>
             <AdminBtn1

@@ -18,6 +18,7 @@ import {
   changeIsHidden,
   resetCommunityState,
   readCommunityById,
+  updateAllFields,
 } from "./action";
 
 export const useStore = () => {
@@ -42,11 +43,15 @@ export const useStore = () => {
     resetCommunityState: () => dispatch(resetCommunityState()),
 
     readAllCommunities: () => readAllCommunities()(dispatch),
-    readCommunityById: (communityNumber) => readCommunityById(communityNumber)(dispatch),
-    createNewCommunity: (communityData) => createNewCommunity(communityData)(dispatch),
-    updateExistingCommunity: (communityNumber, updateData) => updateExistingCommunity(communityNumber, updateData)(dispatch),
+    readCommunityById: (communityNumber) =>
+      readCommunityById(communityNumber)(dispatch),
+    createNewCommunity: (communityData) =>
+      createNewCommunity(communityData)(dispatch),
+    updateExistingCommunity: (communityNumber, updateData) =>
+      updateExistingCommunity(communityNumber, updateData)(dispatch),
     deleteExistingCommunity: (communityNumber) =>
       deleteExistingCommunity(communityNumber)(dispatch),
+    updateAllFields: (data) => dispatch(updateAllFields(data)),
   };
 
   return { state, actions };

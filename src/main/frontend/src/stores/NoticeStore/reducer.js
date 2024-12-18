@@ -14,7 +14,8 @@ import {
     CREATE_COMMUNITY,
     UPDATE_COMMUNITY,
     DELETE_COMMUNITY,
-    READ_COMMUNITY
+    READ_COMMUNITY,
+    UPDATE_ALL_FIELDS
 } from "./action";
 
 // 초기 상태
@@ -22,7 +23,7 @@ export const initialState = {};
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
-        
+
 
         case CHANGE_COMMUNITIES:
             return { ...state, communities: action.payload };
@@ -61,20 +62,23 @@ export const reducer = (state = initialState, action) => {
         case RESET_COMMUNITY_STATE:
             return initialState;
 
+        case UPDATE_ALL_FIELDS:
+            return { ...state, community: {...state.community, ...action.payload} };
+
         // CRUD 처리
-      
+
         case CREATE_COMMUNITY:
             return { ...state, communities: [...state.communities, action.payload] };
 
         case READ_COMMUNITY:
             return { ...state, communities: action.payload }; // 전체 커뮤니티 목록 업데이트
-                
+
 
         case UPDATE_COMMUNITY:
-            return { ...state, communities: action.payload};
+            return { ...state, communities: action.payload };
 
         case DELETE_COMMUNITY:
-            return {...state, communities: action.payload};
+            return { ...state, communities: action.payload };
 
         default:
             return state;

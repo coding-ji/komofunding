@@ -19,7 +19,9 @@ export const CHANGE_END_DATE = "CHANGE_END_DATE";
 export const CHANGE_AUTHOR = "CHANGE_AUTHOR";
 export const CHANGE_IS_HIDDEN = "CHANGE_IS_HIDDEN";
 
+
 // 초기화 
+export const UPDATE_ALL_FIELDS = "UPDATE_ALL_FIELDS";
 export const RESET_COMMUNITY_STATE = "RESET_COMMUNITY_STATE";
 
 
@@ -88,6 +90,7 @@ export const changeIsHidden = (isHidden) => ({
 
 
 // 초기화
+export const updateAllFields = (data) => ({ type: UPDATE_ALL_FIELDS, payload: data });
 export const resetCommunityState = () => ({
     type: RESET_COMMUNITY_STATE,
 });
@@ -112,7 +115,7 @@ export const readCommunityById = (communityNumber) => async (dispatch) => {
         const response = await fetchCommunityById(communityNumber);
         dispatch({
             type: READ_COMMUNITY,
-            payload: response.data 
+            payload: response.data
         });
     } catch (error) {
         console.error(`ID: ${communityNumber} 커뮤니티 데이터를 가져올 수 없습니다.`, error);

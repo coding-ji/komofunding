@@ -3,10 +3,12 @@ import styles from "./MainProductContainer.module.css";
 import ProductCardImage from "../../components/ProductCard1/ProductCardImage";
 import ProductCard from "../../components/ProductCard1/ProductCard";
 import ProductMoreBtn from "../../components/ProductMoreBtn";
+import { useNavigate } from "react-router-dom";
 
 function MainProductContainer({ products }) {
   const [shuffledProducts, setShuffledProducts] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const navigate = useNavigate();
  
   // 데이터를 랜덤으로 섞어서 표시
   useEffect(() => {
@@ -28,9 +30,14 @@ function MainProductContainer({ products }) {
   const middleSection = shuffledProducts[5]; // 중단 섹션
   const bottomSection = shuffledProducts.slice(6, 9); // 하단 섹션
 
+  const handleContainerClick = (product) => {  
+    navigate(`/home/product-details/${product.projectNum}`);
+  };
+
   if (loading) {
     return <div>Loading...</div>; // 데이터 로딩 중 표시
   }
+
 
   return (
     <div className={styles.mainGrid}>
@@ -40,10 +47,10 @@ function MainProductContainer({ products }) {
           {topSection[0] && <ProductCard data={topSection[0]} />}
           <div className={styles.largeBottom}>
             <div className={styles.largeBottomLeft}>
-              {topSection[1] && <ProductCardImage data={topSection[1]} />}
+              {topSection[1] && <ProductCardImage data={topSection[1]} onContainerClick={() => handleContainerClick(topSection[1])}/>}
             </div>
             <div className={styles.largeBottomRight}>
-              {topSection[2] && <ProductCardImage data={topSection[2]} />}
+              {topSection[2] && <ProductCardImage data={topSection[2]} onContainerClick={() => handleContainerClick(topSection[2])}/>}
             </div>
           </div>
         </div>
@@ -57,7 +64,7 @@ function MainProductContainer({ products }) {
 
       {/* 중단 섹션 */}
       <div className={styles.middleSection}>
-        {middleSection && <ProductCardImage data={middleSection} />}
+        {middleSection && <ProductCardImage data={middleSection} onContainerClick={() => handleContainerClick(middleSection)}/>}
       </div>
 
       {/* 하단 섹션 */}

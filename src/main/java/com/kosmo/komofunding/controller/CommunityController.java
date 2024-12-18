@@ -28,6 +28,7 @@ import java.util.Map;
     public ResponseEntity<List<CommunityOutDTO>> getAllCommunities() {
         List<CommunityOutDTO> communities = communityService.getAllCommunities();
         return ResponseEntity.ok(communities);
+
     }
 
         @GetMapping("/api/category/{category}")

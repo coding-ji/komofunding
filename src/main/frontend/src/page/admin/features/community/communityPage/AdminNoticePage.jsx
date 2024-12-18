@@ -29,7 +29,7 @@ const AdminNoticePage = () => {
 
     // 테이블 행 클릭 시 동작
     const handleRowClick = (row) => {
-      navigate("/admin/community/edit", { state: { announcement: row } });
+      navigate(`/admin/community/edit/${row.communityNumber}`, { state: { announcement: row } });
     };
 
   

@@ -3,7 +3,7 @@ import styles from './WriteForm.module.css';
 import Dropdown from '../../../../components/Dropdown/Dropdown';
 
 
-const WriteForm = ({ action, state }) => {
+const WriteForm = ({ actions, state }) => {
 
     const [userData, setUserData] = useState(null);
 
@@ -18,38 +18,38 @@ const WriteForm = ({ action, state }) => {
     // 작성자 닉네임 초기화
     const initialAuthor = userData?.adminNickname || '관리자';
 
-    // useState로 상태 관리
-    const [formData, setFormData] = useState({
-        communityCategory: state.communityCategory || '',
-        communityTitle: state.communityTitle || '',
-        author: initialAuthor,
-        isHidden: state.isHidden || false,
-        endDate: state.endDate || '',
-    });
+    // // useState로 상태 관리
+    // const [formData, setFormData] = useState({
+    //     communityCategory: state.communityCategory || '',
+    //     communityTitle: state.communityTitle || '',
+    //     author: initialAuthor,
+    //     isHidden: state.isHidden || false,
+    //     endDate: state.endDate || '',
+    // });
 
-    // 상태가 변경될 때마다 action을 호출하여 Store에 값 업데이트
-    useEffect(() => {
-        action.changeCommunityCategory(formData.communityCategory);
-        action.changeCommunityTitle(formData.communityTitle);
-        action.changeAuthor(formData.author); // Store 상태 업데이트
-        action.changeIsHidden(formData.isHidden);
-        action.changeEndDate(formData.endDate);
+    // // 상태가 변경될 때마다 action을 호출하여 Store에 값 업데이트
+    // useEffect(() => {
+    //     action.changeCommunityCategory(formData.communityCategory);
+    //     action.changeCommunityTitle(formData.communityTitle);
+    //     action.changeAuthor(formData.author); // Store 상태 업데이트
+    //     action.changeIsHidden(formData.isHidden);
+    //     action.changeEndDate(formData.endDate);
         
-    }, [formData]);
+    // }, [formData]);
 
     
 
-    // input 변경 핸들러
-    const handleInputChange = (key, value) => {
-        let formattedValue = value;
-        if (key === 'endDate') {
-            formattedValue = `${value}T00:00:00`; // ISO-8601 형식으로 변환
-        }
-        setFormData((prev) => ({
-            ...prev,
-            [key]: formattedValue,
-        }));
-    };
+    // // input 변경 핸들러
+    // const handleInputChange = (key, value) => {
+    //     let formattedValue = value;
+    //     if (key === 'endDate') {
+    //         formattedValue = `${value}T00:00:00`; // ISO-8601 형식으로 변환
+    //     }
+    //     setFormData((prev) => ({
+    //         ...prev,
+    //         [key]: formattedValue,
+    //     }));
+    // };
 
     return (
         <div className={styles.formContainer}>
@@ -57,16 +57,16 @@ const WriteForm = ({ action, state }) => {
                 <label>카테고리</label>
                 <Dropdown
                     options={['NOTICE', 'EVENT', 'FAQ']}
-                    defaultValue={formData.communityCategory}
-                    onSelect={(value) => handleInputChange('communityCategory', value)}
+                    defaultValue={state.community && state.community.communityCategory || "NOTICE"}
+                    onSelect={(value) => actions.changeCommunityCategory(value)}
                 />
             </div>
             <div className={styles.row}>
                 <label>제목</label>
                 <input
                     type="text"
-                    value={formData.communityTitle}
-                    onChange={(e) => handleInputChange('communityTitle', e.target.value)}
+                    value={state.community && state.community.communityTitle || "" }
+                    onChange={(e) => actions.changeCommunityTitle(e.target.value)}
                 />
             </div>
             <div className={styles.row}>
@@ -74,7 +74,7 @@ const WriteForm = ({ action, state }) => {
             
                  <input
                     type="text"
-                    value={formData.author}
+                    value={state.community && state.community.author || initialAuthor}
                     readOnly // 읽기 전용으로 설정
                 />
             </div>
@@ -85,8 +85,8 @@ const WriteForm = ({ action, state }) => {
                         type="radio"
                         name="visibility"
                         value="public"
-                        checked={!formData.isHidden}
-                        onChange={() => handleInputChange('isHidden', false)}
+                        checked={state.community && !state.community.isHidden}
+                        onChange={() => actions.changeIsHidden(false)}
                     />
                     공개
                 </label>
@@ -95,8 +95,8 @@ const WriteForm = ({ action, state }) => {
                         type="radio"
                         name="visibility"
                         value="private"
-                        checked={formData.isHidden}
-                        onChange={() => handleInputChange('isHidden', true)}
+                        checked={state.community && state.community.isHidden}
+                        onChange={() => actions.changeIsHidden(true)}
                     />
                     비공개
                 </label>
@@ -105,8 +105,8 @@ const WriteForm = ({ action, state }) => {
                 <label>마감일</label>
                 <input
                     type="date"
-                    value={formData.endDate.split('T')[0] || ''}
-                    onChange={(e) => handleInputChange('endDate', e.target.value)}
+                    value={state.community?.endDate ? state.community.endDate.split('T')[0] : ''}
+                    onChange={(e) => actions.changeEndDate(e.target.value)}
                 />
             </div>
         </div>

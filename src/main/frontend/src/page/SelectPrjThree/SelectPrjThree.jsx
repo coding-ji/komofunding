@@ -71,7 +71,6 @@ function SelectPrjThree() {
 
       fetchHtml();
 
-      // Redux 상태 업데이트
       projectActions.updateAllFields(parsedState);
     }
   }, [projectNum]);
