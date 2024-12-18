@@ -4,12 +4,14 @@ import TitleText from "../../components/TitleText";
 import { formattedDate } from "../../utils/formattedData";
 import { useStore as NoticeStore } from "../../stores/NoticeStore/useStore";
 import { useStore as QnaStore } from "../../stores/QnaStore/useStore";
+import { useStore as FileStore } from "../../stores/FileStore/useStore";
 import { useEffect } from "react";
 
 // 상세 내역
 const Announcement = () => {
   const { state: qnaState, actions: qnaActions } = QnaStore();
   const { state: noticeState, actions: noticeActions } = NoticeStore();
+  const { state: fileState, actions: fileActions } = FileStore();
 
   const { communityNum, qnaNum } = useParams();
   const navigate = useNavigate();
@@ -32,6 +34,24 @@ const Announcement = () => {
       navigate("/home/inquiry");
     }
   };
+
+  useEffect(() => {
+    if (communityNum) {
+      const fetchHtml = async () => {
+        if (noticeState.communities) {
+          try {
+            await fileActions.readFileData(
+              noticeState.communities.communityContent
+            );
+          } catch (error) {
+            console.error("Error fetching HTML file:", error);
+          }
+        }
+      };
+
+      fetchHtml();
+    }
+  }, [noticeState.communities]);
 
   // 공지사항이나 1:1 문의사항 데이터 가져오기
   let announcement;
@@ -77,9 +97,7 @@ const Announcement = () => {
               <section className={styles.announcementBody}>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html:
-                      announcement.communityContent ||
-                      announcement.questionComment,
+                    __html: fileState || announcement.questionComment,
                   }}
                 />
               </section>
