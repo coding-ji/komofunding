@@ -12,24 +12,36 @@ const AdminPaymentPage = () => {
   const [activeTab, setActiveTab] = useState("정산");
 
   const [payments, setPayments] = useState([]); // 데이터를 쌓아두는 배열 상태
-
+  const [isLoaded, setIsLoaded] = useState(true);
   const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
-    actions.allPaymentInformation(); // 결제 데이터 로드
-    console.log(state)
-  }, [actions]);
+    const fetchData = async () => {
+      try {
+        actions.allPaymentInformation();
+        setIsLoaded(true);
+      } catch (error) {
+        console.error("프로젝트를 가져오는데 실패했습니다.");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    if (state.payments) {
-      // state.payments에서 데이터를 배열에 추가
-      setPayments((prev) => [...prev, ...state.payments]);
+    if (isLoaded) {
+      setPayments(state.payment);
+      setIsLoaded(false);
     }
-  }, [state.payments]); // state.payments가 업데이트될 때마다 실행
+  }, [isLoaded]);
+
+  if (!Array.isArray(state.payment)) {
+    return <p>데이터 로드 중...</p>;
+  }
 
   // 필터링된 데이터
   const filteredData = payments?.filter((item) => {
-    if (activeTab === "정산") return item.paymentStatus === "정상";
+    if (activeTab === "정산") return item.paymentStatus === "정tks";
     if (activeTab === "환불") return item.isRefunded === true;
     return true; // 기본
   });
@@ -55,37 +67,40 @@ const AdminPaymentPage = () => {
   ];
 
   return (
-    <div className={styles.container}>
-      <TitleText title="결제 관리" />
+    <>
+      {payments && (
+        <div className={styles.container}>
+          <TitleText title="결제 관리" />
+          {/* 탭 필터 */}
+          <AdminFilterTabs
+            navItems={navItems}
+            activeTab={activeTab}
+            onTabClick={(tabName) => {
+              setActiveTab(tabName);
+              setCurrentPage(1);
+            }}
+          />
 
-      {/* 탭 필터 */}
-      <AdminFilterTabs
-        navItems={navItems}
-        activeTab={activeTab}
-        onTabClick={(tabName) => {
-          setActiveTab(tabName);
-          setCurrentPage(1);
-        }}
-      />
+          {/* 테이블 */}
+          <ReusableTable
+            title="결제 목록"
+            data={currentData || []}
+            columns={columns}
+            defaultSortBy="paymentDate"
+            defaultSortOrder="desc"
+          />
 
-      {/* 테이블 */}
-      <ReusableTable
-        title="결제 목록"
-        data={currentData || []}
-        columns={columns}
-        defaultSortBy="paymentDate"
-        defaultSortOrder="desc"
-      />
-
-      {/* 페이지네이션 */}
-      {filteredData?.length > ITEMS_PER_PAGE && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
-          onPageChange={setCurrentPage}
-        />
+          {/* 페이지네이션 */}
+          {filteredData?.length > ITEMS_PER_PAGE && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

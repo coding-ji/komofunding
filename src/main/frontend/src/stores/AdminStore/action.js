@@ -99,9 +99,9 @@ export const deleteProject = (projectNum) => async (dispatch) => {
 
 
 // 유저 탈퇴, 정지 시키고 이유
-export const deactivate = (userNum) => async (dispatch) => {
+export const deactivate = (userNum, userStatus) => async (dispatch) => {
   try {
-    const response = await deactivateUser(userNum);
+    const response = await deactivateUser(userNum, userStatus);
     dispatch({type : UPDATE_USER, payload : response.data})
   }catch (error) {
     console.error('유저 데이터 수정 실패:', error)

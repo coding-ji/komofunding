@@ -1,7 +1,9 @@
 package com.kosmo.komofunding.controller;
 
+import com.kosmo.komofunding.common.enums.UserStatus;
 import com.kosmo.komofunding.converter.ProjectConverter;
 import com.kosmo.komofunding.dto.ProjectOutDTO;
+import com.kosmo.komofunding.dto.UserInDTO;
 import com.kosmo.komofunding.dto.UserOutDTO;
 import com.kosmo.komofunding.entity.Admin;
 import com.kosmo.komofunding.entity.Project;
@@ -10,6 +12,7 @@ import com.kosmo.komofunding.repository.AdminRepository;
 import com.kosmo.komofunding.service.AdminService;
 import com.kosmo.komofunding.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,10 +90,10 @@ public class AdminController {
     }
 
     // 회원 정지 또는 탈퇴 처리 (관리자가 상태를 선택할 수 있게 변경)
-    @PutMapping("/users/{userNum}/deactivate")
+    @DeleteMapping("/users/{userNum}/deactivate")
     public ResponseEntity<UserOutDTO> deactivateUser(
             @PathVariable("userNum") Long userNum,
-            @RequestBody UserOutDTO userOutDTO,
+            @RequestParam("userStatus") UserStatus status,
             HttpSession session) {
 
         // 어드민 권한 체크
@@ -103,8 +106,7 @@ public class AdminController {
             // 회원 정지 또는 탈퇴 처리
             UserOutDTO updatedUser = adminService.deactivateUser(
                     userNum,
-                    userOutDTO.getDeactivationReason(),
-                    userOutDTO.getActivatedStatus()
+                    status
             );
             return ResponseEntity.ok(updatedUser); // 상태 변경 후 유저 정보 반환
         } catch (IllegalArgumentException e) {

@@ -46,7 +46,7 @@ const ProjectManagementPage = () => {
     }
 
     // 데이터 변환 로직
-    const enhancedData = state.project.map((project) => ({
+    const enhancedData = state.project && state.project.map((project) => ({
         ...project,
         status: project.isHidden ? "숨김" : "활성",
         projectPeriod: project.projectStartDate && project.projectEndDate
@@ -61,8 +61,8 @@ const ProjectManagementPage = () => {
 
     // 프로젝트 데이터 필터링
     const filteredData = enhancedData.filter((project) => {
-        if (activeTab === "REVIEW") return !project.isHidden; // 히든이 아닌 프로젝트만
-        if (activeTab === "HIDDEN") return project.isHidden;  // 히든인 프로젝트만
+        if (activeTab === "REVIEW") return project.isHidden; // 히든인 프로젝트
+        if (activeTab === "APPROVAL") return !project.isHidden;  // 승인인 프로젝트
         return true; // ALL 탭: 모든 프로젝트
     });
 
@@ -139,7 +139,7 @@ const ProjectManagementPage = () => {
                 navItems={[
                     { name: "ALL", label: "전체 프로젝트" },
                     { name: "REVIEW", label: "승인 대기 프로젝트" },
-                    { name: "HIDDEN", label: "숨김 프로젝트" },
+                    { name: "APPROVAL", label: "승인 프로젝트" },
                 ]}
                 activeTab={activeTab}
                 onTabClick={handleTabClick}
@@ -147,7 +147,7 @@ const ProjectManagementPage = () => {
 
             <ReusableTable
                 title="프로젝트 목록"
-                data={currentData}
+                data={state.project}
                 columns={getColumns()}
                 searchOptions={[
                     { label: "제목", value: "title" },

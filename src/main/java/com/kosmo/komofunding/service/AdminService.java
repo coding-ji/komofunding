@@ -49,15 +49,14 @@ public class AdminService {
         return userService.getUserByUserNum(userNum);
     }
 
-    // 유저 탈퇴, 정지 회원 관리?
-    public UserOutDTO deactivateUser(Long userNum, String reason, UserStatus status) {
+    // 유저 탈퇴
+    public UserOutDTO deactivateUser(Long userNum, UserStatus status) {
         // 유저 조회
         User user = userRepository.findByUserNum(userNum)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
         // 회원 상태 변경 (정지 또는 탈퇴)
         user.setActivatedStatus(status); // 정지 또는 탈퇴 상태 설정
-        user.setDeactivationReason(reason); // 탈퇴 이유 설정
 
         // 회원 저장 (상태 변경 후 저장)
         userRepository.save(user);

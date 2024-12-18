@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TitleText from "../../../../components/TitleText";
@@ -9,10 +8,6 @@ import Pagination from "../../../MyPage/Pagination";
 import AdminFilterTabs from "../../components/AdminTabs/AdminFilterTabs";
 import UserInfoModal from "./UserInfoModal";
 import CreatorPendingModal from "./CreatorPendingModal";
-
-
-
-
 
 // 상태 및 유형 매핑
 const getDescriptionFromStatus = (status) => {
@@ -42,12 +37,13 @@ const UserManagementPage = () => {
   const [searchOption, setSearchOption] = useState("nickName");
   const [activeTab, setActiveTab] = useState("ALL");
   const [searchParams] = useSearchParams(); // URL의 파라미터 읽기
+  const [isDone, setIsDone] = useState(false);
+
   // 모달 상태 추가
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
 
   const [modalType, setModalType] = useState(null); // 'userInfo' 또는 'creatorPending'
-
 
   useEffect(() => {
     const tabParam = searchParams.get("tab"); // 'tab' 파라미터 읽기
@@ -79,24 +75,45 @@ const UserManagementPage = () => {
     setIsModalOpen(true);
   };
 
-
   // 모달 닫기 함수
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  // 강제 탈퇴 실행 함수
-  const handleForceDelete = () => {
-    const isConfirmed = window.confirm("정말 이 회원을 강제 탈퇴시키겠습니까?");
-    if (isConfirmed) {
-      actions.deactivate(selectedUserData.userCode); // 탈퇴 API 실행
-      console.log("강제 탈퇴 실행:", selectedUserData.userCode);
-      closeModal(); // 모달 닫기
-    } else {
-      console.log("강제 탈퇴가 취소되었습니다.");
-    }
-  };
+ // 강제 탈퇴 실행 함수
+const handleForceDelete = () => {
+  const isConfirmed = window.confirm("정말 이 회원을 강제 탈퇴시키겠습니까?");
+  if (isConfirmed) {
+    actions.deactivate(selectedUserData.userCode, "SUSPENDED"); // 탈퇴 API 실행
+    setIsDone(true);  // isDone 상태 업데이트
+    closeModal(); // 모달 닫기
+  } else {
+    console.log("강제 탈퇴가 취소되었습니다.");
+  }
+};
 
+// 데이터를 불러오는 함수
+const fetchData = async () => {
+  try {
+    await actions.fetchUsers();
+  } catch (error) {
+    console.error("데이터 로드 실패:", error);
+    alert("데이터를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+  }
+};
+
+// useEffect로 fetchUsers 실행
+useEffect(() => {
+  fetchData();  // 컴포넌트 로딩 시 데이터 불러오기
+}, []);
+
+// isDone 상태 변경 시 fetchUsers 재호출
+useEffect(() => {
+  if (isDone) {
+    fetchData(); // 데이터 새로 불러오기
+    setIsDone(false); // isDone 상태 초기화
+  }
+}, [isDone]);
 
   const userTypeOptions = [
     { value: "후원자", label: "후원자" },
@@ -113,21 +130,6 @@ const UserManagementPage = () => {
 
   const ITEMS_PER_PAGE = 10;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await actions.fetchUsers();
-      } catch (error) {
-        console.error("데이터 로드 실패:", error);
-        alert("데이터를 불러오는 데 실패했습니다. 다시 시도해주세요.");
-      }
-    };
-
-    fetchData();
-
-  }, []);
-
-
   if (!Array.isArray(state.user)) {
     return <p>데이터 로드 중...</p>;
   }
@@ -137,14 +139,18 @@ const UserManagementPage = () => {
     ...user,
     userType: getDescriptionFromStatus(user.activatedStatus),
     userStatus:
-      user.activatedStatus === "DEACTIVATED" || user.activatedStatus === "SUSPENDED"
+      user.activatedStatus === "DEACTIVATED" ||
+      user.activatedStatus === "SUSPENDED"
         ? getDescriptionFromStatus(user.activatedStatus)
         : "활동",
   }));
 
   // 탭에 따라 데이터 필터링
   const filteredData = transformedData.filter((user) => {
-    if (activeTab === "CREATORPENDING" && user.activatedStatus !== "CREATORPENDING") {
+    if (
+      activeTab === "CREATORPENDING" &&
+      user.activatedStatus !== "CREATORPENDING"
+    ) {
       return false;
     }
     if (activeTab === "DEACTIVATED" && user.activatedStatus !== "DEACTIVATED") {
@@ -208,11 +214,9 @@ const UserManagementPage = () => {
 
   return (
     <>
-      {state.user &&
+      {state.user && (
         <div className={styles.gridContainerAdminNotice}>
-
           <TitleText title="유저 관리" />
-
           <AdminFilterTabs
             navItems={[
               { name: "ALL", label: "전체회원" },
@@ -270,8 +274,7 @@ const UserManagementPage = () => {
             />
           )}
         </div>
-
-      }
+      )}
     </>
   );
 };

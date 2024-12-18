@@ -17,7 +17,7 @@ const ReusableTable = ({
 }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedOption, setSelectedOption] = useState(searchOptions?.[0]?.value || "");
-  const [checkedRows, setCheckedRows] = useState(data.map(() => false));
+  const [checkedRows, setCheckedRows] = useState(data && data.map(() => false));
   const [allChecked, setAllChecked] = useState(false);
   const [sortConfig, setSortConfig] = useState({
     key: defaultSortBy,
@@ -25,7 +25,7 @@ const ReusableTable = ({
   });
 
   // 필터링: 검색 기능
-  const filteredData = data.filter((row) => {
+  const filteredData = data && data.filter((row) => {
     const value = String(row[selectedOption] || "").toLowerCase();
     return value.includes(searchKeyword.toLowerCase());
   });
@@ -60,6 +60,7 @@ const ReusableTable = ({
 
   return (
     <div className={styles.wrapper01}>
+
       <div className={styles.buttonWrapper0}>
         <WhiteBtn
           onClick={() => window.print()}
@@ -110,7 +111,7 @@ const ReusableTable = ({
                   checked={allChecked}
                   onChange={() => {
                     setAllChecked(!allChecked);
-                    setCheckedRows(data.map(() => !allChecked));
+                    setCheckedRows(data && data.map(() => !allChecked));
                   }}
                 />
               </th>
@@ -131,7 +132,7 @@ const ReusableTable = ({
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((row, rowIndex) => (
+            {sortedData && sortedData.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
                 className={checkedRows[rowIndex] ? styles.selected0 : ""}

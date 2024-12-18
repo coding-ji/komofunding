@@ -11,6 +11,7 @@ import com.kosmo.komofunding.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,15 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class PaymentService {
+    @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
     private PaymentConverter paymentConverter;
+    @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private ProjectService projectService;
 
     @Transactional
