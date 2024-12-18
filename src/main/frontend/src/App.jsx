@@ -67,6 +67,7 @@ import ProjectManagementPage from "./page/admin/features/Project/ProjectManageme
 import QnaPage from "./page/admin/features/QnaPage/QnaPage";
 import AdminProjectDetail from "./page/admin/features/Project/AdminProjectDetail";
 import AdminProjectCard from "./page/admin/features/Project/AdminProjectCard";
+import AdminPaymentPage from "./page/admin/features/Payment/AdminPaymentPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -196,11 +197,12 @@ const router = createBrowserRouter([
       {
         path: "payment",
         children: [
-          { path: "project-management", element: <ProjectManagementPage/> },
+          { path: "payment-management", element: <AdminPaymentPage/> },
           // { path: "event", element: <AdminEventPage /> },
           // { path: "edit/:communityNumber", element: <CommunityWrite /> },
         ],
       },
+      
 
 
 

@@ -110,7 +110,8 @@ const SidebarLayout = () => {
         <li>
         <div
             className={styles.menuHeader}
-            onClick={(e) => toggleMenu("payment",e)}
+            // onClick={(e) => toggleMenu("payment",e)}
+            onClick={(e) => handleMenuClick("payment", "/admin/payment/payment-management", e)}
           >
             <img src={paymentIcon} alt="결제" /> 결제
           </div>

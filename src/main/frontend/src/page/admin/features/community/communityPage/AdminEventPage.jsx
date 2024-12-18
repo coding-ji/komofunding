@@ -126,6 +126,8 @@ const AdminEventPage = () => {
     { name: "ENDED", label: "진행 종료 이벤트" },
   ];
 
+  
+
   return (
     <div className={styles.gridContainerAdminNotice}>
       <TitleText title="이벤트 관리" />

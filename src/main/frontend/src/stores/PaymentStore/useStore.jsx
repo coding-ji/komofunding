@@ -33,6 +33,7 @@ import {
 export const useStore = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  
   const actions = {
     changeUserNum: (userNum) => dispatch(changeUserNum(userNum)),
     changeBankName: (bankName) => dispatch(changeBankName(bankName)),

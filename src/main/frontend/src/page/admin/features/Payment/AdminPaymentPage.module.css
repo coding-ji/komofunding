@@ -1,0 +1,95 @@
+.container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* 탭 필터 스타일 */
+  .tabContainer {
+    display: flex;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .tabItem {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+    transition: color 0.3s, border-bottom 0.3s;
+  }
+  
+  .tabItem.active {
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+  }
+  
+  .tabItem:hover {
+    color: #0056b3;
+  }
+  
+  /* 테이블 스타일 */
+  .tableContainer {
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tableHeader {
+    background-color: #f0f2f5;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .tableRow {
+    text-align: center;
+    transition: background-color 0.2s;
+  }
+  
+  .tableRow:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .tableCell {
+    padding: 10px 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* 페이지네이션 */
+  .paginationContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .paginationButton {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .paginationButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .paginationButton.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
