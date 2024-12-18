@@ -178,10 +178,15 @@ public class PaymentService {
         return paymentNum;
     }
 
-    // 모든 결제 정보 가져오기
-    public Page<PaymentOutDTO> getAllPayments(Pageable pageable) {
-        Page<Payment> paymentPage = paymentRepository.findAll(pageable);
-        return paymentPage.map(payment -> paymentConverter.toOutDTO(payment));
+    // 전체 결제 목록을 가져오는 메서드
+    public List<PaymentOutDTO> getAllPayments() {
+        // 1. 모든 결제 정보 가져오기
+        List<Payment> payments = paymentRepository.findAll();
+
+        // 2. Payment 정보를 PaymentOutDTO로 변환
+        return payments.stream()
+                .map(payment -> paymentConverter.toOutDTO(payment)) // paymentConverter를 통해 DTO로 변환
+                .collect(Collectors.toList());
     }
 }
 

@@ -85,14 +85,15 @@ public class PaymentController {
         }
     }
 
+    // 전체 결제 목록 불러오기
     @GetMapping("/list/all")
-    // 1. 페이징 처리로 모든 결제 정보 가져오기
-    public ResponseEntity<List<PaymentOutDTO>> getAllPayments(Pageable pageable) {
-        Page<Payment> paymentPage = paymentRepository.findAll(pageable);
+    public ResponseEntity<List<PaymentOutDTO>> getAllPayments() {
+        // 1. 모든 결제 정보 가져오기
+        List<Payment> payments = paymentRepository.findAll(); // Payment 엔티티에서 모든 결제 정보를 가져옴
 
         // 2. 결제 정보를 PaymentOutDTO로 변환
-        List<PaymentOutDTO> paymentOutDTOList = paymentPage.stream()
-                .map(payment -> paymentConverter.toOutDTO(payment))
+        List<PaymentOutDTO> paymentOutDTOList = payments.stream()
+                .map(payment -> paymentConverter.toOutDTO(payment)) // paymentConverter를 통해 DTO로 변환
                 .collect(Collectors.toList());
 
         // 3. 변환된 DTO 리스트를 ResponseEntity로 반환
