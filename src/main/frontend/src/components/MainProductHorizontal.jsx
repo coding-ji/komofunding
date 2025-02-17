@@ -15,6 +15,7 @@ const StyledDivHorizontal = styled(motion.div)`
   transform-style: preserve-3d;
   height: 485px;
   width: 100%;
+  cursor : pointer;
 `;
 
 function MainProductHorizontal({

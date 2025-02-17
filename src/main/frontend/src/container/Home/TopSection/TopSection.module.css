@@ -80,6 +80,7 @@
     font-weight: 700;
     line-height: normal;
     z-index: 2;
+    cursor : pointer;
   }
   
   .menu::before {

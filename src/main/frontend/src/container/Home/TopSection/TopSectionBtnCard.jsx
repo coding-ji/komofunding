@@ -27,6 +27,7 @@ const InnerDiv = styled(motion.div)`
   border: 1px solid ${({ color }) => (color === "gray" ? "#fff" : "#216418")};
   box-sizing: border-box;
   margin: 0; /* SelectDiv 안에서 간격 일정 유지 */
+  cursor : pointer;
 `;
 
 const ProjectTitle = styled.p`
