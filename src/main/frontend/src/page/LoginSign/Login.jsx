@@ -35,7 +35,7 @@ const Login = () => {
       if (userInfo.role === "admin") {
         navigate("/admin"); // 관리자 페이지
       } else if (userInfo.role === "user") {
-        navigate("/home");
+        navigate("/");
       } else {
         throw new Error("알 수 없는 역할");
       }
