@@ -1,9 +1,21 @@
 import React from "react";
 import styles from "./Footer.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Footer = () => {
+
+    const navigate = useNavigate();
+
+    const handleInquiryClick = () => {
+        const user = JSON.parse(localStorage.getItem("user")); // 로그인 여부 확인
+        if (user) {
+            navigate(`/home/inquiry/${user.userNum}/write`); // 로그인 O → 문의 등록 페이지 이동
+        } else {
+            alert("로그인 해주세요.");
+            navigate("/home/login"); // 로그인 X → 로그인 페이지로 이동
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -11,7 +23,9 @@ const Footer = () => {
                     <div className={{ fontSize: "20px", fontWeight: "bold" }}>이용 안내</div>
                     <ul className={{ fontSize: "15px"}}>
                             <li className={styles.li}><Link to="/home/notice" className={styles.linkcss}>공지사항</Link></li>
-                            <li className={styles.li}><Link to="/home/write-qna" className={styles.linkcss}>문의등록</Link></li>
+                            <li className={styles.li}>
+                            <a onClick={handleInquiryClick} className={styles.linkcss}>문의등록</a>
+                            </li>
                             <li className={styles.li}><Link to="/home/creation-guide" className={styles.linkcss}>창작 가이드</Link></li>
                             <li className={styles.li}><Link to="/home/donate-guide" className={styles.linkcss}>후원 가이드</Link></li>
                     </ul>

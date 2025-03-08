@@ -66,6 +66,7 @@
     font-weight: 900;
     line-height: 70px; /* 109.375% */
     letter-spacing: 1.92px;
+    cursor : pointer;
   }
   
   .menu {

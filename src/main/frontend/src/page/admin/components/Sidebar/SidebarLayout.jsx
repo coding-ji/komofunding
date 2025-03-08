@@ -182,17 +182,18 @@ const SidebarLayout = () => {
           {/* Q&A */}
           <div
             className={styles.menuHeader}
-            onClick={(e) => toggleMenu("qna",e)}
+            // onClick={(e) => toggleMenu("qna",e)}
+            onClick={(e) => handleMenuClick("qna", "/admin/qna?tab=ALL", e)}
           >
             <img src={qnaIcon} alt="Q&A" /> Q&A
           </div>
           {activeMenu === "qna" && (
             <ul className={styles.subMenu}>
               <li>
-                <Link to="/admin/qna/waiting">답변 대기</Link>
+                <Link to="/admin/qna?tab=waiting">답변 대기</Link>
               </li>
               <li>
-                <Link to="/admin/qna/completed">답변 완료</Link>
+                <Link to="/admin/qna?tab=completed">답변 완료</Link>
               </li>
             </ul>
           )}

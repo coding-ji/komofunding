@@ -8,6 +8,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
+  width: 100%;
 }
 
 .title {
@@ -38,10 +39,22 @@
   margin-top: 20px;
 }
 
-.titleForm{
+.titleForm {
   padding: 20px;
   display: flex;
-  justify-content: space-around;
+  align-items: center; /* 세로 정렬을 맞춤 */
   gap: 10px;
+  width: 100%;
 }
 
+.titleForm label {
+  white-space: nowrap; /* 제목(Label)이 줄바꿈되지 않도록 설정 */
+}
+
+.titleInput {
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}

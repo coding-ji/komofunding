@@ -271,6 +271,7 @@ function CommunityWrite() {
               type="text"
               value={state.communityTitle}
               onChange={(e) => actions.changeCommunityTitle(e.target.value)}
+              className={styles.titleInput} 
             />
           </div>
           <div className={styles.editor}>
